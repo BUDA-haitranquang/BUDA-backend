@@ -1,0 +1,56 @@
+LƯU Ý CHUNG:
+* fx:id cho đầy đủ các vị trí
+* Thiết kế JavaFX - switch scenes - các chức năng nhỏ chưa cần Controller
+* Deadline: 08/05 - Vũ + Đăng
+
+TẠO HOÁ ĐƠN (main):
+
+- Scene 1:
++ Có SĐT
++ Có list sản phẩm để chọn
++ Có một cái chỗ để show ra các sản phẩm đã được khách order
+
+- Scene 2:
++ Hoá đơn chốt
+. Nếu đây là khách hàng đã từng đến (SĐT đã xuất hiện trong database) - show thông tin sơ lược
+. Thêm thông tin khách hàng
+
+TẠO SẢN PHẨM:
+
+- Scene 1:
++ Tạo sản phẩm
++ Các trường cần thiết tra trong outline cũ
+
+TẠO NGUYÊN LIỆU:
+
+- Scene 1:
++ Tạo nguyên liệu
++ Các trường cần thiết tra trong outline cũ
+
+QUẢN LÝ KHO:
+
+- Scene 1:
++ Trình chiếu tất cả sản phẩm dưới dạng table (đầy đủ các trường)
++ Cho phép người dùng chỉnh sửa tất cả các trường khi nháy chuột vào ô cần sửa
+
+THU CHI:
+
+- Scene 1: thống kê cho thu chi tổng thể
++ Dạng Line Chart
++ Có tuỳ chọn về thời gian (ngày bắt đầu và ngày kết thúc), show doanh thu/chi phí hay cả 2
+
+- Scene 2: thống kê cho doanh thu/chi phí với từng loại sản phẩm/loại khách hàng
++ Dạng Pie Chart
++ Có một bảng sản phẩm/khách hàng nằm bên cạnh, người dùng có quyền chọn
++ Có tuỳ chọn về thời gian (ngày bắt đầu và ngày kết thúc), sản phẩm, nhóm khách hàng, ...
+
+
+SRS Document:
+29/5: Đăng
+
+TEST DB:
+Thêm cột Price cho Ingredient (12/5): Ngọc Linh
+
+Execution - Query
+Business: Đăng
+Customer - Supplier: Ngọc Linh
