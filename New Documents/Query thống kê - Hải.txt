@@ -1,0 +1,95 @@
+Toàn bộ các query tính toán tháng, năm, ngày, tuần -> khoảng thời gian từ ngày a -> ngày b
+-> DateTime a -> b:
++ Lấy toàn bộ danh sách sản phẩm + doanh thu của cửa hàng y
+
+Select OrderItems.ProductID, Product.Name, sum(ActualTotalCost), PictureID 
+from OrderItems, ProductID 
+where OrderItems.ProductID = x
+and OrderItems.CreationDate BETWEEN a and b
+and OrderItems.ProductID = Product.ProductID
+and UserID = y
+group by OrderItems.ProductID
+DESC/ASC
+Limit z
+
++ Đếm số lượng bán được trên mỗi sản phẩm của cửa hàng y từ ngày a -> b
+
+Select OrderItems.ProductID, Product.Name, sum(Quantity), PictureID 
+from OrderItems, ProductID 
+where OrderItems.ProductID = x
+and OrderItems.CreationDate BETWEEN a and b
+and OrderItems.ProductID = Product.ProductID
+and UserID = y
+group by OrderItems.ProductID
+
++ sortAllCustomersByTotalSpend:
+SELECT CustomerID, CustomerName, TotalSpend 
+FROM Customers
+WHERE UserID = y
+DESC/ASC
+LIMIT z
+
++ checkExistCustomer (NULL -> chua, co -> roi):
+SELECT CustomerID, CustomerName, PhoneNumber
+FROM Customers
+WHERE UserID = y
+and PhoneNumber = 'xx'
+
++ totalCost của bảng Order cũ -> FinalCost(Đã trừ discount)
+
++ Thống kê doanh thu theo giới tính + nhóm tuổi:
+SELECT Gender, AgeGroup, SUM(FinalCost) 
+FROM Orders
+WHERE CreationDate BETWEEN 
+AND UserID = z
+GROUP BY (Gender, AgeGroup)
+
++ Thống kê giá trị trung bình của hoá đơn theo giới tính + nhóm tuổi:
+SELECT Gender, AgeGroup, AVG(FinalCost)
+FROM Orders
+WHERE CreationDate BETWEEN 
+AND UserID = z
+GROUP BY (Gender, AgeGroup)
+
++ AgeGroup + Gender là kiểu enumerate:
+
++ Thống kê doanh thu theo mã discount trong ngày a -> b:
+SELECT Discount.DiscountID, Discount.Name, Discount.Description, TotalRevenue
+FROM (SELECT DiscountID, SUM(FinalCost) AS TotalRevenue 
+	FROM Orders
+	WHERE CreationDate BETWEEN a AND b
+	GROUP BY DiscountID
+	AND UserID = z) AS TMP 
+JOIN (SELECT DiscountID, Name, Description 
+	FROM Discount
+	WHERE ExpiryTime > a
+	AND CreatedTime < b
+	AND UserID = z) AS TMP2 ON DiscountID 
+
++ Thống kê số lần mỗi mã discount được sử dụng trong ngày a -> b:
+
+SELECT Discount.DiscountID, Discount.Name, Discount.Description, Appearances
+FROM (SELECT DiscountID, Count(*) AS Appearances 
+	FROM Orders
+	WHERE CreationDate BETWEEN a AND b
+	GROUP BY DiscountID
+	AND UserID = z) AS TMP 
+JOIN (SELECT DiscountID, Name, Description 
+	FROM Discount
+	WHERE ExpiryTime > a
+	AND CreatedTime < b
+	AND UserID = z) AS TMP2 ON DiscountID 
+
++ Thống kê lãi ròng cho toàn bộ các sản phẩm:
+
+SELECT ProductID, Name, Profit
+FROM (SELECT ProductID, Name 
+	FROM Products
+	WHERE UserID = z) AS TMP
+JOIN (SELECT ProductID, SUM(ActualTotalSale - Quantity*CostPerUnit) AS Profit
+	FROM OrderItems
+	WHERE UserID = z) AS TMP2 ON ProductID
+
+* Kiểm tra các trường trong một Entity có bị thiếu gì không:
+- Vũ + Đăng + Tiến + Hải
+
