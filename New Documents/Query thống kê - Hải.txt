@@ -1,26 +1,38 @@
 Toàn bộ các query tính toán tháng, năm, ngày, tuần -> khoảng thời gian từ ngày a -> ngày b
 -> DateTime a -> b:
-+ Lấy toàn bộ danh sách sản phẩm + doanh thu của cửa hàng y
++ Lấy toàn bộ danh sách sản phẩm + doanh thu mỗi sản phẩm của cửa hàng y
 
-Select OrderItems.ProductID, Product.Name, sum(ActualTotalCost), PictureID 
-from OrderItems, ProductID 
-where OrderItems.ProductID = x
-and OrderItems.CreationDate BETWEEN a and b
-and OrderItems.ProductID = Product.ProductID
-and UserID = y
-group by OrderItems.ProductID
-DESC/ASC
-Limit z
+--NOTE:
+Đặt index: CreationDate
+
+SELECT ProductID, Name, Total , PictureID 
+FROM (SELECT ProductID, sum(ActualTotalSale) as Total
+	FROM OrderItems
+	WHERE ProductID = x
+	AND CreationDate BETWEEN a and b
+	AND UserID = y
+	GROUP BY ProductID) AS TMP1
+JOIN (SELECT ProductID, Name, PictureID
+	FROM Product) AS TMP2
+USING ProductID
+ORDER BY Total DESC/ASC
+LIMIT z
+
 
 + Đếm số lượng bán được trên mỗi sản phẩm của cửa hàng y từ ngày a -> b
+SELECT ProductID, Name, TotalQty , PictureID 
+FROM (SELECT ProductID, sum(Quantity) as TotalQty
+	FROM OrderItems
+	WHERE ProductID = x
+	AND CreationDate BETWEEN a and b
+	AND UserID = y
+	GROUP BY ProductID) AS TMP1
+JOIN (SELECT ProductID, Name, PictureID
+	FROM Product) AS TMP2
+USING ProductID
+ORDER BY Total DESC/ASC
+LIMIT z
 
-Select OrderItems.ProductID, Product.Name, sum(Quantity), PictureID 
-from OrderItems, ProductID 
-where OrderItems.ProductID = x
-and OrderItems.CreationDate BETWEEN a and b
-and OrderItems.ProductID = Product.ProductID
-and UserID = y
-group by OrderItems.ProductID
 
 + sortAllCustomersByTotalSpend:
 SELECT CustomerID, CustomerName, TotalSpend 
