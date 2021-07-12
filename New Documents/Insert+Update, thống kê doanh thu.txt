@@ -1,0 +1,182 @@
+-Query Insert + Update:
+INSERT INTO Users 
+VALUES (UserID, UserName, Password, Email, PhoneNumber, LastName, FirstName, PictureID);
+UPDATE Users
+SET UserName='abc'
+WHERE UserID=x;
+
+INSERT INTO Plans
+VALUES (PlanID, Name, Price, Duration, Picture);
+UPDATE Plans
+SET Name='Plan1'
+WHERE PlanID=x;
+
+INSERT INTO Purchase
+VALUES (PurchaseID, UserID, PlanID, CreationDate, ExpiryDate); (UserID, PlanID đã xuất hiện trong Users, Plans)
+UPDATE Purchase 
+SET CreationDate='yyyy-mm-dd'
+WHERE PurchaseID=x;
+
+INSERT INTO Employees
+VALUES (EmployeeID, EmployeeName, Position, UserID, PinCode); (UserID-foreign key từ Users)
+UPDATE Employees
+SET Position='Cashier'
+WHERE EmployeeID=x;
+
+INSERT INTO EmployeeNotes
+VALUES (EmployeeID, UserID, NoteDate, Message); (UserID-foreign key từ Users)
+UPDATE EmployeeNotes
+SET Message='abc'
+WHERE NoteDate=a AND EmployeeID=x;
+
+INSERT INTO SalaryLog
+VALUES (EmployeeID, Salary, PaymentDate);
+UPDATE SalaryLog
+SET PaymentDate=a
+WHERE EmployeeID=x;
+
+INSERT INTO FixedCost
+VALUES (FixedCostID, MoneyAmount, Name, PeriodOfTime, UserID); (UserID-foreign key từ Users)
+UPDATE FixedCost
+SET Name=a
+WHERE FixedCostID=x;
+
+INSERT INTO FixedCostBills
+VALUES (BillID, FixedCostID, TotalSpend, DueDate, Status); (FixedCostID-foreign key từ FixedCost)
+UPDATE FixedCostBills
+SET Status='F'
+WHERE BillID=x;
+
+INSERT INTO Picture
+VALUES (PictureID, EncodedString);
+UPDATE Picture
+SET EncodedString='abcxyz'
+WHERE PictureID=x;
+
+INSERT INTO MembershipType
+VALUES (MembershipID, MembershipName, UserID, DiscountID); (DiscountID, UserID-foreign key từ Discount, Users)
+UPDATE MembershipName
+SET DiscountID=x
+WHERE MembershipID=y;
+
+INSERT INTO Customers
+VALUES (CustomerID, Address, PhoneNumber, Name, UserID, AgeGroup, Gender, TotalSpend, MembershipID); (MembershipID, UserID-foreign key từ MembershipType, Users)
+UPDATE Customers
+SET MembershipID=x
+WHERE CustomerID=y;
+
+INSERT INTO Orders
+VALUES (OrderID, CustomerID, CreationDate, Status, DiscountID, UserID, FinalCost, Gender, AgeGroup, ActualDiscountC, ActualDiscountP, RealCost, CustomerMessage);
+(CustomerID, DiscountID, UserID-foreign key từ Customers, Discount, Users)
+UPDATE Orders
+SET CreationDate=a
+WHERE OrderID=x;
+
+INSERT INTO Discount
+VALUES (DiscountID, UserID, Percentage, Cash, CashLimit, OrdersCount, ExpiryTime, CreatedTime, DiscountType, Description, Name); (UserID-foreign key từ Users)
+UPDATE Discount
+SET DiscountType=a
+WHERE DiscountID=x;
+
+INSERT INTO OrderItems
+VALUES (OrderID, ProductID, Quantity, PricePerUnit, UserID, CreationDate, Gender, AgeGroup, ActualTotalSale, CostPerUnit);
+(ProductID, UserID-foreign key từ Products, Users)
+UPDATE OrderItems 
+SET PricePerUnit=a
+WHERE ProductID=x;
+
+INSERT INTO Products
+VALUES (ProductID,ProduceDescription,PictureID,Name,UserID,SellingPrice,AlertAmount,AmountLeft,CostPerUnit);
+UPDATE Products
+SET ProductDescription = a
+SET PictureID = b
+SET Name = c
+SET UserID = d
+SET SellingPrice = e
+SET AlertAmount = f
+SET AmountLeft = g
+SET CostPerUnit = h
+WHERE ProductID = x;
+
+INSERT INTO ProductGroups
+VALUES (GroupID,ProductID,UserID);
+UPDATE ProductGroups
+SET ProductID = a
+WHERE GroupID = x;
+
+INSERT INTO LogProductLeft
+VALUES (ProductID,AmountLeftChange,CreationDate,EmployeeID,Message,UserID);
+UPDATE LogProductLeft
+SET AmountLeftChange = a
+SET CreationDate = b
+SET EmployeeID = c
+SET Message = d
+WHERE ProductID = x;
+
+INSERT INTO IngreList 
+VALUES(ProductID,IngredientsID,RequireQuantity,UserID,TotalCost);
+UPDATE IngreList
+SET RequireQuantity = a
+SET TotalCost = b
+WHERE ProductID = x AND IngredientID = y;
+
+INSERT INTO Ingredients
+VALUES (IngredientsID,Name,Description,AmountLeft,Price,UserID,PictureID,AlertAmount);
+UPDATE Ingredients
+SET Name = a
+SET Desription = b
+SET AmountLeft = c
+SET Price = d
+SET AlertAmount = e 
+WHERE IngredientID = x;
+
+INSERT INTO LogIngredientLeft
+VALUES (IngredientID,AmountLeftChange,CreationDate,EmployeeID,Message,UserID);
+UPDATE LogIngredientLeft
+SET AmountLeftChange = a
+SET CreationDate = b
+SET EmployeeID = c
+SET Message = d
+WHERE IngredientID = x;
+
+INSERT INTO BuyOrderItems
+VALUES (BuyOrderID,IngredientsID,Quantity,PricePerUnit,CreationDate,UserID,SupplierID);
+UPDATE BuyOrderItems
+SET Quantity = a
+SET PricePerUnit = b
+SET CreationDate = c
+SET SupplierID = d
+WHERE BuyOrderID = x;
+
+INSERT INTO BuyOrders
+VALUES (BuyOrdersID,SupplierID,CreationDate,Status,TotalCost,UserID);
+Update BuyOrders
+SET SupplierID = a
+SET CreationDate = b
+SET Status = c
+SET TotalCost = d
+WHERE BuyOrderID = x;
+
+INSERT INTO Suppliers
+VALUES (SuppliersID,Name,Address,PhoneNumber,Email,UserID,PictureID);
+Update Suppliers
+SET Name = a
+SET Address = b
+SET PhoneNumer = c
+SET Email = d
+WHERE SupplierID = x;
+
+- Thống kê doanh thu theo khách hàng (TOP x):
+SELECT Name, sum(FinalCost) FROM Customers, Orders
+WHERE Customers.CustomerID=Orders.CustomerID
+AND CreationDate BETWEEN a AND b
+AND UserID=y
+GROUP BY CustomerID DESC LIMIT x;
+
+- Thống kê giá trị trung bình của hóa đơn của tất cả khách hàng:
+SELECT AVG(FinalCost) FROM Orders
+WHERE CreationDate BETWEEN a AND b
+AND UserID=y;
+
+
+
