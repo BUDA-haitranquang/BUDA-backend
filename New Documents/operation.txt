@@ -1,0 +1,28 @@
+User{
+	purchasePlan(Plan p): boolean;
+	add/removeStaff(Staff e): boolean;
+	addStaffNote(Staff e, String message): boolean;
+	addOtherCost();
+	addFixedCost();
+	updateStaff();
+}
+
+interface BasicStaff{
+	login();
+	addSellOrder();
+	addCustomer();
+}
+
+interface AdvancedStaff{
+	add/removeThing(Thing t):boolean;
+	addBuyOrder();
+	addSupplier();
+	updateThing();
+	add/remove/updateDiscount(Discount d);
+}
+
+interface Transaction{
+	add/removeThing();
+	calculate();
+}
+
