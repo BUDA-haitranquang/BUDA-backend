@@ -1,6 +1,10 @@
 package com.higroup.Buda.user;
 
+import java.util.UUID;
+
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -8,8 +12,9 @@ import javax.persistence.Table;
 @Table
 public class User {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-
+    String userUUID;
     String userName;
     String password;
     String email;
@@ -19,6 +24,15 @@ public class User {
     Long pictureID;
 
     public User() {
+        this.userUUID = UUID.randomUUID().toString();
+    }
+
+    public String getUserUUID() {
+        return this.userUUID;
+    }
+
+    public void setUserUUID(String userUUID) {
+        this.userUUID = userUUID;
     }
 
     public Long getId() {
