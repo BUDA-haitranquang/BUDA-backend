@@ -8,7 +8,6 @@
     text-align: center;
     height: 500px;
     border-radius: 10px;
-    box-shadow: 2px 5px 5px 2px rgb(0, 65, 82);
     .ava {
         img {
             width: 160px;
@@ -48,6 +47,7 @@
         margin-top: 20px;
         margin-bottom: 20px;
         border-radius: 40px;
+        border-width: 0;
         width: 40%;
         height: 2.2rem;
         font-size: 20px;

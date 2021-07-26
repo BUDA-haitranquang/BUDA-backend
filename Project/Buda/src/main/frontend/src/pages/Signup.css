@@ -8,8 +8,6 @@
   text-align: center;
   height: 560px;
   border-radius: 10px;
-  -webkit-box-shadow: 2px 5px 5px 2px #004152;
-          box-shadow: 2px 5px 5px 2px #004152;
 }
 
 .signup-container .ava img {
@@ -38,6 +36,7 @@
   height: 2.2rem;
   width: 80%;
   border-radius: 5px;
+  border-width: 0px;
   padding-left: .5rem;
 }
 
@@ -45,6 +44,7 @@
   margin-top: 5px;
   margin-bottom: 20px;
   border-radius: 40px;
+  border: none;
   width: 50%;
   height: 2.5rem;
   font-size: 20px;

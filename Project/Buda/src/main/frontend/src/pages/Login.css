@@ -7,8 +7,6 @@
   text-align: center;
   height: 500px;
   border-radius: 10px;
-  -webkit-box-shadow: 2px 5px 5px 2px #004152;
-          box-shadow: 2px 5px 5px 2px #004152;
 }
 
 .login-container .ava img {
@@ -55,6 +53,7 @@
   margin-top: 20px;
   margin-bottom: 20px;
   border-radius: 40px;
+  border-width: 0;
   width: 40%;
   height: 2.2rem;
   font-size: 20px;
