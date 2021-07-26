@@ -1,7 +1,7 @@
 /* FORM */
 .login-container {
   width: 340px;
-  margin: 50px auto;
+  margin: 60px auto;
   padding: 1rem;
   background-color: #acf8f2;
   text-align: center;
@@ -16,21 +16,21 @@
   margin-bottom: 60px;
 }
 
-.login-container .form {
+.login-container form {
   background-color: #5796f5;
   border-radius: 10px;
 }
 
-.login-container .form ul {
+.login-container form ul {
   list-style: none;
   margin-bottom: 20px;
 }
 
-.login-container .form ul li {
+.login-container form ul li {
   padding-top: 20px;
 }
 
-.login-container .form ul li input {
+.login-container form ul li input {
   height: 2.5rem;
   width: 80%;
   border-radius: 5px;
@@ -51,7 +51,7 @@
   cursor: pointer;
 }
 
-.login-container .form input[type="submit"] {
+.login-container form input[type="submit"] {
   margin-top: 20px;
   margin-bottom: 20px;
   border-radius: 40px;
@@ -63,7 +63,7 @@
   transition: .3s;
 }
 
-.login-container .form input[type="submit"]:hover {
+.login-container form input[type="submit"]:hover {
   background-color: #f0997a;
 }
 /*# sourceMappingURL=Login.css.map */

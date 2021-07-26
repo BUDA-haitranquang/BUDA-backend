@@ -2,6 +2,14 @@ import react, { Component, Fragment } from 'react';
 import "./Login.css"
 import ava from "../img/ava.png"
 export default class Login extends Component {
+    constructor(props) {
+        super(props);
+        this.state={
+            email: '',
+            password: '',
+            isRememberMe: false
+        }
+    }
     render(){
         return(
             <Fragment>
@@ -9,16 +17,16 @@ export default class Login extends Component {
                 <div className="ava">
                     <img src={ava}/>
                 </div>
-                <div className="form">
+                <form>
                     <ul>
-                    <li><input type="text" placeholder="Email/Phone" /></li>
-                    <li><input type="password" placeholder="Password" /></li>
+                    <li><input type="text" placeholder="Email/Phone" required/></li>
+                    <li><input type="password" placeholder="Password" required/></li>
                     </ul>
                     <label><input type="checkbox" value="isRemember" />Remember me</label>
                     <span>Forgot Password?</span>
                     <div className="clearfix"></div>
                     <input type="submit" onClick="isRememberMe" value="Login"/>
-                </div>
+                </form>
             </div>
         </Fragment>
         )

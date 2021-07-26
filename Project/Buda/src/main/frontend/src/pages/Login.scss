@@ -2,7 +2,7 @@
 
 .login-container {
     width: 340px;
-    margin: 50px auto;
+    margin: 60px auto;
     padding: 1rem;
     background-color: rgb(172, 248, 242);
     text-align: center;
@@ -15,7 +15,7 @@
             margin-bottom: 60px;
         }
     }
-    .form {
+    form {
         background-color: rgb(87, 150, 245);
         border-radius: 10px;
         ul {
@@ -44,7 +44,7 @@
         margin-right: 10%;
         cursor: pointer;
     }
-    .form input[type="submit"] {
+    form input[type="submit"] {
         margin-top: 20px;
         margin-bottom: 20px;
         border-radius: 40px;

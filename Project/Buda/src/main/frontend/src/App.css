@@ -22,7 +22,7 @@ html {
   background-color: black;
   width: 100%;
   height: 3rem;
-  position: relative;
+  position: fixed;
   text-align: right;
 }
 
