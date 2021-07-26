@@ -1,15 +1,26 @@
 package com.higroup.Buda.user;
 
+import java.util.UUID;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.higroup.Buda.util.SHA_256_Encode;
+
+
 @Entity
 @Table
+
 public class User {
     @Id
-    Long id;
-
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="userid")
+    Long userID;
+    String userUUID;
     String userName;
     String password;
     String email;
@@ -21,12 +32,20 @@ public class User {
     public User() {
     }
 
-    public Long getId() {
-        return this.id;
+    public String getUserUUID() {
+        return this.userUUID;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setUserUUID(String userUUID) {
+        this.userUUID = userUUID;
+    }
+
+    public Long getUserID() {
+        return this.userID;
+    }
+
+    public void setUserID(Long id) {
+        this.userID = id;
     }
 
     public String getUserName() {
@@ -84,5 +103,21 @@ public class User {
     public void setPictureID(Long pictureID) {
         this.pictureID = pictureID;
     }
+
+    @Override
+    public String toString() {
+        return "{" +
+            " userID='" + getUserID() + "'" +
+            ", userUUID='" + getUserUUID() + "'" +
+            ", userName='" + getUserName() + "'" +
+            ", password='" + getPassword() + "'" +
+            ", email='" + getEmail() + "'" +
+            ", phoneNumber='" + getPhoneNumber() + "'" +
+            ", lastName='" + getLastName() + "'" +
+            ", firstName='" + getFirstName() + "'" +
+            ", pictureID='" + getPictureID() + "'" +
+            "}";
+    }
+
 
 }
