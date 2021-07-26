@@ -36,6 +36,8 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
+    
+
     public void updateUser(@RequestBody User user)
     {
 

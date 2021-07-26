@@ -45,7 +45,7 @@ public class UserTest {
         User lastUser = userRepository.findUserByUserUUID(newUser.getUserUUID()).get();
         assertEquals(lastUser.getFirstName(), newUser.getFirstName());
         assertEquals(lastUser.getLastName(), newUser.getLastName());
-        userService.deleteUserByID(userRepository.findUserByUserUUID(newUser.getUserUUID()).get().getId());
+        userService.deleteUserByID(lastUser.getUserID());
         assertEquals(databaseSizeBeforeUpdate, userRepository.count());
     }
     @Test
@@ -56,9 +56,5 @@ public class UserTest {
         userService.registerNewUser(user);
         assertEquals(databaseSizeBeforeUpdate, userRepository.count());
     }
-    @Test
-    public void deleteUserByID(Long userID)
-    {
-
-    }
+    
 }
