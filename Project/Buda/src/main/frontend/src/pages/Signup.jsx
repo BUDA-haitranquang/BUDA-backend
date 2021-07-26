@@ -5,7 +5,7 @@ export default class Signup extends Component {
     render(){
         return(
             <Fragment>
-            <div className="container">
+            <div className="signup-container">
                 <div className="ava">
                     <img src={ava}/>
                 </div>

@@ -1,0 +1,49 @@
+/* FORM */
+
+.signup-container {
+    width: 350px;
+    margin: 50px auto;
+    padding: 1rem;
+    background-color: rgb(172, 248, 242);
+    text-align: center;
+    height: 580px;
+    border-radius: 10px;
+    box-shadow: 2px 5px 5px 2px rgb(0, 65, 82);
+    .ava img {
+        width: 160px;
+        margin-top: 10px;
+        margin-bottom: 40px;
+    }
+    .form {
+        background-color: rgb(87, 150, 245);
+        border-radius: 10px;
+        padding-top: 10px;
+        margin: 0 10% 0 10%;
+        ul {
+            list-style: none;
+            margin-bottom: 20px;
+            li {
+                padding-top: 6px;
+                input {
+                    height: 2.2rem;
+                    width: 80%;
+                    border-radius: 5px;
+                    padding-left: .5rem;
+                }
+            }
+        }
+    }
+    .form input[type="submit"] {
+        margin-top: 10px;
+        margin-bottom: 20px;
+        border-radius: 40px;
+        width: 40%;
+        height: 2.2rem;
+        font-size: 20px;
+        cursor: pointer;
+        transition: .3s;
+        &:hover {
+            background-color: rgb(240, 153, 122);
+        }
+    }
+}

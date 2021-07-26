@@ -1,0 +1,40 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 14px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    background-color: rgb(238, 252, 252);
+}
+
+.clearfix::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.main-nav {
+    padding: 8px 1rem 5px 10rem;
+    background-color: black;
+    width: 100%;
+    height: 3rem;
+    position: relative;
+    text-align: right;
+    ul {
+        li {
+            list-style: none;
+            display: inline;
+            margin-right: 2rem;
+            a {
+                color: white;
+                &:hover {
+                    cursor: pointer;
+                    color: rgb(235, 235, 211);
+                }
+            }
+        }
+    }
+}

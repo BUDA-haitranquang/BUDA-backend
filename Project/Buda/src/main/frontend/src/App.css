@@ -1,36 +1,43 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
 }
 
 html {
-    font-size: 14px;
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-size: 14px;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  background-color: #eefcfc;
 }
 
 .clearfix::after {
-    content: "";
-    display: table;
-    clear: both;
+  content: "";
+  display: table;
+  clear: both;
 }
 
 .main-nav {
-    padding: 8px 1rem 5px 10rem;
-    background-color: black;
-    width: 100%;
-    height: 3rem;
-    position: relative;
-    text-align: right;
+  padding: 8px 1rem 5px 10rem;
+  background-color: black;
+  width: 100%;
+  height: 3rem;
+  position: relative;
+  text-align: right;
 }
 
 .main-nav ul li {
-    list-style: none;
-    display: inline;
-    color: white;
-    margin-right: 2rem;
+  list-style: none;
+  display: inline;
+  margin-right: 2rem;
 }
 
 .main-nav ul li a {
-    color: white;
+  color: white;
 }
+
+.main-nav ul li a:hover {
+  cursor: pointer;
+  color: #ebebd3;
+}
+/*# sourceMappingURL=App.css.map */

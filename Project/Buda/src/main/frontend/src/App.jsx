@@ -75,8 +75,11 @@ export default function App() {
           <Route path="/signup">
             <Signup></Signup>
           </Route>
-          <Route path="/">
+          <Route exact path="/">
             <Home />
+          </Route>
+          <Route path="*">
+            <NotFound />
           </Route>
         </Switch>
       </div>
@@ -91,9 +94,13 @@ function Home() {
 function About() {
   return(
     <Fragment>
-
+      Chung em chao anh Tien a.
     </Fragment>
   ) 
 }
-
+function NotFound(){
+  return(
+    <h1>404 Not Found</h1>
+  )
+}
 

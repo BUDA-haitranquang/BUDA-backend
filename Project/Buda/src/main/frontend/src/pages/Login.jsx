@@ -5,7 +5,7 @@ export default class Login extends Component {
     render(){
         return(
             <Fragment>
-            <div className="container">
+            <div className="login-container">
                 <div className="ava">
                     <img src={ava}/>
                 </div>

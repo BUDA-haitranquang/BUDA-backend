@@ -1,72 +1,58 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-html {
-    font-size: 16px;
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-}
-
-.clearfix::after {
-    content: "";
-    display: table;
-    clear: both;
-}
-
-
 /* FORM */
-
-.container {
-    width: 400px;
-    margin: 50px auto;
-    padding: 1rem;
-    background-color: rgb(172, 248, 242);
-    text-align: center;
-    height: 600px;
-    border-radius: 10px;
+.signup-container {
+  width: 350px;
+  margin: 50px auto;
+  padding: 1rem;
+  background-color: #acf8f2;
+  text-align: center;
+  height: 580px;
+  border-radius: 10px;
+  -webkit-box-shadow: 2px 5px 5px 2px #004152;
+          box-shadow: 2px 5px 5px 2px #004152;
 }
 
-.container .ava img {
-    width: 160px;
-    margin-bottom: 40px;
+.signup-container .ava img {
+  width: 160px;
+  margin-top: 10px;
+  margin-bottom: 40px;
 }
 
-.form {
-    background-color: rgb(87, 150, 245);
-    border-radius: 10px;
-    padding-top: 10px;
-    margin: 0 10% 0 10%;
+.signup-container .form {
+  background-color: #5796f5;
+  border-radius: 10px;
+  padding-top: 10px;
+  margin: 0 10% 0 10%;
 }
 
-.form ul {
-    list-style: none;
-    margin-bottom: 20px;
+.signup-container .form ul {
+  list-style: none;
+  margin-bottom: 20px;
 }
 
-.form ul li {
-    padding-top: 6px;
+.signup-container .form ul li {
+  padding-top: 6px;
 }
 
-.form ul li input {
-    height: 2.2rem;
-    width: 80%;
-    border-radius: 10px;
-    padding-left: .5rem;
+.signup-container .form ul li input {
+  height: 2.2rem;
+  width: 80%;
+  border-radius: 5px;
+  padding-left: .5rem;
 }
 
-.form input[type="submit"] {
-    margin-top: 10px;
-    margin-bottom: 20px;
-    border-radius: 40px;
-    width: 40%;
-    height: 2.2rem;
-    font-size: 20px;
-    cursor: pointer;
-    transition: .3s;
+.signup-container .form input[type="submit"] {
+  margin-top: 10px;
+  margin-bottom: 20px;
+  border-radius: 40px;
+  width: 40%;
+  height: 2.2rem;
+  font-size: 20px;
+  cursor: pointer;
+  -webkit-transition: .3s;
+  transition: .3s;
 }
 
-.form input[type="submit"]:hover {
-    background-color: rgb(240, 153, 122);
+.signup-container .form input[type="submit"]:hover {
+  background-color: #f0997a;
 }
+/*# sourceMappingURL=Signup.css.map */
