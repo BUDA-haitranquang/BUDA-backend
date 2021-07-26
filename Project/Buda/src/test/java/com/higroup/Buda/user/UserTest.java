@@ -14,33 +14,47 @@ public class UserTest {
     UserRepository userRepository;
     @Autowired
     UserService userService;
-    User user;
+    public static User user;
     @BeforeAll
-    public void initializeDB()
+    public static void initializeDB()
     {
         user = new User();
+        user.setEmail("default@gmail.com");
+        user.setFirstName("default");
+        user.setLastName("default");
+        user.setPassword("default");
+        user.setPhoneNumber("default");
+        user.setUserName("default");
     }
 
     @Test
     public void registerNewUserThenDrop()
     {
-        long databaseSizeBeforeUpdate = userRepository.findAll().size();
-        user = new User();
-        user.setEmail("haitq@gmail.com");
-        user.setFirstName("Hai");
-        user.setLastName("Tran");
-        user.setPassword("BBBBBBB");
-        user.setPhoneNumber("21312313");
-        user.setUserName("haihoho");
         userService.registerNewUser(user);
+        long databaseSizeBeforeUpdate = userRepository.findAll().size();
+        
+        User newUser = new User();
+        newUser.setEmail("haitq@gmail.com");
+        newUser.setFirstName("Hai");
+        newUser.setLastName("Tran");
+        newUser.setPassword("BBBBBBB");
+        newUser.setPhoneNumber("21312313");
+        newUser.setUserName("haihoho");
+        userService.registerNewUser(newUser);
         assertEquals(databaseSizeBeforeUpdate + 1, userRepository.count());
-        userService.deleteUserByID(userRepository.findUserByUserUUID(user.getUserUUID()).get().getId());
+        User lastUser = userRepository.findUserByUserUUID(newUser.getUserUUID()).get();
+        assertEquals(lastUser.getFirstName(), newUser.getFirstName());
+        assertEquals(lastUser.getLastName(), newUser.getLastName());
+        userService.deleteUserByID(userRepository.findUserByUserUUID(newUser.getUserUUID()).get().getId());
         assertEquals(databaseSizeBeforeUpdate, userRepository.count());
     }
     @Test
     public void registerAnExistingUser()
     {
-
+        userService.registerNewUser(user);
+        long databaseSizeBeforeUpdate = userRepository.findAll().size();
+        userService.registerNewUser(user);
+        assertEquals(databaseSizeBeforeUpdate, userRepository.count());
     }
     @Test
     public void deleteUserByID(Long userID)

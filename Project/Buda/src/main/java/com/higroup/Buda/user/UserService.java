@@ -21,6 +21,7 @@ public class UserService {
         if (user.isPresent())
         {
             //throw Exception here
+            return;
         }
         userRepository.save(newUser);
     }
