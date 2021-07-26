@@ -2,17 +2,23 @@ package com.higroup.Buda.user;
 
 import java.util.UUID;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.higroup.Buda.util.SHA_256_Encode;
+
+
 @Entity
 @Table
+
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="userid")
     Long userID;
     String userUUID;
     String userName;
@@ -24,7 +30,6 @@ public class User {
     Long pictureID;
 
     public User() {
-        this.userUUID = UUID.randomUUID().toString();
     }
 
     public String getUserUUID() {
@@ -98,5 +103,21 @@ public class User {
     public void setPictureID(Long pictureID) {
         this.pictureID = pictureID;
     }
+
+    @Override
+    public String toString() {
+        return "{" +
+            " userID='" + getUserID() + "'" +
+            ", userUUID='" + getUserUUID() + "'" +
+            ", userName='" + getUserName() + "'" +
+            ", password='" + getPassword() + "'" +
+            ", email='" + getEmail() + "'" +
+            ", phoneNumber='" + getPhoneNumber() + "'" +
+            ", lastName='" + getLastName() + "'" +
+            ", firstName='" + getFirstName() + "'" +
+            ", pictureID='" + getPictureID() + "'" +
+            "}";
+    }
+
 
 }
