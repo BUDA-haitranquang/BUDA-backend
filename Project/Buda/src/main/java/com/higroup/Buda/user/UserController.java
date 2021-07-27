@@ -57,8 +57,8 @@ public class UserController {
     {
         return userService.correctLogin(email, encodedPassword);
     }
-    @PutMapping(path = "id/{id}")
-    public void updateUserByID(@PathVariable("id") Long id,
+    @PutMapping(path = "/id/{userID}")
+    public void updateUserByID(@PathVariable("userID") Long id,
     @RequestParam(required = false) String email,
     @RequestParam(required = false) String phoneNumber,
     @RequestParam(required = false) String firstName,

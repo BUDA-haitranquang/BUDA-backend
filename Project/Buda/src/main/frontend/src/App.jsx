@@ -63,6 +63,7 @@ export default function App() {
           </ul>
         </nav>
         <div className="clearfix"></div>
+        <div style={{"marginBottom" : "42px"}}></div>
         {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
         <Switch>
@@ -74,6 +75,9 @@ export default function App() {
           </Route>
           <Route path="/signup">
             <Signup></Signup>
+          </Route>
+          <Route path="/home">
+            <Home/>
           </Route>
           <Route exact path="/">
             <Home />
@@ -88,7 +92,7 @@ export default function App() {
 }
 
 function Home() {
-  return <h2>Home</h2>;
+  return <h2>This is Home Page</h2>;
 }
 
 function About() {
