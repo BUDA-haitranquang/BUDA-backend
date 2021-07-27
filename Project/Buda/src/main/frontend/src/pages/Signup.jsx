@@ -2,6 +2,7 @@ import react, { useState, Fragment } from 'react';
 import "./Signup.css";
 import ava from "../img/ava.png";
 import { Redirect } from 'react-router-dom';
+import postApi from '../api/Api';
 export default function Signup() {
     const [firstname, setFirstname] = useState('')
     const [lastname, setLastname] = useState('')
@@ -21,6 +22,7 @@ export default function Signup() {
     const submitRegister = (e) =>{
         const item ={firstname, lastname, email, phone, password, checkpassword}
         console.log(item);
+        postApi(item);
     }
 
     return(
@@ -32,9 +34,9 @@ export default function Signup() {
             <form onSubmit={e => e.preventDefault()} >
                 <ul>
                 <li><input type="text" placeholder="First Name" value={firstname} onChange={(e)=>setFirstname(e.target.value)} required/></li>
-                <li><input type="text" placeholder="Last Name" value={lastname} onChange={(e)=>setLastname(e.target.value)} required/></li>
-                <li><input type="text" placeholder="Email" value={email} onChange={(e)=>setEmail(e.target.value)} required/></li>
-                <li><input type="text" placeholder="Phone" value={phone} onChange={(e)=>setPhone(e.target.phone)} required/></li>
+                <li><input type="text" placeholder="Last Name" value={lastname} onChange={(e)=>setLastname(e.target.value)} /></li>
+                <li><input type="text" placeholder="Email" value={email} onChange={(e)=>setEmail(e.target.value)} /></li>
+                <li><input type="text" placeholder="Phone" value={phone} onChange={(e)=>setPhone(e.target.value)} /></li>
                 <li><input type="password" placeholder="Password" value={password} onChange={(e)=>setPassword(e.target.value)} required/></li>
                 <li>
                     <input type="password" placeholder="Reenter Password" value={checkpassword} onChange={(e)=>setCheckpassword(e.target.value)} required/>
@@ -43,7 +45,7 @@ export default function Signup() {
                 
                 </ul>
                 <div className="clearfix"></div>
-                <input type="submit" onClick={()=>submitRegister} value="Signup"/>
+                <input type="submit" onClick={()=>submitRegister()} value="Signup"/>
             </form>
         </div>
     </Fragment>
