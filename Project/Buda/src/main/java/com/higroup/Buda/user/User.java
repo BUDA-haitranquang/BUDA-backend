@@ -60,8 +60,8 @@ public class User {
         return this.password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPassword(String rawPassword) {
+        this.password = SHA_256_Encode.encode(rawPassword);
     }
 
     public String getEmail() {

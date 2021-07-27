@@ -52,8 +52,13 @@ public class UserController {
     {
         userService.deleteUserByID(id);
     }
+    @GetMapping(path = "login/{email}&{encodedPassword}")
+    public boolean correctLogin(@PathVariable("email") String email, @PathVariable("encodedPassword") String encodedPassword)
+    {
+        return userService.correctLogin(email, encodedPassword);
+    }
     @PutMapping(path = "id/{id}")
-    public void updateUserByID(@PathVariable("userID") Long id,
+    public void updateUserByID(@PathVariable("id") Long id,
     @RequestParam(required = false) String email,
     @RequestParam(required = false) String phoneNumber,
     @RequestParam(required = false) String firstName,
