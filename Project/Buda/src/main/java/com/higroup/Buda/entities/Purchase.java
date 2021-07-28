@@ -93,5 +93,17 @@ public class Purchase {
         this.message = message;
     }
 
+
+    @Override
+    public String toString() {
+        return "{" +
+            " purchaseID='" + getPurchaseID() + "'" +
+            ", user='" + getUser() + "'" +
+            ", plan='" + getPlan() + "'" +
+            ", creationDate='" + getCreationDate() + "'" +
+            ", expiryDate='" + getExpiryDate() + "'" +
+            ", message='" + getMessage() + "'" +
+            "}";
+    }
   
 }

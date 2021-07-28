@@ -1,5 +1,6 @@
 package com.higroup.Buda.entities;
 
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -89,6 +90,35 @@ public class Plan {
 
     public void setPictureID(Long pictureID) {
         this.pictureID = pictureID;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof Plan)) {
+            return false;
+        }
+        Plan plan = (Plan) o;
+        return Objects.equals(planID, plan.planID) && Objects.equals(purchases, plan.purchases) && Objects.equals(name, plan.name) && Price == plan.Price && duration == plan.duration && Objects.equals(pictureID, plan.pictureID);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(planID, purchases, name, Price, duration, pictureID);
+    }
+    
+
+    @Override
+    public String toString() {
+        return "{" +
+            " planID='" + getPlanID() + "'" +
+            ", purchases='" + getPurchases() + "'" +
+            ", name='" + getName() + "'" +
+            ", Price='" + getPrice() + "'" +
+            ", duration='" + getDuration() + "'" +
+            ", pictureID='" + getPictureID() + "'" +
+            "}";
     }
     
 }
