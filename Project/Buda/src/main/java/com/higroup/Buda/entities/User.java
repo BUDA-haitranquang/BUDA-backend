@@ -141,6 +141,10 @@ public class User {
     }
 
     public void setUserName(String userName) {
+        if (userName == null)
+        {
+            return;
+        }
         this.userName = userName;
     }
 
@@ -148,8 +152,12 @@ public class User {
         return this.password;
     }
 
-    public void setPassword(String rawPassword) {
-        this.password = SHA_256_Encode.encode(rawPassword);
+    public void setPassword(String password) {
+        if (password == null)
+        {
+            return;
+        }
+        this.password = password;
     }
 
     public String getEmail() {
@@ -157,6 +165,10 @@ public class User {
     }
 
     public void setEmail(String email) {
+        if (email == null)
+        {
+            return;
+        }
         this.email = email;
     }
 
@@ -165,6 +177,10 @@ public class User {
     }
 
     public void setPhoneNumber(String phoneNumber) {
+        if (phoneNumber == null)
+        {
+            return;
+        }
         this.phoneNumber = phoneNumber;
     }
 
@@ -173,6 +189,10 @@ public class User {
     }
 
     public void setLastName(String lastName) {
+        if (lastName == null)
+        {
+            return;
+        }
         this.lastName = lastName;
     }
 
@@ -181,6 +201,10 @@ public class User {
     }
 
     public void setFirstName(String firstName) {
+        if (firstName == null)
+        {
+            return;
+        }
         this.firstName = firstName;
     }
 

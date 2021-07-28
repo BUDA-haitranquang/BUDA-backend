@@ -67,26 +67,33 @@ public class UserService {
     }
 
     @Transactional
-    public void updateUserByID(Long id, String email, String phoneNumber, String firstName, String lastName) {
+    public void updateUserByID(Long id, String userName, String email, String phoneNumber, String firstName, String lastName, String password) {
         User thisUser = userRepository.findUserByUserID(id).get();
-        if (!thisUser.getEmail().equals(email)) {
-            Optional<User> emailUser = userRepository.findUserByEmail(email);
-            if (emailUser.isPresent()) {
-                // throw exception here
-            } else {
-                Optional<User> phoneUser = userRepository.findUserByPhoneNumber(phoneNumber);
-                // co user dung phone nay, dong thoi nguoi dung nay cung khong dung phone nay ->
-                // cua nguoi khac
-                if (phoneUser.isPresent() && (!thisUser.getPhoneNumber().equals(phoneNumber))) {
-                    // throw exception here
-                } else {
-                    thisUser.setEmail(email);
-                    thisUser.setPhoneNumber(phoneNumber);
-                    thisUser.setFirstName(firstName);
-                    thisUser.setLastName(lastName);
-                }
-            }
+        Optional<User> mailUser = userRepository.findUserByEmail(email);
+        if ((email!=null) && (mailUser.isPresent()) && (mailUser.get().getUserID()!=thisUser.getUserID()))
+        {
+            //BAD REQUEST da ton tai email
+            return;
         }
+        Optional<User> phoneUser = userRepository.findUserByPhoneNumber(phoneNumber);
+        if ((phoneNumber!=null) && (phoneUser.isPresent()) && (phoneUser.get().getUserID()!=thisUser.getUserID()))
+        {
+            //BAD REQUEST da ton tai phone
+            return;
+        }
+        Optional<User> userNameUser = userRepository.findUserByUserName(userName);
+        if ((userName!=null) && (userNameUser.isPresent()) && (userNameUser.get().getUserID()!=thisUser.getUserID()))
+        {
+            //BAD REQUEST da ton tai username
+            return;
+        }
+        thisUser.setPassword(password);
+        thisUser.setEmail(email);
+        thisUser.setUserName(userName);
+        thisUser.setLastName(lastName);
+        thisUser.setFirstName(firstName);
+        thisUser.setPhoneNumber(phoneNumber);
+        userRepository.save(thisUser);
     }
 
     @Transactional
