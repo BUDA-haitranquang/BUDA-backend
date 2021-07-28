@@ -2,6 +2,10 @@ package com.higroup.Buda.user;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import com.higroup.Buda.entities.User;
+import com.higroup.Buda.repositories.UserRepository;
+import com.higroup.Buda.services.UserService;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

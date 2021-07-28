@@ -1,4 +1,4 @@
-package com.higroup.Buda.user;
+package com.higroup.Buda.entities;
 
 import java.util.UUID;
 

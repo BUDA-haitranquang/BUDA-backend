@@ -1,6 +1,9 @@
-package com.higroup.Buda.user;
+package com.higroup.Buda.restcontroller;
 
 import java.util.List;
+
+import com.higroup.Buda.entities.User;
+import com.higroup.Buda.services.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;

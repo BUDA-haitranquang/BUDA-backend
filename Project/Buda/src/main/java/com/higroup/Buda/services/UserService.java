@@ -1,8 +1,10 @@
-package com.higroup.Buda.user;
+package com.higroup.Buda.services;
 
 import java.util.List;
 import java.util.Optional;
 
+import com.higroup.Buda.entities.User;
+import com.higroup.Buda.repositories.UserRepository;
 import com.higroup.Buda.util.SHA_256_Encode;
 
 import org.springframework.beans.factory.annotation.Autowired;
