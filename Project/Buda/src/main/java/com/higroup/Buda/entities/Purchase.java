@@ -25,34 +25,13 @@ public class Purchase {
     @JoinColumn(name = "userID", nullable = false)
     @JsonBackReference
     private User user;
-    private Long planID;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "planID", nullable = false)
+    @JsonBackReference
+    private Plan plan;
     private ZonedDateTime creationDate;
     private ZonedDateTime expiryDate;
     private String message;
-
-    public Purchase() {
-    }
-
-    public Purchase(Long purchaseID, User user, Long planID, ZonedDateTime creationDate, ZonedDateTime expiryDate, String message) {
-        this.purchaseID = purchaseID;
-        this.user = user;
-        this.planID = planID;
-        this.creationDate = creationDate;
-        this.expiryDate = expiryDate;
-        this.message = message;
-    }
-
-    @Override
-    public String toString() {
-        return "{" +
-            " purchaseID='" + getPurchaseID() + "'" +
-            ", user='" + getUser() + "'" +
-            ", planID='" + getPlanID() + "'" +
-            ", creationDate='" + getCreationDate() + "'" +
-            ", expiryDate='" + getExpiryDate() + "'" +
-            ", message='" + getMessage() + "'" +
-            "}";
-    }
 
     public Long getPurchaseID() {
         return this.purchaseID;
@@ -70,12 +49,12 @@ public class Purchase {
         this.user = user;
     }
 
-    public Long getPlanID() {
-        return this.planID;
+    public Plan getPlan() {
+        return this.plan;
     }
 
-    public void setPlanID(Long planID) {
-        this.planID = planID;
+    public void setPlan(Plan plan) {
+        this.plan = plan;
     }
 
     public ZonedDateTime getCreationDate() {
@@ -101,4 +80,18 @@ public class Purchase {
     public void setMessage(String message) {
         this.message = message;
     }
+
+    public Purchase() {
+    }
+
+    public Purchase(Long purchaseID, User user, Plan plan, ZonedDateTime creationDate, ZonedDateTime expiryDate, String message) {
+        this.purchaseID = purchaseID;
+        this.user = user;
+        this.plan = plan;
+        this.creationDate = creationDate;
+        this.expiryDate = expiryDate;
+        this.message = message;
+    }
+
+  
 }
