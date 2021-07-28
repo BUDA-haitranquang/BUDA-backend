@@ -26,12 +26,19 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="userID")
     private Long userID;
+    @Column(length = 50)
     private String userUUID;
+    @Column(length = 50)
     private String userName;
+    @Column(length = 50)
     private String password;
+    @Column(length = 60)
     private String email;
+    @Column(length = 15)
     private String phoneNumber;
+    @Column(length = 50)
     private String lastName;
+    @Column(length = 50)
     private String firstName;
     private Long pictureID;
     @OneToMany(mappedBy = "user",
@@ -41,6 +48,69 @@ public class User {
     private Set<Purchase> purchases; 
     public Set<Purchase> getPurchases() {
         return this.purchases;
+    }
+
+    public User(Long userID, String userUUID, String userName, String password, String email, String phoneNumber, String lastName, String firstName, Long pictureID, Set<Purchase> purchases) {
+        this.userID = userID;
+        this.userUUID = userUUID;
+        this.userName = userName;
+        this.password = password;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.lastName = lastName;
+        this.firstName = firstName;
+        this.pictureID = pictureID;
+        this.purchases = purchases;
+    }
+
+    public User userID(Long userID) {
+        setUserID(userID);
+        return this;
+    }
+
+    public User userUUID(String userUUID) {
+        setUserUUID(userUUID);
+        return this;
+    }
+
+    public User userName(String userName) {
+        setUserName(userName);
+        return this;
+    }
+
+    public User password(String password) {
+        setPassword(password);
+        return this;
+    }
+
+    public User email(String email) {
+        setEmail(email);
+        return this;
+    }
+
+    public User phoneNumber(String phoneNumber) {
+        setPhoneNumber(phoneNumber);
+        return this;
+    }
+
+    public User lastName(String lastName) {
+        setLastName(lastName);
+        return this;
+    }
+
+    public User firstName(String firstName) {
+        setFirstName(firstName);
+        return this;
+    }
+
+    public User pictureID(Long pictureID) {
+        setPictureID(pictureID);
+        return this;
+    }
+
+    public User purchases(Set<Purchase> purchases) {
+        setPurchases(purchases);
+        return this;
     }
 
     public void setPurchases(Set<Purchase> purchases) {

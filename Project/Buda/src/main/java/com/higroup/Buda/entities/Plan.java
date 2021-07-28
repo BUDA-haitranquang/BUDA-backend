@@ -27,11 +27,66 @@ public class Plan {
     cascade = CascadeType.ALL)
     @JsonManagedReference
     private Set<Purchase> purchases;
+    @Column(length = 50)
     private String name;
     private double Price;
     private int duration;
     private Long pictureID;
+    @Column(length = 200)
+    private String description;
 
+    public Plan(Long planID, Set<Purchase> purchases, String name, double Price, int duration, Long pictureID, String description) {
+        this.planID = planID;
+        this.purchases = purchases;
+        this.name = name;
+        this.Price = Price;
+        this.duration = duration;
+        this.pictureID = pictureID;
+        this.description = description;
+    }
+
+    public Plan planID(Long planID) {
+        setPlanID(planID);
+        return this;
+    }
+
+    public Plan purchases(Set<Purchase> purchases) {
+        setPurchases(purchases);
+        return this;
+    }
+
+    public Plan name(String name) {
+        setName(name);
+        return this;
+    }
+
+    public Plan Price(double Price) {
+        setPrice(Price);
+        return this;
+    }
+
+    public Plan duration(int duration) {
+        setDuration(duration);
+        return this;
+    }
+
+    public Plan pictureID(Long pictureID) {
+        setPictureID(pictureID);
+        return this;
+    }
+
+    public Plan description(String description) {
+        setDescription(description);
+        return this;
+    }
+
+    public String getDescription() {
+        return this.description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
     public Plan() {
     }
 

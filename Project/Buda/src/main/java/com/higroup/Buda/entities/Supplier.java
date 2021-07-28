@@ -2,6 +2,7 @@ package com.higroup.Buda.entities;
 
 import java.util.Objects;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,10 +15,14 @@ public class Supplier {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long supplierID;
+    @Column(length = 60)
     private String email;
     private Long pictureID;
+    @Column(length = 50)
     private String name;
+    @Column(length = 220)
     private String address;
+    @Column(length = 15)
     private String phoneNumber;
     private Long userID;
 
@@ -117,6 +122,51 @@ public class Supplier {
             ", phoneNumber='" + getPhoneNumber() + "'" +
             ", userID='" + getUserID() + "'" +
             "}";
+    }
+
+    public Supplier(Long supplierID, String email, Long pictureID, String name, String address, String phoneNumber, Long userID) {
+        this.supplierID = supplierID;
+        this.email = email;
+        this.pictureID = pictureID;
+        this.name = name;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+        this.userID = userID;
+    }
+
+    public Supplier supplierID(Long supplierID) {
+        setSupplierID(supplierID);
+        return this;
+    }
+
+    public Supplier email(String email) {
+        setEmail(email);
+        return this;
+    }
+
+    public Supplier pictureID(Long pictureID) {
+        setPictureID(pictureID);
+        return this;
+    }
+
+    public Supplier name(String name) {
+        setName(name);
+        return this;
+    }
+
+    public Supplier address(String address) {
+        setAddress(address);
+        return this;
+    }
+
+    public Supplier phoneNumber(String phoneNumber) {
+        setPhoneNumber(phoneNumber);
+        return this;
+    }
+
+    public Supplier userID(Long userID) {
+        setUserID(userID);
+        return this;
     }
 
 }
