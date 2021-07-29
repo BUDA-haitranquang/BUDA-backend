@@ -6,6 +6,7 @@ import com.higroup.Buda.entities.User;
 import com.higroup.Buda.repositories.UserRepository;
 import com.higroup.Buda.services.UserService;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,12 +27,17 @@ public class UserTest {
         user.setEmail("default@gmail.com");
         user.setFirstName("default");
         user.setLastName("default");
-        user.setPassword("default");
+        user.setPassword("default123");
         user.setPhoneNumber("012345678");
         user.setUserName("default");
 
         
 
+    }
+
+    @AfterEach
+    public void tearDown(){
+        userRepository.deleteAll();
     }
 
     @Test
@@ -44,12 +50,12 @@ public class UserTest {
         newUser.setEmail("haitq@gmail.com");
         newUser.setFirstName("Hai");
         newUser.setLastName("Tran");
-        newUser.setPassword("BBBBBBB");
+        newUser.setPassword("BBBBasdBBB");
         newUser.setPhoneNumber("21312313");
         newUser.setUserName("haihoho");
         userService.registerNewUser(newUser);
         assertEquals(databaseSizeBeforeUpdate + 1, userRepository.count());
-        User lastUser = userRepository.findUserByUserUUID(newUser.getUserUUID()).get();
+        User lastUser = userRepository.findUserByUserID(newUser.getUserID()).get();
         assertEquals(lastUser.getFirstName(), newUser.getFirstName());
         assertEquals(lastUser.getLastName(), newUser.getLastName());
         userService.deleteUserByID(lastUser.getUserID());
@@ -74,7 +80,7 @@ public class UserTest {
         WrongPassUser.setEmail("default@gmail.com");
         WrongPassUser.setFirstName("default");
         WrongPassUser.setLastName("default");
-        WrongPassUser.setPassword("123");
+        WrongPassUser.setPassword("123sa");
         WrongPassUser.setPhoneNumber("01321432");
         WrongPassUser.setUserName("default");
         long databseSizeBeforeUpdate = userRepository.findAll().size();
@@ -91,7 +97,7 @@ public class UserTest {
         invalidEmailUser.setEmail("default@gmil.com");
         invalidEmailUser.setFirstName("default");
         invalidEmailUser.setLastName("default");
-        invalidEmailUser.setPassword("123");
+        invalidEmailUser.setPassword("12asdsadsad3");
         invalidEmailUser.setPhoneNumber("03124132");
         invalidEmailUser.setUserName("default");
         long databaseSizeBeforeUpdate = userRepository.findAll().size();
@@ -110,7 +116,7 @@ public class UserTest {
         newUser.setEmail("haitq@gmail.com");
         newUser.setFirstName("Hai");
         newUser.setLastName("Tran");
-        newUser.setPassword("BBBBBBB");
+        newUser.setPassword("BBBBBBasdaB");
         newUser.setPhoneNumber("012asd");
         newUser.setUserName("haihoho");
         userService.registerNewUser(newUser);
@@ -129,13 +135,13 @@ public class UserTest {
         newUser.setEmail("default@gmail.com");
         newUser.setFirstName("Hai");
         newUser.setLastName("Tran");
-        newUser.setPassword("BBBBBBB");
+        newUser.setPassword("BBBBBBasdsB");
         newUser.setPhoneNumber("21312313");
         newUser.setUserName("haihoho");
         userService.registerNewUser(newUser);
         assertEquals(databaseSizeBeforeUpdate, userRepository.count());
     }
-
+    @Test
     public void registerDuplicatePhoneUser()
     {
         userService.registerNewUser(user);
@@ -146,7 +152,7 @@ public class UserTest {
         newUser.setEmail("haitq@gmail.com");
         newUser.setFirstName("Hai");
         newUser.setLastName("Tran");
-        newUser.setPassword("BBBBBBB");
+        newUser.setPassword("BBBsaBBBB");
         newUser.setPhoneNumber("012345678");
         newUser.setUserName("haihoho");
         userService.registerNewUser(newUser);
@@ -163,7 +169,7 @@ public class UserTest {
         newUser.setEmail("haitq@gmail.com");
         newUser.setFirstName("Hai");
         newUser.setLastName("Tran");
-        newUser.setPassword("BBBBBBB");
+        newUser.setPassword("BBBBBBasdB");
         newUser.setPhoneNumber("65718234");
         newUser.setUserName("default");
         userService.registerNewUser(newUser);
@@ -180,7 +186,7 @@ public class UserTest {
         newUser.setEmail("default@gmail.com");
         newUser.setFirstName("Hai");
         newUser.setLastName("Tran");
-        newUser.setPassword("BBBBBBB");
+        newUser.setPassword("BBBBBasdBB");
         newUser.setPhoneNumber("012asd");
         newUser.setUserName("haihoho");
         userService.registerNewUser(newUser);
@@ -196,7 +202,7 @@ public class UserTest {
         newUser.setEmail("haitq@gmail.com");
         newUser.setFirstName("Hai");
         newUser.setLastName("Tran");
-        newUser.setPassword("BBBBBBB");
+        newUser.setPassword("BBBBBasdBB");
         newUser.setPhoneNumber("0123412");
         newUser.setUserName("haihoho");
         userService.registerNewUser(newUser);
@@ -204,10 +210,10 @@ public class UserTest {
         // update duplicate email
         String lastemail = newUser.getEmail();
         String newemail = "default@gmail.com";
-        userService.updateUserByID(newUser.getUserID(), newemail,newUser.getPhoneNumber(),
-                                    newUser.getLastName(), newUser.getLastName());
+        userService.updateUserByID(newUser.getUserID(), newUser.getUserName(), newemail, newUser.getPhoneNumber(),
+                                    newUser.getLastName(), newUser.getLastName(), newUser.getPassword());
         // check if email after update equal olde mail
-        assertEquals(lastemail, userService.getUserByID(newUser.userID).getEmail());
+        assertEquals(lastemail, userService.getUserByID(newUser.getUserID()).getEmail());
         assertEquals(databaseSizeBeforeUpdate + 1, userRepository.count());
 
     }
@@ -221,7 +227,7 @@ public class UserTest {
         newUser.setEmail("haitq@gmail.com");
         newUser.setFirstName("Hai");
         newUser.setLastName("Tran");
-        newUser.setPassword("BBBBBBB");
+        newUser.setPassword("BBBBasdBBB");
         newUser.setPhoneNumber("0123412");
         newUser.setUserName("haihoho");
         userService.registerNewUser(newUser);
@@ -229,10 +235,10 @@ public class UserTest {
         // update duplicate phone
         String lastphone = newUser.getPhoneNumber();
         String newphone = "012345678";
-        userService.updateUserByID(newUser.getUserID(), newUser.getEmail(), newphone,
-                                    newUser.getLastName(), newUser.getLastName());
+        userService.updateUserByID(newUser.getUserID(), newUser.getUserName(), newUser.getEmail(), newphone,
+                                    newUser.getLastName(), newUser.getLastName(), newUser.getPassword());
         // check if phone after update equal old phone
-        assertEquals(lastphone, userService.getUserByID(newUser.userID).getPhoneNumber());
+        assertEquals(lastphone, userService.getUserByID(newUser.getUserID()).getPhoneNumber());
         assertEquals(databaseSizeBeforeUpdate + 1, userRepository.count());
     }
 
@@ -245,7 +251,7 @@ public class UserTest {
         newUser.setEmail("haitq@gmail.com");
         newUser.setFirstName("Hai");
         newUser.setLastName("Tran");
-        newUser.setPassword("BBBBBBB");
+        newUser.setPassword("BBBBBasBB");
         newUser.setPhoneNumber("0123412");
         newUser.setUserName("haihoho");
         userService.registerNewUser(newUser);
@@ -254,10 +260,10 @@ public class UserTest {
         String last_username = newUser.getUserName();
         String new_username = "default";
         // lack user name
-        userService.updateUserByID(newUser.getUserID(), newUser.getEmail(), newUser.getPhoneNumber(),
-                                    newUser.getLastName(), newUser.getLastName());
+        userService.updateUserByID(newUser.getUserID(), newUser.getUserName(), newUser.getEmail(), newUser.getPhoneNumber(),
+                                    newUser.getLastName(), newUser.getLastName(), newUser.getPassword());
         // check if username after update equal old username
-        assertEquals(last_username, userService.getUserByID(newUser.userID).getUserName());
+        assertEquals(last_username, userService.getUserByID(newUser.getUserID()).getUserName());
         assertEquals(databaseSizeBeforeUpdate + 1, userRepository.count());
     }
 
@@ -270,7 +276,7 @@ public class UserTest {
         newUser.setEmail("haitq@gmail.com");
         newUser.setFirstName("Hai");
         newUser.setLastName("Tran");
-        newUser.setPassword("BBBBBBB");
+        newUser.setPassword("BBasdBBBBB");
         newUser.setPhoneNumber("0123412");
         newUser.setUserName("haihoho");
         userService.registerNewUser(newUser);
@@ -279,13 +285,13 @@ public class UserTest {
         String lastphone = newUser.getPhoneNumber(), lastemail = newUser.getEmail();
         String newphone = "012345678", newemail = "default@gmail.com";
 
-        userService.updateUserByID(newUser.getUserID(), newemail, newphone,
-                                    newUser.getLastName(), newUser.getLastName());
+        userService.updateUserByID(newUser.getUserID(), newUser.getUserName(), newemail, newphone,
+                                    newUser.getLastName(), newUser.getLastName(), newUser.getPassword());
         // check if email after update equal olde mail
-        assertEquals(lastphone, userService.getUserByID(newUser.userID).getPhoneNumber());
+        assertEquals(lastphone, userService.getUserByID(newUser.getUserID()).getPhoneNumber());
 
         // check if email after update equal olde mail
-        assertEquals(lastemail, userService.getUserByID(newUser.userID).getEmail());
+        assertEquals(lastemail, userService.getUserByID(newUser.getUserID()).getEmail());
         assertEquals(databaseSizeBeforeUpdate + 1, userRepository.count());
     }
 
@@ -298,7 +304,7 @@ public class UserTest {
         newUser.setEmail("haitq@gmail.com");
         newUser.setFirstName("Hai");
         newUser.setLastName("Tran");
-        newUser.setPassword("BBBBBBB");
+        newUser.setPassword("BBBBadsBBB");
         newUser.setPhoneNumber("0123412");
         newUser.setUserName("haihoho");
         userService.registerNewUser(newUser);
@@ -306,10 +312,10 @@ public class UserTest {
         // update duplicate email
         String lastphone = newUser.getPhoneNumber();
         String newphone = "012345678abc";
-        userService.updateUserByID(newUser.getUserID(), newUser.getEmail(), newphone,
-                                    newUser.getLastName(), newUser.getLastName());
+        userService.updateUserByID(newUser.getUserID(), newUser.getPassword(), newUser.getEmail(), newphone,
+                                    newUser.getLastName(), newUser.getLastName(), newUser.getPassword());
         // check if email after update equal olde mail
-        assertEquals(lastphone, userService.getUserByID(newUser.userID).getPhoneNumber());
+        assertEquals(lastphone, userService.getUserByID(newUser.getUserID()).getPhoneNumber());
         assertEquals(databaseSizeBeforeUpdate + 1, userRepository.count());
     }
 
@@ -322,7 +328,7 @@ public class UserTest {
         newUser.setEmail("haitq@gmail.com");
         newUser.setFirstName("Hai");
         newUser.setLastName("Tran");
-        newUser.setPassword("BBBBBBB");
+        newUser.setPassword("BBBBasdBBB");
         newUser.setPhoneNumber("0123412");
         newUser.setUserName("haihoho");
         userService.registerNewUser(newUser);
@@ -330,10 +336,10 @@ public class UserTest {
         // update duplicate email
         String lastemail = newUser.getEmail();
         String newemail = "default@gmil.com";
-        userService.updateUserByID(newUser.getUserID(), newemail, newUser.getPhoneNumber(),
-                                    newUser.getLastName(), newUser.getLastName());
+        userService.updateUserByID(newUser.getUserID(), newUser.getEmail(), newemail, newUser.getPhoneNumber(),
+                                    newUser.getLastName(), newUser.getLastName(), newUser.getPassword());
         // check if email after update equal olde mail
-        assertEquals(lastemail, userService.getUserByID(newUser.userID).getEmail());
+        assertEquals(lastemail, userService.getUserByID(newUser.getUserID()).getEmail());
         assertEquals(databaseSizeBeforeUpdate + 1, userRepository.count());
     }
 
@@ -347,7 +353,7 @@ public class UserTest {
         newUser.setEmail("haitq@gmail.com");
         newUser.setFirstName("Hai");
         newUser.setLastName("Tran");
-        newUser.setPassword("BBBBBBB");
+        newUser.setPassword("BBBBBasdBB");
         newUser.setPhoneNumber("21312313");
         newUser.setUserName("haihoho");
         
@@ -366,13 +372,13 @@ public class UserTest {
         newUser.setEmail("haitq@gmail.com");
         newUser.setFirstName("Hai");
         newUser.setLastName("Tran");
-        newUser.setPassword("BBBBBBB");
+        newUser.setPassword("BBBBBasdsadBB");
         newUser.setPhoneNumber("21312313");
         newUser.setUserName("haihoho");
         userService.registerNewUser(newUser);
         assertEquals(databaseSizeBeforeUpdate + 1, userRepository.count());
         // update 
-        userService.updateUserByID(newUser.getUserID(), newUser.getEmail(), "09123456782", "Hai Tran", "Quang");
+        userService.updateUserByID(newUser.getUserID(), newUser.getUserName(), newUser.getEmail(), "09123456782", "Hai Tran", "Quang", newUser.getPassword());
         User lastUser = userService.getUserByID(newUser.getUserID());
         assertEquals(lastUser.getFirstName(), "Hai Tran");
         assertEquals(lastUser.getLastName(), "Quang");

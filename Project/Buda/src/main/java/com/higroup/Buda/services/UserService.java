@@ -23,17 +23,30 @@ public class UserService {
 
     // dang ky user moi
     public void registerNewUser(User newUser) {
-        Optional<User> mailUser = userRepository.findUserByEmail(newUser.getEmail());
-        if (mailUser.isPresent()) {
-            // throw Exception here
+        String email = newUser.getEmail();
+        String phoneNumber = newUser.getPhoneNumber();
+        String userName = newUser.getUserName();
+        Optional<User> mailUser = userRepository.findUserByEmail(email);
+        if ((email!=null) && (mailUser.isPresent()))
+        {
+            //BAD REQUEST da ton tai email
             return;
         }
-        if (newUser.getPhoneNumber() != null) {
-            Optional<User> phoneUser = userRepository.findUserByPhoneNumber(newUser.getPhoneNumber());
-            if (phoneUser.isPresent()) {
-                // throw Exception here
-                return;
-            }
+        Optional<User> phoneUser = userRepository.findUserByPhoneNumber(phoneNumber);
+        if ((phoneNumber!=null) && (phoneUser.isPresent()))
+        {
+            //BAD REQUEST da ton tai phone
+            return;
+        }
+        Optional<User> userNameUser = userRepository.findUserByUserName(userName);
+        if ((userName!=null) && (userNameUser.isPresent()))
+        {
+            //BAD REQUEST da ton tai username
+            return;
+        }
+        if (newUser.getPassword().length() < 8)
+        {
+            return;
         }
         userRepository.save(newUser);
     }
@@ -53,6 +66,10 @@ public class UserService {
     }
 
     public void deleteUserByID(Long id) {
+        if (id == null)
+        {
+            return;
+        }
         userRepository.deleteById(id);
     }
 
@@ -85,6 +102,10 @@ public class UserService {
         if ((userName!=null) && (userNameUser.isPresent()) && (userNameUser.get().getUserID()!=thisUser.getUserID()))
         {
             //BAD REQUEST da ton tai username
+            return;
+        }
+        if (password.length() < 8)
+        {
             return;
         }
         thisUser.setPassword(password);
