@@ -15,8 +15,6 @@ public class SHA_256_Encode {
 
         String sha256hex = Hashing.sha256().hashString(originString, StandardCharsets.UTF_8).toString();
 
-        
-
         return sha256hex;
 
     }

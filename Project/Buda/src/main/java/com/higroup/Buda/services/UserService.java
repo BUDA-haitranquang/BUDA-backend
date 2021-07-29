@@ -87,6 +87,11 @@ public class UserService {
     public boolean correctLogin(String email, String encodedPassword)
     {
         Optional<User> mailUser = userRepository.findUserByEmail(email);
+        if (!mailUser.isPresent())
+        {
+            return false;
+        }
+        System.out.println(mailUser.get().getPassword());
         if (mailUser.isPresent() && (mailUser.get().getPassword().equals((encodedPassword))))
         {
             return true;

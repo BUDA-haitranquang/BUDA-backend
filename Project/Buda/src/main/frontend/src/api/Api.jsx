@@ -1,4 +1,5 @@
 const urlApi = 'http://localhost:8080/api/user' //test: https://jsonplaceholder.typicode.com/users/
+let res = "";
 function getApi(){
     let myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -28,9 +29,10 @@ function postApi(data){
         redirect: 'follow'
     };
 
-    fetch(urlApi, requestOptions)
+    
+    fetch(`${urlApi}/login` , requestOptions)
     .then(response => response.text())
-    .then(result => {console.log('Success: ', result)})
+    .then(result => {console.log('Success: ', result); res = result})
     .catch(error => console.log('error: ', error));
 
     return <p>API posted</p>
@@ -74,6 +76,7 @@ export{
     getApi,
     postApi,
     patchApi,
-    deleteApi
+    deleteApi,
+    res
 }
 export default getApi;
