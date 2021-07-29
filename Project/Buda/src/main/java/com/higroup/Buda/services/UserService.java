@@ -7,6 +7,7 @@ import com.higroup.Buda.entities.User;
 import com.higroup.Buda.repositories.UserRepository;
 import com.higroup.Buda.util.SHA_256_Encode;
 
+import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,10 +33,20 @@ public class UserService {
             //BAD REQUEST da ton tai email
             return;
         }
+        if (!EmailValidator.getInstance().isValid(email) || email.length() > 60)
+        {
+            //khong phai email
+            return;
+        }
         Optional<User> phoneUser = userRepository.findUserByPhoneNumber(phoneNumber);
         if ((phoneNumber!=null) && (phoneUser.isPresent()))
         {
             //BAD REQUEST da ton tai phone
+            return;
+        }
+        if (!phoneNumber.matches("[0-9]+"))
+        {
+            //khong phai phone
             return;
         }
         Optional<User> userNameUser = userRepository.findUserByUserName(userName);
@@ -92,7 +103,17 @@ public class UserService {
             //BAD REQUEST da ton tai email
             return;
         }
+        if (!EmailValidator.getInstance().isValid(email) || email.length() > 60)
+        {
+            //khong phai email
+            return;
+        }
         Optional<User> phoneUser = userRepository.findUserByPhoneNumber(phoneNumber);
+        if (!phoneNumber.matches("[0-9]+"))
+        {
+            //khong phai phone
+            return;
+        }
         if ((phoneNumber!=null) && (phoneUser.isPresent()) && (phoneUser.get().getUserID()!=thisUser.getUserID()))
         {
             //BAD REQUEST da ton tai phone
