@@ -22,7 +22,7 @@ export default function Login () {
     }
 
     function login(e){
-        e.preventDefault();
+        //e.preventDefault();
         postApi(inputs);
         localStorage.setItem("user-info", JSON.stringify(inputs))
         //history.push("/")
