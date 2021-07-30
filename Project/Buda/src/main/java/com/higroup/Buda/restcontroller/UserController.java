@@ -1,6 +1,7 @@
 package com.higroup.Buda.restcontroller;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.higroup.Buda.entities.User;
 import com.higroup.Buda.entities.UserLogin;
@@ -8,6 +9,7 @@ import com.higroup.Buda.services.UserService;
 
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,28 +50,25 @@ public class UserController {
         return userService.getUserByUserUUID(userUUID);
     }
     @PostMapping
-    public void registerNewUser(@RequestBody User user)
+    public ResponseEntity<?> registerNewUser(@RequestBody User user)
     {
-        userService.registerNewUser(user);
+        return userService.registerNewUser(user);
     }
     @DeleteMapping(path = "id/{userID}")
-    public void deleteUserByID(@PathVariable("userID") Long id)
+    public ResponseEntity<?> deleteUserByID(@PathVariable("userID") Long id)
     {
-        userService.deleteUserByID(id);
+        return userService.deleteUserByID(id);
     }
     @PostMapping("/login")
-    public boolean correctLogin(@RequestBody UserLogin userLogin)
+    public ResponseEntity<?> correctLogin(@RequestBody UserLogin userLogin)
     {
         String email = userLogin.getEmail();
         String password = userLogin.getPassword();
-        System.out.println(email);
-        System.out.println(password);
-        System.out.println(userService.correctLogin(email, password));
         return userService.correctLogin(email, password);
     }
     
     @PutMapping(path = "/id/{userID}")
-    public void updateUserByID(@PathVariable("userID") Long id,
+    public ResponseEntity<?> updateUserByID(@PathVariable("userID") Long id,
     @RequestParam(required = false) String userName,
     @RequestParam(required = false) String email,
     @RequestParam(required = false) String phoneNumber,
@@ -77,6 +76,6 @@ public class UserController {
     @RequestParam(required = false) String lastName,
     @RequestParam(required = false) String password)
     {
-        userService.updateUserByID(id, userName, email, phoneNumber, firstName, lastName, password);
+        return userService.updateUserByID(id, userName, email, phoneNumber, firstName, lastName, password);
     }
 }

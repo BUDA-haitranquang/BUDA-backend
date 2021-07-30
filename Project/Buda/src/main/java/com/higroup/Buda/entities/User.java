@@ -14,7 +14,9 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.higroup.Buda.util.SHA_256_Encode;
 
 
@@ -31,6 +33,7 @@ public class User {
     @Column(length = 50)
     private String userName;
     @Column(length = 50)
+    @JsonIgnore
     private String password;
     @Column(length = 60)
     private String email;
@@ -222,7 +225,7 @@ public class User {
             " userID='" + getUserID() + "'" +
             ", userUUID='" + getUserUUID() + "'" +
             ", userName='" + getUserName() + "'" +
-            ", password='" + getPassword() + "'" +
+            // ", password='" + getPassword() + "'" +
             ", email='" + getEmail() + "'" +
             ", phoneNumber='" + getPhoneNumber() + "'" +
             ", lastName='" + getLastName() + "'" +
