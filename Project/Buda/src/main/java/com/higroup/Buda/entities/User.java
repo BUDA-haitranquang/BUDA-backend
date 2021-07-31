@@ -66,6 +66,15 @@ public class User {
         this.purchases = purchases;
     }
 
+    public User(UserRegister userRegister)
+    {
+        this.email = userRegister.getEmail();
+        this.userName = userRegister.getUsername();
+        this.phoneNumber = userRegister.getPhoneNumber();
+        this.password = userRegister.getPassword();
+        this.firstName = userRegister.getFirstName();
+        this.lastName = userRegister.getLastName();
+    }
     public User userID(Long userID) {
         setUserID(userID);
         return this;
