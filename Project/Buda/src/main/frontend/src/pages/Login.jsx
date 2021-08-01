@@ -2,13 +2,13 @@ import react, { Component, Fragment, useEffect, useState } from 'react';
 import "./Login.css"
 import ava from "../img/ava.png"
 import { useHistory } from 'react-router-dom';
-import { postApi } from '../api/Api';
+import { postApi, res } from '../api/Api';
 export default function Login () {
     const [inputs, setInputs] = useState({
-        username: '',
+        email: '',
         password: ''
     })
-    const{username, password} = inputs;
+    const{email, password} = inputs;
     //const [isRemember, setIsRemember] = useState(false);
     const history = useHistory();
     useEffect(()=>{
@@ -22,10 +22,15 @@ export default function Login () {
     }
 
     function login(e){
-        e.preventDefault();
+        //e.preventDefault();
         postApi(inputs);
-        localStorage.setItem("user-info", JSON.stringify(inputs))
-        //history.push("/")
+        const res1 = res;
+        console.log("result: ", res1);
+        if (res1 === 'true'){
+            history.push("/about");
+            localStorage.setItem("user-info", JSON.stringify(inputs))
+        }
+        
     }
     
     return(
@@ -35,7 +40,7 @@ export default function Login () {
             </div>
             <form>
                 <ul>
-                <li><input type="text" placeholder="Email/Phone" name="username" onChange={e=>handleChange(e)} required/></li>
+                <li><input type="text" placeholder="Email/Phone" name="email" onChange={e=>handleChange(e)} required/></li>
                 <li><input type="password" placeholder="Password" name="password" onChange={e=>handleChange(e)} required/></li>
                 </ul>
                 {/* TODO: Add remember me */}

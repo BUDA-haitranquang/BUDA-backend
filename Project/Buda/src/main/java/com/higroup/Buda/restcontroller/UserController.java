@@ -3,8 +3,10 @@ package com.higroup.Buda.restcontroller;
 import java.util.List;
 
 import com.higroup.Buda.entities.User;
+import com.higroup.Buda.entities.UserLogin;
 import com.higroup.Buda.services.UserService;
 
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -55,11 +57,17 @@ public class UserController {
     {
         userService.deleteUserByID(id);
     }
-    @GetMapping(path = "login/{email}&{encodedPassword}")
-    public boolean correctLogin(@PathVariable("email") String email, @PathVariable("encodedPassword") String encodedPassword)
+    @PostMapping("/login")
+    public boolean correctLogin(@RequestBody UserLogin userLogin)
     {
-        return userService.correctLogin(email, encodedPassword);
+        String email = userLogin.getEmail();
+        String password = userLogin.getPassword();
+        System.out.println(email);
+        System.out.println(password);
+        System.out.println(userService.correctLogin(email, password));
+        return userService.correctLogin(email, password);
     }
+    
     @PutMapping(path = "/id/{userID}")
     public void updateUserByID(@PathVariable("userID") Long id,
     @RequestParam(required = false) String userName,

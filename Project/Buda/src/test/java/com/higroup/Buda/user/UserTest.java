@@ -104,7 +104,13 @@ public class UserTest {
         userService.registerNewUser(invalidEmailUser);
         assertEquals(databaseSizeBeforeUpdate, userRepository.count());
     }
-
+    @Test
+    public void correctLogin()
+    {
+        userService.registerNewUser(user);
+        boolean f = userService.correctLogin(user.getEmail(), user.getPassword());
+        assertEquals(f, true);
+    }
     @Test
     public void registerInvalidPhoneUser()
     {
