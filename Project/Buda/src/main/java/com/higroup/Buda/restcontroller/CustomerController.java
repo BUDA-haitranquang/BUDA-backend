@@ -26,14 +26,19 @@ public class CustomerController {
     {
         this.customerService = customerService;
     }
-    @GetMapping(path = "userID")
-    public List<Customer> findAllByUserID(@RequestParam(required = true) Long userID)
+    @GetMapping(path = "user/{userID}")
+    public List<Customer> findAllByUserID(@PathVariable Long userID)
     {
         return this.customerService.findAllByUserID(userID);
     }
-    @PostMapping(path = "userID/{userID}")
+    @PostMapping(path = "user/{userID}")
     public ResponseEntity<?> registerNewCustomer(@PathVariable Long userID, @RequestBody Customer customer)
     {
         return this.customerService.registerNewCustomer(userID, customer);
+    }
+    @GetMapping(path = "user/{userID}/byphone")
+    public ResponseEntity<?> findCustomerByUserIDAndPhoneNumber(@PathVariable Long userID, @RequestParam(required = true) String phoneNumber)
+    {
+        return this.customerService.findCustomerByUserIDAndPhoneNumber(userID, phoneNumber);
     }
 }

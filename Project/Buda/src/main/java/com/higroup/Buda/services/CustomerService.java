@@ -29,6 +29,17 @@ public class CustomerService {
         {
             return ResponseEntity.badRequest().body("Already used phoneNumber");
         }
+        customer.setUserID(userID);
+        this.customerRepository.save(customer);
         return ResponseEntity.ok().body(customer.toString());
+    }
+    public ResponseEntity<?> findCustomerByUserIDAndPhoneNumber(Long userID, String phoneNumber)
+    {
+        Optional<Customer> phoneCustomer = this.customerRepository.findCustomerByUserIDAndPhoneNumber(userID, phoneNumber);
+        if (phoneCustomer.isPresent())
+        {
+            return ResponseEntity.ok().body(phoneCustomer.get().toString());
+        }
+        return ResponseEntity.badRequest().body("Not found");
     }
 }

@@ -5,6 +5,7 @@ import com.higroup.Buda.entities.User;
 import com.higroup.Buda.repositories.PurchaseRepository;
 import com.higroup.Buda.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -23,6 +24,12 @@ public class PurchaseService {
     {
         this.purchaseRepository = purchaseRepository;
         this.userRepository = userRepository;
+    }
+    public ResponseEntity<?> createNewPurchase(Long userID, Purchase purchase)
+    {
+        purchase.setUser(userRepository.findUserByUserID(userID).get());
+        this.purchaseRepository.save(purchase);
+        return ResponseEntity.ok().body(purchase.toString());
     }
     public List<Purchase> findAllByUserID(Long userID) {
         User user = userRepository.getById(userID);

@@ -7,6 +7,7 @@ import com.higroup.Buda.entities.Purchase;
 import com.higroup.Buda.services.PurchaseService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,6 +19,11 @@ public class PurchaseController {
     public PurchaseController(PurchaseService purchaseService)
     {
         this.purchaseService = purchaseService;
+    }
+    @PostMapping("/userID/{userID}")
+    public ResponseEntity<?> createNewPurchase(@PathVariable Long userID, Purchase purchase)
+    {
+        return this.purchaseService.createNewPurchase(userID, purchase);
     }
     @GetMapping("/userID/{userID}/all")
     public List<Purchase> findPurchasesByUserID(@PathVariable("userID") Long userID)

@@ -10,4 +10,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface SupplierRepository extends JpaRepository<Supplier, Long>{
     Optional<Supplier> findSupplierBySupplierID(Long supplierID);
     List<Supplier> findAllByUserID(Long userID);
+    Optional<Supplier> findSupplierByUserIDAndPhoneNumber(Long userID, String phoneNumber);
 }
