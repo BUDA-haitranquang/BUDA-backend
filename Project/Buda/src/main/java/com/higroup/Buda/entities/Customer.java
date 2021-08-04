@@ -1,13 +1,19 @@
 package com.higroup.Buda.entities;
 
 import java.util.Objects;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "Customer")
@@ -29,8 +35,36 @@ public class Customer{
     @Column(length = 15)
     private String phoneNumber;
     private Long userID;
-
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private Set<SellOrder> sellOrders;
     public Customer() {
+    }
+
+    public Customer(Long customerID, AgeGroup ageGroup, Gender gender, double totalSpend, Long membershipID, String name, String address, String phoneNumber, Long userID, Set<SellOrder> sellOrders) {
+        this.customerID = customerID;
+        this.ageGroup = ageGroup;
+        this.gender = gender;
+        this.totalSpend = totalSpend;
+        this.membershipID = membershipID;
+        this.name = name;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+        this.userID = userID;
+        this.sellOrders = sellOrders;
+    }
+
+    public Set<SellOrder> getSellOrders() {
+        return this.sellOrders;
+    }
+
+    public void setSellOrders(Set<SellOrder> sellOrders) {
+        this.sellOrders = sellOrders;
+    }
+
+    public Customer sellOrders(Set<SellOrder> sellOrders) {
+        setSellOrders(sellOrders);
+        return this;
     }
 
     public Customer(Long customerID, AgeGroup ageGroup, Gender gender, double totalSpend, Long membershipID, String name, String address, String phoneNumber, Long userID) {
