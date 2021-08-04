@@ -63,7 +63,7 @@ public class UserService {
             return ResponseEntity.badRequest().body("Weak password");
         }
         userRepository.save(newUser);
-        return ResponseEntity.badRequest().body(newUser.toString());
+        return ResponseEntity.ok().body(newUser.toString());
     }
 
     public List<User> getUsers() {
