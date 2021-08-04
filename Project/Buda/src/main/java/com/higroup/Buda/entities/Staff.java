@@ -22,7 +22,7 @@ public class Staff {
     private String address;
     private Long userID;  
     private StaffPosition staffPosition;
-    @Column(length = 50)
+    @Column(columnDefinition = "varchar(36) default (uuid())")
     private String loginID;
 
 
