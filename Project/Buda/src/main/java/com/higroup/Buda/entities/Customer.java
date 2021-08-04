@@ -15,8 +15,11 @@ public class Customer{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long customerID;
+    @Column(columnDefinition = "varchar(50) default 'UNKNOWN'")
     private AgeGroup ageGroup;
+    @Column(columnDefinition = "varchar(50) default 'UNKNOWN'")
     private Gender gender;
+    @Column(columnDefinition = "double default 0.0")
     private double totalSpend;
     private Long membershipID;
     @Column(length = 50)
@@ -28,7 +31,6 @@ public class Customer{
     private Long userID;
 
     public Customer() {
-        super();
     }
 
     public Customer(Long customerID, AgeGroup ageGroup, Gender gender, double totalSpend, Long membershipID, String name, String address, String phoneNumber, Long userID) {
