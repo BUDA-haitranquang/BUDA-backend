@@ -24,12 +24,12 @@ public class Staff {
     private StaffPosition staffPosition;
     @Column(columnDefinition = "varchar(36) default (uuid())")
     private String loginID;
-
+    private double salary;
 
     public Staff() {
     }
 
-    public Staff(Long staffID, String name, String phoneNumber, String password, String address, Long userID, StaffPosition staffPosition, String loginID) {
+    public Staff(Long staffID, String name, String phoneNumber, String password, String address, Long userID, StaffPosition staffPosition, String loginID, double salary) {
         this.staffID = staffID;
         this.name = name;
         this.phoneNumber = phoneNumber;
@@ -38,6 +38,7 @@ public class Staff {
         this.userID = userID;
         this.staffPosition = staffPosition;
         this.loginID = loginID;
+        this.salary = salary;
     }
 
     public Long getStaffID() {
@@ -104,6 +105,14 @@ public class Staff {
         this.loginID = loginID;
     }
 
+    public double getSalary() {
+        return this.salary;
+    }
+
+    public void setSalary(double salary) {
+        this.salary = salary;
+    }
+
     public Staff staffID(Long staffID) {
         setStaffID(staffID);
         return this;
@@ -144,6 +153,11 @@ public class Staff {
         return this;
     }
 
+    public Staff salary(double salary) {
+        setSalary(salary);
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == this)
@@ -152,12 +166,12 @@ public class Staff {
             return false;
         }
         Staff staff = (Staff) o;
-        return Objects.equals(staffID, staff.staffID) && Objects.equals(name, staff.name) && Objects.equals(phoneNumber, staff.phoneNumber) && Objects.equals(password, staff.password) && Objects.equals(address, staff.address) && Objects.equals(userID, staff.userID) && Objects.equals(staffPosition, staff.staffPosition) && Objects.equals(loginID, staff.loginID);
+        return Objects.equals(staffID, staff.staffID) && Objects.equals(name, staff.name) && Objects.equals(phoneNumber, staff.phoneNumber) && Objects.equals(password, staff.password) && Objects.equals(address, staff.address) && Objects.equals(userID, staff.userID) && Objects.equals(staffPosition, staff.staffPosition) && Objects.equals(loginID, staff.loginID) && salary == staff.salary;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(staffID, name, phoneNumber, password, address, userID, staffPosition, loginID);
+        return Objects.hash(staffID, name, phoneNumber, password, address, userID, staffPosition, loginID, salary);
     }
 
     @Override
@@ -171,7 +185,8 @@ public class Staff {
             ", userID='" + getUserID() + "'" +
             ", staffPosition='" + getStaffPosition() + "'" +
             ", loginID='" + getLoginID() + "'" +
+            ", salary='" + getSalary() + "'" +
             "}";
     }
-    
+
 }

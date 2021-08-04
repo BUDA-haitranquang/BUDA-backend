@@ -1,7 +1,6 @@
 package com.higroup.Buda.restcontroller;
 
-import com.higroup.Buda.repositories.StaffNoteRepository;
-import com.higroup.Buda.services.StaffNoteService;
+import com.higroup.Buda.services.OtherCostService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -9,14 +8,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("api/other-cost")
 @CrossOrigin("*")
-@RequestMapping("/api/staff-note")
-public class StaffNoteController {
-    private StaffNoteService staffNoteService;
+public class OtherCostController {
+    private OtherCostService otherCostService;
     @Autowired
-    public StaffNoteController(StaffNoteService staffNoteService)
+    public OtherCostController(OtherCostService otherCostService)
     {
-        this.staffNoteService = staffNoteService;
+        this.otherCostService = otherCostService;
     }
-
 }
