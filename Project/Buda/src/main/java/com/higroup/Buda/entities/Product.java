@@ -34,6 +34,50 @@ public class Product {
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     @JsonManagedReference
     private Set<SellOrderItem> sellOrderItems;
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private Set<ProductLeftLog> productLeftLogs;
+
+    public Product(Long productID, String name, String description, Long userID, Long pictureID, double sellingPrice, int alertAmount, int amountLeft, double costPerUnit, Long groupID, Set<SellOrderItem> sellOrderItems, Set<ProductLeftLog> productLeftLogs) {
+        this.productID = productID;
+        this.name = name;
+        this.description = description;
+        this.userID = userID;
+        this.pictureID = pictureID;
+        this.sellingPrice = sellingPrice;
+        this.alertAmount = alertAmount;
+        this.amountLeft = amountLeft;
+        this.costPerUnit = costPerUnit;
+        this.groupID = groupID;
+        this.sellOrderItems = sellOrderItems;
+        this.productLeftLogs = productLeftLogs;
+    }
+
+    public Set<SellOrderItem> getSellOrderItems() {
+        return this.sellOrderItems;
+    }
+
+    public void setSellOrderItems(Set<SellOrderItem> sellOrderItems) {
+        this.sellOrderItems = sellOrderItems;
+    }
+
+    public Set<ProductLeftLog> getProductLeftLogs() {
+        return this.productLeftLogs;
+    }
+
+    public void setProductLeftLogs(Set<ProductLeftLog> productLeftLogs) {
+        this.productLeftLogs = productLeftLogs;
+    }
+
+    public Product sellOrderItems(Set<SellOrderItem> sellOrderItems) {
+        setSellOrderItems(sellOrderItems);
+        return this;
+    }
+
+    public Product productLeftLogs(Set<ProductLeftLog> productLeftLogs) {
+        setProductLeftLogs(productLeftLogs);
+        return this;
+    }
     public Product() {
     }
 

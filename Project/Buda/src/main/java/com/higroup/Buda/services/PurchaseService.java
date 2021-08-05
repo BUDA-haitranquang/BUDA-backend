@@ -4,6 +4,8 @@ import com.higroup.Buda.entities.Purchase;
 import com.higroup.Buda.entities.User;
 import com.higroup.Buda.repositories.PurchaseRepository;
 import com.higroup.Buda.repositories.UserRepository;
+
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,7 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PurchaseService {
@@ -27,6 +30,11 @@ public class PurchaseService {
     }
     public ResponseEntity<?> createNewPurchase(Long userID, Purchase purchase)
     {
+        Optional<User> user = this.userRepository.findUserByUserID(userID);
+        if (!user.isPresent())
+        {
+            return ResponseEntity.badRequest().body("User not found");
+        }
         purchase.setUser(userRepository.findUserByUserID(userID).get());
         this.purchaseRepository.save(purchase);
         return ResponseEntity.ok().body(purchase.toString());

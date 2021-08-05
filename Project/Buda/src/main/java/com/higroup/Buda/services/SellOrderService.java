@@ -32,6 +32,11 @@ public class SellOrderService {
     }
     public ResponseEntity<?> registerNewSellOrder(Long userID, SellOrder sellOrder)
     {
+        Optional<User> user = this.userRepository.findUserByUserID(userID);
+        if (!user.isPresent())
+        {
+            return ResponseEntity.badRequest().body("User not found");
+        }
         sellOrder.setUserID(userID);
         this.sellOrderRepository.save(sellOrder);
         for (SellOrderItem sellOrderItem: sellOrder.getSellOrderItems())
