@@ -16,8 +16,8 @@ import java.util.List;
 
 @Service
 public class PurchaseService {
-    private final PurchaseRepository purchaseRepository;
-    private final UserRepository userRepository;
+    private PurchaseRepository purchaseRepository;
+    private UserRepository userRepository;
     @Autowired
     public PurchaseService(PurchaseRepository purchaseRepository, UserRepository userRepository)
     {
@@ -26,29 +26,37 @@ public class PurchaseService {
     }
     public List<Purchase> findAllByUserID(Long userID) {
         User user = userRepository.getById(userID);
-        return this.purchaseRepository.findAllByUser(user);
+        if (user!=null)
+        {
+            return this.purchaseRepository.findAllByUser(user);
+        }
+        return null;
     }
     public List<Purchase> findAllByUserIdFromTo(Long userID, String from, String to)
     {
         User user = userRepository.getById(userID);
-        List<Purchase> purchases = purchaseRepository.findAllByUser(user);
-        Instant instant = Instant.now();
-        //can be LocalDateTime
-        ZoneId systemZone = ZoneId.systemDefault();
-        // my timezone
-        ZoneOffset currentOffsetForMyZone = systemZone.getRules().getOffset(instant);
-
-
-        ZonedDateTime A = ZonedDateTime.parse(from + currentOffsetForMyZone.toString() + "[" + ZoneId.systemDefault().toString() + "]");
-        ZonedDateTime B = ZonedDateTime.parse(to + currentOffsetForMyZone.toString() + "[" + ZoneId.systemDefault().toString() + "]");
-
-
-        List<Purchase> result = new ArrayList<>();
-        for (Purchase purchase: purchases)
+        if (user != null)
         {
-            if (purchase.getCreationDate().isAfter(B) || purchase.getCreationDate().isBefore(A)) continue;
-            result.add(purchase);
+            List<Purchase> purchases = purchaseRepository.findAllByUser(user);
+            Instant instant = Instant.now();
+            //can be LocalDateTime
+            ZoneId systemZone = ZoneId.systemDefault();
+            // my timezone
+            ZoneOffset currentOffsetForMyZone = systemZone.getRules().getOffset(instant);
+
+
+            ZonedDateTime A = ZonedDateTime.parse(from + currentOffsetForMyZone.toString() + "[" + ZoneId.systemDefault().toString() + "]");
+            ZonedDateTime B = ZonedDateTime.parse(to + currentOffsetForMyZone.toString() + "[" + ZoneId.systemDefault().toString() + "]");
+
+
+            List<Purchase> result = new ArrayList<Purchase>();
+            for (Purchase purchase: purchases)
+            {
+                if (purchase.getCreationDate().isAfter(B) || purchase.getCreationDate().isBefore(A)) continue;
+                result.add(purchase);
+            }
+            return result;
         }
-        return result;
+        return null;
     }
 }
