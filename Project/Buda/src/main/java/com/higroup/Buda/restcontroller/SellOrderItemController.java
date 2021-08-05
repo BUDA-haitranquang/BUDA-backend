@@ -1,7 +1,6 @@
 package com.higroup.Buda.restcontroller;
 
-import com.higroup.Buda.repositories.StaffNoteRepository;
-import com.higroup.Buda.services.StaffNoteService;
+import com.higroup.Buda.services.SellOrderItemService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -10,13 +9,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("/api/staff-note")
-public class StaffNoteController {
-    private StaffNoteService staffNoteService;
+@RequestMapping("api/sell-order-item")
+public class SellOrderItemController {
+    private SellOrderItemService sellOrderItemService;
     @Autowired
-    public StaffNoteController(StaffNoteService staffNoteService)
+    public SellOrderItemController(SellOrderItemService sellOrderItemService)
     {
-        this.staffNoteService = staffNoteService;
+        this.sellOrderItemService = sellOrderItemService;
     }
-
 }

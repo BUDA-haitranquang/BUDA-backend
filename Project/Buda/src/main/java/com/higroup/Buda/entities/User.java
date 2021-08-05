@@ -28,7 +28,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="userID")
     private Long userID;
-    @Column(length = 50)
+    @Column(columnDefinition = "varchar(36) default (uuid())")
     private String userUUID;
     @Column(length = 50)
     private String userName;
@@ -45,8 +45,7 @@ public class User {
     private String firstName;
     private Long pictureID;
     @OneToMany(mappedBy = "user",
-    fetch = FetchType.LAZY,
-    cascade = CascadeType.ALL)
+    fetch = FetchType.LAZY)
     @JsonManagedReference
     private Set<Purchase> purchases; 
     public Set<Purchase> getPurchases() {

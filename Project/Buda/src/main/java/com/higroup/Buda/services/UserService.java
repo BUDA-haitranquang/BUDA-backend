@@ -63,7 +63,7 @@ public class UserService {
             return ResponseEntity.badRequest().body("Weak password");
         }
         userRepository.save(newUser);
-        return ResponseEntity.badRequest().body(newUser.toString());
+        return ResponseEntity.ok().body(newUser.toString());
     }
 
     public List<User> getUsers() {
@@ -119,7 +119,7 @@ public class UserService {
             return ResponseEntity.badRequest().body("Invalid email");
         }
         Optional<User> phoneUser = userRepository.findUserByPhoneNumber(phoneNumber);
-        if ((phoneNumber!=null) && (!phoneNumber.matches("[0-9]+")))
+        if ((phoneNumber==null) || (!phoneNumber.matches("[0-9]+")))
         {
             //khong phai phone
             return ResponseEntity.badRequest().body("Invalid phoneNumber");
