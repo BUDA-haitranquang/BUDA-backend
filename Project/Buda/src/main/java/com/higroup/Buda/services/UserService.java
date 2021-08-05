@@ -92,12 +92,12 @@ public class UserService {
     public ResponseEntity<String> correctLogin(String email, String encodedPassword)
     {
         Optional<User> mailUser = userRepository.findUserByEmail(email);
-        if (!mailUser.isPresent())
+        if (mailUser.isEmpty())
         {
             return ResponseEntity.badRequest().body("false");
         }
         System.out.println(mailUser.get().getPassword());
-        if (mailUser.isPresent() && (mailUser.get().getPassword().equals((encodedPassword))))
+        if (mailUser.get().getPassword().equals(encodedPassword))
         {
             return ResponseEntity.ok().body("true");
         }
@@ -108,7 +108,7 @@ public class UserService {
     public ResponseEntity<?> updateUserByID(Long id, String userName, String email, String phoneNumber, String firstName, String lastName, String password) {
         User thisUser = userRepository.findUserByUserID(id).get();
         Optional<User> mailUser = userRepository.findUserByEmail(email);
-        if ((email!=null) && (mailUser.isPresent()) && (mailUser.get().getUserID()!=thisUser.getUserID()))
+        if ((email!=null) && (mailUser.isPresent()) && (!mailUser.get().getUserID().equals(thisUser.getUserID())))
         {
             //BAD REQUEST da ton tai email
             return ResponseEntity.badRequest().body("Already used by another user Email");
@@ -124,13 +124,13 @@ public class UserService {
             //khong phai phone
             return ResponseEntity.badRequest().body("Invalid phoneNumber");
         }
-        if ((phoneNumber!=null) && (phoneUser.isPresent()) && (phoneUser.get().getUserID()!=thisUser.getUserID()))
+        if ((phoneNumber!=null) && (phoneUser.isPresent()) && (!phoneUser.get().getUserID().equals(thisUser.getUserID())))
         {
             //BAD REQUEST da ton tai phone
             return ResponseEntity.badRequest().body("Already used by another user phoneNumber");
         }
         Optional<User> userNameUser = userRepository.findUserByUserName(userName);
-        if ((userName!=null) && (userNameUser.isPresent()) && (userNameUser.get().getUserID()!=thisUser.getUserID()))
+        if ((userName!=null) && (userNameUser.isPresent()) && (!userNameUser.get().getUserID().equals(thisUser.getUserID())))
         {
             //BAD REQUEST da ton tai username
             return ResponseEntity.badRequest().body(thisUser);
