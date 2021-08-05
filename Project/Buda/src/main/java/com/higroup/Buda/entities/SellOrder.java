@@ -2,6 +2,8 @@ package com.higroup.Buda.entities;
 
 import java.time.ZonedDateTime;
 import java.util.Objects;
+import java.util.Set;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -9,9 +11,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "Sell_order")
@@ -32,7 +36,37 @@ public class SellOrder {
     private String message;
     private Status status;
     private Long discountID;
+    @OneToMany(mappedBy = "sellOrder", fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private Set<SellOrderItem> sellOrderItems;
 
+    public SellOrder(Long sellOrderID, Customer customer, ZonedDateTime creationTime, AgeGroup ageGroup, Gender gender, double realCost, double finalCost, Long userID, String message, Status status, Long discountID, Set<SellOrderItem> sellOrderItems) {
+        this.sellOrderID = sellOrderID;
+        this.customer = customer;
+        this.creationTime = creationTime;
+        this.ageGroup = ageGroup;
+        this.gender = gender;
+        this.realCost = realCost;
+        this.finalCost = finalCost;
+        this.userID = userID;
+        this.message = message;
+        this.status = status;
+        this.discountID = discountID;
+        this.sellOrderItems = sellOrderItems;
+    }
+
+    public Set<SellOrderItem> getSellOrderItems() {
+        return this.sellOrderItems;
+    }
+
+    public void setSellOrderItems(Set<SellOrderItem> sellOrderItems) {
+        this.sellOrderItems = sellOrderItems;
+    }
+
+    public SellOrder sellOrderItems(Set<SellOrderItem> sellOrderItems) {
+        setSellOrderItems(sellOrderItems);
+        return this;
+    }
 
     public SellOrder() {
     }

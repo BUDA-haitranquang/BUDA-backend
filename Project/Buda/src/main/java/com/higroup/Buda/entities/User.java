@@ -45,8 +45,7 @@ public class User {
     private String firstName;
     private Long pictureID;
     @OneToMany(mappedBy = "user",
-    fetch = FetchType.LAZY,
-    cascade = CascadeType.ALL)
+    fetch = FetchType.LAZY)
     @JsonManagedReference
     private Set<Purchase> purchases; 
     public Set<Purchase> getPurchases() {
