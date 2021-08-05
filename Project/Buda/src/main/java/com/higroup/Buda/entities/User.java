@@ -14,7 +14,9 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.higroup.Buda.util.SHA_256_Encode;
 
 
@@ -26,11 +28,12 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="userID")
     private Long userID;
-    @Column(length = 50)
+    @Column(columnDefinition = "varchar(36) default (uuid())")
     private String userUUID;
     @Column(length = 50)
     private String userName;
     @Column(length = 50)
+    @JsonIgnore
     private String password;
     @Column(length = 60)
     private String email;
@@ -42,8 +45,7 @@ public class User {
     private String firstName;
     private Long pictureID;
     @OneToMany(mappedBy = "user",
-    fetch = FetchType.LAZY,
-    cascade = CascadeType.ALL)
+    fetch = FetchType.LAZY)
     @JsonManagedReference
     private Set<Purchase> purchases; 
     public Set<Purchase> getPurchases() {
@@ -63,6 +65,15 @@ public class User {
         this.purchases = purchases;
     }
 
+    public User(UserRegister userRegister)
+    {
+        this.email = userRegister.getEmail();
+        this.userName = userRegister.getUsername();
+        this.phoneNumber = userRegister.getPhoneNumber();
+        this.password = userRegister.getPassword();
+        this.firstName = userRegister.getFirstName();
+        this.lastName = userRegister.getLastName();
+    }
     public User userID(Long userID) {
         setUserID(userID);
         return this;
@@ -222,7 +233,7 @@ public class User {
             " userID='" + getUserID() + "'" +
             ", userUUID='" + getUserUUID() + "'" +
             ", userName='" + getUserName() + "'" +
-            ", password='" + getPassword() + "'" +
+            // ", password='" + getPassword() + "'" +
             ", email='" + getEmail() + "'" +
             ", phoneNumber='" + getPhoneNumber() + "'" +
             ", lastName='" + getLastName() + "'" +

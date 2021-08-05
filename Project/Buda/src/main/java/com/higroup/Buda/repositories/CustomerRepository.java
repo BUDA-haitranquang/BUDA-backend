@@ -10,4 +10,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface CustomerRepository extends JpaRepository<Customer, Long>{
     List<Customer> findAllByUserID(Long userID);
     Optional<Customer> findCustomerByCustomerID(Long customerID);
+    Optional<Customer> findCustomerByUserIDAndPhoneNumber(Long userID, String phoneNumber);
 }
