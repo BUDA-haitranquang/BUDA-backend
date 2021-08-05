@@ -18,10 +18,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class SellOrderService {
-    private SellOrderRepository sellOrderRepository;
-    private CustomerRepository customerRepository;
-    private UserRepository userRepository;
-    private SellOrderItemRepository sellOrderItemRepository;
+    private final SellOrderRepository sellOrderRepository;
+    private final CustomerRepository customerRepository;
+    private final UserRepository userRepository;
+    private final SellOrderItemRepository sellOrderItemRepository;
     @Autowired
     public SellOrderService(SellOrderRepository sellOrderRepository, CustomerRepository customerRepository, UserRepository userRepository, SellOrderItemRepository sellOrderItemRepository)
     {

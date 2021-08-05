@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PictureService {
-    private PictureRepository pictureRepository;
+    private final PictureRepository pictureRepository;
     
     @Autowired
     public PictureService(PictureRepository pictureRepository) {
@@ -21,16 +21,12 @@ public class PictureService {
     public Picture findPictureByPictureID(Long pictureID)
     {
         Optional<Picture> picture = this.pictureRepository.findPictureByPictureID(pictureID);
-        if (picture.isPresent())
-        {
-            return picture.get();
-        }
-        return null;
+        return picture.orElse(null);
     }
 
     public ResponseEntity<?> saveNewPicture(Picture picture)
     {
-        if (!picture.getLink().equals(null))
+        if (picture.getLink() != null)
         {
             this.pictureRepository.save(picture);
             return ResponseEntity.ok().body(picture.getLink());

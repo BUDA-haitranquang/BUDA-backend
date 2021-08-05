@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class SalaryLogService {
-    private SalaryLogRepository salaryLogRepository;
+    private final SalaryLogRepository salaryLogRepository;
     @Autowired
     public SalaryLogService(SalaryLogRepository salaryLogRepository)
     {

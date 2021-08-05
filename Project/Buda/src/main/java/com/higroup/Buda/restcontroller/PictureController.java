@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/picture")
 public class PictureController 
 {
-    private PictureService pictureService;
+    private final PictureService pictureService;
     
     @Autowired
     public PictureController(PictureService pictureService) {

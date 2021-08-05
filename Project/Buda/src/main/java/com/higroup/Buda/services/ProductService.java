@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ProductService {
-    private ProductRepository productRepository;
+    private final ProductRepository productRepository;
     @Autowired
     public ProductService(ProductRepository productRepository)
     {
@@ -31,10 +31,6 @@ public class ProductService {
     public ResponseEntity<?> findProductByProductID(Long productID)
     {
         Optional<Product> product = this.productRepository.findProductByProductID(productID);
-        if (product.isPresent())
-        {
-            return ResponseEntity.ok().body(product.get().toString());
-        }
-        return ResponseEntity.badRequest().body("Not found");
+        return product.<ResponseEntity<?>>map(value -> ResponseEntity.ok().body(value.toString())).orElseGet(() -> ResponseEntity.badRequest().body("Not found"));
     }
 }

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class SellOrderItemService {
-    private SellOrderItemRepository sellOrderItemRepository;
+    private final SellOrderItemRepository sellOrderItemRepository;
     @Autowired
     public SellOrderItemService(SellOrderItemRepository sellOrderItemRepository)
     {

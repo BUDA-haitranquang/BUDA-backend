@@ -92,7 +92,7 @@ public class UserService {
     public ResponseEntity<String> correctLogin(String email, String encodedPassword)
     {
         Optional<User> mailUser = userRepository.findUserByEmail(email);
-        if (!mailUser.isPresent())
+        if (mailUser.isEmpty())
         {
             return ResponseEntity.badRequest().body("false");
         }
@@ -108,7 +108,7 @@ public class UserService {
     public ResponseEntity<?> updateUserByID(Long id, String userName, String email, String phoneNumber, String firstName, String lastName, String password) {
         User thisUser = userRepository.findUserByUserID(id).get();
         Optional<User> mailUser = userRepository.findUserByEmail(email);
-        if ((email!=null) && (mailUser.isPresent()) && (mailUser.get().getUserID()!=thisUser.getUserID()))
+        if ((email!=null) && (mailUser.isPresent()) && (!mailUser.get().getUserID().equals(thisUser.getUserID())))
         {
             //BAD REQUEST da ton tai email
             return ResponseEntity.badRequest().body("Already used by another user Email");

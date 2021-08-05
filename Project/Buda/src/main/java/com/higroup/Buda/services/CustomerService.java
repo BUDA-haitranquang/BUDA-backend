@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CustomerService {
-    private CustomerRepository customerRepository;
+    private final CustomerRepository customerRepository;
     @Autowired
     public CustomerService(CustomerRepository customerRepository)
     {
@@ -36,10 +36,6 @@ public class CustomerService {
     public ResponseEntity<?> findCustomerByUserIDAndPhoneNumber(Long userID, String phoneNumber)
     {
         Optional<Customer> phoneCustomer = this.customerRepository.findCustomerByUserIDAndPhoneNumber(userID, phoneNumber);
-        if (phoneCustomer.isPresent())
-        {
-            return ResponseEntity.ok().body(phoneCustomer.get().toString());
-        }
-        return ResponseEntity.badRequest().body("Not found");
+        return phoneCustomer.<ResponseEntity<?>>map(customer -> ResponseEntity.ok().body(customer.toString())).orElseGet(() -> ResponseEntity.badRequest().body("Not found"));
     }
 }

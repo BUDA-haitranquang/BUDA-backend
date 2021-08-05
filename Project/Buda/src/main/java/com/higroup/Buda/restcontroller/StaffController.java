@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api/staff")
 
 public class StaffController {
-    private StaffService staffService;
+    private final StaffService staffService;
     @Autowired
     public StaffController(StaffService staffService){
         this.staffService = staffService;

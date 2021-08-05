@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class StaffService {
-    private StaffRepository staffRepository;
+    private final StaffRepository staffRepository;
     @Autowired
     public StaffService(StaffRepository staffRepository)
     {

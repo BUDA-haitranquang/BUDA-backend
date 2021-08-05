@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class OtherCostService {
-    private OtherCostRepository otherCostRepository;
+    private final OtherCostRepository otherCostRepository;
     @Autowired
     public OtherCostService(OtherCostRepository otherCostRepository)
     {
