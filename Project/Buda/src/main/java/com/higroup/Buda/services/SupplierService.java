@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class SupplierService {
-    private SupplierRepository supplierRepository;
+    private final SupplierRepository supplierRepository;
     @Autowired
     public SupplierService(SupplierRepository supplierRepository)
     {

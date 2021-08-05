@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin("*")
 @RequestMapping("/api/staff-note")
 public class StaffNoteController {
-    private StaffNoteService staffNoteService;
+    private final StaffNoteService staffNoteService;
     @Autowired
     public StaffNoteController(StaffNoteService staffNoteService)
     {

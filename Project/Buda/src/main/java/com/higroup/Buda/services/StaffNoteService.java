@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class StaffNoteService {
-    private StaffNoteRepository staffNoteRepository;
+    private final StaffNoteRepository staffNoteRepository;
     @Autowired
     public StaffNoteService(StaffNoteRepository staffNoteRepository)
     {

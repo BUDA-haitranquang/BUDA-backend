@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api/other-cost")
 @CrossOrigin("*")
 public class OtherCostController {
-    private OtherCostService otherCostService;
+    private final OtherCostService otherCostService;
     @Autowired
     public OtherCostController(OtherCostService otherCostService)
     {

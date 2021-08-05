@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PictureService {
-    private PictureRepository pictureRepository;
+    private final PictureRepository pictureRepository;
     
     @Autowired
     public PictureService(PictureRepository pictureRepository) {

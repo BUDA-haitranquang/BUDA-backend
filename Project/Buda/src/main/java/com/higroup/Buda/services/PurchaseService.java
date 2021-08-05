@@ -17,8 +17,8 @@ import java.util.List;
 
 @Service
 public class PurchaseService {
-    private PurchaseRepository purchaseRepository;
-    private UserRepository userRepository;
+    private final PurchaseRepository purchaseRepository;
+    private final UserRepository userRepository;
     @Autowired
     public PurchaseService(PurchaseRepository purchaseRepository, UserRepository userRepository)
     {

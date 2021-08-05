@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin("*")
 @RequestMapping("api/supplier")
 public class SupplierController {
-    private SupplierService supplierService;
+    private final SupplierService supplierService;
     @Autowired
     public SupplierController(SupplierService supplierService)
     {

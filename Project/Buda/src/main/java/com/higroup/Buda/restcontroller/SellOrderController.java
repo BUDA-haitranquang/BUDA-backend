@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin("*")
 @RequestMapping("api/sell-order")
 public class SellOrderController {
-    private SellOrderService sellOrderService;
+    private final SellOrderService sellOrderService;
     @Autowired
     public SellOrderController(SellOrderService sellOrderService)
     {

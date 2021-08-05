@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PlanService {
-    PlanRepository planRepository;
+    private final PlanRepository planRepository;
     @Autowired
     public PlanService(PlanRepository planRepository)
     {

@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api/product")
 @CrossOrigin("*")
 public class ProductController {
-    private ProductService productService;
+    private final ProductService productService;
     @Autowired
     public ProductController(ProductService productService)
     {
