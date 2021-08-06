@@ -10,4 +10,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface StaffNoteRepository extends JpaRepository<StaffNote, Long>{
     Optional<StaffNote> findStaffNoteByStaffNoteID(Long staffNoteID);
     List<StaffNote> findAllByUserID(Long userID);
+    List<StaffNote> findAllByStaffID(Long staffID);
 }

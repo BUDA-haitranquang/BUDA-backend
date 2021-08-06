@@ -1,5 +1,7 @@
 package com.higroup.Buda.restcontroller;
 
+import java.util.List;
+
 import com.higroup.Buda.entities.Staff;
 import com.higroup.Buda.entities.StaffLogin;
 import com.higroup.Buda.services.StaffService;
@@ -7,6 +9,8 @@ import com.higroup.Buda.services.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,5 +38,11 @@ public class StaffController {
     public ResponseEntity<?> registerNewStaff(@RequestBody Staff newStaff)
     {
         return this.staffService.registerNewStaff(newStaff);
+    }
+
+    @GetMapping(path = "userID/{userID}/all")
+    public List<Staff> findAllByUserID(@PathVariable Long userID)
+    {
+        return this.staffService.findAllByUserID(userID);
     }
 }

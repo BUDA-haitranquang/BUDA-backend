@@ -43,6 +43,13 @@ public class SellOrderService {
         {
             this.sellOrderItemRepository.save(sellOrderItem);
         }
+        Optional<Customer> customer = this.customerRepository.findCustomerByCustomerID(sellOrder.getCustomer().getCustomerID());
+        if (customer.isPresent())
+        {
+            double totalSpend = customer.get().getTotalSpend() + sellOrder.getFinalCost();
+            customer.get().setTotalSpend(totalSpend);
+            this.customerRepository.save(customer.get());
+        }
         return ResponseEntity.ok().body(sellOrder);
     }
     public List<SellOrder> findAllSellOrderByCustomerID(Long customerID)

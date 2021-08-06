@@ -1,5 +1,6 @@
 package com.higroup.Buda.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.higroup.Buda.entities.Staff;
@@ -40,5 +41,9 @@ public class StaffService {
         }
         this.staffRepository.save(newStaff);
         return ResponseEntity.ok().body(newStaff.toString());
+    }
+    public List<Staff> findAllByUserID(Long userID)
+    {
+        return this.staffRepository.findAllByUserID(userID);
     }
 }
