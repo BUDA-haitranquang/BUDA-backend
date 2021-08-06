@@ -6,9 +6,12 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.util.Objects;
@@ -37,7 +40,10 @@ public class Product {
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     @JsonManagedReference
     private Set<ProductLeftLog> productLeftLogs;
-
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @JoinColumn(name = "productGroupID", nullable = true)
+    @JsonBackReference
+    private ProductGroup productGroup;
     public Product(Long productID, String name, String description, Long userID, Long pictureID, double sellingPrice, int alertAmount, int amountLeft, double costPerUnit, Long groupID, Set<SellOrderItem> sellOrderItems, Set<ProductLeftLog> productLeftLogs) {
         this.productID = productID;
         this.name = name;

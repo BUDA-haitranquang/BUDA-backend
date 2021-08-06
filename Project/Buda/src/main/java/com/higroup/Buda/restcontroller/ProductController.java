@@ -40,4 +40,9 @@ public class ProductController {
     {
         return this.productService.findAllProductByUserID(userID);
     }
+    @GetMapping(path = "/product-groupID/{productGroupID}/all")
+    public List<Product> findAllProductByProductGroupID(@PathVariable Long productGroupID)
+    {
+        return null;
+    }
 }
