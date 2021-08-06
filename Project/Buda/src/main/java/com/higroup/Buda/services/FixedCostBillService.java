@@ -9,7 +9,8 @@ import com.higroup.Buda.repositories.FixedCostBillRepository;
 import com.higroup.Buda.repositories.FixedCostRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.stereotype.Service;
+@Service
 public class FixedCostBillService {
     private final FixedCostBillRepository fixedCostBillRepository;
     private final FixedCostRepository fixedCostRepository;

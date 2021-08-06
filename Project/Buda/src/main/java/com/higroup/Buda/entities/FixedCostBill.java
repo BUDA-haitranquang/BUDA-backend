@@ -21,7 +21,7 @@ public class FixedCostBill {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long fixedCostBillID;
     @ManyToOne
-    @JoinColumn(name = "fixedCostBillID", nullable = true)
+    @JoinColumn(name = "fixedCostID", nullable = true)
     @JsonBackReference
     private FixedCost fixedCost;
     private Long userID;
