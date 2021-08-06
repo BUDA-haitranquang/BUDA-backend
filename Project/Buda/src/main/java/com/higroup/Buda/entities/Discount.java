@@ -35,7 +35,37 @@ public class Discount {
     @OneToMany(mappedBy = "discount", fetch = FetchType.LAZY)
     @JsonManagedReference
     private Set<SellOrder> sellOrders;
+    @OneToMany(mappedBy = "discount", fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private Set<MembershipType> membershipTypes;
 
+    public Discount(Long discountID, String name, String description, double cash, double percentage, double cashLimit, int orderCount, ZonedDateTime expiryTime, ZonedDateTime createdTime, Long userID, Set<SellOrder> sellOrders, Set<MembershipType> membershipTypes) {
+        this.discountID = discountID;
+        this.name = name;
+        this.description = description;
+        this.cash = cash;
+        this.percentage = percentage;
+        this.cashLimit = cashLimit;
+        this.orderCount = orderCount;
+        this.expiryTime = expiryTime;
+        this.createdTime = createdTime;
+        this.userID = userID;
+        this.sellOrders = sellOrders;
+        this.membershipTypes = membershipTypes;
+    }
+
+    public Set<MembershipType> getMembershipTypes() {
+        return this.membershipTypes;
+    }
+
+    public void setMembershipTypes(Set<MembershipType> membershipTypes) {
+        this.membershipTypes = membershipTypes;
+    }
+
+    public Discount membershipTypes(Set<MembershipType> membershipTypes) {
+        setMembershipTypes(membershipTypes);
+        return this;
+    }
     public Discount() {
     }
 
