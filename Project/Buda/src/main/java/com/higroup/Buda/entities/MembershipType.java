@@ -26,6 +26,7 @@ public class MembershipType {
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
     @JoinColumn(name = "discountID", nullable = true)
     @JsonBackReference
+    private Discount discount;
     private double minimumSpend;
     public MembershipType() {
     }
