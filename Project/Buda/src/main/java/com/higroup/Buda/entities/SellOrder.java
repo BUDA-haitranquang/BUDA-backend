@@ -40,6 +40,9 @@ public class SellOrder {
     @JsonManagedReference
     private Set<SellOrderItem> sellOrderItems;
 
+    public SellOrder() {
+    }
+
     public SellOrder(Long sellOrderID, Customer customer, ZonedDateTime creationTime, AgeGroup ageGroup, Gender gender, double realCost, double finalCost, Long userID, String message, Status status, Long discountID, Set<SellOrderItem> sellOrderItems) {
         this.sellOrderID = sellOrderID;
         this.customer = customer;
@@ -68,22 +71,6 @@ public class SellOrder {
         return this;
     }
 
-    public SellOrder() {
-    }
-
-    public SellOrder(Long sellOrderID, Customer customer, ZonedDateTime creationTime, AgeGroup ageGroup, Gender gender, double realCost, double finalCost, Long userID, String message, Status status, Long discountID) {
-        this.sellOrderID = sellOrderID;
-        this.customer = customer;
-        this.creationTime = creationTime;
-        this.ageGroup = ageGroup;
-        this.gender = gender;
-        this.realCost = realCost;
-        this.finalCost = finalCost;
-        this.userID = userID;
-        this.message = message;
-        this.status = status;
-        this.discountID = discountID;
-    }
 
     public Long getSellOrderID() {
         return this.sellOrderID;
