@@ -49,13 +49,32 @@ public class PlanServiceTest {
         planService = new PlanService(planRepository);
     }
 
-    @BeforeAll
-    public static void initializeDB()
+    @BeforeEach
+    public void initializeDB()
     {
         plan = new Plan();
-        plan.setName("default");
-        plan.setDescription("default");
-        plan.setPrice(0.0);
-        plan.setDuration(0);
+        plan.setName("Premium");
+        plan.setDescription("");
+        plan.setPrice(350000);
+        plan.setDuration(3);
+        
+    }
+
+    @Test 
+    public void canAddPlan(){
+        long sizebeforeUpdate = planRepository.count();
+        planService.addPlan(plan);
+
+        assertEquals(sizebeforeUpdate + 1, planRepository.count());
+    }
+
+    @Test 
+    public void canDeletePlanbyID(){
+        planRepository.save(plan);
+        long sizebeforeUpdate = planRepository.count();
+
+        planService.deletePlanByID(plan.getPlanID());
+
+        assertEquals(sizebeforeUpdate - 1, planRepository.count());
     }
 }
