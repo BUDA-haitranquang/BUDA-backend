@@ -47,22 +47,22 @@ public class CustomerRepositoryTest {
     public void SetUp(){
         // user
         newUser = new User();
-        newUser.setEmail("linhnn@gmail.com");
-        newUser.setFirstName("Linh");
-        newUser.setLastName("Hai");
-        newUser.setPassword("BAehrfenwiof");
-        newUser.setPhoneNumber("9876543210");
-        newUser.setUserName("nnlinh");
+        newUser.setEmail("haitq@gmail.com");
+        newUser.setFirstName("Hai");
+        newUser.setLastName("Tran");
+        newUser.setPassword("BBBBBasdsadBB");
+        newUser.setPhoneNumber("21312313");
+        newUser.setUserName("haihoho");
         userReposTest.save(newUser);
         
         // customer
         customer = new Customer();
         customer.setGender(Gender.MALE);
         customer.setAgeGroup(AgeGroup.FROM_18_TO_24);
-        customer.setName("DoHuyAnh");
+        customer.setName("NguyenHoangVu");
         customer.setAddress("address");
-        customer.setPhoneNumber("0915437599");
-        customer.setTotalSpend(1000.0);
+        customer.setPhoneNumber("03671238712");
+        customer.setTotalSpend(5612.0);
         customer.setUserID(newUser.getUserID());
 
     }
@@ -100,6 +100,7 @@ public class CustomerRepositoryTest {
 
     @Test 
     public void canFindAllByUserID(){
+        // initialzie
         Long UserID = newUser.getUserID();
         customerRepoTest.save(customer);
 
@@ -107,4 +108,5 @@ public class CustomerRepositoryTest {
         
         assertEquals(find, Arrays.asList(customer));
     }
+
 }
