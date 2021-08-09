@@ -21,7 +21,7 @@ export default function Signup() {
     //TODO: add condition for check Password
     const submitRegister = (e) =>{
         const item ={firstname, lastname, email, phone, password, checkpassword}
-        console.log(item);
+        console.log(item);  //remember to remove later
         postApi(item);
     }
 
@@ -35,9 +35,9 @@ export default function Signup() {
                 <ul>
                 <li><input type="text" placeholder="First Name" value={firstname} onChange={(e)=>setFirstname(e.target.value)} required/></li>
                 <li><input type="text" placeholder="Last Name" value={lastname} onChange={(e)=>setLastname(e.target.value)} /></li>
-                <li><input type="text" placeholder="Email" value={email} onChange={(e)=>setEmail(e.target.value)} /></li>
+                <li><input type="email" placeholder="Email" value={email} onChange={(e)=>setEmail(e.target.value)} /></li>
                 <li><input type="text" placeholder="Phone" value={phone} onChange={(e)=>setPhone(e.target.value)} /></li>
-                <li><input type="password" placeholder="Password" value={password} onChange={(e)=>setPassword(e.target.value)} required/></li>
+                <li><input type="password" placeholder="Password" value={password} onChange={(e)=>setPassword(e.target.value)} minLength='6' required/></li>
                 <li>
                     <input type="password" placeholder="Reenter Password" value={checkpassword} onChange={(e)=>setCheckpassword(e.target.value)} required/>
                     {checkPasswordDuplicate()}

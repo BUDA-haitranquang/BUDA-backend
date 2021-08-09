@@ -22,7 +22,7 @@ export default function Login () {
     }
 
     function login(e){
-        e.preventDefault();
+        //e.preventDefault();
         postApi(inputs);
         const res1 = res;
         console.log("result: ", res1);
