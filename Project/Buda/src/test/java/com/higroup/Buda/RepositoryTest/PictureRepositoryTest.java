@@ -2,8 +2,8 @@ package com.higroup.Buda.RepositoryTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.higroup.Buda.entities.Purchase;
-import com.higroup.Buda.repositories.PurchaseRepository;
+import com.higroup.Buda.entities.Picture;
+import com.higroup.Buda.repositories.PictureRepository;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Disabled;
@@ -20,7 +20,7 @@ import org.testcontainers.containers.MySQLContainer;
 @DataJpaTest
 @Testcontainers
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class PurchaseRepositoryTest {
+public class PictureRepositoryTest {
 
     @Container
     MySQLContainer mySQLContainer = new MySQLContainer("mysql:latest")
@@ -29,15 +29,24 @@ public class PurchaseRepositoryTest {
                     .withPassword("pass");
 
     @Autowired
-    private PurchaseRepository purchaseReposTest;
+    private PictureRepository pictureReposTest;
 
     @AfterEach
     public void tearDown(){
-        purchaseReposTest.deleteAll();
+        pictureReposTest.deleteAll();
     }
     @Test
-    void testFindPurchasebyPurchaseID(){
-        Purchase newpurchase = new Purchase();
-        
+    void testFindPicturebyID()
+    {
+        Long pictureID = (long) 1;
+        Picture newPicture = new Picture();
+        newPicture.setPictureID((long)1);
+        newPicture.setLink("facebook.com");
+        pictureReposTest.save(newPicture);
+
+        boolean exist = pictureReposTest.findPictureByPictureID(pictureID).isPresent();
+        // assertEquals(exist, true);
+        assertEquals(exist, true);
+
     }
 }
