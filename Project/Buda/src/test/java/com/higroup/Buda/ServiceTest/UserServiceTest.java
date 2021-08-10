@@ -1,51 +1,98 @@
-package com.higroup.Buda.user;
+package com.higroup.Buda.ServiceTest;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.fail;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
+import com.github.dockerjava.zerodep.shaded.org.apache.hc.client5.http.auth.KerberosConfig.Option;
+import com.higroup.Buda.RepositoryTest.UserRepositoryTest;
 import com.higroup.Buda.entities.User;
 import com.higroup.Buda.repositories.UserRepository;
 import com.higroup.Buda.services.UserService;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.repository.support.Repositories;
+import org.springframework.http.RequestEntity;
+import org.springframework.http.ResponseEntity;
+import org.testcontainers.containers.MySQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
-@SpringBootTest
+import junit.framework.AssertionFailedError;
 
-public class UserTest {
+
+
+
+// @ExtendWith(MockitoExtension.class)
+
+@DataJpaTest
+@Testcontainers
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+public class UserServiceTest {
+    @Container
+    MySQLContainer mySQLContainer = new MySQLContainer("mysql:latest")
+                    .withDatabaseName("new_db")
+                    .withUsername("testuser")
+                    .withPassword("pass");
+
     @Autowired
-    UserRepository userRepository;
-    @Autowired
-    UserService userService;
+    private UserRepository userRepository;
+
+    private UserService userService;
+
     public static User user;
-    @BeforeAll
-    public static void initializeDB()
-    {
-        user = new User();
-        user.setEmail("default@gmail.com");
-        user.setFirstName("default");
-        user.setLastName("default");
-        user.setPassword("default123");
-        user.setPhoneNumber("012345678");
-        user.setUserName("default");
-
-        
-
-    }
 
     @AfterEach
     public void tearDown(){
         userRepository.deleteAll();
     }
 
-    @Test
-    public void registerNewUserThenDrop()
+    @BeforeEach
+    void Setup(){
+        userService = new UserService(userRepository);
+    }
+
+    @BeforeEach
+    public void initializeDB()
     {
-        userService.registerNewUser(user);
-        long databaseSizeBeforeUpdate = userRepository.findAll().size();
-        
+        user = new User();
+        user.setEmail("2131248124@gmail.com");
+        user.setFirstName("default");
+        user.setLastName("default");
+        user.setPassword("default123");
+        user.setPhoneNumber("01234567812");
+        user.setUserName("defaultasd");
+
+    }
+
+    @Test
+    public void canRegisterNewUser(){
+        // initilize
+        long sizebeforeUpdate = userRepository.findAll().size();
+        ResponseEntity<?> response =  userService.registerNewUser(user);
+
+        // check user added
+        User addedUser = userRepository.findUserByUserID(user.getUserID()).get();
+        assertEquals(response.getBody().toString(), addedUser.toString());
+        assertEquals(sizebeforeUpdate + 1, userRepository.count());
+        assertEquals(addedUser.getPhoneNumber(), user.getPhoneNumber());
+        assertEquals(addedUser.getEmail(), user.getEmail());
+    }
+
+    @Test 
+    public void canGetAllUser(){
+        // initialize
         User newUser = new User();
         newUser.setEmail("haitq@gmail.com");
         newUser.setFirstName("Hai");
@@ -54,12 +101,113 @@ public class UserTest {
         newUser.setPhoneNumber("21312313");
         newUser.setUserName("haihoho");
         userService.registerNewUser(newUser);
+        userService.registerNewUser(user);
+
+        // check
+        List<User> expected_list = Arrays.asList(newUser, user);
+        List<User> actual_list = userService.getUsers();
+
+        assertEquals(expected_list, actual_list);
+    }
+
+    @Test
+    public void canGetUserByID(){
+        // initialize 
+        userRepository.save(user);
+        // User findUser = userService.getUserByID(user.getUserID());
+        User findUser = userRepository.findUserByUserID(user.getUserID()).get();
+        assertEquals(user, findUser);
+    }
+
+    @Test
+    public void canDeleteUserbyID(){
+        // initialize
+        ResponseEntity<?> register_reponse = userService.registerNewUser(user);
+        long id = user.getUserID();
+        long sizebeforeUpdate = userRepository.count();
+        
+        // action 
+        ResponseEntity<?> del_reponse = userService.deleteUserByID(id);
+        // check
+        assertEquals(sizebeforeUpdate - 1, userRepository.count());
+        assertEquals(register_reponse.getBody().toString(), user.toString());
+        assertEquals(del_reponse.getBody().toString(), "Deleted successfully");
+
+    }
+
+    @Test
+    public void canGetUserbyUserUUID(){
+        // initialize 
+        userRepository.save(user);
+        // User findUser = userService.getUserByID(user.getUserID());
+        Optional<User> findUser = userRepository.findUserByUserUUID(user.getUserUUID());
+        if (findUser.isPresent()){
+            assertEquals(user, findUser.get());
+        }
+        else fail("can't find user");
+
+    }
+
+    @Test
+    public void testCorrectLogin(){
+        String email = "default@gmail.com", password = "default123";
+        userService.registerNewUser(user);
+        
+        Optional<User> mailUser = userRepository.findUserByEmail(email);
+        if (mailUser.isPresent()){
+            assertEquals(password, mailUser.get().getPassword());
+        }
+        else{
+            fail("password not correct");
+        }
+    }
+
+    @Test
+    public void canUpdateUserbyID(){
+        // initialize
+        userService.registerNewUser(user);
+        Long id = user.getUserID();
+
+        String userName = "tatcadeuga", email = "nguyenhoangvudtm23@gmail.com",
+                phoneNumber = "0312671712", firstName = "Nguyen", lastName = "HoangVu",
+                password = "vu123ajdjfads";
+        
+        // check
+        ResponseEntity<?> response = userService.updateUserByID(id, userName, email, phoneNumber, firstName, lastName, password);
+        User getUser = userRepository.findUserByUserID(id).get();
+
+
+        assertEquals(getUser.toString(), response.getBody().toString());
+        assertEquals(getUser.getUserName(), userName);
+        assertEquals(getUser.getEmail(), email);
+        assertEquals(getUser.getPhoneNumber(), phoneNumber);
+        assertEquals(getUser.getFirstName(), firstName);
+        assertEquals(getUser.getLastName(), lastName);
+        assertEquals(getUser.getPassword(), password);
+    }
+
+    @Test
+    public void registerNewUserThenDrop()
+    {
+        // Mockito.when(userService.registerNewUser(user)).thenReturn(null);
+        userService.registerNewUser(user);
+        long databaseSizeBeforeUpdate = userRepository.findAll().size();
+        User newUser = new User();
+        newUser.setEmail("haitq@gmail.com");
+        newUser.setFirstName("Hai");
+        newUser.setLastName("Tran");
+        newUser.setPassword("BBBBasdBBB");
+        newUser.setPhoneNumber("21312313");
+        newUser.setUserName("haihoho");
+        // Mockito.when(userService.registerNewUser(newUser)).thenReturn(null);
+        userService.registerNewUser(newUser);
         assertEquals(databaseSizeBeforeUpdate + 1, userRepository.count());
         User lastUser = userRepository.findUserByUserID(newUser.getUserID()).get();
         assertEquals(lastUser.getFirstName(), newUser.getFirstName());
         assertEquals(lastUser.getLastName(), newUser.getLastName());
         userService.deleteUserByID(lastUser.getUserID());
         assertEquals(databaseSizeBeforeUpdate, userRepository.count());
+
     }
 
     @Test
@@ -104,13 +252,7 @@ public class UserTest {
         userService.registerNewUser(invalidEmailUser);
         assertEquals(databaseSizeBeforeUpdate, userRepository.count());
     }
-    @Test
-    public void correctLogin()
-    {
-        userService.registerNewUser(user);
-        boolean f = userService.correctLogin(user.getEmail(), user.getPassword());
-        assertEquals(f, true);
-    }
+
     @Test
     public void registerInvalidPhoneUser()
     {
@@ -390,5 +532,8 @@ public class UserTest {
         assertEquals(lastUser.getLastName(), "Quang");
         assertEquals(lastUser.getPhoneNumber(), "09123456782");
     }
+
+    
+
 }
 

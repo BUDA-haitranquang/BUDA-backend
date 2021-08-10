@@ -1,13 +1,18 @@
 package com.higroup.Buda.restcontroller;
 
 import java.util.List;
+import java.util.Optional;
+
+import javax.validation.Valid;
 
 import com.higroup.Buda.entities.User;
 import com.higroup.Buda.entities.UserLogin;
+import com.higroup.Buda.entities.UserRegister;
 import com.higroup.Buda.services.UserService;
 
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,59 +29,54 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(path = "/api/user")
 public class UserController {
     private final UserService userService;
+
     @Autowired
-    public UserController(UserService userService)
-    {
+    public UserController(UserService userService) {
         this.userService = userService;
     }
-    //Lam du 4 request: CREATE - READ - UPDATE - DELETE
-    //BEN NAY CAC FUNCTION CHI CO MOT DONG DUY NHAT
-    //return this.userService.get(tham so)/update(tham so)/...
+
+    // Lam du 4 request: CREATE - READ - UPDATE - DELETE
+    // BEN NAY CAC FUNCTION CHI CO MOT DONG DUY NHAT
+    // return this.userService.get(tham so)/update(tham so)/...
     @GetMapping
-    public List<User> getUsers()
-    {
+    public List<User> getUsers() {
         return userService.getUsers();
     }
+
     @GetMapping(path = "/id/{id}")
-    public User getUserByID(@PathVariable("id") Long id)
-    {
+    public User getUserByID(@PathVariable("id") Long id) {
         return userService.getUserByID(id);
     }
+
     @GetMapping(path = "uuid/{userUUID}")
-    public User getUserByUUID(@PathVariable("userUUID") String userUUID)
-    {
+    public User getUserByUUID(@PathVariable("userUUID") String userUUID) {
         return userService.getUserByUserUUID(userUUID);
     }
-    @PostMapping
-    public void registerNewUser(@RequestBody User user)
-    {
-        userService.registerNewUser(user);
+
+    @PostMapping("/register")
+    public ResponseEntity<?> registerNewUser(@Valid @RequestBody UserRegister userRegister) {
+
+        User user = new User(userRegister);
+        return userService.registerNewUser(user);
     }
+
     @DeleteMapping(path = "id/{userID}")
-    public void deleteUserByID(@PathVariable("userID") Long id)
-    {
-        userService.deleteUserByID(id);
+    public ResponseEntity<?> deleteUserByID(@PathVariable("userID") Long id) {
+        return userService.deleteUserByID(id);
     }
+
     @PostMapping("/login")
-    public boolean correctLogin(@RequestBody UserLogin userLogin)
-    {
+    public ResponseEntity<?> correctLogin(@RequestBody UserLogin userLogin) {
         String email = userLogin.getEmail();
         String password = userLogin.getPassword();
-        System.out.println(email);
-        System.out.println(password);
-        System.out.println(userService.correctLogin(email, password));
         return userService.correctLogin(email, password);
     }
-    
+
     @PutMapping(path = "/id/{userID}")
-    public void updateUserByID(@PathVariable("userID") Long id,
-    @RequestParam(required = false) String userName,
-    @RequestParam(required = false) String email,
-    @RequestParam(required = false) String phoneNumber,
-    @RequestParam(required = false) String firstName,
-    @RequestParam(required = false) String lastName,
-    @RequestParam(required = false) String password)
-    {
-        userService.updateUserByID(id, userName, email, phoneNumber, firstName, lastName, password);
+    public ResponseEntity<?> updateUserByID(@PathVariable("userID") Long id,
+            @RequestParam(required = false) String userName, @RequestParam(required = false) String email,
+            @RequestParam(required = false) String phoneNumber, @RequestParam(required = false) String firstName,
+            @RequestParam(required = false) String lastName, @RequestParam(required = false) String password) {
+        return userService.updateUserByID(id, userName, email, phoneNumber, firstName, lastName, password);
     }
 }
