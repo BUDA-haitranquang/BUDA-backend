@@ -5,7 +5,9 @@ import static org.junit.jupiter.api.Assertions.fail;
 import java.util.Optional;
 
 import com.higroup.Buda.entities.Plan;
+import com.higroup.Buda.entities.User;
 import com.higroup.Buda.repositories.PlanRepository;
+import com.higroup.Buda.repositories.UserRepository;
 import com.higroup.Buda.services.PlanService;
 
 import org.junit.jupiter.api.AfterEach;
@@ -15,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.http.ResponseEntity;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -42,20 +45,23 @@ public class PlanServiceTest {
         planRepository.deleteAll();
     }
 
-    public static Plan plan;
+    public Plan plan;
 
     @BeforeEach
     void Setup(){
         planService = new PlanService(planRepository);
     }
 
-    @BeforeAll
-    public static void initializeDB()
+    @BeforeEach
+    public void initializeDB()
     {
+      
         plan = new Plan();
         plan.setName("default");
-        plan.setDescription("default");
-        plan.setPrice(0.0);
-        plan.setDuration(0);
+        plan.setDescription("demo");
+        plan.setPrice(200000);
+        plan.setDuration(3);
+        planRepository.save(plan);
     }
+
 }
