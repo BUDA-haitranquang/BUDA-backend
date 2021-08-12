@@ -8,6 +8,7 @@ import java.util.Optional;
 
 import com.higroup.Buda.entities.Product;
 import com.higroup.Buda.entities.User;
+import com.higroup.Buda.repositories.ProductGroupRepository;
 import com.higroup.Buda.repositories.ProductRepository;
 import com.higroup.Buda.repositories.UserRepository;
 import com.higroup.Buda.services.ProductService;
@@ -44,7 +45,8 @@ public class ProductServiceTest {
 
     @Autowired
     private static UserRepository userRepository;
-
+    @Autowired
+    private ProductGroupRepository productGroupRepository;
     private static User user;
 
     @AfterEach
@@ -56,7 +58,7 @@ public class ProductServiceTest {
 
     @BeforeEach
     public void Setup(){
-        productService = new ProductService(productRepository, userRepository);
+        productService = new ProductService(productRepository, productGroupRepository, userRepository);
     }
 
     @BeforeAll
