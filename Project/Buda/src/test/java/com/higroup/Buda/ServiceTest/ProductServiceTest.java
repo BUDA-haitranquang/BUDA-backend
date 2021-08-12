@@ -1,15 +1,17 @@
 package com.higroup.Buda.ServiceTest;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
-import java.util.List;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
-import com.higroup.Buda.entities.Discount;
+import com.higroup.Buda.entities.Product;
 import com.higroup.Buda.entities.User;
-import com.higroup.Buda.repositories.DiscountRepository;
+import com.higroup.Buda.repositories.ProductGroupRepository;
+import com.higroup.Buda.repositories.ProductRepository;
 import com.higroup.Buda.repositories.UserRepository;
-import com.higroup.Buda.services.DiscountService;
+import com.higroup.Buda.services.ProductService;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -30,7 +32,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @DataJpaTest
 @Testcontainers
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class DiscountServiceTest {
+public class ProductServiceTest {
     @Container
     MySQLContainer mySQLContainer = new MySQLContainer("mysql:latest")
                     .withDatabaseName("new_db")
@@ -38,25 +40,25 @@ public class DiscountServiceTest {
                     .withPassword("pass");
 
     @Autowired
-    private DiscountRepository discountRepository;
-
-    private DiscountService discountService;
+    private ProductRepository productRepository;
+    private ProductService productService;
 
     @Autowired
     private static UserRepository userRepository;
-
+    @Autowired
+    private ProductGroupRepository productGroupRepository;
     private static User user;
 
     @AfterEach
     public void tearDown(){
-        discountRepository.deleteAll();
+        productRepository.deleteAll();
     }
 
-    public static Discount discount;
+    public static Product product;
 
     @BeforeEach
-    void Setup(){
-        discountService = new DiscountService(discountRepository, null);
+    public void Setup(){
+        productService = new ProductService(productRepository, productGroupRepository, userRepository);
     }
 
     @BeforeAll
@@ -70,39 +72,39 @@ public class DiscountServiceTest {
         user.setPhoneNumber("21312313");
         user.setUserName("haihoho");
 
-        discount = new Discount();
-        discount.setCash(30000.0);
-        discount.setCashLimit(40000.0);
-        discount.setDescription("10%, max 40000");
-        discount.setName("First");
+        product = new Product();
+        product.setAmountLeft(200);
+        product.setCostPerUnit(50000.0);
+        product.setDescription("Chicken, mushrooms");
+        product.setName("Fried Chicken");
+        product.setSellingPrice(75000.0);
 
         userRepository.save(user);
-        discount.setUserID(user.getUserID());
+        product.setUserID(user.getUserID());
     }
-
     @Test
-    public void canResigterNewdiscount(){
+    public void canResigterNewproduct(){
         Long userID = user.getUserID();
-        long sizebeforeUpdate = discountRepository.count();
+        long sizebeforeUpdate = productRepository.count();
 
-        ResponseEntity<?> res =  discountService.registerNewDiscount(userID, discount);
+        ResponseEntity<?> res =  productService.registerNewProduct(userID, product);
 
         // check
-        assertEquals(res.getBody().toString(), discount.toString());
-        assertEquals(sizebeforeUpdate + 1, discountRepository.count());   
-        Discount new_discount = discountRepository.findDiscountByDiscountID(discount.getDiscountID()).get();
+        assertEquals(res.getBody().toString(), product.toString());
+        assertEquals(sizebeforeUpdate + 1, productRepository.count());   
+        Product new_product = productRepository.findProductByProductID(product.getProductID()).get();
         
-        assertEquals(new_discount, discount);
+        assertEquals(new_product, product);
     }
 
     @Test 
     public void canFindAllbyUserID(){
         Long userID = user.getUserID();
-        discountRepository.save(discount);
+        productRepository.save(product);
 
         // check
-        List<Discount> list = discountService.findAllDiscountByUserID(userID);
+        List<Product> list = productService.findAllProductByUserID(userID);
 
-        assertEquals(list, Arrays.asList(discount));
+        assertEquals(list, Arrays.asList(product));
     }
 }
