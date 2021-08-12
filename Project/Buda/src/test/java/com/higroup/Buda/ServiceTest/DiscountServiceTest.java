@@ -1,11 +1,9 @@
 package com.higroup.Buda.ServiceTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.List;
 import java.util.Arrays;
-import java.util.Optional;
 
 import com.higroup.Buda.entities.Discount;
 import com.higroup.Buda.entities.User;
