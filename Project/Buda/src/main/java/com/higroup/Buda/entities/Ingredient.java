@@ -11,7 +11,7 @@ import java.util.Set;
 public class Ingredient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long productID;
+    private Long ingredientID;
     @Column(length = 100)
     private String name;
     @Column(length = 1000)
@@ -28,8 +28,8 @@ public class Ingredient {
     public Ingredient() {
     }
 
-    public Ingredient(Long productID, String name, String description, int amountLeft, double price, Long storeID, Long pictureID, int alertAmountLeft) {
-        this.productID = productID;
+    public Ingredient(Long IngredientID, String name, String description, int amountLeft, double price, Long storeID, Long pictureID, int alertAmountLeft) {
+        this.ingredientID = IngredientID;
         this.name = name;
         this.description = description;
         this.amountLeft = amountLeft;
@@ -39,12 +39,12 @@ public class Ingredient {
         this.alertAmountLeft = alertAmountLeft;
     }
 
-    public Long getProductID() {
-        return productID;
+    public Long getIngredientID() {
+        return ingredientID;
     }
 
-    public void setProductID(Long productID) {
-        this.productID = productID;
+    public void setIngredientID(Long IngredientID) {
+        this.ingredientID = IngredientID;
     }
 
     public String getName() {
@@ -108,18 +108,18 @@ public class Ingredient {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Ingredient that = (Ingredient) o;
-        return amountLeft == that.amountLeft && Double.compare(that.price, price) == 0 && alertAmountLeft == that.alertAmountLeft && Objects.equals(productID, that.productID) && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(storeID, that.storeID) && Objects.equals(pictureID, that.pictureID) && Objects.equals(buyOrderItems, that.buyOrderItems);
+        return amountLeft == that.amountLeft && Double.compare(that.price, price) == 0 && alertAmountLeft == that.alertAmountLeft && Objects.equals(ingredientID, that.ingredientID) && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(storeID, that.storeID) && Objects.equals(pictureID, that.pictureID) && Objects.equals(buyOrderItems, that.buyOrderItems);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(productID, name, description, amountLeft, price, storeID, pictureID, alertAmountLeft, buyOrderItems);
+        return Objects.hash(ingredientID, name, description, amountLeft, price, storeID, pictureID, alertAmountLeft, buyOrderItems);
     }
 
     @Override
     public String toString() {
         return "Ingredient{" +
-                "productID=" + productID +
+                "IngredientID=" + ingredientID +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", amountLeft=" + amountLeft +
