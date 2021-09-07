@@ -32,11 +32,23 @@ public class SellOrderService {
     }
     public ResponseEntity<?> registerNewSellOrder(Long userID, SellOrder sellOrder)
     {
+        Optional<User> user = this.userRepository.findUserByUserID(userID);
+        if (!user.isPresent())
+        {
+            return ResponseEntity.badRequest().body("User not found");
+        }
         sellOrder.setUserID(userID);
         this.sellOrderRepository.save(sellOrder);
         for (SellOrderItem sellOrderItem: sellOrder.getSellOrderItems())
         {
             this.sellOrderItemRepository.save(sellOrderItem);
+        }
+        Optional<Customer> customer = this.customerRepository.findCustomerByCustomerID(sellOrder.getCustomer().getCustomerID());
+        if (customer.isPresent())
+        {
+            double totalSpend = customer.get().getTotalSpend() + sellOrder.getFinalCost();
+            customer.get().setTotalSpend(totalSpend);
+            this.customerRepository.save(customer.get());
         }
         return ResponseEntity.ok().body(sellOrder);
     }

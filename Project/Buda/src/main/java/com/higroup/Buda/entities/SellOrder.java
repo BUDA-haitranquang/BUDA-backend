@@ -27,6 +27,10 @@ public class SellOrder {
     @JoinColumn(name = "customerID", nullable = true)
     @JsonBackReference
     private Customer customer;
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @JoinColumn(name = "discountID", nullable = true)
+    @JsonBackReference
+    private Discount discount;
     private ZonedDateTime creationTime;
     private AgeGroup ageGroup;
     private Gender gender;
@@ -35,7 +39,6 @@ public class SellOrder {
     private Long userID;
     private String message;
     private Status status;
-    private Long discountID;
     @OneToMany(mappedBy = "sellOrder", fetch = FetchType.LAZY)
     @JsonManagedReference
     private Set<SellOrderItem> sellOrderItems;
@@ -43,9 +46,10 @@ public class SellOrder {
     public SellOrder() {
     }
 
-    public SellOrder(Long sellOrderID, Customer customer, ZonedDateTime creationTime, AgeGroup ageGroup, Gender gender, double realCost, double finalCost, Long userID, String message, Status status, Long discountID, Set<SellOrderItem> sellOrderItems) {
+    public SellOrder(Long sellOrderID, Customer customer, Discount discount, ZonedDateTime creationTime, AgeGroup ageGroup, Gender gender, double realCost, double finalCost, Long userID, String message, Status status, Set<SellOrderItem> sellOrderItems) {
         this.sellOrderID = sellOrderID;
         this.customer = customer;
+        this.discount = discount;
         this.creationTime = creationTime;
         this.ageGroup = ageGroup;
         this.gender = gender;
@@ -54,23 +58,8 @@ public class SellOrder {
         this.userID = userID;
         this.message = message;
         this.status = status;
-        this.discountID = discountID;
         this.sellOrderItems = sellOrderItems;
     }
-
-    public Set<SellOrderItem> getSellOrderItems() {
-        return this.sellOrderItems;
-    }
-
-    public void setSellOrderItems(Set<SellOrderItem> sellOrderItems) {
-        this.sellOrderItems = sellOrderItems;
-    }
-
-    public SellOrder sellOrderItems(Set<SellOrderItem> sellOrderItems) {
-        setSellOrderItems(sellOrderItems);
-        return this;
-    }
-
 
     public Long getSellOrderID() {
         return this.sellOrderID;
@@ -86,6 +75,14 @@ public class SellOrder {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
+    }
+
+    public Discount getDiscount() {
+        return this.discount;
+    }
+
+    public void setDiscount(Discount discount) {
+        this.discount = discount;
     }
 
     public ZonedDateTime getCreationTime() {
@@ -152,12 +149,12 @@ public class SellOrder {
         this.status = status;
     }
 
-    public Long getDiscountID() {
-        return this.discountID;
+    public Set<SellOrderItem> getSellOrderItems() {
+        return this.sellOrderItems;
     }
 
-    public void setDiscountID(Long discountID) {
-        this.discountID = discountID;
+    public void setSellOrderItems(Set<SellOrderItem> sellOrderItems) {
+        this.sellOrderItems = sellOrderItems;
     }
 
     public SellOrder sellOrderID(Long sellOrderID) {
@@ -167,6 +164,11 @@ public class SellOrder {
 
     public SellOrder customer(Customer customer) {
         setCustomer(customer);
+        return this;
+    }
+
+    public SellOrder discount(Discount discount) {
+        setDiscount(discount);
         return this;
     }
 
@@ -210,8 +212,8 @@ public class SellOrder {
         return this;
     }
 
-    public SellOrder discountID(Long discountID) {
-        setDiscountID(discountID);
+    public SellOrder sellOrderItems(Set<SellOrderItem> sellOrderItems) {
+        setSellOrderItems(sellOrderItems);
         return this;
     }
 
@@ -223,12 +225,12 @@ public class SellOrder {
             return false;
         }
         SellOrder sellOrder = (SellOrder) o;
-        return Objects.equals(sellOrderID, sellOrder.sellOrderID) && Objects.equals(customer, sellOrder.customer) && Objects.equals(creationTime, sellOrder.creationTime) && Objects.equals(ageGroup, sellOrder.ageGroup) && Objects.equals(gender, sellOrder.gender) && realCost == sellOrder.realCost && finalCost == sellOrder.finalCost && Objects.equals(userID, sellOrder.userID) && Objects.equals(message, sellOrder.message) && Objects.equals(status, sellOrder.status) && Objects.equals(discountID, sellOrder.discountID);
+        return Objects.equals(sellOrderID, sellOrder.sellOrderID) && Objects.equals(customer, sellOrder.customer) && Objects.equals(discount, sellOrder.discount) && Objects.equals(creationTime, sellOrder.creationTime) && Objects.equals(ageGroup, sellOrder.ageGroup) && Objects.equals(gender, sellOrder.gender) && realCost == sellOrder.realCost && finalCost == sellOrder.finalCost && Objects.equals(userID, sellOrder.userID) && Objects.equals(message, sellOrder.message) && Objects.equals(status, sellOrder.status) && Objects.equals(sellOrderItems, sellOrder.sellOrderItems);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(sellOrderID, customer, creationTime, ageGroup, gender, realCost, finalCost, userID, message, status, discountID);
+        return Objects.hash(sellOrderID, customer, discount, creationTime, ageGroup, gender, realCost, finalCost, userID, message, status, sellOrderItems);
     }
 
     @Override
@@ -236,6 +238,7 @@ public class SellOrder {
         return "{" +
             " sellOrderID='" + getSellOrderID() + "'" +
             ", customer='" + getCustomer() + "'" +
+            ", discount='" + getDiscount() + "'" +
             ", creationTime='" + getCreationTime() + "'" +
             ", ageGroup='" + getAgeGroup() + "'" +
             ", gender='" + getGender() + "'" +
@@ -244,8 +247,8 @@ public class SellOrder {
             ", userID='" + getUserID() + "'" +
             ", message='" + getMessage() + "'" +
             ", status='" + getStatus() + "'" +
-            ", discountID='" + getDiscountID() + "'" +
+            ", sellOrderItems='" + getSellOrderItems() + "'" +
             "}";
     }
-    
+
 }
