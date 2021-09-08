@@ -18,7 +18,7 @@ public class Ingredient {
     private String description;
     private int amountLeft;
     private double price;
-    private Long storeID;
+    private Long userID;
     private Long pictureID;
     private int alertAmountLeft;
     @OneToMany(mappedBy = "ingredient", fetch = FetchType.LAZY)
@@ -34,7 +34,7 @@ public class Ingredient {
         this.description = description;
         this.amountLeft = amountLeft;
         this.price = price;
-        this.storeID = storeID;
+        this.userID = storeID;
         this.pictureID = pictureID;
         this.alertAmountLeft = alertAmountLeft;
     }
@@ -79,12 +79,12 @@ public class Ingredient {
         this.price = price;
     }
 
-    public Long getStoreID() {
-        return storeID;
+    public Long getUserID() {
+        return userID;
     }
 
-    public void setStoreID(Long storeID) {
-        this.storeID = storeID;
+    public void setUserID(Long storeID) {
+        this.userID = storeID;
     }
 
     public Long getPictureID() {
@@ -108,12 +108,12 @@ public class Ingredient {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Ingredient that = (Ingredient) o;
-        return amountLeft == that.amountLeft && Double.compare(that.price, price) == 0 && alertAmountLeft == that.alertAmountLeft && Objects.equals(ingredientID, that.ingredientID) && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(storeID, that.storeID) && Objects.equals(pictureID, that.pictureID) && Objects.equals(buyOrderItems, that.buyOrderItems);
+        return amountLeft == that.amountLeft && Double.compare(that.price, price) == 0 && alertAmountLeft == that.alertAmountLeft && Objects.equals(ingredientID, that.ingredientID) && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(userID, that.userID) && Objects.equals(pictureID, that.pictureID) && Objects.equals(buyOrderItems, that.buyOrderItems);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(ingredientID, name, description, amountLeft, price, storeID, pictureID, alertAmountLeft, buyOrderItems);
+        return Objects.hash(ingredientID, name, description, amountLeft, price, userID, pictureID, alertAmountLeft, buyOrderItems);
     }
 
     @Override
@@ -124,7 +124,7 @@ public class Ingredient {
                 ", description='" + description + '\'' +
                 ", amountLeft=" + amountLeft +
                 ", price=" + price +
-                ", storeID=" + storeID +
+                ", userID=" + userID +
                 ", pictureID=" + pictureID +
                 ", alertAmountLeft=" + alertAmountLeft +
                 '}';

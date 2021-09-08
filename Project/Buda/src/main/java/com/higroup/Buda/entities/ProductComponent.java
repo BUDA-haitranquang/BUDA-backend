@@ -24,18 +24,18 @@ public class ProductComponent {
     private Product product;
 
     private Long RequireQuantity;
-    private Long storeID;
+    private Long userID;
     private Double totalCost;
 
     public ProductComponent() {
     }
 
     public ProductComponent(Ingredient ingredient, Product product, Long requireQuantity,
-                            Long storeID, Double totalCost) {
+                            Long userID, Double totalCost) {
         this.ingredient = ingredient;
         this.product = product;
         RequireQuantity = requireQuantity;
-        this.storeID = storeID;
+        this.userID = userID;
         this.totalCost = totalCost;
     }
 
@@ -63,12 +63,12 @@ public class ProductComponent {
         RequireQuantity = requireQuantity;
     }
 
-    public Long getStoreID() {
-        return storeID;
+    public Long getUserID() {
+        return userID;
     }
 
-    public void setStoreID(Long storeID) {
-        this.storeID = storeID;
+    public void setUserID(Long userID) {
+        this.userID = userID;
     }
 
     public Double getTotalCost() {
@@ -85,7 +85,7 @@ public class ProductComponent {
         if (o == null || getClass() != o.getClass()) return false;
         ProductComponent productComponent = (ProductComponent) o;
         return 
-            productComponent.storeID == this.storeID &&
+            productComponent.userID == this.userID &&
             productComponent.totalCost == this.totalCost && 
             productComponent.RequireQuantity == this.RequireQuantity && 
             productComponent.ingredient.equals(this.ingredient) &&
@@ -98,7 +98,7 @@ public class ProductComponent {
         return "ProductComponent{" + 
         "Ingredient=" + ingredient + 
         ",Product=" + product + 
-        ",StoreID" + storeID + 
+        ",UserID" + userID + 
         ",RequireQuantity=" + RequireQuantity + 
         "totalCost=" + totalCost +
         '}';        
@@ -106,7 +106,7 @@ public class ProductComponent {
 
     @Override
     public int hashCode() {
-        return Objects.hash(ingredient, product, RequireQuantity, storeID, totalCost);
+        return Objects.hash(ingredient, product, RequireQuantity, userID, totalCost);
     }
 
 
