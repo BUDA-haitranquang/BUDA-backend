@@ -6,6 +6,7 @@ import com.higroup.Buda.entities.User;
 import com.higroup.Buda.repositories.UserRepository;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +52,7 @@ public class UserRepositoryTest {
         boolean exist = userReposTest.findUserByEmail(email).isPresent();
         // assertEquals(exist, true);
         assertEquals(exist, true);
-
+            
     }
 
     @Test

@@ -6,6 +6,7 @@ import com.higroup.Buda.entities.Plan;
 import com.higroup.Buda.repositories.PlanRepository;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,19 +29,26 @@ public class PlanRepositoryTest {
     @Autowired
     private PlanRepository planReposTest;
 
+    private Plan plan;
+
     @AfterEach
     public void tearDown(){
         planReposTest.deleteAll();
     }
+
+    @BeforeEach 
+    public void setUp(){
+        plan = new Plan();
+        plan.setName("Premium");
+        plan.setDescription("");
+        plan.setPrice(350000);
+        plan.setDuration(3);
+        planReposTest.save(plan);
+    }
+
     @Test
     void testFindPlanByPlanId(){
-        Long planID=(long)2;
-        Plan newPlan = new Plan();
-        newPlan.setName("Premium");
-        newPlan.setDescription("");
-        newPlan.setPrice(350000);
-        newPlan.setDuration(3);
-        planReposTest.save(newPlan);
+        Long planID = plan.getPlanID();
 
         boolean exist = planReposTest.findPlanByPlanID(planID).isPresent();
         // assertEquals(exist, true);
