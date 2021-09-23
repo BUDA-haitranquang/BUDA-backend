@@ -6,7 +6,9 @@ import static org.junit.jupiter.api.Assertions.fail;
 import java.util.Optional;
 
 import com.higroup.Buda.entities.Purchase;
+import com.higroup.Buda.entities.User;
 import com.higroup.Buda.repositories.PurchaseRepository;
+import com.higroup.Buda.repositories.UserRepository;
 import com.higroup.Buda.services.PurchaseService;
 
 import org.junit.jupiter.api.AfterEach;
@@ -38,7 +40,10 @@ public class PurchaseServiceTest {
     private PurchaseRepository purchaseRepository;
 
     private PurchaseService purchaseService;
+    @Autowired
+    private static UserRepository userRepository;
 
+    private static User user;
     @AfterEach
     public void tearDown(){
         purchaseRepository.deleteAll();
@@ -55,7 +60,19 @@ public class PurchaseServiceTest {
     @BeforeAll
     public static void initializeDB()
     {
+        user = new User();
+        user.setEmail("haitq@gmail.com");
+        user.setFirstName("Hai");
+        user.setLastName("Tran");
+        user.setPassword("BBBBBasdsadBB");
+        user.setPhoneNumber("21312313");
+        user.setUserName("haihoho");
+
         purchase = new Purchase();
-        purchase.setMessage("default");
+        purchase.setMessage("Demo");
+        purchase.setPurchaseID((long)1);
+        purchase.setTotalCost(250000);
+
+        userRepository.save(user);
     }
 }

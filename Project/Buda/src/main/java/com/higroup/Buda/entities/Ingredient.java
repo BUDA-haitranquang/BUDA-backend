@@ -129,4 +129,6 @@ public class Ingredient {
                 ", alertAmountLeft=" + alertAmountLeft +
                 '}';
     }
+
 }
+
