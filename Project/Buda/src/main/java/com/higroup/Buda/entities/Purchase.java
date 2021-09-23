@@ -32,7 +32,7 @@ public class Purchase {
     private Plan plan;
     private ZonedDateTime creationDate;
     private ZonedDateTime expiryDate;
-    @Column(length = 500)
+    @Column(length = 1000)
     private String message;
     private double totalCost;
 

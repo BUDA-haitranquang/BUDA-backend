@@ -22,7 +22,7 @@ public class StaffNote {
     @NotNull
     private Long staffID;
     private ZonedDateTime noteDate;
-    @Column(length = 2000)
+    @Column(length = 1000)
     private String message;
     private Boolean seen;
 

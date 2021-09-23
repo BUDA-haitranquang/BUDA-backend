@@ -2,6 +2,7 @@ package com.higroup.Buda.entities;
 
 import java.util.Objects;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -21,6 +22,7 @@ public class MembershipType {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long membershipTypeID;
     private String name;
+    @Column(length = 1000)
     private String description;
     private Long userID;
     @ManyToOne(fetch = FetchType.LAZY, optional = true)

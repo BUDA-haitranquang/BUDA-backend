@@ -28,20 +28,20 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="userID")
     private Long userID;
-    @Column(columnDefinition = "varchar(36) default (uuid())")
+    @Column(columnDefinition = "varchar(50) default (uuid())")
     private String userUUID;
-    @Column(length = 50)
+    @Column(length = 30)
     private String userName;
     @Column(length = 50)
     @JsonIgnore
     private String password;
-    @Column(length = 60)
+    @Column(length = 50)
     private String email;
     @Column(length = 15)
     private String phoneNumber;
-    @Column(length = 50)
+    @Column(length = 20)
     private String lastName;
-    @Column(length = 50)
+    @Column(length = 20)
     private String firstName;
     private Long pictureID;
     @OneToMany(mappedBy = "user",

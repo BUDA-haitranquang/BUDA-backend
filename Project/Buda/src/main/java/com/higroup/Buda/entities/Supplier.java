@@ -15,7 +15,7 @@ public class Supplier {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long supplierID;
-    @Column(length = 60)
+    @Column(length = 50)
     private String email;
     private Long pictureID;
     @Column(length = 50)

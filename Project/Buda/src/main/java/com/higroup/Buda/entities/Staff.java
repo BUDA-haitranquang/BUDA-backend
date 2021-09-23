@@ -15,6 +15,7 @@ public class Staff {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long staffID;
+    @Column(length = 30)
     private String name;
     @Column(length = 15)
     private String phoneNumber;

@@ -26,7 +26,7 @@ public class FixedCostBill {
     private FixedCost fixedCost;
     private Long userID;
     private double totalSpend;
-    @Column(length = 500)
+    @Column(length = 1000)
     private String message;
     private ZonedDateTime dueTime;
     private Status status;

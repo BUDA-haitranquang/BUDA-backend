@@ -4,6 +4,7 @@ import java.time.ZonedDateTime;
 import java.util.Objects;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -37,7 +38,8 @@ public class SellOrder {
     private double realCost;
     private double finalCost;
     private Long userID;
-    private String message;
+    @Column(length = 1000)
+    private String customerMessage;
     private Status status;
     @OneToMany(mappedBy = "sellOrder", fetch = FetchType.LAZY)
     @JsonManagedReference
@@ -56,7 +58,7 @@ public class SellOrder {
         this.realCost = realCost;
         this.finalCost = finalCost;
         this.userID = userID;
-        this.message = message;
+        this.customerMessage = message;
         this.status = status;
         this.sellOrderItems = sellOrderItems;
     }
@@ -134,11 +136,11 @@ public class SellOrder {
     }
 
     public String getMessage() {
-        return this.message;
+        return this.customerMessage;
     }
 
     public void setMessage(String message) {
-        this.message = message;
+        this.customerMessage = message;
     }
 
     public Status getStatus() {
@@ -225,12 +227,12 @@ public class SellOrder {
             return false;
         }
         SellOrder sellOrder = (SellOrder) o;
-        return Objects.equals(sellOrderID, sellOrder.sellOrderID) && Objects.equals(customer, sellOrder.customer) && Objects.equals(discount, sellOrder.discount) && Objects.equals(creationTime, sellOrder.creationTime) && Objects.equals(ageGroup, sellOrder.ageGroup) && Objects.equals(gender, sellOrder.gender) && realCost == sellOrder.realCost && finalCost == sellOrder.finalCost && Objects.equals(userID, sellOrder.userID) && Objects.equals(message, sellOrder.message) && Objects.equals(status, sellOrder.status) && Objects.equals(sellOrderItems, sellOrder.sellOrderItems);
+        return Objects.equals(sellOrderID, sellOrder.sellOrderID) && Objects.equals(customer, sellOrder.customer) && Objects.equals(discount, sellOrder.discount) && Objects.equals(creationTime, sellOrder.creationTime) && Objects.equals(ageGroup, sellOrder.ageGroup) && Objects.equals(gender, sellOrder.gender) && realCost == sellOrder.realCost && finalCost == sellOrder.finalCost && Objects.equals(userID, sellOrder.userID) && Objects.equals(customerMessage, sellOrder.customerMessage) && Objects.equals(status, sellOrder.status) && Objects.equals(sellOrderItems, sellOrder.sellOrderItems);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(sellOrderID, customer, discount, creationTime, ageGroup, gender, realCost, finalCost, userID, message, status, sellOrderItems);
+        return Objects.hash(sellOrderID, customer, discount, creationTime, ageGroup, gender, realCost, finalCost, userID, customerMessage, status, sellOrderItems);
     }
 
     @Override
