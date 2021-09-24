@@ -37,7 +37,10 @@ CREATE TABLE fixedcost (
 -- Dumping data for table `fixedcost`
 --
 
-INSERT INTO fixedcost VALUES (1,'591f2ee7-ee8c-11eb-b72b-dc4a3ee3e76f',3,200000,'Alpha','2 months'),(2,'5e04279c-ee8c-11eb-b72b-dc4a3ee3e76f',7,300000,'Beta','3 months'),(3,'653fd77c-ee8c-11eb-b72b-dc4a3ee3e76f',9,350000,'Gamma','1 month'),(4,'686668cb-ee8c-11eb-b72b-dc4a3ee3e76f',12,600000,'Theta','6 months');
+INSERT INTO fixedcost (FixedCostID, FixedCost_UUID, UserID, MoneyAmount, Name, PeriodOfTime) VALUES (1,'591f2ee7-ee8c-11eb-b72b-dc4a3ee3e76f',3,200000,'Alpha','2 months');
+INSERT INTO fixedcost (FixedCostID, FixedCost_UUID, UserID, MoneyAmount, Name, PeriodOfTime) VALUES (2,'5e04279c-ee8c-11eb-b72b-dc4a3ee3e76f',7,300000,'Beta','3 months');
+INSERT INTO fixedcost (FixedCostID, FixedCost_UUID, UserID, MoneyAmount, Name, PeriodOfTime) VALUES (3,'653fd77c-ee8c-11eb-b72b-dc4a3ee3e76f',9,350000,'Gamma','1 month');
+INSERT INTO fixedcost (FixedCostID, FixedCost_UUID, UserID, MoneyAmount, Name, PeriodOfTime) VALUES (4,'686668cb-ee8c-11eb-b72b-dc4a3ee3e76f',12,600000,'Theta','6 months');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

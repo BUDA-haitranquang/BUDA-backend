@@ -22,6 +22,7 @@ DROP TABLE IF EXISTS fixedcostbill;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE fixedcostbill (
   BillID int NOT NULL AUTO_INCREMENT,
+  FixedCostID int DEFAULT NULL,
   Bill_UUID char(36) DEFAULT NULL,
   CreationDate date DEFAULT NULL,
   DueDate date DEFAULT NULL,
@@ -30,6 +31,8 @@ CREATE TABLE fixedcostbill (
   UserID int DEFAULT NULL,
   PRIMARY KEY (BillID),
   KEY UserID_fk4_idx (UserID),
+  KEY FixID_fk_idx (FixedCostID),
+  CONSTRAINT FixID_fk FOREIGN KEY (FixedCostID) REFERENCES fixedcost (FixedCostID) ON DELETE SET NULL,
   CONSTRAINT UserID_fk4 FOREIGN KEY (UserID) REFERENCES `user` (UserID) ON DELETE SET NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -38,7 +41,10 @@ CREATE TABLE fixedcostbill (
 -- Dumping data for table `fixedcostbill`
 --
 
-INSERT INTO fixedcostbill VALUES (1,'52a047d8-ee85-11eb-ae1e-dc4a3ee3e76f','2021-06-15','2021-07-15',320000,'F',4),(2,'5699294b-ee85-11eb-ae1e-dc4a3ee3e76f','2021-06-15','2021-07-15',400000,'F',6),(3,'5ab7142f-ee85-11eb-ae1e-dc4a3ee3e76f','2021-06-15','2021-07-15',600000,'F',7),(4,'5d9cc08d-ee85-11eb-ae1e-dc4a3ee3e76f','2021-06-20','2021-07-20',115000,'F',9),(5,'7539ad19-ee85-11eb-ae1e-dc4a3ee3e76f','2021-06-20','2021-07-20',260000,'F',11);
+INSERT INTO fixedcostbill (BillID, FixedCostID, Bill_UUID, CreationDate, DueDate, TotalSpend, Status, UserID) VALUES (1,3,'52a047d8-ee85-11eb-ae1e-dc4a3ee3e76f','2021-06-15','2021-07-15',350000,'F',4);
+INSERT INTO fixedcostbill (BillID, FixedCostID, Bill_UUID, CreationDate, DueDate, TotalSpend, Status, UserID) VALUES (2,4,'5699294b-ee85-11eb-ae1e-dc4a3ee3e76f','2021-06-15','2021-07-15',600000,'F',6);
+INSERT INTO fixedcostbill (BillID, FixedCostID, Bill_UUID, CreationDate, DueDate, TotalSpend, Status, UserID) VALUES (3,1,'5ab7142f-ee85-11eb-ae1e-dc4a3ee3e76f','2021-06-15','2021-07-15',200000,'F',7);
+INSERT INTO fixedcostbill (BillID, FixedCostID, Bill_UUID, CreationDate, DueDate, TotalSpend, Status, UserID) VALUES (4,2,'5d9cc08d-ee85-11eb-ae1e-dc4a3ee3e76f','2021-06-20','2021-07-20',300000,'F',9);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

@@ -22,11 +22,11 @@ DROP TABLE IF EXISTS othercost;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE othercost (
   OtherCostID int NOT NULL AUTO_INCREMENT,
-  CreationTime date DEFAULT NULL,
+  UserID int DEFAULT NULL,
+  PaymentDate date DEFAULT NULL,
   `Description` varchar(2000) DEFAULT NULL,
   `Name` varchar(200) DEFAULT NULL,
   Totalcost double DEFAULT NULL,
-  UserID int DEFAULT NULL,
   PRIMARY KEY (OtherCostID),
   KEY UserID1_fk_idx (UserID),
   CONSTRAINT UserID1_fk FOREIGN KEY (UserID) REFERENCES `user` (UserID) ON DELETE SET NULL
@@ -37,11 +37,11 @@ CREATE TABLE othercost (
 -- Dumping data for table `othercost`
 --
 
-INSERT INTO othercost (OtherCostID, CreationTime, Description, Name, Totalcost, UserID) VALUES (1,'2021-06-25','Testing','VAT',30000,3);
-INSERT INTO othercost (OtherCostID, CreationTime, Description, Name, Totalcost, UserID) VALUES (2,'2021-06-28','Testing','Rent',500000,5);
-INSERT INTO othercost (OtherCostID, CreationTime, Description, Name, Totalcost, UserID) VALUES (3,'2021-06-30','Testing','Repair',100000,8);
-INSERT INTO othercost (OtherCostID, CreationTime, Description, Name, Totalcost, UserID) VALUES (4,'2021-07-03','Testing','Fuel',120000,9);
-INSERT INTO othercost (OtherCostID, CreationTime, Description, Name, Totalcost, UserID) VALUES (5,'2021-07-08','Testing','Insurance',200000,12);
+INSERT INTO othercost (OtherCostID, UserID, PaymentDate, Description, Name, Totalcost) VALUES (1,3,'2021-06-25','Testing','VAT',30000);
+INSERT INTO othercost (OtherCostID, UserID, PaymentDate, Description, Name, Totalcost) VALUES (2,5,'2021-06-28','Testing','Rent',500000);
+INSERT INTO othercost (OtherCostID, UserID, PaymentDate, Description, Name, Totalcost) VALUES (3,8,'2021-06-30','Testing','Repair',100000);
+INSERT INTO othercost (OtherCostID, UserID, PaymentDate, Description, Name, Totalcost) VALUES (4,9,'2021-07-03','Testing','Fuel',120000);
+INSERT INTO othercost (OtherCostID, UserID, PaymentDate, Description, Name, Totalcost) VALUES (5,12,'2021-07-08','Testing','Insurance',200000);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
