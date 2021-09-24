@@ -39,7 +39,32 @@ CREATE TABLE productcomponent (
 -- Dumping data for table `productcomponent`
 --
 
-INSERT INTO productcomponent VALUES (1,13,2,14,176000),(2,2,3,7,90000),(2,8,1,10,7000),(3,5,2,3,102000),(3,7,1,9,12000),(4,1,2,5,124000),(4,7,1,9,12000),(4,8,1,10,7000),(5,3,2,8,82000),(5,8,1,10,7000),(6,11,2,4,62000),(7,15,2,4,120000),(8,5,1,3,51000),(8,6,1,6,15000),(9,13,1,14,44000),(9,7,1,9,12000),(10,2,2,7,60000),(10,10,1,15,23000),(11,2,2,7,60000),(11,4,1,12,22000),(12,1,2,5,124000),(12,11,2,4,62000),(13,12,1,13,29000),(14,14,1,3,40000),(15,13,2,14,88000),(15,9,1,11,15000);
+INSERT INTO productcomponent (ProductID, IngredientID, RequiredQuantity, UserID, TotalCost) VALUES (1,13,2,14,176000);
+INSERT INTO productcomponent (ProductID, IngredientID, RequiredQuantity, UserID, TotalCost) VALUES (2,2,3,7,90000);
+INSERT INTO productcomponent (ProductID, IngredientID, RequiredQuantity, UserID, TotalCost) VALUES (2,8,1,10,7000);
+INSERT INTO productcomponent (ProductID, IngredientID, RequiredQuantity, UserID, TotalCost) VALUES (3,5,2,3,102000);
+INSERT INTO productcomponent (ProductID, IngredientID, RequiredQuantity, UserID, TotalCost) VALUES (3,7,1,9,12000);
+INSERT INTO productcomponent (ProductID, IngredientID, RequiredQuantity, UserID, TotalCost) VALUES (4,1,2,5,124000);
+INSERT INTO productcomponent (ProductID, IngredientID, RequiredQuantity, UserID, TotalCost) VALUES (4,7,1,9,12000);
+INSERT INTO productcomponent (ProductID, IngredientID, RequiredQuantity, UserID, TotalCost) VALUES (4,8,1,10,7000);
+INSERT INTO productcomponent (ProductID, IngredientID, RequiredQuantity, UserID, TotalCost) VALUES (5,3,2,8,82000);
+INSERT INTO productcomponent (ProductID, IngredientID, RequiredQuantity, UserID, TotalCost) VALUES (5,8,1,10,7000);
+INSERT INTO productcomponent (ProductID, IngredientID, RequiredQuantity, UserID, TotalCost) VALUES (6,11,2,4,62000);
+INSERT INTO productcomponent (ProductID, IngredientID, RequiredQuantity, UserID, TotalCost) VALUES (7,15,2,4,120000);
+INSERT INTO productcomponent (ProductID, IngredientID, RequiredQuantity, UserID, TotalCost) VALUES (8,5,1,3,51000);
+INSERT INTO productcomponent (ProductID, IngredientID, RequiredQuantity, UserID, TotalCost) VALUES (8,6,1,6,15000);
+INSERT INTO productcomponent (ProductID, IngredientID, RequiredQuantity, UserID, TotalCost) VALUES (9,13,1,14,44000);
+INSERT INTO productcomponent (ProductID, IngredientID, RequiredQuantity, UserID, TotalCost) VALUES (9,7,1,9,12000);
+INSERT INTO productcomponent (ProductID, IngredientID, RequiredQuantity, UserID, TotalCost) VALUES (10,2,2,7,60000);
+INSERT INTO productcomponent (ProductID, IngredientID, RequiredQuantity, UserID, TotalCost) VALUES (10,10,1,15,23000);
+INSERT INTO productcomponent (ProductID, IngredientID, RequiredQuantity, UserID, TotalCost) VALUES (11,2,2,7,60000);
+INSERT INTO productcomponent (ProductID, IngredientID, RequiredQuantity, UserID, TotalCost) VALUES (11,4,1,12,22000);
+INSERT INTO productcomponent (ProductID, IngredientID, RequiredQuantity, UserID, TotalCost) VALUES (12,1,2,5,124000);
+INSERT INTO productcomponent (ProductID, IngredientID, RequiredQuantity, UserID, TotalCost) VALUES (12,11,2,4,62000);
+INSERT INTO productcomponent (ProductID, IngredientID, RequiredQuantity, UserID, TotalCost) VALUES (13,12,1,13,29000);
+INSERT INTO productcomponent (ProductID, IngredientID, RequiredQuantity, UserID, TotalCost) VALUES (14,14,1,3,40000);
+INSERT INTO productcomponent (ProductID, IngredientID, RequiredQuantity, UserID, TotalCost) VALUES (15,13,2,14,88000);
+INSERT INTO productcomponent (ProductID, IngredientID, RequiredQuantity, UserID, TotalCost) VALUES (15,9,1,11,15000);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

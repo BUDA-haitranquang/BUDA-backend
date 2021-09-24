@@ -33,14 +33,28 @@ CREATE TABLE customer (
   PRIMARY KEY (CustomerID),
   KEY MembershipID_fk_idx (MembershipID),
   CONSTRAINT MembershipID_fk FOREIGN KEY (MembershipID) REFERENCES membershiptype (MembershipID) ON DELETE SET NULL
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `customer`
 --
 
-INSERT INTO customer VALUES (1,'7f39b76a-ea05-11eb-863e-dc4a3ee3e76f','Davin Renbold','4735520113','21392 Browning Crossing','<18','Female',240000,1),(2,'83b39e6e-ea05-11eb-863e-dc4a3ee3e76f','Ninon Giacobazzi','6382020283','67571 Dayton Terrace','30-44','Male',550000,NULL),(3,'8771f0bf-ea05-11eb-863e-dc4a3ee3e76f','Ham Ganley','6837961494','36693 Trailsway Circle','>60','Male',139500,2),(4,'8b50f539-ea05-11eb-863e-dc4a3ee3e76f','Edythe Glassman','3325356066','100 Dahle Park','<18','Male',205000,NULL),(5,'8f13b9d7-ea05-11eb-863e-dc4a3ee3e76f','Agnella O\'Lynn','1538221336','2 Fieldstone Point','18-29','Male',165000,NULL),(6,'927939a2-ea05-11eb-863e-dc4a3ee3e76f','Emmalynne Youtead','6941515680','6 Petterle Place','45-60','Female',580000,3),(7,'955f4b30-ea05-11eb-863e-dc4a3ee3e76f','Brantley Crenage','7167131346','178 Esch Place','45-60','Female',340000,NULL),(8,'9ca13ee2-ea05-11eb-863e-dc4a3ee3e76f','Emlynn Flintoffe','8276504791','4 Hoard Street','>60','Male',490000,NULL),(9,'9f9fc6fb-ea05-11eb-863e-dc4a3ee3e76f','Cortie Van Leeuwen','5859686981','72 Eastwood Parkway','30-44','Male',395000,4),(10,'a2b8eff5-ea05-11eb-863e-dc4a3ee3e76f','Berk Eagland','3934488094','9 Summerview Parkway','30-44','Male',230000,NULL),(11,'a67b202e-ea05-11eb-863e-dc4a3ee3e76f','Bonni Hales','1805366420','5 Londonderry Street','18-29','Female',200000,NULL),(12,'aa5a5d1b-ea05-11eb-863e-dc4a3ee3e76f','Gunter Cansdall','4516744519','01 Oak Road','18-29','Male',140000,NULL),(13,'acd56e45-ea05-11eb-863e-dc4a3ee3e76f','Aidan McLice','2758886993','7 Petterle Drive','>60','Male',305000,5),(14,'b3460a58-ea05-11eb-863e-dc4a3ee3e76f','Pam Dibbin','9556387885','5371 American Avenue','>60','Female',180000,NULL),(15,'b6496441-ea05-11eb-863e-dc4a3ee3e76f','Tallie Emanson','1819815688','02 Talmadge Court','30-44','Female',114000,6);
+INSERT INTO customer (CustomerID, Customer_UUID, Name, PhoneNumber, Address, AgeGroup, Gender, TotalSpend, MembershipID) VALUES (1,'7f39b76a-ea05-11eb-863e-dc4a3ee3e76f','Davin Renbold','4735520113','21392 Browning Crossing','<18','Female',240000,1);
+INSERT INTO customer (CustomerID, Customer_UUID, Name, PhoneNumber, Address, AgeGroup, Gender, TotalSpend, MembershipID) VALUES (2,'83b39e6e-ea05-11eb-863e-dc4a3ee3e76f','Ninon Giacobazzi','6382020283','67571 Dayton Terrace','30-44','Male',550000,NULL);
+INSERT INTO customer (CustomerID, Customer_UUID, Name, PhoneNumber, Address, AgeGroup, Gender, TotalSpend, MembershipID) VALUES (3,'8771f0bf-ea05-11eb-863e-dc4a3ee3e76f','Ham Ganley','6837961494','36693 Trailsway Circle','>60','Male',139500,2);
+INSERT INTO customer (CustomerID, Customer_UUID, Name, PhoneNumber, Address, AgeGroup, Gender, TotalSpend, MembershipID) VALUES (4,'8b50f539-ea05-11eb-863e-dc4a3ee3e76f','Edythe Glassman','3325356066','100 Dahle Park','<18','Male',205000,NULL);
+INSERT INTO customer (CustomerID, Customer_UUID, Name, PhoneNumber, Address, AgeGroup, Gender, TotalSpend, MembershipID) VALUES (5,'8f13b9d7-ea05-11eb-863e-dc4a3ee3e76f','Agnella O\'Lynn','1538221336','2 Fieldstone Point','18-29','Male',165000,NULL);
+INSERT INTO customer (CustomerID, Customer_UUID, Name, PhoneNumber, Address, AgeGroup, Gender, TotalSpend, MembershipID) VALUES (6,'927939a2-ea05-11eb-863e-dc4a3ee3e76f','Emmalynne Youtead','6941515680','6 Petterle Place','45-60','Female',580000,3);
+INSERT INTO customer (CustomerID, Customer_UUID, Name, PhoneNumber, Address, AgeGroup, Gender, TotalSpend, MembershipID) VALUES (7,'955f4b30-ea05-11eb-863e-dc4a3ee3e76f','Brantley Crenage','7167131346','178 Esch Place','45-60','Female',340000,NULL);
+INSERT INTO customer (CustomerID, Customer_UUID, Name, PhoneNumber, Address, AgeGroup, Gender, TotalSpend, MembershipID) VALUES (8,'9ca13ee2-ea05-11eb-863e-dc4a3ee3e76f','Emlynn Flintoffe','8276504791','4 Hoard Street','>60','Male',490000,NULL);
+INSERT INTO customer (CustomerID, Customer_UUID, Name, PhoneNumber, Address, AgeGroup, Gender, TotalSpend, MembershipID) VALUES (9,'9f9fc6fb-ea05-11eb-863e-dc4a3ee3e76f','Cortie Van Leeuwen','5859686981','72 Eastwood Parkway','30-44','Male',395000,4);
+INSERT INTO customer (CustomerID, Customer_UUID, Name, PhoneNumber, Address, AgeGroup, Gender, TotalSpend, MembershipID) VALUES (10,'a2b8eff5-ea05-11eb-863e-dc4a3ee3e76f','Berk Eagland','3934488094','9 Summerview Parkway','30-44','Male',230000,NULL);
+INSERT INTO customer (CustomerID, Customer_UUID, Name, PhoneNumber, Address, AgeGroup, Gender, TotalSpend, MembershipID) VALUES (11,'a67b202e-ea05-11eb-863e-dc4a3ee3e76f','Bonni Hales','1805366420','5 Londonderry Street','18-29','Female',200000,NULL);
+INSERT INTO customer (CustomerID, Customer_UUID, Name, PhoneNumber, Address, AgeGroup, Gender, TotalSpend, MembershipID) VALUES (12,'aa5a5d1b-ea05-11eb-863e-dc4a3ee3e76f','Gunter Cansdall','4516744519','01 Oak Road','18-29','Male',140000,NULL);
+INSERT INTO customer (CustomerID, Customer_UUID, Name, PhoneNumber, Address, AgeGroup, Gender, TotalSpend, MembershipID) VALUES (13,'acd56e45-ea05-11eb-863e-dc4a3ee3e76f','Aidan McLice','2758886993','7 Petterle Drive','>60','Male',305000,5);
+INSERT INTO customer (CustomerID, Customer_UUID, Name, PhoneNumber, Address, AgeGroup, Gender, TotalSpend, MembershipID) VALUES (14,'b3460a58-ea05-11eb-863e-dc4a3ee3e76f','Pam Dibbin','9556387885','5371 American Avenue','>60','Female',180000,NULL);
+INSERT INTO customer (CustomerID, Customer_UUID, Name, PhoneNumber, Address, AgeGroup, Gender, TotalSpend, MembershipID) VALUES (15,'b6496441-ea05-11eb-863e-dc4a3ee3e76f','Tallie Emanson','1819815688','02 Talmadge Court','30-44','Female',114000,6);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

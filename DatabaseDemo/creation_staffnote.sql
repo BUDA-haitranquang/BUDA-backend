@@ -25,7 +25,7 @@ CREATE TABLE staffnote (
   UserID int DEFAULT NULL,
   NoteDate date DEFAULT NULL,
   Message varchar(150) DEFAULT NULL,
-  Is_seen tinyint DEFAULT NULL,
+  Seen tinyint DEFAULT NULL,
   KEY UserID_fk1_idx (UserID),
   KEY StaffID_fk_idx (StaffID),
   CONSTRAINT StaffID_fk FOREIGN KEY (StaffID) REFERENCES staff (StaffID) ON DELETE SET NULL,
@@ -37,7 +37,10 @@ CREATE TABLE staffnote (
 -- Dumping data for table `staffnote`
 --
 
-INSERT INTO staffnote VALUES (1,1,'2021-06-17','No comment',1),(3,1,'2021-06-25','Demo',1),(8,1,'2021-06-29','Testing',1),(6,1,'2021-07-04','Beta',1);
+INSERT INTO staffnote (StaffID, UserID, NoteDate, Message, Seen) VALUES (1,1,'2021-06-17','No comment',1);
+INSERT INTO staffnote (StaffID, UserID, NoteDate, Message, Seen) VALUES (3,1,'2021-06-25','Demo',1);
+INSERT INTO staffnote (StaffID, UserID, NoteDate, Message, Seen) VALUES (8,1,'2021-06-29','Testing',1);
+INSERT INTO staffnote (StaffID, UserID, NoteDate, Message, Seen) VALUES (6,1,'2021-07-04','Beta',1);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

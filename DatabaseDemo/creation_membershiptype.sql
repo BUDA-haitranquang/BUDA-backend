@@ -39,7 +39,12 @@ CREATE TABLE membershiptype (
 -- Dumping data for table `membershiptype`
 --
 
-INSERT INTO membershiptype VALUES (1,'7ec5ae98-ea33-11eb-863e-dc4a3ee3e76f','Davin Reinbold',5,1,240000),(2,'82ee6164-ea33-11eb-863e-dc4a3ee3e76f','Ham Ganley',9,NULL,139500),(3,'859bd3c8-ea33-11eb-863e-dc4a3ee3e76f','Emmalynne Youtead',15,8,580000),(4,'884cf2fa-ea33-11eb-863e-dc4a3ee3e76f','Cortie Van Leeuwen',8,NULL,395000),(5,'8ae34ee6-ea33-11eb-863e-dc4a3ee3e76f','Aidan McLice',13,NULL,305000),(6,'8d906d78-ea33-11eb-863e-dc4a3ee3e76f','Tallie Emanson',8,NULL,114000);
+INSERT INTO membershiptype (MembershipID, Membership_UUID, MembershipName, UserID, DiscountID, MinimumSpend) VALUES (1,'7ec5ae98-ea33-11eb-863e-dc4a3ee3e76f','Davin Reinbold',5,1,240000);
+INSERT INTO membershiptype (MembershipID, Membership_UUID, MembershipName, UserID, DiscountID, MinimumSpend) VALUES (2,'82ee6164-ea33-11eb-863e-dc4a3ee3e76f','Ham Ganley',9,NULL,139500);
+INSERT INTO membershiptype (MembershipID, Membership_UUID, MembershipName, UserID, DiscountID, MinimumSpend) VALUES (3,'859bd3c8-ea33-11eb-863e-dc4a3ee3e76f','Emmalynne Youtead',15,8,580000);
+INSERT INTO membershiptype (MembershipID, Membership_UUID, MembershipName, UserID, DiscountID, MinimumSpend) VALUES (4,'884cf2fa-ea33-11eb-863e-dc4a3ee3e76f','Cortie Van Leeuwen',8,NULL,395000);
+INSERT INTO membershiptype (MembershipID, Membership_UUID, MembershipName, UserID, DiscountID, MinimumSpend) VALUES (5,'8ae34ee6-ea33-11eb-863e-dc4a3ee3e76f','Aidan McLice',13,NULL,305000);
+INSERT INTO membershiptype (MembershipID, Membership_UUID, MembershipName, UserID, DiscountID, MinimumSpend) VALUES (6,'8d906d78-ea33-11eb-863e-dc4a3ee3e76f','Tallie Emanson',8,NULL,114000);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

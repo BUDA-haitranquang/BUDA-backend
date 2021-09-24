@@ -27,11 +27,8 @@ CREATE TABLE plan (
   Price double DEFAULT NULL,
   Duration varchar(10) DEFAULT NULL,
   PictureID int DEFAULT NULL,
-  FixedCostID int DEFAULT NULL,
   PRIMARY KEY (PlanID),
-  KEY FixedCostID1_fk_idx (FixedCostID),
   KEY PictureID_fk_idx (PictureID),
-  CONSTRAINT FixedCostID1_fk FOREIGN KEY (FixedCostID) REFERENCES fixedcost (FixedCostID) ON DELETE SET NULL,
   CONSTRAINT PictureID_fk FOREIGN KEY (PictureID) REFERENCES picture (PictureID) ON DELETE SET NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -40,7 +37,10 @@ CREATE TABLE plan (
 -- Dumping data for table `plan`
 --
 
-INSERT INTO plan VALUES (1,'6e5a78bd-ee8c-11eb-b72b-dc4a3ee3e76f','Basic',200000,'2 months',41,1),(2,'72f2d60e-ee8c-11eb-b72b-dc4a3ee3e76f','Premium',350000,'3 months',42,2),(3,'759f7dbc-ee8c-11eb-b72b-dc4a3ee3e76f','No ads',250000,'1 month',43,3),(4,'78758ce9-ee8c-11eb-b72b-dc4a3ee3e76f','Platinum',600000,'6 months',44,4);
+INSERT INTO plan (PlanID, Plan_UUID, Name, Price, Duration, PictureID) VALUES (1,'6e5a78bd-ee8c-11eb-b72b-dc4a3ee3e76f','Basic',200000,'2 months',41);
+INSERT INTO plan (PlanID, Plan_UUID, Name, Price, Duration, PictureID) VALUES (2,'72f2d60e-ee8c-11eb-b72b-dc4a3ee3e76f','Premium',350000,'3 months',42);
+INSERT INTO plan (PlanID, Plan_UUID, Name, Price, Duration, PictureID) VALUES (3,'759f7dbc-ee8c-11eb-b72b-dc4a3ee3e76f','No ads',250000,'1 month',43);
+INSERT INTO plan (PlanID, Plan_UUID, Name, Price, Duration, PictureID) VALUES (4,'78758ce9-ee8c-11eb-b72b-dc4a3ee3e76f','Platinum',600000,'6 months',44);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

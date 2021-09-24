@@ -33,7 +33,21 @@ CREATE TABLE productgroup (
 -- Dumping data for table `productgroup`
 --
 
-INSERT INTO productgroup VALUES (1,2,'Appetizer'),(1,6,'Appetizer'),(1,7,'Appetizer'),(1,8,'Appetizer'),(1,9,'Appetizer'),(1,15,'Appetizer'),(2,1,'Entree'),(2,3,'Entree'),(2,4,'Entree'),(2,5,'Entree'),(2,10,'Entree'),(2,11,'Entree'),(2,12,'Entree'),(3,13,'Drinks'),(3,14,'Drinks');
+INSERT INTO productgroup (GroupID, ProductID, Name) VALUES (1,2,'Appetizer');
+INSERT INTO productgroup (GroupID, ProductID, Name) VALUES (1,6,'Appetizer');
+INSERT INTO productgroup (GroupID, ProductID, Name) VALUES (1,7,'Appetizer');
+INSERT INTO productgroup (GroupID, ProductID, Name) VALUES (1,8,'Appetizer');
+INSERT INTO productgroup (GroupID, ProductID, Name) VALUES (1,9,'Appetizer');
+INSERT INTO productgroup (GroupID, ProductID, Name) VALUES (1,15,'Appetizer');
+INSERT INTO productgroup (GroupID, ProductID, Name) VALUES (2,1,'Entree');
+INSERT INTO productgroup (GroupID, ProductID, Name) VALUES (2,3,'Entree');
+INSERT INTO productgroup (GroupID, ProductID, Name) VALUES (2,4,'Entree');
+INSERT INTO productgroup (GroupID, ProductID, Name) VALUES (2,5,'Entree');
+INSERT INTO productgroup (GroupID, ProductID, Name) VALUES (2,10,'Entree');
+INSERT INTO productgroup (GroupID, ProductID, Name) VALUES (2,11,'Entree');
+INSERT INTO productgroup (GroupID, ProductID, Name) VALUES (2,12,'Entree');
+INSERT INTO productgroup (GroupID, ProductID, Name) VALUES (3,13,'Drinks');
+INSERT INTO productgroup (GroupID, ProductID, Name) VALUES (3,14,'Drinks');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

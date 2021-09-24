@@ -40,7 +40,26 @@ CREATE TABLE buyorder (
 -- Dumping data for table `buyorder`
 --
 
-INSERT INTO buyorder VALUES (1,'a88be88b-ea04-11eb-863e-dc4a3ee3e76f',4,'2021-06-15',3,492000,'F'),(2,'ccc381ea-ea04-11eb-863e-dc4a3ee3e76f',5,'2021-06-16',6,204000,'F'),(3,'d277a144-ea04-11eb-863e-dc4a3ee3e76f',2,'2021-06-18',9,128000,'F'),(4,'d7e93474-ea04-11eb-863e-dc4a3ee3e76f',9,'2021-06-19',12,88000,'F'),(5,'df429b99-ea04-11eb-863e-dc4a3ee3e76f',7,'2021-06-20',15,167000,'F'),(6,'e2c83d80-ea04-11eb-863e-dc4a3ee3e76f',6,'2021-06-21',4,246000,'F'),(7,'e6a80da8-ea04-11eb-863e-dc4a3ee3e76f',8,'2021-06-22',8,205000,'F'),(8,'ec78a350-ea04-11eb-863e-dc4a3ee3e76f',1,'2021-06-23',3,174000,'F'),(9,'efce5d03-ea04-11eb-863e-dc4a3ee3e76f',2,'2021-06-24',7,174000,'F'),(10,'f302dc2e-ea04-11eb-863e-dc4a3ee3e76f',4,'2021-06-25',6,186000,'F'),(11,'f82fbb93-ea04-11eb-863e-dc4a3ee3e76f',10,'2021-06-27',11,72000,'F'),(12,'fc05d744-ea04-11eb-863e-dc4a3ee3e76f',7,'2021-06-29',10,83000,'F'),(13,'0114de7e-ea05-11eb-863e-dc4a3ee3e76f',7,'2021-07-01',10,200000,'F'),(14,'041d6ba0-ea05-11eb-863e-dc4a3ee3e76f',8,'2021-07-02',14,264000,'F'),(15,'09f0e5e4-ea05-11eb-863e-dc4a3ee3e76f',3,'2021-07-05',5,128000,'F'),(16,'0e18a2f5-ea05-11eb-863e-dc4a3ee3e76f',1,'2021-07-06',5,49000,'F'),(17,'12977a1a-ea05-11eb-863e-dc4a3ee3e76f',5,'2021-07-10',7,35000,'F'),(18,'16cd71af-ea05-11eb-863e-dc4a3ee3e76f',6,'2021-07-12',13,240000,'F'),(19,'19c218d6-ea05-11eb-863e-dc4a3ee3e76f',9,'2021-07-15',4,336000,'F'),(20,'1c9f7146-ea05-11eb-863e-dc4a3ee3e76f',8,'2021-07-17',8,203000,'F');
+INSERT INTO buyorder (BuyOrderID, BuyOrder_UUID, SupplierID, CreationDate, UserID, TotalCost, Status) VALUES (1,'a88be88b-ea04-11eb-863e-dc4a3ee3e76f',4,'2021-06-15',3,492000,'F');
+INSERT INTO buyorder (BuyOrderID, BuyOrder_UUID, SupplierID, CreationDate, UserID, TotalCost, Status) VALUES (2,'ccc381ea-ea04-11eb-863e-dc4a3ee3e76f',5,'2021-06-16',6,204000,'F');
+INSERT INTO buyorder (BuyOrderID, BuyOrder_UUID, SupplierID, CreationDate, UserID, TotalCost, Status) VALUES (3,'d277a144-ea04-11eb-863e-dc4a3ee3e76f',2,'2021-06-18',9,128000,'F');
+INSERT INTO buyorder (BuyOrderID, BuyOrder_UUID, SupplierID, CreationDate, UserID, TotalCost, Status) VALUES (4,'d7e93474-ea04-11eb-863e-dc4a3ee3e76f',9,'2021-06-19',12,88000,'F');
+INSERT INTO buyorder (BuyOrderID, BuyOrder_UUID, SupplierID, CreationDate, UserID, TotalCost, Status) VALUES (5,'df429b99-ea04-11eb-863e-dc4a3ee3e76f',7,'2021-06-20',15,167000,'F');
+INSERT INTO buyorder (BuyOrderID, BuyOrder_UUID, SupplierID, CreationDate, UserID, TotalCost, Status) VALUES (6,'e2c83d80-ea04-11eb-863e-dc4a3ee3e76f',6,'2021-06-21',4,246000,'F');
+INSERT INTO buyorder (BuyOrderID, BuyOrder_UUID, SupplierID, CreationDate, UserID, TotalCost, Status) VALUES (7,'e6a80da8-ea04-11eb-863e-dc4a3ee3e76f',8,'2021-06-22',8,205000,'F');
+INSERT INTO buyorder (BuyOrderID, BuyOrder_UUID, SupplierID, CreationDate, UserID, TotalCost, Status) VALUES (8,'ec78a350-ea04-11eb-863e-dc4a3ee3e76f',1,'2021-06-23',3,174000,'F');
+INSERT INTO buyorder (BuyOrderID, BuyOrder_UUID, SupplierID, CreationDate, UserID, TotalCost, Status) VALUES (9,'efce5d03-ea04-11eb-863e-dc4a3ee3e76f',2,'2021-06-24',7,174000,'F');
+INSERT INTO buyorder (BuyOrderID, BuyOrder_UUID, SupplierID, CreationDate, UserID, TotalCost, Status) VALUES (10,'f302dc2e-ea04-11eb-863e-dc4a3ee3e76f',4,'2021-06-25',6,186000,'F');
+INSERT INTO buyorder (BuyOrderID, BuyOrder_UUID, SupplierID, CreationDate, UserID, TotalCost, Status) VALUES (11,'f82fbb93-ea04-11eb-863e-dc4a3ee3e76f',10,'2021-06-27',11,72000,'F');
+INSERT INTO buyorder (BuyOrderID, BuyOrder_UUID, SupplierID, CreationDate, UserID, TotalCost, Status) VALUES (12,'fc05d744-ea04-11eb-863e-dc4a3ee3e76f',7,'2021-06-29',10,83000,'F');
+INSERT INTO buyorder (BuyOrderID, BuyOrder_UUID, SupplierID, CreationDate, UserID, TotalCost, Status) VALUES (13,'0114de7e-ea05-11eb-863e-dc4a3ee3e76f',7,'2021-07-01',10,200000,'F');
+INSERT INTO buyorder (BuyOrderID, BuyOrder_UUID, SupplierID, CreationDate, UserID, TotalCost, Status) VALUES (14,'041d6ba0-ea05-11eb-863e-dc4a3ee3e76f',8,'2021-07-02',14,264000,'F');
+INSERT INTO buyorder (BuyOrderID, BuyOrder_UUID, SupplierID, CreationDate, UserID, TotalCost, Status) VALUES (15,'09f0e5e4-ea05-11eb-863e-dc4a3ee3e76f',3,'2021-07-05',5,128000,'F');
+INSERT INTO buyorder (BuyOrderID, BuyOrder_UUID, SupplierID, CreationDate, UserID, TotalCost, Status) VALUES (16,'0e18a2f5-ea05-11eb-863e-dc4a3ee3e76f',1,'2021-07-06',5,49000,'F');
+INSERT INTO buyorder (BuyOrderID, BuyOrder_UUID, SupplierID, CreationDate, UserID, TotalCost, Status) VALUES (17,'12977a1a-ea05-11eb-863e-dc4a3ee3e76f',5,'2021-07-10',7,35000,'F');
+INSERT INTO buyorder (BuyOrderID, BuyOrder_UUID, SupplierID, CreationDate, UserID, TotalCost, Status) VALUES (18,'16cd71af-ea05-11eb-863e-dc4a3ee3e76f',6,'2021-07-12',13,240000,'F');
+INSERT INTO buyorder (BuyOrderID, BuyOrder_UUID, SupplierID, CreationDate, UserID, TotalCost, Status) VALUES (19,'19c218d6-ea05-11eb-863e-dc4a3ee3e76f',9,'2021-07-15',4,336000,'F');
+INSERT INTO buyorder (BuyOrderID, BuyOrder_UUID, SupplierID, CreationDate, UserID, TotalCost, Status) VALUES (20,'1c9f7146-ea05-11eb-863e-dc4a3ee3e76f',8,'2021-07-17',8,203000,'F');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
