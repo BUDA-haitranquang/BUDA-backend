@@ -28,7 +28,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="user_ID")
     private Long userID;
-    @Column(columnDefinition = "varchar(50) default (uuid())")
+    @Column(columnDefinition = "varchar(50) default (uuid())", name = "user_uuid")
     private String userUUID;
     @Column(length = 30)
     private String userName;
