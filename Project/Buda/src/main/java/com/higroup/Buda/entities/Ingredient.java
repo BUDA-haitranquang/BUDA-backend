@@ -138,7 +138,7 @@ public class Ingredient {
                 ", description='" + description + '\'' +
                 ", amountLeft=" + amountLeft +
                 ", price=" + price +
-                ", storeID=" + userID +
+                ", userID=" + userID +
                 ", pictureID=" + pictureID +
                 ", alertAmountLeft=" + alertAmountLeft +
                 '}';

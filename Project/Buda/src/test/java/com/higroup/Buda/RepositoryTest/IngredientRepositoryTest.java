@@ -42,7 +42,7 @@ public class IngredientRepositoryTest {
         ingredient = new Ingredient();
         ingredient.setName("carrot");
         ingredient.setPrice(20.0);
-        ingredient.setStoreID(12345L);
+        ingredient.setUserID(12345L);
         ingredient.setAlertAmountLeft(10);
     }
 
@@ -67,12 +67,12 @@ public class IngredientRepositoryTest {
     }
 
     @Test
-    public void canFindAllIngredientByStoreID(){
-        Long storeID = 12345L;
+    public void canFindAllIngredientByUserID(){
+        Long userID = 12345L;
         ingredientRepository.save(ingredient);
 
-        List<Ingredient> allIngredients = ingredientRepository.findAllIngredientByUserID(storeID);
-
+        List<Ingredient> allIngredients = ingredientRepository.findAllIngredientByuserID(userID);
+        
         assertEquals(allIngredients, Arrays.asList(ingredient));
     }
 
