@@ -3,6 +3,7 @@ package com.higroup.Buda.entities;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -19,14 +20,15 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 public class SellOrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "sell_order_item_id")
     private Long sellOrderItemID;
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
     @JsonBackReference
-    @JoinColumn(name = "sellOrderID", nullable = true)
+    @JoinColumn(name = "sell_Order_ID", nullable = true)
     private SellOrder sellOrder;
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
     @JsonBackReference
-    @JoinColumn(name = "productID", nullable = true)
+    @JoinColumn(name = "product_ID", nullable = true)
     private Product product;
     private int quantity;
     private double pricePerUnit;

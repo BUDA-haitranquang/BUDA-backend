@@ -14,34 +14,34 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `othercost`
+-- Table structure for table `other_cost`
 --
 
-DROP TABLE IF EXISTS othercost;
+DROP TABLE IF EXISTS other_cost;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE othercost (
-  OtherCostID int NOT NULL AUTO_INCREMENT,
-  CreationTime date DEFAULT NULL,
-  `Description` varchar(2000) DEFAULT NULL,
-  `Name` varchar(200) DEFAULT NULL,
-  Totalcost double DEFAULT NULL,
-  UserID int DEFAULT NULL,
-  PRIMARY KEY (OtherCostID),
-  KEY UserID1_fk_idx (UserID),
-  CONSTRAINT UserID1_fk FOREIGN KEY (UserID) REFERENCES `user` (UserID) ON DELETE SET NULL
+CREATE TABLE other_cost (
+  other_cost_id bigint NOT NULL AUTO_INCREMENT,
+  user_id bigint DEFAULT NULL,
+  payment_date date DEFAULT NULL,
+  `description` varchar(2000) DEFAULT NULL,
+  `name` varchar(200) DEFAULT NULL,
+  total_cost double DEFAULT NULL,
+  PRIMARY KEY (other_cost_id),
+  KEY UserID8_fk_idx (user_id),
+  CONSTRAINT UserID8_fk FOREIGN KEY (user_id) REFERENCES `user` (user_id) ON DELETE SET NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `othercost`
+-- Dumping data for table `other_cost`
 --
 
-INSERT INTO othercost (OtherCostID, CreationTime, Description, Name, Totalcost, UserID) VALUES (1,'2021-06-25','Testing','VAT',30000,3);
-INSERT INTO othercost (OtherCostID, CreationTime, Description, Name, Totalcost, UserID) VALUES (2,'2021-06-28','Testing','Rent',500000,5);
-INSERT INTO othercost (OtherCostID, CreationTime, Description, Name, Totalcost, UserID) VALUES (3,'2021-06-30','Testing','Repair',100000,8);
-INSERT INTO othercost (OtherCostID, CreationTime, Description, Name, Totalcost, UserID) VALUES (4,'2021-07-03','Testing','Fuel',120000,9);
-INSERT INTO othercost (OtherCostID, CreationTime, Description, Name, Totalcost, UserID) VALUES (5,'2021-07-08','Testing','Insurance',200000,12);
+INSERT INTO other_cost (other_cost_id, user_id, payment_date, description, name, total_cost) VALUES (1,3,'2021-06-25','Testing','VAT',30000);
+INSERT INTO other_cost (other_cost_id, user_id, payment_date, description, name, total_cost) VALUES (2,5,'2021-06-28','Testing','Rent',500000);
+INSERT INTO other_cost (other_cost_id, user_id, payment_date, description, name, total_cost) VALUES (3,8,'2021-06-30','Testing','Repair',100000);
+INSERT INTO other_cost (other_cost_id, user_id, payment_date, description, name, total_cost) VALUES (4,9,'2021-07-03','Testing','Fuel',120000);
+INSERT INTO other_cost (other_cost_id, user_id, payment_date, description, name, total_cost) VALUES (5,12,'2021-07-08','Testing','Insurance',200000);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

@@ -22,17 +22,21 @@ import java.util.Set;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "product_id")
     private Long productID;
     @Column(length = 100)
     private String name;
     @Column(length = 1000)
     private String description;
+    @Column(name = "user_id")
     private Long userID;
+    @Column(name = "picture_id")
     private Long pictureID;
     private double sellingPrice;
     private int alertAmount;
     private int amountLeft;
     private double costPerUnit;
+    @Column(name = "group_id")
     private Long groupID;
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     @JsonManagedReference
@@ -41,7 +45,7 @@ public class Product {
     @JsonManagedReference
     private Set<ProductLeftLog> productLeftLogs;
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
-    @JoinColumn(name = "productGroupID", nullable = true)
+    @JoinColumn(name = "product_Group_ID", nullable = true)
     @JsonBackReference
     private ProductGroup productGroup;
     public Product(Long productID, String name, String description, Long userID, Long pictureID, double sellingPrice, int alertAmount, int amountLeft, double costPerUnit, Long groupID, Set<SellOrderItem> sellOrderItems, Set<ProductLeftLog> productLeftLogs) {

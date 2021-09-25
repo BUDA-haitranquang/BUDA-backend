@@ -21,19 +21,20 @@ DROP TABLE IF EXISTS supplier;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE supplier (
-  SupplierID int NOT NULL AUTO_INCREMENT,
-  Supplier_UUID char(36) DEFAULT NULL,
-  UserID int DEFAULT NULL,
-  `Name` varchar(40) DEFAULT NULL,
-  PhoneNumber char(10) DEFAULT NULL,
-  Address varchar(100) DEFAULT NULL,
-  Email varchar(60) DEFAULT NULL,
-  PictureID int DEFAULT NULL,
-  PRIMARY KEY (SupplierID),
-  KEY UserID_fk16_idx (UserID),
-  KEY PictureID_fk3_idx (PictureID),
-  CONSTRAINT PictureID_fk3 FOREIGN KEY (PictureID) REFERENCES picture (PictureID) ON DELETE SET NULL,
-  CONSTRAINT UserID_fk16 FOREIGN KEY (UserID) REFERENCES `user` (UserID)
+  supplier_id bigint NOT NULL AUTO_INCREMENT,
+  supplier_uuiid char(36) DEFAULT NULL,
+  user_id bigint DEFAULT NULL,
+  `name` varchar(40) DEFAULT NULL,
+  phone_number char(10) DEFAULT NULL,
+  address varchar(100) DEFAULT NULL,
+  email varchar(60) DEFAULT NULL,
+  picture_id bigint DEFAULT NULL,
+  PRIMARY KEY (supplier_id),
+  KEY PictureID2_fk_idx (picture_id),
+  KEY PictureID3_fk_idx (picture_id),
+  KEY UserID18_fk_idx (user_id),
+  CONSTRAINT PictureID3_fk FOREIGN KEY (picture_id) REFERENCES picture (picture_id) ON DELETE SET NULL,
+  CONSTRAINT UserID18_fk FOREIGN KEY (user_id) REFERENCES `user` (user_id) ON DELETE SET NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -41,7 +42,16 @@ CREATE TABLE supplier (
 -- Dumping data for table `supplier`
 --
 
-INSERT INTO supplier VALUES (1,'7566b1d3-ea32-11eb-863e-dc4a3ee3e76f',5,'Viettel','2917056444','3 Prairie Rose Hill','bedens0@aboutads.info',1),(2,'79109839-ea32-11eb-863e-dc4a3ee3e76f',8,'Vinaphone ','6943555633','4 Vernon Point','cmclugaish1@hubpages.com',2),(3,'7be9b850-ea32-11eb-863e-dc4a3ee3e76f',11,'Mobifone','4625222484','76 Carey Terrace','mepps2@cbc.ca',3),(4,'7e9ddf17-ea32-11eb-863e-dc4a3ee3e76f',14,'VNPT','7448498333','21171 Melvin Avenue','rphillps3@comsenz.com',4),(5,'815c41ef-ea32-11eb-863e-dc4a3ee3e76f',3,'Vietnamobile','1912460650','51720 Troy Lane','rlawrey4@patch.com',5),(6,'84248592-ea32-11eb-863e-dc4a3ee3e76f',6,'Beeline','6592734398','33 Jenna Road','bsackes5@loc.gov',6),(7,'86b9bba3-ea32-11eb-863e-dc4a3ee3e76f',9,'FPT','3343238885','131 Steensland Parkway','pscrimshire6@ucsd.edu',7),(8,'8a643588-ea32-11eb-863e-dc4a3ee3e76f',12,'CMC','4248924742','18760 Del Sol Alley','lbredgeland7@skype.com',8),(9,'8e6c34e6-ea32-11eb-863e-dc4a3ee3e76f',15,'Viettelco','9681411388','484 Saint Paul Avenue','cparmeter8@naver.com',9),(10,'90f431c0-ea32-11eb-863e-dc4a3ee3e76f',4,'Netnam','9107279396','08 Haas Trail','jhymers9@prlog.org',10);
+INSERT INTO supplier (supplier_id, supplier_uuiid, user_id, name, phone_number, address, email, picture_id) VALUES (1,'7566b1d3-ea32-11eb-863e-dc4a3ee3e76f',5,'Viettel','2917056444','3 Prairie Rose Hill','bedens0@aboutads.info',1);
+INSERT INTO supplier (supplier_id, supplier_uuiid, user_id, name, phone_number, address, email, picture_id) VALUES (2,'79109839-ea32-11eb-863e-dc4a3ee3e76f',8,'Vinaphone ','6943555633','4 Vernon Point','cmclugaish1@hubpages.com',2);
+INSERT INTO supplier (supplier_id, supplier_uuiid, user_id, name, phone_number, address, email, picture_id) VALUES (3,'7be9b850-ea32-11eb-863e-dc4a3ee3e76f',11,'Mobifone','4625222484','76 Carey Terrace','mepps2@cbc.ca',3);
+INSERT INTO supplier (supplier_id, supplier_uuiid, user_id, name, phone_number, address, email, picture_id) VALUES (4,'7e9ddf17-ea32-11eb-863e-dc4a3ee3e76f',14,'VNPT','7448498333','21171 Melvin Avenue','rphillps3@comsenz.com',4);
+INSERT INTO supplier (supplier_id, supplier_uuiid, user_id, name, phone_number, address, email, picture_id) VALUES (5,'815c41ef-ea32-11eb-863e-dc4a3ee3e76f',3,'Vietnamobile','1912460650','51720 Troy Lane','rlawrey4@patch.com',5);
+INSERT INTO supplier (supplier_id, supplier_uuiid, user_id, name, phone_number, address, email, picture_id) VALUES (6,'84248592-ea32-11eb-863e-dc4a3ee3e76f',6,'Beeline','6592734398','33 Jenna Road','bsackes5@loc.gov',6);
+INSERT INTO supplier (supplier_id, supplier_uuiid, user_id, name, phone_number, address, email, picture_id) VALUES (7,'86b9bba3-ea32-11eb-863e-dc4a3ee3e76f',9,'FPT','3343238885','131 Steensland Parkway','pscrimshire6@ucsd.edu',7);
+INSERT INTO supplier (supplier_id, supplier_uuiid, user_id, name, phone_number, address, email, picture_id) VALUES (8,'8a643588-ea32-11eb-863e-dc4a3ee3e76f',12,'CMC','4248924742','18760 Del Sol Alley','lbredgeland7@skype.com',8);
+INSERT INTO supplier (supplier_id, supplier_uuiid, user_id, name, phone_number, address, email, picture_id) VALUES (9,'8e6c34e6-ea32-11eb-863e-dc4a3ee3e76f',15,'Viettelco','9681411388','484 Saint Paul Avenue','cparmeter8@naver.com',9);
+INSERT INTO supplier (supplier_id, supplier_uuiid, user_id, name, phone_number, address, email, picture_id) VALUES (10,'90f431c0-ea32-11eb-863e-dc4a3ee3e76f',4,'Netnam','9107279396','08 Haas Trail','jhymers9@prlog.org',10);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

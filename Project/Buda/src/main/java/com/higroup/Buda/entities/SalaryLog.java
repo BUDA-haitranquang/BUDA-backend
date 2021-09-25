@@ -3,6 +3,7 @@ package com.higroup.Buda.entities;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,10 +15,13 @@ import javax.persistence.Table;
 public class SalaryLog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "salary_log_id")
     private Long salaryLogID;
+    @Column(name = "staff_id")
     private Long staffID;
     private double salary;
     private ZonedDateTime creationDate;
+    @Column(name = "user_id")
     private Long userID;
 
     public SalaryLog() {

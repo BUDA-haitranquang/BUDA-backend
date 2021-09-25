@@ -3,6 +3,7 @@ package com.higroup.Buda.entities;
 import java.util.Objects;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -18,8 +19,10 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 public class ProductGroup {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "product_group_id")
     private Long productGroupID;
     private String name;
+    @Column(name = "user_id")
     private Long userID;
     @OneToMany(mappedBy = "productGroup", fetch = FetchType.LAZY)
     @JsonManagedReference

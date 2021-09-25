@@ -16,13 +16,16 @@ import javax.validation.constraints.NotNull;
 public class StaffNote {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "staff_note_id")
     private Long staffNoteID;
     @NotNull
+    @Column(name = "user_id")
     private Long userID;
     @NotNull
+    @Column(name = "staff_id")
     private Long staffID;
     private ZonedDateTime noteDate;
-    @Column(length = 2000)
+    @Column(length = 1000)
     private String message;
     private Boolean seen;
 

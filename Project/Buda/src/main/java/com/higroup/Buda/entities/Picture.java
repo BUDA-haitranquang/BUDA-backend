@@ -2,6 +2,7 @@ package com.higroup.Buda.entities;
 
 import java.util.Objects;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,7 +13,9 @@ import javax.persistence.Table;
 public class Picture {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "picture_id")
     private Long pictureID;
+    @Column(length = 200)
     private String link;
 
 

@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 public class Discount {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "discount_id")
     private Long discountID;
     @Column(length = 200)
     private String name;
@@ -31,6 +32,7 @@ public class Discount {
     private int orderCount;
     private ZonedDateTime expiryTime;
     private ZonedDateTime createdTime;
+    @Column(name = "user_id")
     private Long userID;
     @OneToMany(mappedBy = "discount", fetch = FetchType.LAZY)
     @JsonManagedReference

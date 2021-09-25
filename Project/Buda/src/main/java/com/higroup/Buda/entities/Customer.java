@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 public class Customer{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "customer_id")
     private Long customerID;
     @Column(columnDefinition = "varchar(50) default 'UNKNOWN'")
     private AgeGroup ageGroup;
@@ -27,6 +28,7 @@ public class Customer{
     private Gender gender;
     @Column(columnDefinition = "double default 0.0")
     private double totalSpend;
+    @Column(name = "membership_id")
     private Long membershipID;
     @Column(length = 50)
     private String name;
@@ -34,6 +36,7 @@ public class Customer{
     private String address;
     @Column(length = 15)
     private String phoneNumber;
+    @Column(name = "user_id")
     private Long userID;
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
     @JsonManagedReference

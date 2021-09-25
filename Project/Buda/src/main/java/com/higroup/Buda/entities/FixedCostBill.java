@@ -19,14 +19,16 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 public class FixedCostBill {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "fixed_cost_bill_id")
     private Long fixedCostBillID;
     @ManyToOne
-    @JoinColumn(name = "fixedCostID", nullable = true)
+    @JoinColumn(name = "fixed_Cost_ID", nullable = true)
     @JsonBackReference
     private FixedCost fixedCost;
+    @Column(name = "user_id")
     private Long userID;
     private double totalSpend;
-    @Column(length = 500)
+    @Column(length = 1000)
     private String message;
     private ZonedDateTime dueTime;
     private Status status;

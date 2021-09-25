@@ -10,7 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface IngredientRepository extends JpaRepository<Ingredient, Long> {
     Optional<Ingredient> findIngredientByIngredientID(Long ingredientID);  
-    List<Ingredient> findAllIngredientBystoreID(Long storeID);
+    List<Ingredient> findAllIngredientByUserID(Long userID);
     Optional<Ingredient> findIngredientByName(String name);
 }
 

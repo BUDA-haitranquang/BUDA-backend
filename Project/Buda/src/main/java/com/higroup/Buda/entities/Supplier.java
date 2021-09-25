@@ -14,9 +14,11 @@ import javax.persistence.Table;
 public class Supplier {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "supplier_id")
     private Long supplierID;
-    @Column(length = 60)
+    @Column(length = 50)
     private String email;
+    @Column(name = "picture_id")
     private Long pictureID;
     @Column(length = 50)
     private String name;
@@ -24,6 +26,7 @@ public class Supplier {
     private String address;
     @Column(length = 15)
     private String phoneNumber;
+    @Column(name = "user_id")
     private Long userID;
 
     public Supplier() {

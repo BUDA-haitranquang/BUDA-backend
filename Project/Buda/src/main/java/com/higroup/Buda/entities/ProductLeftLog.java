@@ -15,21 +15,26 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import org.checkerframework.checker.units.qual.C;
+
 @Entity
 @Table(name = "Product_left_log")
 public class ProductLeftLog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "product_left_log_id")
     private Long productLeftLogID;
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference
-    @JoinColumn(name = "productID", nullable = true)
+    @JoinColumn(name = "product_ID", nullable = true)
     private Product product;
     private int amountLeftChange;
     private ZonedDateTime creationTime;
+    @Column(name = "staff_id")
     private Long staffID;
     @Column(length = 1000)
     private String message;
+    @Column(name = "user_id")
     private Long userID;
 
     public ProductLeftLog() {

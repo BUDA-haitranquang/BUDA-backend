@@ -15,7 +15,9 @@ import javax.persistence.Table;
 public class OtherCost {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "other_cost_id")
     private Long otherCostID;
+    @Column(name = "user_id")
     private Long userID;
     private double totalCost;
     private ZonedDateTime creationTime;

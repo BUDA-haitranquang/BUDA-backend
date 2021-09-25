@@ -20,16 +20,19 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 public class IngredientLeftLog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ingredient_left_log_id")
     private Long ingredientLeftLogID;
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference
-    @JoinColumn(name = "ingredientID", nullable = true)
+    @JoinColumn(name = "ingredient_ID", nullable = true)
     private Ingredient ingredient;
     private int amountLeftChange;
     private ZonedDateTime creationTime;
+    @Column(name = "staff_id")
     private Long staffID;
     @Column(length = 1000)
     private String message;
+    @Column(name = "user_id")
     private Long userID;
 
     public IngredientLeftLog() {
