@@ -13,14 +13,16 @@ import java.util.Set;
 public class BuyOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "buy_order_id")
     private Long buyOrderID;
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
-    @JoinColumn(name = "supplierID", nullable = true)
+    @JoinColumn(name = "supplier_ID", nullable = true)
     @JsonBackReference
     private Supplier supplier;
     private ZonedDateTime creationTime;
     private Status status;
     private double TotalCost;
+    @Column(name = "user_id")
     private Long userID;
     @OneToMany(mappedBy = "buyOrder", fetch = FetchType.LAZY)
     @JsonManagedReference

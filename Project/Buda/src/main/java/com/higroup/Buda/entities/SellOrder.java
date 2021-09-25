@@ -23,13 +23,14 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 public class SellOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "sell_order_id")
     private Long sellOrderID;
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
-    @JoinColumn(name = "customerID", nullable = true)
+    @JoinColumn(name = "customer_ID", nullable = true)
     @JsonBackReference
     private Customer customer;
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
-    @JoinColumn(name = "discountID", nullable = true)
+    @JoinColumn(name = "discount_ID", nullable = true)
     @JsonBackReference
     private Discount discount;
     private ZonedDateTime creationTime;
@@ -37,6 +38,7 @@ public class SellOrder {
     private Gender gender;
     private double realCost;
     private double finalCost;
+    @Column(name = "user_id")
     private Long userID;
     @Column(length = 1000)
     private String customerMessage;

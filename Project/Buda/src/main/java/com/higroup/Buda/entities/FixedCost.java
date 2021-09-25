@@ -19,12 +19,14 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 public class FixedCost {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "fixed_cost_id")
     private Long fixedCostID;
     private String name;
     @Column(length = 1000)
     private String description;
     private double moneyAmount;
     private int period;
+    @Column(name = "user_id")
     private Long userID;
     @OneToMany(mappedBy = "fixedCost", fetch = FetchType.LAZY)
     @JsonManagedReference

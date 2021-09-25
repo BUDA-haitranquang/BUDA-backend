@@ -20,13 +20,15 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 public class MembershipType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "membership_type_id")
     private Long membershipTypeID;
     private String name;
     @Column(length = 1000)
     private String description;
+    @Column(name = "user_id")
     private Long userID;
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
-    @JoinColumn(name = "discountID", nullable = true)
+    @JoinColumn(name = "discount_ID", nullable = true)
     @JsonBackReference
     private Discount discount;
     private double minimumSpend;

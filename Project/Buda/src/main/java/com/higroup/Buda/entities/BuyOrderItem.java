@@ -11,18 +11,20 @@ import java.util.Objects;
 public class BuyOrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "buy_order_item_id")
     private Long buyOrderItemID;
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
     @JsonBackReference
-    @JoinColumn(name = "buyOrderID", nullable = true)
+    @JoinColumn(name = "buy_Order_ID", nullable = true)
     private BuyOrder buyOrder;
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
     @JsonBackReference
-    @JoinColumn(name = "ingredientID", nullable = true)
+    @JoinColumn(name = "ingredient_ID", nullable = true)
     private Ingredient ingredient;
     private int quantity;
     private double pricePerUnit;
     private ZonedDateTime creationTime;
+    @Column(name = "user_id")
     private Long userID;
 
     public BuyOrderItem() {

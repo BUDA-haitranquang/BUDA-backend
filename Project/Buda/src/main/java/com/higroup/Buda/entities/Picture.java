@@ -13,6 +13,7 @@ import javax.persistence.Table;
 public class Picture {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "picture_id")
     private Long pictureID;
     @Column(length = 200)
     private String link;

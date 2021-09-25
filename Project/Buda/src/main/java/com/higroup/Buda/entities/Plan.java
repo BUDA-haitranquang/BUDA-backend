@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 public class Plan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "planID")
+    @Column(name = "plan_id")
     Long planID;
     @OneToMany(mappedBy = "plan",
     fetch = FetchType.LAZY,
@@ -31,6 +31,7 @@ public class Plan {
     private String name;
     private double Price;
     private int duration;
+    @Column(name = "picture_id")
     private Long pictureID;
     @Column(length = 200)
     private String description;

@@ -14,6 +14,7 @@ import javax.persistence.Table;
 public class Staff {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "staff_id")
     private Long staffID;
     @Column(length = 30)
     private String name;
@@ -21,9 +22,10 @@ public class Staff {
     private String phoneNumber;
     private String password;
     private String address;
+    @Column(name = "user_id")
     private Long userID;  
     private StaffPosition staffPosition;
-    @Column(columnDefinition = "varchar(36) default (uuid())")
+    @Column(columnDefinition = "varchar(36) default (uuid())", name = "login_id")
     private String loginID;
     private double salary;
 

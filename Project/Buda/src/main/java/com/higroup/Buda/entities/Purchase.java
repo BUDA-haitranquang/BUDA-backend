@@ -20,14 +20,14 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 public class Purchase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "purchaseID")
+    @Column(name = "purchase_ID")
     private Long purchaseID;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "userID", nullable = false)
+    @JoinColumn(name = "user_ID", nullable = false)
     @JsonBackReference
     private User user;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "planID", nullable = false)
+    @JoinColumn(name = "plan_ID", nullable = false)
     @JsonBackReference
     private Plan plan;
     private ZonedDateTime creationDate;

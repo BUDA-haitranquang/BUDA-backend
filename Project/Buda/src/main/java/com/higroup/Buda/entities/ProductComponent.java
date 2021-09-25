@@ -11,23 +11,41 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 public class ProductComponent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "product_component_id")
     private Long ProductComponentID;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
     @JsonBackReference
-    @JoinColumn(name = "IngredientID", nullable = true)
+    @JoinColumn(name = "Ingredient_ID", nullable = true)
     private Ingredient ingredient;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
     @JsonBackReference
-    @JoinColumn(name = "ProductID", nullable = true)
+    @JoinColumn(name = "Product_ID", nullable = true)
     private Product product;
 
     private Long RequireQuantity;
-    private Long storeID;
+    @Column(name = "user_id")
+    private Long userID;
     private Double totalCost;
 
     public ProductComponent() {
+    }
+
+    public Long getProductComponentID() {
+        return this.ProductComponentID;
+    }
+
+    public void setProductComponentID(Long ProductComponentID) {
+        this.ProductComponentID = ProductComponentID;
+    }
+
+    public Long getUserID() {
+        return this.userID;
+    }
+
+    public void setUserID(Long userID) {
+        this.userID = userID;
     }
 
     public ProductComponent(Ingredient ingredient, Product product, Long requireQuantity,
@@ -35,7 +53,7 @@ public class ProductComponent {
         this.ingredient = ingredient;
         this.product = product;
         RequireQuantity = requireQuantity;
-        this.storeID = storeID;
+        this.userID = storeID;
         this.totalCost = totalCost;
     }
 
@@ -64,11 +82,11 @@ public class ProductComponent {
     }
 
     public Long getStoreID() {
-        return storeID;
+        return userID;
     }
 
     public void setStoreID(Long storeID) {
-        this.storeID = storeID;
+        this.userID = storeID;
     }
 
     public Double getTotalCost() {
@@ -85,7 +103,7 @@ public class ProductComponent {
         if (o == null || getClass() != o.getClass()) return false;
         ProductComponent productComponent = (ProductComponent) o;
         return 
-            productComponent.storeID == this.storeID &&
+            productComponent.userID == this.userID &&
             productComponent.totalCost == this.totalCost && 
             productComponent.RequireQuantity == this.RequireQuantity && 
             productComponent.ingredient.equals(this.ingredient) &&
@@ -98,7 +116,7 @@ public class ProductComponent {
         return "ProductComponent{" + 
         "Ingredient=" + ingredient + 
         ",Product=" + product + 
-        ",StoreID" + storeID + 
+        ",StoreID" + userID + 
         ",RequireQuantity=" + RequireQuantity + 
         "totalCost=" + totalCost +
         '}';        
@@ -106,7 +124,7 @@ public class ProductComponent {
 
     @Override
     public int hashCode() {
-        return Objects.hash(ingredient, product, RequireQuantity, storeID, totalCost);
+        return Objects.hash(ingredient, product, RequireQuantity, userID, totalCost);
     }
 
 
