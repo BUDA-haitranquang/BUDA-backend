@@ -71,7 +71,7 @@ public class IngredientRepositoryTest {
         Long userID = 12345L;
         ingredientRepository.save(ingredient);
 
-        List<Ingredient> allIngredients = ingredientRepository.findAllIngredientByuserID(userID);
+        List<Ingredient> allIngredients = ingredientRepository.findAllIngredientByUserID(userID);
         
         assertEquals(allIngredients, Arrays.asList(ingredient));
     }
