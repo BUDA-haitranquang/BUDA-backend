@@ -14,33 +14,33 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `staffnote`
+-- Table structure for table `staff_note`
 --
 
-DROP TABLE IF EXISTS staffnote;
+DROP TABLE IF EXISTS staff_note;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE staffnote (
-  StaffID int DEFAULT NULL,
-  UserID int DEFAULT NULL,
-  NoteDate date DEFAULT NULL,
-  Message varchar(150) DEFAULT NULL,
-  Seen tinyint DEFAULT NULL,
-  KEY UserID_fk1_idx (UserID),
-  KEY StaffID_fk_idx (StaffID),
-  CONSTRAINT StaffID_fk FOREIGN KEY (StaffID) REFERENCES staff (StaffID) ON DELETE SET NULL,
-  CONSTRAINT UserID_fk15 FOREIGN KEY (UserID) REFERENCES `user` (UserID) ON DELETE SET NULL
+CREATE TABLE staff_note (
+  staff_id bigint DEFAULT NULL,
+  user_id bigint DEFAULT NULL,
+  note_date date DEFAULT NULL,
+  message varchar(150) DEFAULT NULL,
+  seen tinyint DEFAULT NULL,
+  KEY StaffID3_fk_idx (staff_id),
+  KEY UserID17_fk_idx (user_id),
+  CONSTRAINT StaffID3_fk FOREIGN KEY (staff_id) REFERENCES staff (staff_id) ON DELETE SET NULL,
+  CONSTRAINT UserID17_fk FOREIGN KEY (user_id) REFERENCES `user` (user_id) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `staffnote`
+-- Dumping data for table `staff_note`
 --
 
-INSERT INTO staffnote (StaffID, UserID, NoteDate, Message, Seen) VALUES (1,1,'2021-06-17','No comment',1);
-INSERT INTO staffnote (StaffID, UserID, NoteDate, Message, Seen) VALUES (3,1,'2021-06-25','Demo',1);
-INSERT INTO staffnote (StaffID, UserID, NoteDate, Message, Seen) VALUES (8,1,'2021-06-29','Testing',1);
-INSERT INTO staffnote (StaffID, UserID, NoteDate, Message, Seen) VALUES (6,1,'2021-07-04','Beta',1);
+INSERT INTO staff_note (staff_id, user_id, note_date, message, seen) VALUES (1,1,'2021-06-17','No comment',1);
+INSERT INTO staff_note (staff_id, user_id, note_date, message, seen) VALUES (3,1,'2021-06-25','Demo',1);
+INSERT INTO staff_note (staff_id, user_id, note_date, message, seen) VALUES (8,1,'2021-06-29','Testing',1);
+INSERT INTO staff_note (staff_id, user_id, note_date, message, seen) VALUES (6,1,'2021-07-04','Beta',1);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

@@ -21,15 +21,16 @@ DROP TABLE IF EXISTS plan;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE plan (
-  PlanID int NOT NULL AUTO_INCREMENT,
-  Plan_UUID char(36) DEFAULT NULL,
-  `Name` varchar(40) DEFAULT NULL,
-  Price double DEFAULT NULL,
-  Duration varchar(10) DEFAULT NULL,
-  PictureID int DEFAULT NULL,
-  PRIMARY KEY (PlanID),
-  KEY PictureID_fk_idx (PictureID),
-  CONSTRAINT PictureID_fk FOREIGN KEY (PictureID) REFERENCES picture (PictureID) ON DELETE SET NULL
+  plan_id bigint NOT NULL AUTO_INCREMENT,
+  plan_uuid char(36) DEFAULT NULL,
+  `name` varchar(40) DEFAULT NULL,
+  price double DEFAULT NULL,
+  duration varchar(10) DEFAULT NULL,
+  picture_id bigint DEFAULT NULL,
+  PRIMARY KEY (plan_id),
+  KEY PictureID_fk_idx (picture_id),
+  KEY PictureID_fk1_idx (picture_id),
+  CONSTRAINT PictureID1_fk FOREIGN KEY (picture_id) REFERENCES picture (picture_id) ON DELETE SET NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -37,10 +38,10 @@ CREATE TABLE plan (
 -- Dumping data for table `plan`
 --
 
-INSERT INTO plan (PlanID, Plan_UUID, Name, Price, Duration, PictureID) VALUES (1,'6e5a78bd-ee8c-11eb-b72b-dc4a3ee3e76f','Basic',200000,'2 months',41);
-INSERT INTO plan (PlanID, Plan_UUID, Name, Price, Duration, PictureID) VALUES (2,'72f2d60e-ee8c-11eb-b72b-dc4a3ee3e76f','Premium',350000,'3 months',42);
-INSERT INTO plan (PlanID, Plan_UUID, Name, Price, Duration, PictureID) VALUES (3,'759f7dbc-ee8c-11eb-b72b-dc4a3ee3e76f','No ads',250000,'1 month',43);
-INSERT INTO plan (PlanID, Plan_UUID, Name, Price, Duration, PictureID) VALUES (4,'78758ce9-ee8c-11eb-b72b-dc4a3ee3e76f','Platinum',600000,'6 months',44);
+INSERT INTO plan (plan_id, plan_uuid, name, price, duration, picture_id) VALUES (1,'6e5a78bd-ee8c-11eb-b72b-dc4a3ee3e76f','Basic',200000,'2 months',41);
+INSERT INTO plan (plan_id, plan_uuid, name, price, duration, picture_id) VALUES (2,'72f2d60e-ee8c-11eb-b72b-dc4a3ee3e76f','Premium',350000,'3 months',42);
+INSERT INTO plan (plan_id, plan_uuid, name, price, duration, picture_id) VALUES (3,'759f7dbc-ee8c-11eb-b72b-dc4a3ee3e76f','No ads',250000,'1 month',43);
+INSERT INTO plan (plan_id, plan_uuid, name, price, duration, picture_id) VALUES (4,'78758ce9-ee8c-11eb-b72b-dc4a3ee3e76f','Platinum',600000,'6 months',44);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
