@@ -19,21 +19,23 @@ public class OtherCost {
     private Long otherCostID;
     @Column(name = "user_id")
     private Long userID;
+    @Column(columnDefinition = "double default 0.0")
     private double totalCost;
-    private ZonedDateTime creationTime;
+    private ZonedDateTime paymentDate;
     @Column(length = 200)
     private String name;
     @Column(length = 2000)
     private String description;
 
+
     public OtherCost() {
     }
 
-    public OtherCost(Long otherCostID, Long userID, double totalCost, ZonedDateTime creationTime, String name, String description) {
+    public OtherCost(Long otherCostID, Long userID, double totalCost, ZonedDateTime paymentDate, String name, String description) {
         this.otherCostID = otherCostID;
         this.userID = userID;
         this.totalCost = totalCost;
-        this.creationTime = creationTime;
+        this.paymentDate = paymentDate;
         this.name = name;
         this.description = description;
     }
@@ -62,12 +64,12 @@ public class OtherCost {
         this.totalCost = totalCost;
     }
 
-    public ZonedDateTime getCreationTime() {
-        return this.creationTime;
+    public ZonedDateTime getPaymentDate() {
+        return this.paymentDate;
     }
 
-    public void setCreationTime(ZonedDateTime creationTime) {
-        this.creationTime = creationTime;
+    public void setPaymentDate(ZonedDateTime paymentDate) {
+        this.paymentDate = paymentDate;
     }
 
     public String getName() {
@@ -101,8 +103,8 @@ public class OtherCost {
         return this;
     }
 
-    public OtherCost creationTime(ZonedDateTime creationTime) {
-        setCreationTime(creationTime);
+    public OtherCost paymentDate(ZonedDateTime paymentDate) {
+        setPaymentDate(paymentDate);
         return this;
     }
 
@@ -124,12 +126,12 @@ public class OtherCost {
             return false;
         }
         OtherCost otherCost = (OtherCost) o;
-        return Objects.equals(otherCostID, otherCost.otherCostID) && Objects.equals(userID, otherCost.userID) && totalCost == otherCost.totalCost && Objects.equals(creationTime, otherCost.creationTime) && Objects.equals(name, otherCost.name) && Objects.equals(description, otherCost.description);
+        return Objects.equals(otherCostID, otherCost.otherCostID) && Objects.equals(userID, otherCost.userID) && totalCost == otherCost.totalCost && Objects.equals(paymentDate, otherCost.paymentDate) && Objects.equals(name, otherCost.name) && Objects.equals(description, otherCost.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(otherCostID, userID, totalCost, creationTime, name, description);
+        return Objects.hash(otherCostID, userID, totalCost, paymentDate, name, description);
     }
 
     @Override
@@ -138,10 +140,10 @@ public class OtherCost {
             " otherCostID='" + getOtherCostID() + "'" +
             ", userID='" + getUserID() + "'" +
             ", totalCost='" + getTotalCost() + "'" +
-            ", creationTime='" + getCreationTime() + "'" +
+            ", paymentDate='" + getPaymentDate() + "'" +
             ", name='" + getName() + "'" +
             ", description='" + getDescription() + "'" +
             "}";
     }
-
+    
 }

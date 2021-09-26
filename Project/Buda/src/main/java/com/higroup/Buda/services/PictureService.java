@@ -26,10 +26,10 @@ public class PictureService {
 
     public ResponseEntity<?> saveNewPicture(Picture picture)
     {
-        if (picture.getLink() != null)
+        if (picture.getPictureLink() != null)
         {
             this.pictureRepository.save(picture);
-            return ResponseEntity.ok().body(picture.getLink());
+            return ResponseEntity.ok().body(picture.getPictureLink());
         }
         return ResponseEntity.badRequest().body("Not found");
     }

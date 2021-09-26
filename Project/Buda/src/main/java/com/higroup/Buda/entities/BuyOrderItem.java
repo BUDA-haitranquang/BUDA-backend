@@ -26,21 +26,33 @@ public class BuyOrderItem {
     private ZonedDateTime creationTime;
     @Column(name = "user_id")
     private Long userID;
+    @Column(name = "supplier_id")
+    private Long supplierID;
 
     public BuyOrderItem() {
     }
 
-    public BuyOrderItem(BuyOrder buyOrder, Ingredient ingredient, int quantity, double pricePerUnit, ZonedDateTime creationTime, Long userID) {
+    public BuyOrderItem(Long buyOrderItemID, BuyOrder buyOrder, Ingredient ingredient, int quantity, double pricePerUnit, ZonedDateTime creationTime, Long userID, Long supplierID) {
+        this.buyOrderItemID = buyOrderItemID;
         this.buyOrder = buyOrder;
         this.ingredient = ingredient;
         this.quantity = quantity;
         this.pricePerUnit = pricePerUnit;
         this.creationTime = creationTime;
         this.userID = userID;
+        this.supplierID = supplierID;
+    }
+
+    public Long getBuyOrderItemID() {
+        return this.buyOrderItemID;
+    }
+
+    public void setBuyOrderItemID(Long buyOrderItemID) {
+        this.buyOrderItemID = buyOrderItemID;
     }
 
     public BuyOrder getBuyOrder() {
-        return buyOrder;
+        return this.buyOrder;
     }
 
     public void setBuyOrder(BuyOrder buyOrder) {
@@ -48,7 +60,7 @@ public class BuyOrderItem {
     }
 
     public Ingredient getIngredient() {
-        return ingredient;
+        return this.ingredient;
     }
 
     public void setIngredient(Ingredient ingredient) {
@@ -56,7 +68,7 @@ public class BuyOrderItem {
     }
 
     public int getQuantity() {
-        return quantity;
+        return this.quantity;
     }
 
     public void setQuantity(int quantity) {
@@ -64,7 +76,7 @@ public class BuyOrderItem {
     }
 
     public double getPricePerUnit() {
-        return pricePerUnit;
+        return this.pricePerUnit;
     }
 
     public void setPricePerUnit(double pricePerUnit) {
@@ -72,7 +84,7 @@ public class BuyOrderItem {
     }
 
     public ZonedDateTime getCreationTime() {
-        return creationTime;
+        return this.creationTime;
     }
 
     public void setCreationTime(ZonedDateTime creationTime) {
@@ -80,19 +92,32 @@ public class BuyOrderItem {
     }
 
     public Long getUserID() {
-        return userID;
+        return this.userID;
     }
 
     public void setUserID(Long userID) {
         this.userID = userID;
     }
 
-    public BuyOrderItem sellOrder(BuyOrder buyOrder) {
+    public Long getSupplierID() {
+        return this.supplierID;
+    }
+
+    public void setSupplierID(Long supplierID) {
+        this.supplierID = supplierID;
+    }
+
+    public BuyOrderItem buyOrderItemID(Long buyOrderItemID) {
+        setBuyOrderItemID(buyOrderItemID);
+        return this;
+    }
+
+    public BuyOrderItem buyOrder(BuyOrder buyOrder) {
         setBuyOrder(buyOrder);
         return this;
     }
 
-    public BuyOrderItem Ingredient(Ingredient ingredient) {
+    public BuyOrderItem ingredient(Ingredient ingredient) {
         setIngredient(ingredient);
         return this;
     }
@@ -107,39 +132,49 @@ public class BuyOrderItem {
         return this;
     }
 
+    public BuyOrderItem creationTime(ZonedDateTime creationTime) {
+        setCreationTime(creationTime);
+        return this;
+    }
+
     public BuyOrderItem userID(Long userID) {
         setUserID(userID);
         return this;
     }
 
-    public BuyOrderItem creationTime(ZonedDateTime creationTime) {
-        setCreationTime(creationTime);
+    public BuyOrderItem supplierID(Long supplierID) {
+        setSupplierID(supplierID);
         return this;
     }
-    
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        BuyOrderItem that = (BuyOrderItem) o;
-        return quantity == that.quantity && Double.compare(that.pricePerUnit, pricePerUnit) == 0 && Objects.equals(buyOrder, that.buyOrder) && Objects.equals(ingredient, that.ingredient) && Objects.equals(creationTime, that.creationTime) && Objects.equals(userID, that.userID);
+        if (o == this)
+            return true;
+        if (!(o instanceof BuyOrderItem)) {
+            return false;
+        }
+        BuyOrderItem buyOrderItem = (BuyOrderItem) o;
+        return Objects.equals(buyOrderItemID, buyOrderItem.buyOrderItemID) && Objects.equals(buyOrder, buyOrderItem.buyOrder) && Objects.equals(ingredient, buyOrderItem.ingredient) && quantity == buyOrderItem.quantity && pricePerUnit == buyOrderItem.pricePerUnit && Objects.equals(creationTime, buyOrderItem.creationTime) && Objects.equals(userID, buyOrderItem.userID) && Objects.equals(supplierID, buyOrderItem.supplierID);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(buyOrder, ingredient, quantity, pricePerUnit, creationTime, userID);
+        return Objects.hash(buyOrderItemID, buyOrder, ingredient, quantity, pricePerUnit, creationTime, userID, supplierID);
     }
 
     @Override
     public String toString() {
-        return "BuyOrderItem{" +
-                "buyOrder=" + buyOrder +
-                ", ingredient=" + ingredient +
-                ", quantity=" + quantity +
-                ", pricePerUnit=" + pricePerUnit +
-                ", creationTime=" + creationTime +
-                ", userID=" + userID +
-                '}';
+        return "{" +
+            " buyOrderItemID='" + getBuyOrderItemID() + "'" +
+            ", buyOrder='" + getBuyOrder() + "'" +
+            ", ingredient='" + getIngredient() + "'" +
+            ", quantity='" + getQuantity() + "'" +
+            ", pricePerUnit='" + getPricePerUnit() + "'" +
+            ", creationTime='" + getCreationTime() + "'" +
+            ", userID='" + getUserID() + "'" +
+            ", supplierID='" + getSupplierID() + "'" +
+            "}";
     }
+
 }

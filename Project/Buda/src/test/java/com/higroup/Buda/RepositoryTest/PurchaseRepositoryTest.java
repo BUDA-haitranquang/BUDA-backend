@@ -43,7 +43,7 @@ public class PurchaseRepositoryTest {
         newpurchase.setMessage("New purchase");
         newpurchase.setPurchaseID((long)2);
         newpurchase.setTotalCost(350000.0);
-        newpurchase.setCreationDate(ZonedDateTime.parse("2021-07-20T10:15:30+07:00"));
+        newpurchase.setCreationTime(ZonedDateTime.parse("2021-07-20T10:15:30+07:00"));
         purchaseReposTest.save(newpurchase);
     }
 

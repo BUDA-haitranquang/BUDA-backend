@@ -56,6 +56,6 @@ public class PictureServiceTest {
     public static void initializeDB()
     {
         picture = new Picture();
-        picture.setLink("default");
+        picture.setPictureLink("default");
     }
 }

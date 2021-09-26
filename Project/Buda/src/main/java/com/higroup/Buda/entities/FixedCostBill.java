@@ -5,6 +5,8 @@ import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -30,18 +32,22 @@ public class FixedCostBill {
     private double totalSpend;
     @Column(length = 1000)
     private String message;
+    private ZonedDateTime creationTime;
     private ZonedDateTime dueTime;
+    @Enumerated(EnumType.STRING)
     private Status status;
+
 
     public FixedCostBill() {
     }
 
-    public FixedCostBill(Long fixedCostBillID, FixedCost fixedCost, Long userID, double totalSpend, String message, ZonedDateTime dueTime, Status status) {
+    public FixedCostBill(Long fixedCostBillID, FixedCost fixedCost, Long userID, double totalSpend, String message, ZonedDateTime creationTime, ZonedDateTime dueTime, Status status) {
         this.fixedCostBillID = fixedCostBillID;
         this.fixedCost = fixedCost;
         this.userID = userID;
         this.totalSpend = totalSpend;
         this.message = message;
+        this.creationTime = creationTime;
         this.dueTime = dueTime;
         this.status = status;
     }
@@ -86,6 +92,14 @@ public class FixedCostBill {
         this.message = message;
     }
 
+    public ZonedDateTime getCreationTime() {
+        return this.creationTime;
+    }
+
+    public void setCreationTime(ZonedDateTime creationTime) {
+        this.creationTime = creationTime;
+    }
+
     public ZonedDateTime getDueTime() {
         return this.dueTime;
     }
@@ -127,6 +141,11 @@ public class FixedCostBill {
         return this;
     }
 
+    public FixedCostBill creationTime(ZonedDateTime creationTime) {
+        setCreationTime(creationTime);
+        return this;
+    }
+
     public FixedCostBill dueTime(ZonedDateTime dueTime) {
         setDueTime(dueTime);
         return this;
@@ -145,12 +164,12 @@ public class FixedCostBill {
             return false;
         }
         FixedCostBill fixedCostBill = (FixedCostBill) o;
-        return Objects.equals(fixedCostBillID, fixedCostBill.fixedCostBillID) && Objects.equals(fixedCost, fixedCostBill.fixedCost) && Objects.equals(userID, fixedCostBill.userID) && totalSpend == fixedCostBill.totalSpend && Objects.equals(message, fixedCostBill.message) && Objects.equals(dueTime, fixedCostBill.dueTime) && Objects.equals(status, fixedCostBill.status);
+        return Objects.equals(fixedCostBillID, fixedCostBill.fixedCostBillID) && Objects.equals(fixedCost, fixedCostBill.fixedCost) && Objects.equals(userID, fixedCostBill.userID) && totalSpend == fixedCostBill.totalSpend && Objects.equals(message, fixedCostBill.message) && Objects.equals(creationTime, fixedCostBill.creationTime) && Objects.equals(dueTime, fixedCostBill.dueTime) && Objects.equals(status, fixedCostBill.status);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(fixedCostBillID, fixedCost, userID, totalSpend, message, dueTime, status);
+        return Objects.hash(fixedCostBillID, fixedCost, userID, totalSpend, message, creationTime, dueTime, status);
     }
 
     @Override
@@ -161,9 +180,10 @@ public class FixedCostBill {
             ", userID='" + getUserID() + "'" +
             ", totalSpend='" + getTotalSpend() + "'" +
             ", message='" + getMessage() + "'" +
+            ", creationTime='" + getCreationTime() + "'" +
             ", dueTime='" + getDueTime() + "'" +
             ", status='" + getStatus() + "'" +
             "}";
     }
-
+   
 }

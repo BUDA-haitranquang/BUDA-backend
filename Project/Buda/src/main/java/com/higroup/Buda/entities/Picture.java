@@ -16,15 +16,14 @@ public class Picture {
     @Column(name = "picture_id")
     private Long pictureID;
     @Column(length = 200)
-    private String link;
-
+    private String pictureLink;
 
     public Picture() {
     }
 
-    public Picture(Long pictureID, String link) {
+    public Picture(Long pictureID, String pictureLink) {
         this.pictureID = pictureID;
-        this.link = link;
+        this.pictureLink = pictureLink;
     }
 
     public Long getPictureID() {
@@ -35,12 +34,12 @@ public class Picture {
         this.pictureID = pictureID;
     }
 
-    public String getLink() {
-        return this.link;
+    public String getPictureLink() {
+        return this.pictureLink;
     }
 
-    public void setLink(String link) {
-        this.link = link;
+    public void setPictureLink(String pictureLink) {
+        this.pictureLink = pictureLink;
     }
 
     public Picture pictureID(Long pictureID) {
@@ -48,8 +47,8 @@ public class Picture {
         return this;
     }
 
-    public Picture link(String link) {
-        setLink(link);
+    public Picture pictureLink(String pictureLink) {
+        setPictureLink(pictureLink);
         return this;
     }
 
@@ -61,20 +60,21 @@ public class Picture {
             return false;
         }
         Picture picture = (Picture) o;
-        return Objects.equals(pictureID, picture.pictureID) && Objects.equals(link, picture.link);
+        return Objects.equals(pictureID, picture.pictureID) && Objects.equals(pictureLink, picture.pictureLink);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(pictureID, link);
+        return Objects.hash(pictureID, pictureLink);
     }
 
     @Override
     public String toString() {
         return "{" +
             " pictureID='" + getPictureID() + "'" +
-            ", link='" + getLink() + "'" +
+            ", pictureLink='" + getPictureLink() + "'" +
             "}";
     }
+
     
 }

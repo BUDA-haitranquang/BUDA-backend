@@ -41,7 +41,7 @@ public class PictureRepositoryTest {
         Long pictureID = (long) 1;
         Picture newPicture = new Picture();
         newPicture.setPictureID((long)1);
-        newPicture.setLink("facebook.com");
+        newPicture.setPictureLink("facebook.com");
         pictureReposTest.save(newPicture);
 
         boolean exist = pictureReposTest.findPictureByPictureID(pictureID).isPresent();

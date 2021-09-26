@@ -4,6 +4,8 @@ import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,10 +26,20 @@ public class Staff {
     private String address;
     @Column(name = "user_id")
     private Long userID;  
+    @Enumerated(EnumType.STRING)
     private StaffPosition staffPosition;
-    @Column(columnDefinition = "varchar(36) default (uuid())", name = "login_id")
-    private String loginID;
+    @Column(columnDefinition = "varchar(36) default (uuid())", name = "staff_uuid")
+    private String staffUUID;
+    @Column(columnDefinition = "double default 0.0")
     private double salary;
+
+    public String getStaffUUID() {
+        return this.staffUUID;
+    }
+
+    public void setStaffUUID(String staffUUID) {
+        this.staffUUID = staffUUID;
+    }
 
     public Staff() {
     }
@@ -40,7 +52,7 @@ public class Staff {
         this.address = address;
         this.userID = userID;
         this.staffPosition = staffPosition;
-        this.loginID = loginID;
+        this.staffUUID = loginID;
         this.salary = salary;
     }
 
@@ -101,11 +113,11 @@ public class Staff {
     }
 
     public String getLoginID() {
-        return this.loginID;
+        return this.staffUUID;
     }
 
     public void setLoginID(String loginID) {
-        this.loginID = loginID;
+        this.staffUUID = loginID;
     }
 
     public double getSalary() {
@@ -169,12 +181,12 @@ public class Staff {
             return false;
         }
         Staff staff = (Staff) o;
-        return Objects.equals(staffID, staff.staffID) && Objects.equals(name, staff.name) && Objects.equals(phoneNumber, staff.phoneNumber) && Objects.equals(password, staff.password) && Objects.equals(address, staff.address) && Objects.equals(userID, staff.userID) && Objects.equals(staffPosition, staff.staffPosition) && Objects.equals(loginID, staff.loginID) && salary == staff.salary;
+        return Objects.equals(staffID, staff.staffID) && Objects.equals(name, staff.name) && Objects.equals(phoneNumber, staff.phoneNumber) && Objects.equals(password, staff.password) && Objects.equals(address, staff.address) && Objects.equals(userID, staff.userID) && Objects.equals(staffPosition, staff.staffPosition) && Objects.equals(staffUUID, staff.staffUUID) && salary == staff.salary;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(staffID, name, phoneNumber, password, address, userID, staffPosition, loginID, salary);
+        return Objects.hash(staffID, name, phoneNumber, password, address, userID, staffPosition, staffUUID, salary);
     }
 
     @Override
@@ -187,7 +199,7 @@ public class Staff {
             ", address='" + getAddress() + "'" +
             ", userID='" + getUserID() + "'" +
             ", staffPosition='" + getStaffPosition() + "'" +
-            ", loginID='" + getLoginID() + "'" +
+            ", staffUUID='" + getStaffUUID() + "'" +
             ", salary='" + getSalary() + "'" +
             "}";
     }

@@ -5,6 +5,8 @@ import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -32,9 +34,12 @@ public class SellOrderItem {
     private Product product;
     private int quantity;
     private double pricePerUnit;
+    @Column(name = "user_id")
     private Long userID;
     private ZonedDateTime creationTime;
+    @Enumerated(EnumType.STRING)
     private Gender gender;
+    @Enumerated(EnumType.STRING)
     private AgeGroup ageGroup;
     private double actualTotalSale;
     private double costPerUnit;

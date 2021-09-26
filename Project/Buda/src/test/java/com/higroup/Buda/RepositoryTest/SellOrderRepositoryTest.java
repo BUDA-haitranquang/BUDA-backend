@@ -57,7 +57,7 @@ public class SellOrderRepositoryTest {
         newSellOrder.setAgeGroup(AgeGroup.FROM_24_TO_30);
         newSellOrder.setFinalCost(420000.0);
         newSellOrder.setGender(Gender.MALE);
-        newSellOrder.setMessage("Excellent");
+        newSellOrder.setCustomerMessage("Excellent");
         newSellOrder.setRealCost(420000.0);
         newSellOrder.setUserID(newUser.getUserID());
     }

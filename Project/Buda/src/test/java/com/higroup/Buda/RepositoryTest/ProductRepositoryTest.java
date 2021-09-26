@@ -59,7 +59,7 @@ public class ProductRepositoryTest {
         newProduct.setCostPerUnit(20000.0);
         newProduct.setDescription("Chicken egg");
         newProduct.setSellingPrice(30000.0);
-        newProduct.setGroupID((long)2);
+        //newProduct.setProductGroupID((long)2);
         productReposTest.save(newProduct);
     }
 

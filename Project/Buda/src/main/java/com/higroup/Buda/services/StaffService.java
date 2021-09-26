@@ -20,7 +20,7 @@ public class StaffService {
     }
     public ResponseEntity<?> correctLogin(String uuid, String password)
     {
-        Optional<Staff> staff = this.staffRepository.findStaffByLoginID(uuid);
+        Optional<Staff> staff = this.staffRepository.findStaffByStaffUUID(uuid);
         if (staff.get().getPassword().equals(password))
         {
             return ResponseEntity.ok().body("True");
@@ -29,7 +29,7 @@ public class StaffService {
     }
     public ResponseEntity<?> registerNewStaff(Staff newStaff)
     {
-        Optional<Staff> staff = this.staffRepository.findStaffByLoginID(newStaff.getLoginID());
+        Optional<Staff> staff = this.staffRepository.findStaffByStaffUUID(newStaff.getLoginID());
         if (staff.isPresent())
         {
             return ResponseEntity.badRequest().body("Exists UUID, try again");

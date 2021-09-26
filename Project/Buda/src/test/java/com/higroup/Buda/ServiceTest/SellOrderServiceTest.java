@@ -87,7 +87,7 @@ public class SellOrderServiceTest {
         sellOrder.setAgeGroup(AgeGroup.FROM_18_TO_24);
         sellOrder.setGender(Gender.MALE);
         sellOrder.setStatus(Status.RECEIVING);
-        sellOrder.setMessage("Thank you");
+        sellOrder.setCustomerMessage("Thank you");
         sellOrder.setFinalCost(310000.0);
         sellOrder.setRealCost(400000.0);
         sellOrder.setUserID(user.getUserID());

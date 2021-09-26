@@ -35,6 +35,7 @@ public class IngredientLeftLog {
     @Column(name = "user_id")
     private Long userID;
 
+
     public IngredientLeftLog() {
     }
 
@@ -167,5 +168,6 @@ public class IngredientLeftLog {
             ", userID='" + getUserID() + "'" +
             "}";
     }
+    
 
 }

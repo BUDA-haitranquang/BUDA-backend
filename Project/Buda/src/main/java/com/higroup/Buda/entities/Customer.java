@@ -6,6 +6,8 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,8 +25,10 @@ public class Customer{
     @Column(name = "customer_id")
     private Long customerID;
     @Column(columnDefinition = "varchar(50) default 'UNKNOWN'")
+    @Enumerated(EnumType.STRING)
     private AgeGroup ageGroup;
     @Column(columnDefinition = "varchar(50) default 'UNKNOWN'")
+    @Enumerated(EnumType.STRING)
     private Gender gender;
     @Column(columnDefinition = "double default 0.0")
     private double totalSpend;
