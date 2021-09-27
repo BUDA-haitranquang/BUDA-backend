@@ -6,18 +6,22 @@ import java.util.Optional;
 import com.higroup.Buda.entities.User;
 import com.higroup.Buda.exception.APIBadRequestException;
 import com.higroup.Buda.repositories.UserRepository;
+import com.higroup.Buda.util.JwtTokenUtil;
 import com.higroup.Buda.util.SHA_256_Encode;
 
 import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService{
     private final UserRepository userRepository;
 
     @Autowired
@@ -99,7 +103,11 @@ public class UserService {
         System.out.println(mailUser.get().getPassword());
         if (mailUser.isPresent() && (mailUser.get().getPassword().equals((encodedPassword))))
         {
-            return ResponseEntity.ok().body("true");
+            JwtTokenUtil jwtTokenUtil = new JwtTokenUtil();
+            UserDetails userDetails = mailUser.get();
+            System.out.println(userDetails);
+            String returnBody = jwtTokenUtil.generateToken(userDetails);
+            return ResponseEntity.ok().body(returnBody);
         }
         return ResponseEntity.badRequest().body("false");
     }
@@ -152,6 +160,17 @@ public class UserService {
     @Transactional
     public void updateUser(User user) {
 
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Optional<User> mailUser = this.userRepository.findUserByEmail(email);
+        if (mailUser.isPresent())
+        {
+            return mailUser.get();
+        }
+        // TODO Auto-generated method stub
+        return null;
     }
 
     // TUONG UNG VOI 4 REQUEST BEN USER CONTROLLER
