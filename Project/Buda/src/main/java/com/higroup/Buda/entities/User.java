@@ -1,5 +1,6 @@
 package com.higroup.Buda.entities;
 
+import java.util.Collection;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
@@ -19,11 +20,14 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.higroup.Buda.util.SHA_256_Encode;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 
 @Entity
 @Table(name = "User")
 
-public class User {
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="user_ID")
@@ -32,8 +36,7 @@ public class User {
     private String userUUID;
     @Column(length = 30)
     private String userName;
-    @Column(length = 100)
-    @JsonIgnore
+    @Column(length = 128)
     private String password;
     @Column(length = 50)
     private String email;
@@ -234,7 +237,7 @@ public class User {
             " userID='" + getUserID() + "'" +
             ", userUUID='" + getUserUUID() + "'" +
             ", userName='" + getUserName() + "'" +
-            // ", password='" + getPassword() + "'" +
+             ", password='" + getPassword() + "'" +
             ", email='" + getEmail() + "'" +
             ", phoneNumber='" + getPhoneNumber() + "'" +
             ", lastName='" + getLastName() + "'" +
@@ -258,6 +261,42 @@ public class User {
     @Override
     public int hashCode() {
         return Objects.hash(userID, userUUID, userName, password, email, phoneNumber, lastName, firstName, pictureID, purchases);
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public String getUsername() {
+        // TODO Auto-generated method stub
+        return this.email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        // TODO Auto-generated method stub
+        return false;
     }
 
 }
