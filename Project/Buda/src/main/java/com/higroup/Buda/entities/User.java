@@ -36,8 +36,7 @@ public class User implements UserDetails {
     private String userUUID;
     @Column(length = 30)
     private String userName;
-    @Column(length = 100)
-    @JsonIgnore
+    @Column(length = 128)
     private String password;
     @Column(length = 50)
     private String email;

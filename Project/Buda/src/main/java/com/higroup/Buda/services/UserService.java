@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,9 +25,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class UserService implements UserDetailsService{
     private final UserRepository userRepository;
 
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
     @Autowired
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
+        this.bCryptPasswordEncoder = new BCryptPasswordEncoder();
     }
 
     // dang ky user moi
@@ -66,6 +70,8 @@ public class UserService implements UserDetailsService{
         {
             return ResponseEntity.badRequest().body("Weak password");
         }
+        System.out.println(newUser.getPassword());
+        newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
         userRepository.save(newUser);
         return ResponseEntity.ok().body(newUser.toString());
     }
@@ -93,19 +99,22 @@ public class UserService implements UserDetailsService{
         return ResponseEntity.ok().body("Deleted successfully");
     }
 
-    public ResponseEntity<String> correctLogin(String email, String encodedPassword)
+    public ResponseEntity<String> correctLogin(String email, String rawPassword)
     {
         Optional<User> mailUser = userRepository.findUserByEmail(email);
         if (mailUser.isEmpty())
         {
-            return ResponseEntity.badRequest().body("false");
+            return ResponseEntity.badRequest().body("User not found");
         }
-        System.out.println(mailUser.get().getPassword());
-        if (mailUser.isPresent() && (mailUser.get().getPassword().equals((encodedPassword))))
+        //System.out.println(mailUser.get().getPassword());
+        //System.out.println(bCryptPasswordEncoder.encode(rawPassword));
+        //System.out.println(this.bCryptPasswordEncoder.matches(rawPassword, mailUser.get().getPassword()));
+        //System.out.println(rawPassword);
+        if (mailUser.isPresent() && (bCryptPasswordEncoder.matches(rawPassword, mailUser.get().getPassword())))
         {
             JwtTokenUtil jwtTokenUtil = new JwtTokenUtil();
             UserDetails userDetails = mailUser.get();
-            System.out.println(userDetails);
+            //System.out.println(userDetails);
             String returnBody = jwtTokenUtil.generateToken(userDetails);
             return ResponseEntity.ok().body(returnBody);
         }
