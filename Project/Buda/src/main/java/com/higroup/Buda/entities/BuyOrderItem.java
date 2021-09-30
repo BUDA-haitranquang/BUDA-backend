@@ -7,7 +7,10 @@ import java.time.ZonedDateTime;
 import java.util.Objects;
 
 @Entity
-@Table(name = "Buy_order_item")
+@Table(name = "Buy_order_item", indexes = {
+    @Index(columnList = "buy_order_id", name = "buy_order_item_buy_order_id_index"),
+    @Index(columnList = "user_id", name = "buy_order_item_user_id_index")
+})
 public class BuyOrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

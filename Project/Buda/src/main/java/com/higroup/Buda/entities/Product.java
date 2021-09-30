@@ -6,6 +6,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -18,7 +19,10 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "Product")
+@Table(name = "Product", indexes = {
+    @Index(columnList = "user_id", name = "product_user_id_index"),
+    @Index(columnList = "product_group_id", name = "product_product_group_id_index")
+})
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

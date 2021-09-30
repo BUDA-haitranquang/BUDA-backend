@@ -10,6 +10,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -17,7 +18,10 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
-@Table(name = "Fixed_cost_bill")
+@Table(name = "Fixed_cost_bill", indexes = {
+    @Index(columnList = "user_id", name = "fixed_cost_bill_user_id_index"),
+    @Index(columnList = "fixed_cost_id", name = "fixed_cost_bill_fixed_cost_id_index")
+})
 public class FixedCostBill {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

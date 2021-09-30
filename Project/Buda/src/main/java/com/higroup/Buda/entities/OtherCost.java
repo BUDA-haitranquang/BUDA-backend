@@ -8,10 +8,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Other_cost")
+@Table(name = "Other_cost", indexes = {
+    @Index(columnList = "user_id", name = "other_cost_user_id_index")
+})
 public class OtherCost {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,21 +24,22 @@ public class OtherCost {
     private Long userID;
     @Column(columnDefinition = "double default 0.0")
     private double totalCost;
-    private ZonedDateTime paymentDate;
+    private ZonedDateTime creationTime;
     @Column(length = 200)
     private String name;
     @Column(length = 2000)
     private String description;
 
 
+
     public OtherCost() {
     }
 
-    public OtherCost(Long otherCostID, Long userID, double totalCost, ZonedDateTime paymentDate, String name, String description) {
+    public OtherCost(Long otherCostID, Long userID, double totalCost, ZonedDateTime creationTime, String name, String description) {
         this.otherCostID = otherCostID;
         this.userID = userID;
         this.totalCost = totalCost;
-        this.paymentDate = paymentDate;
+        this.creationTime = creationTime;
         this.name = name;
         this.description = description;
     }
@@ -64,12 +68,12 @@ public class OtherCost {
         this.totalCost = totalCost;
     }
 
-    public ZonedDateTime getPaymentDate() {
-        return this.paymentDate;
+    public ZonedDateTime getCreationTime() {
+        return this.creationTime;
     }
 
-    public void setPaymentDate(ZonedDateTime paymentDate) {
-        this.paymentDate = paymentDate;
+    public void setCreationTime(ZonedDateTime creationTime) {
+        this.creationTime = creationTime;
     }
 
     public String getName() {
@@ -103,8 +107,8 @@ public class OtherCost {
         return this;
     }
 
-    public OtherCost paymentDate(ZonedDateTime paymentDate) {
-        setPaymentDate(paymentDate);
+    public OtherCost creationTime(ZonedDateTime creationTime) {
+        setCreationTime(creationTime);
         return this;
     }
 
@@ -126,12 +130,12 @@ public class OtherCost {
             return false;
         }
         OtherCost otherCost = (OtherCost) o;
-        return Objects.equals(otherCostID, otherCost.otherCostID) && Objects.equals(userID, otherCost.userID) && totalCost == otherCost.totalCost && Objects.equals(paymentDate, otherCost.paymentDate) && Objects.equals(name, otherCost.name) && Objects.equals(description, otherCost.description);
+        return Objects.equals(otherCostID, otherCost.otherCostID) && Objects.equals(userID, otherCost.userID) && totalCost == otherCost.totalCost && Objects.equals(creationTime, otherCost.creationTime) && Objects.equals(name, otherCost.name) && Objects.equals(description, otherCost.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(otherCostID, userID, totalCost, paymentDate, name, description);
+        return Objects.hash(otherCostID, userID, totalCost, creationTime, name, description);
     }
 
     @Override
@@ -140,10 +144,10 @@ public class OtherCost {
             " otherCostID='" + getOtherCostID() + "'" +
             ", userID='" + getUserID() + "'" +
             ", totalCost='" + getTotalCost() + "'" +
-            ", paymentDate='" + getPaymentDate() + "'" +
+            ", creationTime='" + getCreationTime() + "'" +
             ", name='" + getName() + "'" +
             ", description='" + getDescription() + "'" +
             "}";
     }
-    
+  
 }

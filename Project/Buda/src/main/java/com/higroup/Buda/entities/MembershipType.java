@@ -8,6 +8,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -16,7 +17,9 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
-@Table(name = "Membership_type")
+@Table(name = "Membership_type", indexes = {
+    @Index(columnList = "user_id", name = "membership_type_user_id_index")
+})
 public class MembershipType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

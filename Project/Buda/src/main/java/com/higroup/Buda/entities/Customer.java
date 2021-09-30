@@ -12,13 +12,18 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
-@Table(name = "Customer")
+//column nao dinh dang lai ten thi dung ten trong @Column, column nao khong dinh dang lai ten thi dung ten bien
+@Table(name = "Customer", indexes = {
+    @Index(columnList = "user_id", name = "customer_user_id_index"),
+    @Index(columnList = "phoneNumber", name = "customer_phone_number_index")
+})
 public class Customer{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

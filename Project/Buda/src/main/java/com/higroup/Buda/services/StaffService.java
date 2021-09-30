@@ -8,20 +8,23 @@ import com.higroup.Buda.repositories.StaffRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class StaffService {
     private final StaffRepository staffRepository;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired
     public StaffService(StaffRepository staffRepository)
     {
+        this.bCryptPasswordEncoder = new BCryptPasswordEncoder();
         this.staffRepository = staffRepository;
     }
-    public ResponseEntity<?> correctLogin(String uuid, String password)
+    public ResponseEntity<?> correctLogin(String uuid, String rawPassword)
     {
         Optional<Staff> staff = this.staffRepository.findStaffByStaffUUID(uuid);
-        if (staff.get().getPassword().equals(password))
+        if ((staff.isPresent())&&(this.bCryptPasswordEncoder.matches(rawPassword, staff.get().getPassword())))
         {
             return ResponseEntity.ok().body("True");
         }
@@ -39,6 +42,7 @@ public class StaffService {
         {
             return ResponseEntity.badRequest().body("Invalid PhoneNumber");
         }
+        newStaff.setPassword(this.bCryptPasswordEncoder.encode(newStaff.getPassword()));
         this.staffRepository.save(newStaff);
         return ResponseEntity.ok().body(newStaff.toString());
     }

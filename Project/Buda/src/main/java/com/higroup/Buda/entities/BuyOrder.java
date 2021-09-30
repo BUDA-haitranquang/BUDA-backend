@@ -9,7 +9,10 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "Buy_order")
+@Table(name = "Buy_order", indexes = {
+    @Index(columnList = "user_id", name = "buy_order_user_id_index"),
+    @Index(columnList = "supplier_id", name = "buy_order_supplier_id_index")
+})
 public class BuyOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

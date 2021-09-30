@@ -9,13 +9,16 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
-@Table(name = "Fixed_cost")
+@Table(name = "Fixed_cost", indexes = {
+    @Index(columnList = "user_id", name = "fixed_cost_user_id_index")
+})
 public class FixedCost {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
