@@ -12,6 +12,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -25,7 +26,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 
 @Entity
-@Table(name = "User")
+@Table(name = "User", indexes = {
+    @Index(columnList = "email", name = "user_email_index"),
+    @Index(columnList = "phoneNumber", name = "user_phone_number_index"),
+    @Index(columnList = "userName", name = "user_user_name_index")
+})
 
 public class User implements UserDetails {
     @Id

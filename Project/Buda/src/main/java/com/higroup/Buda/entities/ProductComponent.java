@@ -7,7 +7,11 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
-@Table(name = "ProductComponent")
+@Table(name = "ProductComponent", indexes = {
+    @Index(columnList = "user_id", name = "product_component_user_id_index"),
+    @Index(columnList = "product_id", name = "product_component_product_id_index"),
+    @Index(columnList = "ingredient_id", name = "product_component_ingredient_id_index")
+})
 public class ProductComponent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

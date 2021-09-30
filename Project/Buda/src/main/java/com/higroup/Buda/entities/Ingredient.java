@@ -7,7 +7,9 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "Ingredient")
+@Table(name = "Ingredient", indexes = {
+    @Index(columnList = "user_id", name = "ingredient_user_id_index")
+})
 public class Ingredient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

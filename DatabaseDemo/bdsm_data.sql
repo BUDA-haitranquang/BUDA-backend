@@ -70,7 +70,7 @@ INSERT INTO membership_type (membership_type_id, description, membership_name, m
 -- Dumping data for table `other_cost`
 --
 
-INSERT INTO other_cost (other_cost_id, description, name, payment_date, total_cost, user_id) VALUES (1,'Testing','VAT','2021-06-25 00:00:00',30000,3),(2,'Testing','Rent','2021-06-28 00:00:00',500000,5),(3,'Testing','Repair','2021-06-30 00:00:00',100000,8),(4,'Testing','Fuel','2021-07-03 00:00:00',120000,9),(5,'Testing','Insurance','2021-07-08 00:00:00',200000,12);
+INSERT INTO other_cost (other_cost_id, description, name, creation_time, total_cost, user_id) VALUES (1,'Testing','VAT','2021-06-25 00:00:00',30000,3),(2,'Testing','Rent','2021-06-28 00:00:00',500000,5),(3,'Testing','Repair','2021-06-30 00:00:00',100000,8),(4,'Testing','Fuel','2021-07-03 00:00:00',120000,9),(5,'Testing','Insurance','2021-07-08 00:00:00',200000,12);
 
 --
 -- Dumping data for table `picture`

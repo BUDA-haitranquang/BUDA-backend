@@ -9,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -16,7 +17,11 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
-@Table(name = "ingredient_left_log")
+@Table(name = "ingredient_left_log", indexes = {
+    @Index(columnList = "user_id", name = "ingredient_left_log_user_id_index"),
+    @Index(columnList = "ingredient_id", name = "ingredient_left_log_ingredient_id_index"),
+    @Index(columnList = "staff_id", name = "ingredient_left_log_staff_id_index")
+})
 public class IngredientLeftLog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

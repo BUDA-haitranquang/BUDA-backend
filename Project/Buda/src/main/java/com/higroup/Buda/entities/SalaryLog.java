@@ -8,10 +8,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Salary_log")
+@Table(name = "Salary_log", indexes = {
+    @Index(columnList = "user_id", name = "salary_log_user_id_index"),
+    @Index(columnList = "staff_id", name = "salary_log_staff_id_index")
+})
 public class SalaryLog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

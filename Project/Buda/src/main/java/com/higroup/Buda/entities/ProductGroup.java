@@ -9,13 +9,18 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import org.junit.experimental.categories.Categories.IncludeCategory;
+
 @Entity
-@Table(name = "Product_group")
+@Table(name = "Product_group", indexes = {
+    @Index(columnList = "user_id", name = "product_group_user_id_index")
+})
 public class ProductGroup {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -9,10 +9,13 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Staff")
+@Table(name = "Staff", indexes = {
+    @Index(columnList = "user_id", name = "staff_user_id_index")
+})
 public class Staff {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
