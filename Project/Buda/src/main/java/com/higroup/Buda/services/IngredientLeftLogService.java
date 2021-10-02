@@ -30,16 +30,12 @@ public class IngredientLeftLogService {
     public ResponseEntity<?> findIngredientLeftLogByIngredientLeftLogID(Long ingredientLeftLogID)
     {
         Optional<IngredientLeftLog> ingredientLeftLog = this.ingredientLeftLogRepository.findIngredientLeftLogByIngredientLeftLogID(ingredientLeftLogID);
-        if (ingredientLeftLog.isPresent())
-        {
-            return ResponseEntity.ok().body(ingredientLeftLog.get().toString());
-        }
-        return ResponseEntity.badRequest().body("Not found");
+        return ingredientLeftLog.<ResponseEntity<?>>map(leftLog -> ResponseEntity.ok().body(leftLog.toString())).orElseGet(() -> ResponseEntity.badRequest().body("Not found"));
     }
     public ResponseEntity<?> registerNewIngredientLeftLog(Long userID, IngredientLeftLog ingredientLeftLog)
     {
         Optional<User> user = this.userRepository.findUserByUserID(userID);
-        if (!user.isPresent())
+        if (user.isEmpty())
         {
             return ResponseEntity.badRequest().body("User not found");
         }
@@ -50,11 +46,7 @@ public class IngredientLeftLogService {
     public List<IngredientLeftLog> findAllIngredientLeftLogByIngredient(Long ingredientID)
     {
         Optional<Ingredient> Ingredient = this.ingredientRepository.findIngredientByIngredientID(ingredientID);
-        if (!Ingredient.isPresent())
-        {
-            return null;
-        }
-        return this.ingredientLeftLogRepository.findAllIngredientLeftLogByIngredient(Ingredient.get());
+        return Ingredient.map(this.ingredientLeftLogRepository::findAllIngredientLeftLogByIngredient).orElse(null);
     }
     public List<IngredientLeftLog> findAllIngredientLeftLogByStaffID(Long staffID)
     {

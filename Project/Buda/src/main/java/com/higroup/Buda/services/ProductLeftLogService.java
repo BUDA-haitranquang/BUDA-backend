@@ -30,16 +30,12 @@ public class ProductLeftLogService {
     public ResponseEntity<?> findProductLeftLogByProductLeftLogID(Long productLeftLogID)
     {
         Optional<ProductLeftLog> productLeftLog = this.productLeftLogRepository.findProductLeftLogByProductLeftLogID(productLeftLogID);
-        if (productLeftLog.isPresent())
-        {
-            return ResponseEntity.ok().body(productLeftLog.get().toString());
-        }
-        return ResponseEntity.badRequest().body("Not found");
+        return productLeftLog.<ResponseEntity<?>>map(leftLog -> ResponseEntity.ok().body(leftLog.toString())).orElseGet(() -> ResponseEntity.badRequest().body("Not found"));
     }
     public ResponseEntity<?> registerNewProductLeftLog(Long userID, ProductLeftLog productLeftLog)
     {
         Optional<User> user = this.userRepository.findUserByUserID(userID);
-        if (!user.isPresent())
+        if (user.isEmpty())
         {
             return ResponseEntity.badRequest().body("User not found");
         }
@@ -50,11 +46,7 @@ public class ProductLeftLogService {
     public List<ProductLeftLog> findAllProductLeftLogByProduct(Long productID)
     {
         Optional<Product> product = this.productRepository.findProductByProductID(productID);
-        if (!product.isPresent())
-        {
-            return null;
-        }
-        return this.productLeftLogRepository.findAllProductLeftLogByProduct(product.get());
+        return product.map(this.productLeftLogRepository::findAllProductLeftLogByProduct).orElse(null);
     }
     public List<ProductLeftLog> findAllProductLeftLogByStaffID(Long staffID)
     {

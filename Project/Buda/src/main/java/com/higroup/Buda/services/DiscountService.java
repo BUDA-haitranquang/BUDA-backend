@@ -26,7 +26,7 @@ public class DiscountService {
     public ResponseEntity<?> registerNewDiscount(Long userID, Discount discount)
     {
         Optional<User> user = this.userRepository.findUserByUserID(userID);
-        if (!user.isPresent())
+        if (user.isEmpty())
         {
             return ResponseEntity.badRequest().body("User not found");
         }
@@ -37,11 +37,7 @@ public class DiscountService {
     public ResponseEntity<?> findDiscountByDiscountID(Long discountID)
     {
         Optional<Discount> discount = this.discountRepository.findDiscountByDiscountID(discountID);
-        if (discount.isPresent())
-        {
-            return ResponseEntity.ok().body(discount.get().toString());
-        }
-        return ResponseEntity.badRequest().body("Not found");
+        return discount.<ResponseEntity<?>>map(value -> ResponseEntity.ok().body(value.toString())).orElseGet(() -> ResponseEntity.badRequest().body("Not found"));
     }
     public List<Discount> findAllDiscountByUserID(Long userID)
     {

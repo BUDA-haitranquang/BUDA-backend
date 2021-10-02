@@ -31,7 +31,7 @@ public class PurchaseService {
     public ResponseEntity<?> createNewPurchase(Long userID, Purchase purchase)
     {
         Optional<User> user = this.userRepository.findUserByUserID(userID);
-        if (!user.isPresent())
+        if (user.isEmpty())
         {
             return ResponseEntity.badRequest().body("User not found");
         }

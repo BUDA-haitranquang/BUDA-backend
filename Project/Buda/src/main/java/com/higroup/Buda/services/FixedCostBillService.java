@@ -23,11 +23,7 @@ public class FixedCostBillService {
     public List<FixedCostBill> findAllByFixedCostID(Long fixedCostID)
     {
         Optional<FixedCost> fixedCost = this.fixedCostRepository.findFixedCostByFixedCostID(fixedCostID);
-        if (fixedCost.isPresent())
-        {
-            return this.fixedCostBillRepository.findAllByFixedCost(fixedCost.get());
-        }
-        return null;
+        return fixedCost.map(this.fixedCostBillRepository::findAllByFixedCost).orElse(null);
     }
     public List<FixedCostBill> findAllByUserID(Long userID)
     {
