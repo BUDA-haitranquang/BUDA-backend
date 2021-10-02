@@ -30,12 +30,12 @@ public class StaffNoteService {
     public ResponseEntity<?> registerNewStaffNote(Long userID, StaffNote staffNote)
     {
         Optional<User> user = this.userRepository.findUserByUserID(userID);
-        if (!user.isPresent())
+        if (user.isEmpty())
         {
             return ResponseEntity.badRequest().body("User not found");
         }
         Optional<Staff> staff = this.staffRepository.findStaffByStaffID(staffNote.getStaffID());
-        if (!staff.isPresent())
+        if (staff.isEmpty())
         {
             return ResponseEntity.badRequest().body("Staff not found");
         }

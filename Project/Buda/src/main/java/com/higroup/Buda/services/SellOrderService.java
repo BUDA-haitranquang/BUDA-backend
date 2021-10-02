@@ -33,7 +33,7 @@ public class SellOrderService {
     public ResponseEntity<?> registerNewSellOrder(Long userID, SellOrder sellOrder)
     {
         Optional<User> user = this.userRepository.findUserByUserID(userID);
-        if (!user.isPresent())
+        if (user.isEmpty())
         {
             return ResponseEntity.badRequest().body("User not found");
         }
@@ -55,11 +55,7 @@ public class SellOrderService {
     public List<SellOrder> findAllSellOrderByCustomerID(Long customerID)
     {
         Optional<Customer> customer = this.customerRepository.findCustomerByCustomerID(customerID);
-        if (customer.isPresent())
-        {
-            return this.sellOrderRepository.findAllSellOrderByCustomer(customer.get());
-        }
-        return null;
+        return customer.map(this.sellOrderRepository::findAllSellOrderByCustomer).orElse(null);
     }
     public List<SellOrder> findAllSellOrderByUserID(Long userID)
     {

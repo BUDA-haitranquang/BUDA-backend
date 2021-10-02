@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class StaffService {
     private final StaffRepository staffRepository;
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired
     public StaffService(StaffRepository staffRepository)
     {

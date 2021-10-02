@@ -110,7 +110,7 @@ public class UserService implements UserDetailsService{
         //System.out.println(bCryptPasswordEncoder.encode(rawPassword));
         //System.out.println(this.bCryptPasswordEncoder.matches(rawPassword, mailUser.get().getPassword()));
         //System.out.println(rawPassword);
-        if (mailUser.isPresent() && (bCryptPasswordEncoder.matches(rawPassword, mailUser.get().getPassword())))
+        if (bCryptPasswordEncoder.matches(rawPassword, mailUser.get().getPassword()))
         {
             JwtTokenUtil jwtTokenUtil = new JwtTokenUtil();
             UserDetails userDetails = mailUser.get();
@@ -141,13 +141,13 @@ public class UserService implements UserDetailsService{
             //khong phai phone
             return ResponseEntity.badRequest().body("Invalid phoneNumber");
         }
-        if ((phoneNumber!=null) && (phoneUser.isPresent()) && (phoneUser.get().getUserID()!=thisUser.getUserID()))
+        if (phoneUser.isPresent() && !phoneUser.get().getUserID().equals(thisUser.getUserID()))
         {
             //BAD REQUEST da ton tai phone
             return ResponseEntity.badRequest().body("Already used by another user phoneNumber");
         }
         Optional<User> userNameUser = userRepository.findUserByUserName(userName);
-        if ((userName!=null) && (userNameUser.isPresent()) && (userNameUser.get().getUserID()!=thisUser.getUserID()))
+        if ((userName!=null) && (userNameUser.isPresent()) && (!userNameUser.get().getUserID().equals(thisUser.getUserID())))
         {
             //BAD REQUEST da ton tai username
             return ResponseEntity.badRequest().body(thisUser);
@@ -174,12 +174,8 @@ public class UserService implements UserDetailsService{
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Optional<User> mailUser = this.userRepository.findUserByEmail(email);
-        if (mailUser.isPresent())
-        {
-            return mailUser.get();
-        }
+        return mailUser.orElse(null);
         // TODO Auto-generated method stub
-        return null;
     }
 
     // TUONG UNG VOI 4 REQUEST BEN USER CONTROLLER

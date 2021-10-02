@@ -29,12 +29,12 @@ public class SalaryLogService {
     public ResponseEntity<?> registerNewSalaryLog(Long userID, SalaryLog salaryLog)
     {
         Optional<User> user = userRepository.findUserByUserID(userID);
-        if (!user.isPresent())
+        if (user.isEmpty())
         {
             return ResponseEntity.badRequest().body("User not found");
         }
         Optional<Staff> staff = staffRepository.findStaffByStaffID(salaryLog.getStaffID());
-        if (!staff.isPresent())
+        if (staff.isEmpty())
         {
             return ResponseEntity.badRequest().body("Staff not found");
         }

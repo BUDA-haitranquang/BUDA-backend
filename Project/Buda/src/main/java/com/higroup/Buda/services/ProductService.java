@@ -29,7 +29,7 @@ public class ProductService {
     public ResponseEntity<?> registerNewProduct(Long userID, Product product)
     {
         Optional<User> user = this.userRepository.findUserByUserID(userID);
-        if (!user.isPresent())
+        if (user.isEmpty())
         {
             return ResponseEntity.badRequest().body("User not found");
         }
@@ -44,19 +44,11 @@ public class ProductService {
     public ResponseEntity<?> findProductByProductID(Long productID)
     {
         Optional<Product> product = this.productRepository.findProductByProductID(productID);
-        if (product.isPresent())
-        {
-            return ResponseEntity.ok().body(product.get().toString());
-        }
-        return ResponseEntity.badRequest().body("Not found");
+        return product.<ResponseEntity<?>>map(value -> ResponseEntity.ok().body(value.toString())).orElseGet(() -> ResponseEntity.badRequest().body("Not found"));
     }
     public List<Product> findAllProductByProductGroupID(Long productGroupID)
     {
         Optional<ProductGroup> productGroup = this.productGroupRepository.findProductGroupByProductGroupID(productGroupID);
-        if (productGroup.isPresent())
-        {
-            return this.productRepository.findAllProductByProductGroup(productGroup.get());
-        }
-        return null;
+        return productGroup.map(this.productRepository::findAllProductByProductGroup).orElse(null);
     }
 }

@@ -24,10 +24,6 @@ public class SellOrderItemService {
     public List<SellOrderItem> findAllBySellOrderID(Long sellOrderID)
     {
         Optional<SellOrder> sellOrder = this.sellOrderRepository.findSellOrderBySellOrderID(sellOrderID);
-        if (sellOrder.isPresent())
-        {
-            return this.sellOrderItemRepository.findAllSellOrderItemBySellOrder(sellOrder.get());
-        }
-        return null;
+        return sellOrder.map(this.sellOrderItemRepository::findAllSellOrderItemBySellOrder).orElse(null);
     }
 }
