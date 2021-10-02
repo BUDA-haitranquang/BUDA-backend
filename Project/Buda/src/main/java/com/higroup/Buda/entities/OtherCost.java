@@ -8,21 +8,29 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Other_cost")
+@Table(name = "Other_cost", indexes = {
+    @Index(columnList = "user_id", name = "other_cost_user_id_index")
+})
 public class OtherCost {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "other_cost_id")
     private Long otherCostID;
+    @Column(name = "user_id")
     private Long userID;
+    @Column(columnDefinition = "double default 0.0")
     private double totalCost;
     private ZonedDateTime creationTime;
     @Column(length = 200)
     private String name;
     @Column(length = 2000)
     private String description;
+
+
 
     public OtherCost() {
     }
@@ -141,5 +149,5 @@ public class OtherCost {
             ", description='" + getDescription() + "'" +
             "}";
     }
-
+  
 }

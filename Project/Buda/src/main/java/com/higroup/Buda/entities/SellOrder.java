@@ -4,11 +4,15 @@ import java.time.ZonedDateTime;
 import java.util.Objects;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -18,45 +22,62 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
-@Table(name = "Sell_order")
+@Table(name = "Sell_order", indexes = {
+    @Index(columnList = "user_id", name = "sell_order_user_id_index"),
+    @Index(columnList = "customer_id", name = "sell_order_customer_id_index"),
+    @Index(columnList = "discount_id", name = "sell_order_discount_id_index")
+})
 public class SellOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "sell_order_id")
     private Long sellOrderID;
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
-    @JoinColumn(name = "customerID", nullable = true)
+    @JoinColumn(name = "customer_ID", nullable = true)
     @JsonBackReference
     private Customer customer;
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
-    @JoinColumn(name = "discountID", nullable = true)
+    @JoinColumn(name = "discount_ID", nullable = true)
     @JsonBackReference
     private Discount discount;
     private ZonedDateTime creationTime;
+    @Enumerated(EnumType.STRING)
     private AgeGroup ageGroup;
+    @Enumerated(EnumType.STRING)
     private Gender gender;
+    @Column(columnDefinition = "double default 0.0")
+    private double actualDiscountCash;
+    @Column(columnDefinition = "double default 0.0")
+    private double actualDiscountPercentage;
     private double realCost;
     private double finalCost;
+    @Column(name = "user_id")
     private Long userID;
-    private String message;
+    @Column(length = 1000)
+    private String customerMessage;
+    @Enumerated(EnumType.STRING)
     private Status status;
     @OneToMany(mappedBy = "sellOrder", fetch = FetchType.LAZY)
     @JsonManagedReference
     private Set<SellOrderItem> sellOrderItems;
 
+
     public SellOrder() {
     }
 
-    public SellOrder(Long sellOrderID, Customer customer, Discount discount, ZonedDateTime creationTime, AgeGroup ageGroup, Gender gender, double realCost, double finalCost, Long userID, String message, Status status, Set<SellOrderItem> sellOrderItems) {
+    public SellOrder(Long sellOrderID, Customer customer, Discount discount, ZonedDateTime creationTime, AgeGroup ageGroup, Gender gender, double actualDiscountCash, double actualDiscountPercentage, double realCost, double finalCost, Long userID, String customerMessage, Status status, Set<SellOrderItem> sellOrderItems) {
         this.sellOrderID = sellOrderID;
         this.customer = customer;
         this.discount = discount;
         this.creationTime = creationTime;
         this.ageGroup = ageGroup;
         this.gender = gender;
+        this.actualDiscountCash = actualDiscountCash;
+        this.actualDiscountPercentage = actualDiscountPercentage;
         this.realCost = realCost;
         this.finalCost = finalCost;
         this.userID = userID;
-        this.message = message;
+        this.customerMessage = customerMessage;
         this.status = status;
         this.sellOrderItems = sellOrderItems;
     }
@@ -109,6 +130,22 @@ public class SellOrder {
         this.gender = gender;
     }
 
+    public double getActualDiscountCash() {
+        return this.actualDiscountCash;
+    }
+
+    public void setActualDiscountCash(double actualDiscountCash) {
+        this.actualDiscountCash = actualDiscountCash;
+    }
+
+    public double getActualDiscountPercentage() {
+        return this.actualDiscountPercentage;
+    }
+
+    public void setActualDiscountPercentage(double actualDiscountPercentage) {
+        this.actualDiscountPercentage = actualDiscountPercentage;
+    }
+
     public double getRealCost() {
         return this.realCost;
     }
@@ -133,12 +170,12 @@ public class SellOrder {
         this.userID = userID;
     }
 
-    public String getMessage() {
-        return this.message;
+    public String getCustomerMessage() {
+        return this.customerMessage;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setCustomerMessage(String customerMessage) {
+        this.customerMessage = customerMessage;
     }
 
     public Status getStatus() {
@@ -187,6 +224,16 @@ public class SellOrder {
         return this;
     }
 
+    public SellOrder actualDiscountCash(double actualDiscountCash) {
+        setActualDiscountCash(actualDiscountCash);
+        return this;
+    }
+
+    public SellOrder actualDiscountPercentage(double actualDiscountPercentage) {
+        setActualDiscountPercentage(actualDiscountPercentage);
+        return this;
+    }
+
     public SellOrder realCost(double realCost) {
         setRealCost(realCost);
         return this;
@@ -202,8 +249,8 @@ public class SellOrder {
         return this;
     }
 
-    public SellOrder message(String message) {
-        setMessage(message);
+    public SellOrder customerMessage(String customerMessage) {
+        setCustomerMessage(customerMessage);
         return this;
     }
 
@@ -225,12 +272,12 @@ public class SellOrder {
             return false;
         }
         SellOrder sellOrder = (SellOrder) o;
-        return Objects.equals(sellOrderID, sellOrder.sellOrderID) && Objects.equals(customer, sellOrder.customer) && Objects.equals(discount, sellOrder.discount) && Objects.equals(creationTime, sellOrder.creationTime) && Objects.equals(ageGroup, sellOrder.ageGroup) && Objects.equals(gender, sellOrder.gender) && realCost == sellOrder.realCost && finalCost == sellOrder.finalCost && Objects.equals(userID, sellOrder.userID) && Objects.equals(message, sellOrder.message) && Objects.equals(status, sellOrder.status) && Objects.equals(sellOrderItems, sellOrder.sellOrderItems);
+        return Objects.equals(sellOrderID, sellOrder.sellOrderID) && Objects.equals(customer, sellOrder.customer) && Objects.equals(discount, sellOrder.discount) && Objects.equals(creationTime, sellOrder.creationTime) && Objects.equals(ageGroup, sellOrder.ageGroup) && Objects.equals(gender, sellOrder.gender) && actualDiscountCash == sellOrder.actualDiscountCash && actualDiscountPercentage == sellOrder.actualDiscountPercentage && realCost == sellOrder.realCost && finalCost == sellOrder.finalCost && Objects.equals(userID, sellOrder.userID) && Objects.equals(customerMessage, sellOrder.customerMessage) && Objects.equals(status, sellOrder.status) && Objects.equals(sellOrderItems, sellOrder.sellOrderItems);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(sellOrderID, customer, discount, creationTime, ageGroup, gender, realCost, finalCost, userID, message, status, sellOrderItems);
+        return Objects.hash(sellOrderID, customer, discount, creationTime, ageGroup, gender, actualDiscountCash, actualDiscountPercentage, realCost, finalCost, userID, customerMessage, status, sellOrderItems);
     }
 
     @Override
@@ -242,13 +289,15 @@ public class SellOrder {
             ", creationTime='" + getCreationTime() + "'" +
             ", ageGroup='" + getAgeGroup() + "'" +
             ", gender='" + getGender() + "'" +
+            ", actualDiscountCash='" + getActualDiscountCash() + "'" +
+            ", actualDiscountPercentage='" + getActualDiscountPercentage() + "'" +
             ", realCost='" + getRealCost() + "'" +
             ", finalCost='" + getFinalCost() + "'" +
             ", userID='" + getUserID() + "'" +
-            ", message='" + getMessage() + "'" +
+            ", customerMessage='" + getCustomerMessage() + "'" +
             ", status='" + getStatus() + "'" +
             ", sellOrderItems='" + getSellOrderItems() + "'" +
             "}";
     }
-
+    
 }

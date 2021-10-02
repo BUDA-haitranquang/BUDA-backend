@@ -9,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -16,25 +17,42 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
-@Table(name = "Purchase")
+@Table(name = "Purchase", indexes = {
+    @Index(columnList = "user_id", name = "purchase_user_id_index")
+})
 public class Purchase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "purchaseID")
+    @Column(name = "purchase_ID")
     private Long purchaseID;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "userID", nullable = false)
+    @JoinColumn(name = "user_ID", nullable = false)
     @JsonBackReference
     private User user;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "planID", nullable = false)
+    @JoinColumn(name = "plan_ID", nullable = false)
     @JsonBackReference
     private Plan plan;
-    private ZonedDateTime creationDate;
+    private ZonedDateTime creationTime;
     private ZonedDateTime expiryDate;
-    @Column(length = 500)
+    @Column(length = 1000)
     private String message;
+    @Column(columnDefinition = "double default 0.0")
     private double totalCost;
+
+
+    public Purchase() {
+    }
+
+    public Purchase(Long purchaseID, User user, Plan plan, ZonedDateTime creationTime, ZonedDateTime expiryDate, String message, double totalCost) {
+        this.purchaseID = purchaseID;
+        this.user = user;
+        this.plan = plan;
+        this.creationTime = creationTime;
+        this.expiryDate = expiryDate;
+        this.message = message;
+        this.totalCost = totalCost;
+    }
 
     public Long getPurchaseID() {
         return this.purchaseID;
@@ -60,12 +78,12 @@ public class Purchase {
         this.plan = plan;
     }
 
-    public ZonedDateTime getCreationDate() {
-        return this.creationDate;
+    public ZonedDateTime getCreationTime() {
+        return this.creationTime;
     }
 
-    public void setCreationDate(ZonedDateTime creationDate) {
-        this.creationDate = creationDate;
+    public void setCreationTime(ZonedDateTime creationTime) {
+        this.creationTime = creationTime;
     }
 
     public ZonedDateTime getExpiryDate() {
@@ -82,29 +100,6 @@ public class Purchase {
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    public Purchase() {
-    }
-
-    public Purchase(Long purchaseID, User user, Plan plan, ZonedDateTime creationDate, ZonedDateTime expiryDate, String message) {
-        this.purchaseID = purchaseID;
-        this.user = user;
-        this.plan = plan;
-        this.creationDate = creationDate;
-        this.expiryDate = expiryDate;
-        this.message = message;
-    }
-
-
-    public Purchase(Long purchaseID, User user, Plan plan, ZonedDateTime creationDate, ZonedDateTime expiryDate, String message, double totalCost) {
-        this.purchaseID = purchaseID;
-        this.user = user;
-        this.plan = plan;
-        this.creationDate = creationDate;
-        this.expiryDate = expiryDate;
-        this.message = message;
-        this.totalCost = totalCost;
     }
 
     public double getTotalCost() {
@@ -130,8 +125,8 @@ public class Purchase {
         return this;
     }
 
-    public Purchase creationDate(ZonedDateTime creationDate) {
-        setCreationDate(creationDate);
+    public Purchase creationTime(ZonedDateTime creationTime) {
+        setCreationTime(creationTime);
         return this;
     }
 
@@ -158,12 +153,12 @@ public class Purchase {
             return false;
         }
         Purchase purchase = (Purchase) o;
-        return Objects.equals(purchaseID, purchase.purchaseID) && Objects.equals(user, purchase.user) && Objects.equals(plan, purchase.plan) && Objects.equals(creationDate, purchase.creationDate) && Objects.equals(expiryDate, purchase.expiryDate) && Objects.equals(message, purchase.message) && totalCost == purchase.totalCost;
+        return Objects.equals(purchaseID, purchase.purchaseID) && Objects.equals(user, purchase.user) && Objects.equals(plan, purchase.plan) && Objects.equals(creationTime, purchase.creationTime) && Objects.equals(expiryDate, purchase.expiryDate) && Objects.equals(message, purchase.message) && totalCost == purchase.totalCost;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(purchaseID, user, plan, creationDate, expiryDate, message, totalCost);
+        return Objects.hash(purchaseID, user, plan, creationTime, expiryDate, message, totalCost);
     }
 
     @Override
@@ -172,10 +167,11 @@ public class Purchase {
             " purchaseID='" + getPurchaseID() + "'" +
             ", user='" + getUser() + "'" +
             ", plan='" + getPlan() + "'" +
-            ", creationDate='" + getCreationDate() + "'" +
+            ", creationTime='" + getCreationTime() + "'" +
             ", expiryDate='" + getExpiryDate() + "'" +
             ", message='" + getMessage() + "'" +
+            ", totalCost='" + getTotalCost() + "'" +
             "}";
     }
-  
+    
 }

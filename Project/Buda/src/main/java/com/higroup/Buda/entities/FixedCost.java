@@ -9,22 +9,27 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
-@Table(name = "Fixed_cost")
+@Table(name = "Fixed_cost", indexes = {
+    @Index(columnList = "user_id", name = "fixed_cost_user_id_index")
+})
 public class FixedCost {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "fixed_cost_id")
     private Long fixedCostID;
     private String name;
     @Column(length = 1000)
     private String description;
     private double moneyAmount;
     private int period;
+    @Column(name = "user_id")
     private Long userID;
     @OneToMany(mappedBy = "fixedCost", fetch = FetchType.LAZY)
     @JsonManagedReference

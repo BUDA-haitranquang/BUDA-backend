@@ -9,52 +9,45 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "Buy_order")
+@Table(name = "Buy_order", indexes = {
+    @Index(columnList = "user_id", name = "buy_order_user_id_index"),
+    @Index(columnList = "supplier_id", name = "buy_order_supplier_id_index")
+})
 public class BuyOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "buy_order_id")
     private Long buyOrderID;
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
-    @JoinColumn(name = "supplierID", nullable = true)
+    @JoinColumn(name = "supplier_ID", nullable = true)
     @JsonBackReference
     private Supplier supplier;
     private ZonedDateTime creationTime;
+    @Enumerated(EnumType.STRING)
     private Status status;
-    private double TotalCost;
+    private double totalCost;
+    @Column(name = "user_id")
     private Long userID;
     @OneToMany(mappedBy = "buyOrder", fetch = FetchType.LAZY)
     @JsonManagedReference
     private Set<BuyOrderItem> buyOrderItems;
 
-    public BuyOrder(Long buyOrderID, Supplier supplier, ZonedDateTime creationTime, Status status, double totalCost, Long userID, Set<BuyOrderItem> buyOrderItems) {
+
+    public BuyOrder() {
+    }
+
+    public BuyOrder(Long buyOrderID, Supplier supplier, ZonedDateTime creationTime, Status status, double TotalCost, Long userID, Set<BuyOrderItem> buyOrderItems) {
         this.buyOrderID = buyOrderID;
         this.supplier = supplier;
         this.creationTime = creationTime;
         this.status = status;
-        TotalCost = totalCost;
+        this.totalCost = TotalCost;
         this.userID = userID;
         this.buyOrderItems = buyOrderItems;
     }
 
-    public BuyOrder() {
-
-    }
-
-    public Set<BuyOrderItem> getBuyOrderItems() {
-        return buyOrderItems;
-    }
-
-    public void setBuyOrderItems(Set<BuyOrderItem> buyOrderItems) {
-        this.buyOrderItems = buyOrderItems;
-    }
-
-    public BuyOrder buyOrderItems(Set<BuyOrderItem> buyOrderItems) {
-        setBuyOrderItems(buyOrderItems);
-        return this;
-    }
-
     public Long getBuyOrderID() {
-        return buyOrderID;
+        return this.buyOrderID;
     }
 
     public void setBuyOrderID(Long buyOrderID) {
@@ -62,7 +55,7 @@ public class BuyOrder {
     }
 
     public Supplier getSupplier() {
-        return supplier;
+        return this.supplier;
     }
 
     public void setSupplier(Supplier supplier) {
@@ -70,7 +63,7 @@ public class BuyOrder {
     }
 
     public ZonedDateTime getCreationTime() {
-        return creationTime;
+        return this.creationTime;
     }
 
     public void setCreationTime(ZonedDateTime creationTime) {
@@ -78,7 +71,7 @@ public class BuyOrder {
     }
 
     public Status getStatus() {
-        return status;
+        return this.status;
     }
 
     public void setStatus(Status status) {
@@ -86,19 +79,27 @@ public class BuyOrder {
     }
 
     public double getTotalCost() {
-        return TotalCost;
+        return this.totalCost;
     }
 
-    public void setTotalCost(double totalCost) {
-        TotalCost = totalCost;
+    public void setTotalCost(double TotalCost) {
+        this.totalCost = TotalCost;
     }
 
     public Long getUserID() {
-        return userID;
+        return this.userID;
     }
 
     public void setUserID(Long userID) {
         this.userID = userID;
+    }
+
+    public Set<BuyOrderItem> getBuyOrderItems() {
+        return this.buyOrderItems;
+    }
+
+    public void setBuyOrderItems(Set<BuyOrderItem> buyOrderItems) {
+        this.buyOrderItems = buyOrderItems;
     }
 
     public BuyOrder buyOrderID(Long buyOrderID) {
@@ -121,8 +122,8 @@ public class BuyOrder {
         return this;
     }
 
-    public BuyOrder totalCost(double totalCost) {
-        setTotalCost(totalCost);
+    public BuyOrder TotalCost(double TotalCost) {
+        setTotalCost(TotalCost);
         return this;
     }
 
@@ -131,29 +132,38 @@ public class BuyOrder {
         return this;
     }
 
+    public BuyOrder buyOrderItems(Set<BuyOrderItem> buyOrderItems) {
+        setBuyOrderItems(buyOrderItems);
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == this)
+            return true;
+        if (!(o instanceof BuyOrder)) {
+            return false;
+        }
         BuyOrder buyOrder = (BuyOrder) o;
-        return Double.compare(buyOrder.TotalCost, TotalCost) == 0 && Objects.equals(buyOrderID, buyOrder.buyOrderID) && Objects.equals(supplier, buyOrder.supplier) && Objects.equals(creationTime, buyOrder.creationTime) && status == buyOrder.status && Objects.equals(userID, buyOrder.userID) && Objects.equals(buyOrderItems, buyOrder.buyOrderItems);
+        return Objects.equals(buyOrderID, buyOrder.buyOrderID) && Objects.equals(supplier, buyOrder.supplier) && Objects.equals(creationTime, buyOrder.creationTime) && Objects.equals(status, buyOrder.status) && totalCost == buyOrder.totalCost && Objects.equals(userID, buyOrder.userID) && Objects.equals(buyOrderItems, buyOrder.buyOrderItems);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(buyOrderID, supplier, creationTime, status, TotalCost, userID, buyOrderItems);
+        return Objects.hash(buyOrderID, supplier, creationTime, status, totalCost, userID, buyOrderItems);
     }
 
     @Override
     public String toString() {
-        return "BuyOrder{" +
-                "buyOrderID=" + buyOrderID +
-                ", supplier=" + supplier +
-                ", creationTime=" + creationTime +
-                ", status=" + status +
-                ", TotalCost=" + TotalCost +
-                ", userID=" + userID +
-                ", buyOrderItems=" + buyOrderItems +
-                '}';
+        return "{" +
+            " buyOrderID='" + getBuyOrderID() + "'" +
+            ", supplier='" + getSupplier() + "'" +
+            ", creationTime='" + getCreationTime() + "'" +
+            ", status='" + getStatus() + "'" +
+            ", TotalCost='" + getTotalCost() + "'" +
+            ", userID='" + getUserID() + "'" +
+            ", buyOrderItems='" + getBuyOrderItems() + "'" +
+            "}";
     }
+    
 }

@@ -3,11 +3,15 @@ package com.higroup.Buda.entities;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -15,24 +19,32 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
-@Table(name = "Sell_order_item")
+@Table(name = "Sell_order_item", indexes = {
+    @Index(columnList = "sell_order_id", name = "sell_order_item_sell_order_id_index"),
+    @Index(columnList = "user_id", name = "sell_order_item_user_id_index"),
+    @Index(columnList = "product_id", name = "sell_order_item_product_id_index")
+})
 public class SellOrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "sell_order_item_id")
     private Long sellOrderItemID;
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
     @JsonBackReference
-    @JoinColumn(name = "sellOrderID", nullable = true)
+    @JoinColumn(name = "sell_Order_ID", nullable = true)
     private SellOrder sellOrder;
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
     @JsonBackReference
-    @JoinColumn(name = "productID", nullable = true)
+    @JoinColumn(name = "product_ID", nullable = true)
     private Product product;
     private int quantity;
     private double pricePerUnit;
+    @Column(name = "user_id")
     private Long userID;
     private ZonedDateTime creationTime;
+    @Enumerated(EnumType.STRING)
     private Gender gender;
+    @Enumerated(EnumType.STRING)
     private AgeGroup ageGroup;
     private double actualTotalSale;
     private double costPerUnit;

@@ -26,17 +26,17 @@ public class SupplierController {
     {
         this.supplierService = supplierService;
     }
-    @PostMapping(path = "userID/{userID}")
+    @PostMapping(path = "/userID/{userID}")
     public ResponseEntity<?> registerNewSupplier(@PathVariable Long userID, @RequestBody Supplier supplier)
     {
         return this.supplierService.registerNewSupplier(userID, supplier);
     }
-    @GetMapping(path = "userID/{userID}/all")
+    @GetMapping(path = "/userID/{userID}/all")
     public List<Supplier> findAllByUserID(@PathVariable Long userID)
     {
         return this.supplierService.findAllByUserID(userID);
     }
-    @GetMapping(path = "userID/{userID}/byphone")
+    @GetMapping(path = "/userID/{userID}/byphone")
     public ResponseEntity<?> findSupplierByUserIDAndPhoneNumber(@PathVariable Long userID, @RequestParam(required = true) String phoneNumber)
     {
         return this.supplierService.findSupplierByUserIDAndPhoneNumber(userID, phoneNumber);

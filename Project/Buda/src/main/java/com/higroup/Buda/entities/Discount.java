@@ -6,31 +6,42 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
-@Table(name = "Discount")
+@Table(name = "Discount", indexes = {
+    @Index(columnList = "user_id", name = "discount_user_id_index")
+})
 public class Discount {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "discount_id")
     private Long discountID;
     @Column(length = 200)
     private String name;
     @Column(length = 1000)
     private String description;
+    @Column(columnDefinition = "double default 0.0")
     private double cash;
+    @Column(columnDefinition = "double default 0.0")
     private double percentage;
+    @Column(columnDefinition = "double default 0.0")
     private double cashLimit;
+    @Column(columnDefinition = "int default 0")
     private int orderCount;
     private ZonedDateTime expiryTime;
     private ZonedDateTime createdTime;
+    @Column(name = "user_id")
     private Long userID;
     @OneToMany(mappedBy = "discount", fetch = FetchType.LAZY)
     @JsonManagedReference
@@ -38,7 +49,37 @@ public class Discount {
     @OneToMany(mappedBy = "discount", fetch = FetchType.LAZY)
     @JsonManagedReference
     private Set<MembershipType> membershipTypes;
+    @Enumerated(EnumType.STRING)
+    private DiscountType discountType;
 
+    public Discount(Long discountID, String name, String description, double cash, double percentage, double cashLimit, int orderCount, ZonedDateTime expiryTime, ZonedDateTime createdTime, Long userID, Set<SellOrder> sellOrders, Set<MembershipType> membershipTypes, DiscountType discountType) {
+        this.discountID = discountID;
+        this.name = name;
+        this.description = description;
+        this.cash = cash;
+        this.percentage = percentage;
+        this.cashLimit = cashLimit;
+        this.orderCount = orderCount;
+        this.expiryTime = expiryTime;
+        this.createdTime = createdTime;
+        this.userID = userID;
+        this.sellOrders = sellOrders;
+        this.membershipTypes = membershipTypes;
+        this.discountType = discountType;
+    }
+
+    public DiscountType getDiscountType() {
+        return this.discountType;
+    }
+
+    public void setDiscountType(DiscountType discountType) {
+        this.discountType = discountType;
+    }
+
+    public Discount discountType(DiscountType discountType) {
+        setDiscountType(discountType);
+        return this;
+    }
     public Discount(Long discountID, String name, String description, double cash, double percentage, double cashLimit, int orderCount, ZonedDateTime expiryTime, ZonedDateTime createdTime, Long userID, Set<SellOrder> sellOrders, Set<MembershipType> membershipTypes) {
         this.discountID = discountID;
         this.name = name;

@@ -61,7 +61,7 @@ public class PurchaseService {
         List<Purchase> result = new ArrayList<Purchase>();
         for (Purchase purchase: purchases)
         {
-            if (purchase.getCreationDate().isAfter(B) || purchase.getCreationDate().isBefore(A)) continue;
+            if (purchase.getCreationTime().isAfter(B) || purchase.getCreationTime().isBefore(A)) continue;
             result.add(purchase);
         }
         return result;

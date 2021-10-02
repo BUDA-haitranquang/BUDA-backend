@@ -1,5 +1,6 @@
 package com.higroup.Buda.entities;
 
+import java.util.Collection;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
@@ -11,6 +12,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -19,30 +21,37 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.higroup.Buda.util.SHA_256_Encode;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 
 @Entity
-@Table(name = "User")
+@Table(name = "User", indexes = {
+    @Index(columnList = "email", name = "user_email_index"),
+    @Index(columnList = "phoneNumber", name = "user_phone_number_index"),
+    @Index(columnList = "userName", name = "user_user_name_index")
+})
 
-public class User {
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="userID")
+    @Column(name="user_ID")
     private Long userID;
-    @Column(columnDefinition = "varchar(36) default (uuid())")
+    @Column(columnDefinition = "varchar(50) default (uuid())", name = "user_uuid")
     private String userUUID;
-    @Column(length = 50)
+    @Column(length = 30)
     private String userName;
-    @Column(length = 50)
-    @JsonIgnore
+    @Column(length = 128)
     private String password;
-    @Column(length = 60)
+    @Column(length = 50)
     private String email;
     @Column(length = 15)
     private String phoneNumber;
-    @Column(length = 50)
+    @Column(length = 20)
     private String lastName;
-    @Column(length = 50)
+    @Column(length = 20)
     private String firstName;
+    @Column(name = "picture_id")
     private Long pictureID;
     @OneToMany(mappedBy = "user",
     fetch = FetchType.LAZY)
@@ -233,7 +242,7 @@ public class User {
             " userID='" + getUserID() + "'" +
             ", userUUID='" + getUserUUID() + "'" +
             ", userName='" + getUserName() + "'" +
-            // ", password='" + getPassword() + "'" +
+             ", password='" + getPassword() + "'" +
             ", email='" + getEmail() + "'" +
             ", phoneNumber='" + getPhoneNumber() + "'" +
             ", lastName='" + getLastName() + "'" +
@@ -257,6 +266,42 @@ public class User {
     @Override
     public int hashCode() {
         return Objects.hash(userID, userUUID, userName, password, email, phoneNumber, lastName, firstName, pictureID, purchases);
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public String getUsername() {
+        // TODO Auto-generated method stub
+        return this.email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        // TODO Auto-generated method stub
+        return false;
     }
 
 }

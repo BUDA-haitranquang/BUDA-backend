@@ -8,7 +8,7 @@ import com.higroup.Buda.entities.Staff;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface StaffRepository extends JpaRepository<Staff, Long>{
-    Optional<Staff> findStaffByLoginID(String loginID);
+    Optional<Staff> findStaffByStaffUUID(String staffUUID);
     Optional<Staff> findStaffByStaffID(Long staffID);
     List<Staff> findAllByUserID(Long userID);
 }

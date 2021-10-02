@@ -3,31 +3,40 @@ package com.higroup.Buda.entities;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Salary_log")
+@Table(name = "Salary_log", indexes = {
+    @Index(columnList = "user_id", name = "salary_log_user_id_index"),
+    @Index(columnList = "staff_id", name = "salary_log_staff_id_index")
+})
 public class SalaryLog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "salary_log_id")
     private Long salaryLogID;
+    @Column(name = "staff_id")
     private Long staffID;
     private double salary;
-    private ZonedDateTime creationDate;
+    private ZonedDateTime creationTime;
+    @Column(name = "user_id")
     private Long userID;
+
 
     public SalaryLog() {
     }
 
-    public SalaryLog(Long salaryLogID, Long staffID, double salary, ZonedDateTime creationDate, Long userID) {
+    public SalaryLog(Long salaryLogID, Long staffID, double salary, ZonedDateTime creationTime, Long userID) {
         this.salaryLogID = salaryLogID;
         this.staffID = staffID;
         this.salary = salary;
-        this.creationDate = creationDate;
+        this.creationTime = creationTime;
         this.userID = userID;
     }
 
@@ -55,12 +64,12 @@ public class SalaryLog {
         this.salary = salary;
     }
 
-    public ZonedDateTime getCreationDate() {
-        return this.creationDate;
+    public ZonedDateTime getCreationTime() {
+        return this.creationTime;
     }
 
-    public void setCreationDate(ZonedDateTime creationDate) {
-        this.creationDate = creationDate;
+    public void setCreationTime(ZonedDateTime creationTime) {
+        this.creationTime = creationTime;
     }
 
     public Long getUserID() {
@@ -86,8 +95,8 @@ public class SalaryLog {
         return this;
     }
 
-    public SalaryLog creationDate(ZonedDateTime creationDate) {
-        setCreationDate(creationDate);
+    public SalaryLog creationTime(ZonedDateTime creationTime) {
+        setCreationTime(creationTime);
         return this;
     }
 
@@ -104,12 +113,12 @@ public class SalaryLog {
             return false;
         }
         SalaryLog salaryLog = (SalaryLog) o;
-        return Objects.equals(salaryLogID, salaryLog.salaryLogID) && Objects.equals(staffID, salaryLog.staffID) && salary == salaryLog.salary && Objects.equals(creationDate, salaryLog.creationDate) && Objects.equals(userID, salaryLog.userID);
+        return Objects.equals(salaryLogID, salaryLog.salaryLogID) && Objects.equals(staffID, salaryLog.staffID) && salary == salaryLog.salary && Objects.equals(creationTime, salaryLog.creationTime) && Objects.equals(userID, salaryLog.userID);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(salaryLogID, staffID, salary, creationDate, userID);
+        return Objects.hash(salaryLogID, staffID, salary, creationTime, userID);
     }
 
     @Override
@@ -118,9 +127,9 @@ public class SalaryLog {
             " salaryLogID='" + getSalaryLogID() + "'" +
             ", staffID='" + getStaffID() + "'" +
             ", salary='" + getSalary() + "'" +
-            ", creationDate='" + getCreationDate() + "'" +
+            ", creationTime='" + getCreationTime() + "'" +
             ", userID='" + getUserID() + "'" +
             "}";
     }
-
+    
 }

@@ -7,18 +7,23 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "Ingredient")
+@Table(name = "Ingredient", indexes = {
+    @Index(columnList = "user_id", name = "ingredient_user_id_index")
+})
 public class Ingredient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long productID;
+    @Column(name = "ingredient_id")
+    private Long ingredientID;
     @Column(length = 100)
     private String name;
     @Column(length = 1000)
     private String description;
     private int amountLeft;
     private double price;
-    private Long storeID;
+    @Column(name = "user_id")
+    private Long userID;
+    @Column(name = "picture_id")
     private Long pictureID;
     private int alertAmountLeft;
     @OneToMany(mappedBy = "ingredient", fetch = FetchType.LAZY)
@@ -28,23 +33,23 @@ public class Ingredient {
     public Ingredient() {
     }
 
-    public Ingredient(Long productID, String name, String description, int amountLeft, double price, Long storeID, Long pictureID, int alertAmountLeft) {
-        this.productID = productID;
+    public Ingredient(Long IngredientID, String name, String description, int amountLeft, double price, Long storeID, Long pictureID, int alertAmountLeft) {
+        this.ingredientID = IngredientID;
         this.name = name;
         this.description = description;
         this.amountLeft = amountLeft;
         this.price = price;
-        this.storeID = storeID;
+        this.userID = storeID;
         this.pictureID = pictureID;
         this.alertAmountLeft = alertAmountLeft;
     }
 
-    public Long getProductID() {
-        return productID;
+    public Long getIngredientID() {
+        return ingredientID;
     }
 
-    public void setProductID(Long productID) {
-        this.productID = productID;
+    public void setIngredientID(Long IngredientID) {
+        this.ingredientID = IngredientID;
     }
 
     public String getName() {
@@ -79,12 +84,23 @@ public class Ingredient {
         this.price = price;
     }
 
-    public Long getStoreID() {
-        return storeID;
+    public Long getUserID() {
+        return userID;
+    }
+    public void setUserID(Long userID) {
+        this.userID = userID;
+    }
+
+    public Set<BuyOrderItem> getBuyOrderItems() {
+        return this.buyOrderItems;
+    }
+
+    public void setBuyOrderItems(Set<BuyOrderItem> buyOrderItems) {
+        this.buyOrderItems = buyOrderItems;
     }
 
     public void setStoreID(Long storeID) {
-        this.storeID = storeID;
+        this.userID = storeID;
     }
 
     public Long getPictureID() {
@@ -108,25 +124,27 @@ public class Ingredient {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Ingredient that = (Ingredient) o;
-        return amountLeft == that.amountLeft && Double.compare(that.price, price) == 0 && alertAmountLeft == that.alertAmountLeft && Objects.equals(productID, that.productID) && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(storeID, that.storeID) && Objects.equals(pictureID, that.pictureID) && Objects.equals(buyOrderItems, that.buyOrderItems);
+        return amountLeft == that.amountLeft && Double.compare(that.price, price) == 0 && alertAmountLeft == that.alertAmountLeft && Objects.equals(ingredientID, that.ingredientID) && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(userID, that.userID) && Objects.equals(pictureID, that.pictureID) && Objects.equals(buyOrderItems, that.buyOrderItems);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(productID, name, description, amountLeft, price, storeID, pictureID, alertAmountLeft, buyOrderItems);
+        return Objects.hash(ingredientID, name, description, amountLeft, price, userID, pictureID, alertAmountLeft, buyOrderItems);
     }
 
     @Override
     public String toString() {
         return "Ingredient{" +
-                "productID=" + productID +
+                "IngredientID=" + ingredientID +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", amountLeft=" + amountLeft +
                 ", price=" + price +
-                ", storeID=" + storeID +
+                ", userID=" + userID +
                 ", pictureID=" + pictureID +
                 ", alertAmountLeft=" + alertAmountLeft +
                 '}';
     }
+
 }
+

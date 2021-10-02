@@ -5,44 +5,13 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
+  Link,
+  useHistory
 } from "react-router-dom";
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+function App() {
 
-// const UserProfiles = ()=>{
-
-//   const [userProfiles, setUserProfiles] = useState([]);
-//   const fetchUserProfiles =()=>{
-//     axios.get("https://jsonplaceholder.typicode.com/users")
-//     .then(response => {
-//       console.log(response);
-//       setUserProfiles(response.data);
-//     })
-//   }
-
-
-//   useEffect(()=>{     //ComponentDidMount()
-//     fetchUserProfiles();
-//   }, [])
-
-//   return(
-//     userProfiles.map((userProfiles, index) =>{
-
-//       return (
-//         <div key={index}>
-//           <h2>Em chao anh Tien a. Em la:</h2>
-//           <ul>
-//             <li>Name: {userProfiles.name}</li>
-//             <li>Id: {userProfiles.id}</li>
-//             <li>Username: {userProfiles.username}</li>
-//           </ul>
-//         </div>
-//       )
-//     }) 
-//   )
-// }
-export default function App() {
   return (
     <Router>
       <div>
@@ -54,12 +23,24 @@ export default function App() {
             <li>
               <Link to="/about">About</Link>
             </li>
-            <li>
-              <Link to="/login">Login</Link>
-            </li>
-            <li>
-              <Link to="/signup">Sign Up</Link>
-            </li>
+            {
+              localStorage.getItem('user-info') ?
+                <>
+                  <li>
+                    <Link to="/logout">Logout</Link>
+                  </li>
+                </>
+                :
+                <>
+                  <li>
+                    <Link to="/login">Login</Link>
+                  </li>
+                  <li>
+                    <Link to="/signup">Sign Up</Link>
+                  </li>
+                </>
+            }
+            
           </ul>
         </nav>
         <div className="clearfix"></div>
@@ -72,6 +53,9 @@ export default function App() {
           </Route>
           <Route path="/login">
             <Login></Login>
+          </Route>
+          <Route path="/logout">
+            <Logout></Logout>
           </Route>
           <Route path="/signup">
             <Signup></Signup>
@@ -102,9 +86,16 @@ function About() {
     </Fragment>
   ) 
 }
+
+function Logout(){
+  localStorage.removeItem('user-info');
+  return <Login/>
+}
+
 function NotFound(){
   return(
     <h1>404 Not Found</h1>
   )
 }
 
+export default App;

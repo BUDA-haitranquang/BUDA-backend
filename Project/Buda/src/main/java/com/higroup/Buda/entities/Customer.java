@@ -6,27 +6,38 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
-@Table(name = "Customer")
+//column nao dinh dang lai ten thi dung ten trong @Column, column nao khong dinh dang lai ten thi dung ten bien
+@Table(name = "Customer", indexes = {
+    @Index(columnList = "user_id", name = "customer_user_id_index"),
+    @Index(columnList = "phoneNumber", name = "customer_phone_number_index")
+})
 public class Customer{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "customer_id")
     private Long customerID;
     @Column(columnDefinition = "varchar(50) default 'UNKNOWN'")
+    @Enumerated(EnumType.STRING)
     private AgeGroup ageGroup;
     @Column(columnDefinition = "varchar(50) default 'UNKNOWN'")
+    @Enumerated(EnumType.STRING)
     private Gender gender;
     @Column(columnDefinition = "double default 0.0")
     private double totalSpend;
+    @Column(name = "membership_id")
     private Long membershipID;
     @Column(length = 50)
     private String name;
@@ -34,6 +45,7 @@ public class Customer{
     private String address;
     @Column(length = 15)
     private String phoneNumber;
+    @Column(name = "user_id")
     private Long userID;
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
     @JsonManagedReference

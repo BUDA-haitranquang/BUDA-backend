@@ -7,16 +7,22 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Supplier")
+@Table(name = "Supplier", indexes = {
+    @Index(columnList = "user_id", name = "supplier_user_id_index"),
+    @Index(columnList = "phoneNumber", name = "supplier_phone_number_index")
+})
 public class Supplier {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "supplier_id")
     private Long supplierID;
-    @Column(length = 60)
+    @Column(length = 50)
     private String email;
+    @Column(name = "picture_id")
     private Long pictureID;
     @Column(length = 50)
     private String name;
@@ -24,6 +30,7 @@ public class Supplier {
     private String address;
     @Column(length = 15)
     private String phoneNumber;
+    @Column(name = "user_id")
     private Long userID;
 
     public Supplier() {

@@ -6,6 +6,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -18,22 +19,27 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "Product")
+@Table(name = "Product", indexes = {
+    @Index(columnList = "user_id", name = "product_user_id_index"),
+    @Index(columnList = "product_group_id", name = "product_product_group_id_index")
+})
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "product_id")
     private Long productID;
     @Column(length = 100)
     private String name;
     @Column(length = 1000)
     private String description;
+    @Column(name = "user_id")
     private Long userID;
+    @Column(name = "picture_id")
     private Long pictureID;
     private double sellingPrice;
     private int alertAmount;
     private int amountLeft;
     private double costPerUnit;
-    private Long groupID;
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     @JsonManagedReference
     private Set<SellOrderItem> sellOrderItems;
@@ -41,53 +47,14 @@ public class Product {
     @JsonManagedReference
     private Set<ProductLeftLog> productLeftLogs;
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
-    @JoinColumn(name = "productGroupID", nullable = true)
+    @JoinColumn(name = "product_Group_ID", nullable = true)
     @JsonBackReference
     private ProductGroup productGroup;
-    public Product(Long productID, String name, String description, Long userID, Long pictureID, double sellingPrice, int alertAmount, int amountLeft, double costPerUnit, Long groupID, Set<SellOrderItem> sellOrderItems, Set<ProductLeftLog> productLeftLogs) {
-        this.productID = productID;
-        this.name = name;
-        this.description = description;
-        this.userID = userID;
-        this.pictureID = pictureID;
-        this.sellingPrice = sellingPrice;
-        this.alertAmount = alertAmount;
-        this.amountLeft = amountLeft;
-        this.costPerUnit = costPerUnit;
-        this.groupID = groupID;
-        this.sellOrderItems = sellOrderItems;
-        this.productLeftLogs = productLeftLogs;
-    }
 
-    public Set<SellOrderItem> getSellOrderItems() {
-        return this.sellOrderItems;
-    }
-
-    public void setSellOrderItems(Set<SellOrderItem> sellOrderItems) {
-        this.sellOrderItems = sellOrderItems;
-    }
-
-    public Set<ProductLeftLog> getProductLeftLogs() {
-        return this.productLeftLogs;
-    }
-
-    public void setProductLeftLogs(Set<ProductLeftLog> productLeftLogs) {
-        this.productLeftLogs = productLeftLogs;
-    }
-
-    public Product sellOrderItems(Set<SellOrderItem> sellOrderItems) {
-        setSellOrderItems(sellOrderItems);
-        return this;
-    }
-
-    public Product productLeftLogs(Set<ProductLeftLog> productLeftLogs) {
-        setProductLeftLogs(productLeftLogs);
-        return this;
-    }
     public Product() {
     }
 
-    public Product(Long productID, String name, String description, Long userID, Long pictureID, double sellingPrice, int alertAmount, int amountLeft, double costPerUnit, Long groupID) {
+    public Product(Long productID, String name, String description, Long userID, Long pictureID, double sellingPrice, int alertAmount, int amountLeft, double costPerUnit, Set<SellOrderItem> sellOrderItems, Set<ProductLeftLog> productLeftLogs, ProductGroup productGroup) {
         this.productID = productID;
         this.name = name;
         this.description = description;
@@ -97,7 +64,9 @@ public class Product {
         this.alertAmount = alertAmount;
         this.amountLeft = amountLeft;
         this.costPerUnit = costPerUnit;
-        this.groupID = groupID;
+        this.sellOrderItems = sellOrderItems;
+        this.productLeftLogs = productLeftLogs;
+        this.productGroup = productGroup;
     }
 
     public Long getProductID() {
@@ -172,12 +141,28 @@ public class Product {
         this.costPerUnit = costPerUnit;
     }
 
-    public Long getGroupID() {
-        return this.groupID;
+    public Set<SellOrderItem> getSellOrderItems() {
+        return this.sellOrderItems;
     }
 
-    public void setGroupID(Long groupID) {
-        this.groupID = groupID;
+    public void setSellOrderItems(Set<SellOrderItem> sellOrderItems) {
+        this.sellOrderItems = sellOrderItems;
+    }
+
+    public Set<ProductLeftLog> getProductLeftLogs() {
+        return this.productLeftLogs;
+    }
+
+    public void setProductLeftLogs(Set<ProductLeftLog> productLeftLogs) {
+        this.productLeftLogs = productLeftLogs;
+    }
+
+    public ProductGroup getProductGroup() {
+        return this.productGroup;
+    }
+
+    public void setProductGroup(ProductGroup productGroup) {
+        this.productGroup = productGroup;
     }
 
     public Product productID(Long productID) {
@@ -225,8 +210,18 @@ public class Product {
         return this;
     }
 
-    public Product groupID(Long groupID) {
-        setGroupID(groupID);
+    public Product sellOrderItems(Set<SellOrderItem> sellOrderItems) {
+        setSellOrderItems(sellOrderItems);
+        return this;
+    }
+
+    public Product productLeftLogs(Set<ProductLeftLog> productLeftLogs) {
+        setProductLeftLogs(productLeftLogs);
+        return this;
+    }
+
+    public Product productGroup(ProductGroup productGroup) {
+        setProductGroup(productGroup);
         return this;
     }
 
@@ -238,12 +233,12 @@ public class Product {
             return false;
         }
         Product product = (Product) o;
-        return Objects.equals(productID, product.productID) && Objects.equals(name, product.name) && Objects.equals(description, product.description) && Objects.equals(userID, product.userID) && Objects.equals(pictureID, product.pictureID) && sellingPrice == product.sellingPrice && alertAmount == product.alertAmount && amountLeft == product.amountLeft && costPerUnit == product.costPerUnit && Objects.equals(groupID, product.groupID);
+        return Objects.equals(productID, product.productID) && Objects.equals(name, product.name) && Objects.equals(description, product.description) && Objects.equals(userID, product.userID) && Objects.equals(pictureID, product.pictureID) && sellingPrice == product.sellingPrice && alertAmount == product.alertAmount && amountLeft == product.amountLeft && costPerUnit == product.costPerUnit && Objects.equals(sellOrderItems, product.sellOrderItems) && Objects.equals(productLeftLogs, product.productLeftLogs) && Objects.equals(productGroup, product.productGroup);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(productID, name, description, userID, pictureID, sellingPrice, alertAmount, amountLeft, costPerUnit, groupID);
+        return Objects.hash(productID, name, description, userID, pictureID, sellingPrice, alertAmount, amountLeft, costPerUnit, sellOrderItems, productLeftLogs, productGroup);
     }
 
     @Override
@@ -258,8 +253,10 @@ public class Product {
             ", alertAmount='" + getAlertAmount() + "'" +
             ", amountLeft='" + getAmountLeft() + "'" +
             ", costPerUnit='" + getCostPerUnit() + "'" +
-            ", groupID='" + getGroupID() + "'" +
+            ", sellOrderItems='" + getSellOrderItems() + "'" +
+            ", productLeftLogs='" + getProductLeftLogs() + "'" +
+            ", productGroup='" + getProductGroup() + "'" +
             "}";
     }
-
+    
 }
