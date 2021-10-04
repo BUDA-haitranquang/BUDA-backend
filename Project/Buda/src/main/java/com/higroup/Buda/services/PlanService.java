@@ -2,9 +2,7 @@ package com.higroup.Buda.services;
 
 import com.higroup.Buda.entities.Plan;
 import com.higroup.Buda.repositories.PlanRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
