@@ -44,7 +44,7 @@ public class StaffService {
         }
         newStaff.setPassword(this.bCryptPasswordEncoder.encode(newStaff.getPassword()));
         this.staffRepository.save(newStaff);
-        return ResponseEntity.ok().body(newStaff.toString());
+        return ResponseEntity.ok().body(newStaff);
     }
     public List<Staff> findAllByUserID(Long userID)
     {

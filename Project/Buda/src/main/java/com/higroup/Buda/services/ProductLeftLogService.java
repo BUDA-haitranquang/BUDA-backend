@@ -30,7 +30,7 @@ public class ProductLeftLogService {
     public ResponseEntity<?> findProductLeftLogByProductLeftLogID(Long productLeftLogID)
     {
         Optional<ProductLeftLog> productLeftLog = this.productLeftLogRepository.findProductLeftLogByProductLeftLogID(productLeftLogID);
-        return productLeftLog.<ResponseEntity<?>>map(leftLog -> ResponseEntity.ok().body(leftLog.toString())).orElseGet(() -> ResponseEntity.badRequest().body("Not found"));
+        return productLeftLog.<ResponseEntity<?>>map(leftLog -> ResponseEntity.ok().body(leftLog)).orElseGet(() -> ResponseEntity.badRequest().body("Not found"));
     }
     public ResponseEntity<?> registerNewProductLeftLog(Long userID, ProductLeftLog productLeftLog)
     {
@@ -41,7 +41,7 @@ public class ProductLeftLogService {
         }
         productLeftLog.setUserID(userID);
         this.productLeftLogRepository.save(productLeftLog);
-        return ResponseEntity.ok().body(productLeftLog.toString());
+        return ResponseEntity.ok().body(productLeftLog);
     }
     public List<ProductLeftLog> findAllProductLeftLogByProduct(Long productID)
     {

@@ -7,6 +7,8 @@ import java.util.Set;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -32,7 +34,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
     @Index(columnList = "customer_id", name = "sell_order_customer_id_index"),
     @Index(columnList = "discount_id", name = "sell_order_discount_id_index")
 })
-@JsonIgnoreProperties("sellOrderItems")
+//@JsonIgnoreProperties("sellOrderItems")
+
 public class SellOrder implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -63,9 +66,10 @@ public class SellOrder implements Serializable{
     private String customerMessage;
     @Enumerated(EnumType.STRING)
     private Status status;
-    @OneToMany(mappedBy = "sellOrder", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "sellOrder", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference(value = "sell_order - sell_order_item")
-    private Set<SellOrderItem> sellOrderItems = new HashSet<>();
+    private Set<SellOrderItem> sellOrderItems;
+
 
 
     public SellOrder() {

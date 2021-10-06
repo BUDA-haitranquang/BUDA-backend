@@ -40,7 +40,7 @@ public class SalaryLogService {
         }
         salaryLog.setUserID(userID);
         this.salaryLogRepository.save(salaryLog);
-        return ResponseEntity.ok().body(salaryLog.toString());
+        return ResponseEntity.ok().body(salaryLog);
     }
     public List<SalaryLog> findAllByUserID(Long userID)
     {

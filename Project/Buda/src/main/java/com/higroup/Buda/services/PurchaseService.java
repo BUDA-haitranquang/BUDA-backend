@@ -37,7 +37,7 @@ public class PurchaseService {
         }
         purchase.setUser(userRepository.findUserByUserID(userID).get());
         this.purchaseRepository.save(purchase);
-        return ResponseEntity.ok().body(purchase.toString());
+        return ResponseEntity.ok().body(purchase);
     }
     public List<Purchase> findAllByUserID(Long userID) {
         User user = userRepository.getById(userID);

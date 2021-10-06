@@ -30,7 +30,7 @@ public class IngredientLeftLogService {
     public ResponseEntity<?> findIngredientLeftLogByIngredientLeftLogID(Long ingredientLeftLogID)
     {
         Optional<IngredientLeftLog> ingredientLeftLog = this.ingredientLeftLogRepository.findIngredientLeftLogByIngredientLeftLogID(ingredientLeftLogID);
-        return ingredientLeftLog.<ResponseEntity<?>>map(leftLog -> ResponseEntity.ok().body(leftLog.toString())).orElseGet(() -> ResponseEntity.badRequest().body("Not found"));
+        return ingredientLeftLog.<ResponseEntity<?>>map(leftLog -> ResponseEntity.ok().body(leftLog)).orElseGet(() -> ResponseEntity.badRequest().body("Not found"));
     }
     public ResponseEntity<?> registerNewIngredientLeftLog(Long userID, IngredientLeftLog ingredientLeftLog)
     {
@@ -41,7 +41,7 @@ public class IngredientLeftLogService {
         }
         ingredientLeftLog.setUserID(userID);
         this.ingredientLeftLogRepository.save(ingredientLeftLog);
-        return ResponseEntity.ok().body(ingredientLeftLog.toString());
+        return ResponseEntity.ok().body(ingredientLeftLog);
     }
     public List<IngredientLeftLog> findAllIngredientLeftLogByIngredient(Long ingredientID)
     {
