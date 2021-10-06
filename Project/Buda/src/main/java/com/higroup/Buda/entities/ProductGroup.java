@@ -13,6 +13,7 @@ import javax.persistence.Index;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import org.junit.experimental.categories.Categories.IncludeCategory;
@@ -21,6 +22,7 @@ import org.junit.experimental.categories.Categories.IncludeCategory;
 @Table(name = "Product_group", indexes = {
     @Index(columnList = "user_id", name = "product_group_user_id_index")
 })
+@JsonIgnoreProperties({"properties"})
 public class ProductGroup {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

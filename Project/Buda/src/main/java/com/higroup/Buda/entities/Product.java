@@ -13,6 +13,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.util.Objects;
@@ -23,6 +24,7 @@ import java.util.Set;
     @Index(columnList = "user_id", name = "product_user_id_index"),
     @Index(columnList = "product_group_id", name = "product_product_group_id_index")
 })
+@JsonIgnoreProperties({"sellOrderItems", "productLeftLogs"})
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

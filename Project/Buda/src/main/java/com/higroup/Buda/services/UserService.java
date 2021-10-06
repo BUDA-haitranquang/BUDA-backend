@@ -73,7 +73,7 @@ public class UserService implements UserDetailsService{
         System.out.println(newUser.getPassword());
         newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
         userRepository.save(newUser);
-        return ResponseEntity.ok().body(newUser.toString());
+        return ResponseEntity.ok().body(newUser);
     }
 
     public List<User> getUsers() {
@@ -163,7 +163,7 @@ public class UserService implements UserDetailsService{
         thisUser.setFirstName(firstName);
         thisUser.setPhoneNumber(phoneNumber);
         userRepository.save(thisUser);
-        return ResponseEntity.ok().body(thisUser.toString());
+        return ResponseEntity.ok().body(thisUser);
     }
 
     @Transactional

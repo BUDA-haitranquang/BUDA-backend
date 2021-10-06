@@ -43,7 +43,7 @@ public class IngredientService {
         else{
             newIngredient.setUserID(userID);
             this.ingredientRepository.save(newIngredient);
-            return ResponseEntity.ok().body(newIngredient.toString());
+            return ResponseEntity.ok().body(newIngredient);
         }
     }
 

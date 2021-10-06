@@ -13,7 +13,7 @@ create trigger creating_sell_order_trigger after insert on sell_order
 for each row
 BEGIN
 	update customer
-    set customer.total_spend = customer.total_spend 
+    set customer.total_spend = customer.total_spend + NEW.final_cost
     where customer.customer_id = NEW.customer_id;
 END; 
 //

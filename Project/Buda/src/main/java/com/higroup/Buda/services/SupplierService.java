@@ -28,7 +28,7 @@ public class SupplierService {
         }
         supplier.setUserID(userID);
         this.supplierRepository.save(supplier);
-        return ResponseEntity.ok().body(supplier.toString());
+        return ResponseEntity.ok().body(supplier);
     }
 
     public List<Supplier> findAllByUserID(Long userID)
@@ -38,6 +38,6 @@ public class SupplierService {
     public ResponseEntity<?> findSupplierByUserIDAndPhoneNumber(Long userID, String phoneNumber)
     {
         Optional<Supplier> phoneSupplier = this.supplierRepository.findSupplierByUserIDAndPhoneNumber(userID, phoneNumber);
-        return phoneSupplier.<ResponseEntity<?>>map(supplier -> ResponseEntity.ok().body(supplier.toString())).orElseGet(() -> ResponseEntity.badRequest().body("Not found"));
+        return phoneSupplier.<ResponseEntity<?>>map(supplier -> ResponseEntity.ok().body(supplier)).orElseGet(() -> ResponseEntity.badRequest().body("Not found"));
     }
 }

@@ -41,15 +41,17 @@ public class SellOrderService {
         this.sellOrderRepository.save(sellOrder);
         for (SellOrderItem sellOrderItem: sellOrder.getSellOrderItems())
         {
+            sellOrderItem.setSellOrder(sellOrder);
+            System.out.println("An item: " + sellOrderItem);
             this.sellOrderItemRepository.save(sellOrderItem);
         }
-        Optional<Customer> customer = this.customerRepository.findCustomerByCustomerID(sellOrder.getCustomer().getCustomerID());
-        if (customer.isPresent())
-        {
-            double totalSpend = customer.get().getTotalSpend() + sellOrder.getFinalCost();
-            customer.get().setTotalSpend(totalSpend);
-            this.customerRepository.save(customer.get());
-        }
+        // Optional<Customer> customer = this.customerRepository.findCustomerByCustomerID(sellOrder.getCustomer().getCustomerID());
+        // if (customer.isPresent())
+        // {
+        //     double totalSpend = customer.get().getTotalSpend() + sellOrder.getFinalCost();
+        //     customer.get().setTotalSpend(totalSpend);
+        //     this.customerRepository.save(customer.get());
+        // }
         return ResponseEntity.ok().body(sellOrder);
     }
     public List<SellOrder> findAllSellOrderByCustomerID(Long customerID)
