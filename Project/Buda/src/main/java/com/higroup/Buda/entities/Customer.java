@@ -16,6 +16,7 @@ import javax.persistence.Index;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -24,6 +25,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
     @Index(columnList = "user_id", name = "customer_user_id_index"),
     @Index(columnList = "phoneNumber", name = "customer_phone_number_index")
 })
+@JsonIgnoreProperties({"sellOrders"})
 public class Customer{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,7 +50,7 @@ public class Customer{
     @Column(name = "user_id")
     private Long userID;
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
-    @JsonManagedReference
+    @JsonManagedReference(value = "customer - sell_order")
     private Set<SellOrder> sellOrders;
     public Customer() {
     }

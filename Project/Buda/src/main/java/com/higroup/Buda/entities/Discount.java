@@ -16,12 +16,14 @@ import javax.persistence.Index;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "Discount", indexes = {
     @Index(columnList = "user_id", name = "discount_user_id_index")
 })
+@JsonIgnoreProperties({"sellOrders", "membershipTypes"})
 public class Discount {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,10 +46,10 @@ public class Discount {
     @Column(name = "user_id")
     private Long userID;
     @OneToMany(mappedBy = "discount", fetch = FetchType.LAZY)
-    @JsonManagedReference
+    @JsonManagedReference(value = "discount - sell_order")
     private Set<SellOrder> sellOrders;
     @OneToMany(mappedBy = "discount", fetch = FetchType.LAZY)
-    @JsonManagedReference
+    @JsonManagedReference(value = "discount - membership_type")
     private Set<MembershipType> membershipTypes;
     @Enumerated(EnumType.STRING)
     private DiscountType discountType;

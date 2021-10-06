@@ -41,7 +41,7 @@ public class Product {
     private int amountLeft;
     private double costPerUnit;
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
-    @JsonManagedReference
+    @JsonManagedReference(value = "product - sell_order_item")
     private Set<SellOrderItem> sellOrderItems;
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     @JsonManagedReference
