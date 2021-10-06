@@ -1,8 +1,11 @@
 package com.higroup.Buda.entities;
 
 import java.time.ZonedDateTime;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+
+import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,6 +22,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -27,18 +32,19 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
     @Index(columnList = "customer_id", name = "sell_order_customer_id_index"),
     @Index(columnList = "discount_id", name = "sell_order_discount_id_index")
 })
-public class SellOrder {
+@JsonIgnoreProperties("sellOrderItems")
+public class SellOrder implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "sell_order_id")
     private Long sellOrderID;
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
     @JoinColumn(name = "customer_ID", nullable = true)
-    @JsonBackReference
+    @JsonBackReference(value = "customer - sell_order")
     private Customer customer;
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
     @JoinColumn(name = "discount_ID", nullable = true)
-    @JsonBackReference
+    @JsonBackReference(value = "discount - sell_order")
     private Discount discount;
     private ZonedDateTime creationTime;
     @Enumerated(EnumType.STRING)
@@ -58,29 +64,13 @@ public class SellOrder {
     @Enumerated(EnumType.STRING)
     private Status status;
     @OneToMany(mappedBy = "sellOrder", fetch = FetchType.LAZY)
-    @JsonManagedReference
-    private Set<SellOrderItem> sellOrderItems;
+    @JsonManagedReference(value = "sell_order - sell_order_item")
+    private Set<SellOrderItem> sellOrderItems = new HashSet<>();
 
 
     public SellOrder() {
     }
 
-    public SellOrder(Long sellOrderID, Customer customer, Discount discount, ZonedDateTime creationTime, AgeGroup ageGroup, Gender gender, double actualDiscountCash, double actualDiscountPercentage, double realCost, double finalCost, Long userID, String customerMessage, Status status, Set<SellOrderItem> sellOrderItems) {
-        this.sellOrderID = sellOrderID;
-        this.customer = customer;
-        this.discount = discount;
-        this.creationTime = creationTime;
-        this.ageGroup = ageGroup;
-        this.gender = gender;
-        this.actualDiscountCash = actualDiscountCash;
-        this.actualDiscountPercentage = actualDiscountPercentage;
-        this.realCost = realCost;
-        this.finalCost = finalCost;
-        this.userID = userID;
-        this.customerMessage = customerMessage;
-        this.status = status;
-        this.sellOrderItems = sellOrderItems;
-    }
 
     public Long getSellOrderID() {
         return this.sellOrderID;
@@ -265,19 +255,91 @@ public class SellOrder {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (o == this)
+    public boolean equals(Object obj) {
+        if (this == obj)
             return true;
-        if (!(o instanceof SellOrder)) {
+        if (obj == null)
             return false;
-        }
-        SellOrder sellOrder = (SellOrder) o;
-        return Objects.equals(sellOrderID, sellOrder.sellOrderID) && Objects.equals(customer, sellOrder.customer) && Objects.equals(discount, sellOrder.discount) && Objects.equals(creationTime, sellOrder.creationTime) && Objects.equals(ageGroup, sellOrder.ageGroup) && Objects.equals(gender, sellOrder.gender) && actualDiscountCash == sellOrder.actualDiscountCash && actualDiscountPercentage == sellOrder.actualDiscountPercentage && realCost == sellOrder.realCost && finalCost == sellOrder.finalCost && Objects.equals(userID, sellOrder.userID) && Objects.equals(customerMessage, sellOrder.customerMessage) && Objects.equals(status, sellOrder.status) && Objects.equals(sellOrderItems, sellOrder.sellOrderItems);
+        if (getClass() != obj.getClass())
+            return false;
+        SellOrder other = (SellOrder) obj;
+        if (Double.doubleToLongBits(actualDiscountCash) != Double.doubleToLongBits(other.actualDiscountCash))
+            return false;
+        if (Double.doubleToLongBits(actualDiscountPercentage) != Double
+                .doubleToLongBits(other.actualDiscountPercentage))
+            return false;
+        if (ageGroup != other.ageGroup)
+            return false;
+        if (creationTime == null) {
+            if (other.creationTime != null)
+                return false;
+        } else if (!creationTime.equals(other.creationTime))
+            return false;
+        if (customer == null) {
+            if (other.customer != null)
+                return false;
+        } else if (!customer.equals(other.customer))
+            return false;
+        if (customerMessage == null) {
+            if (other.customerMessage != null)
+                return false;
+        } else if (!customerMessage.equals(other.customerMessage))
+            return false;
+        if (discount == null) {
+            if (other.discount != null)
+                return false;
+        } else if (!discount.equals(other.discount))
+            return false;
+        if (Double.doubleToLongBits(finalCost) != Double.doubleToLongBits(other.finalCost))
+            return false;
+        if (gender != other.gender)
+            return false;
+        if (Double.doubleToLongBits(realCost) != Double.doubleToLongBits(other.realCost))
+            return false;
+        if (sellOrderID == null) {
+            if (other.sellOrderID != null)
+                return false;
+        } else if (!sellOrderID.equals(other.sellOrderID))
+            return false;
+        if (sellOrderItems == null) {
+            if (other.sellOrderItems != null)
+                return false;
+        } else if (!sellOrderItems.equals(other.sellOrderItems))
+            return false;
+        if (status != other.status)
+            return false;
+        if (userID == null) {
+            if (other.userID != null)
+                return false;
+        } else if (!userID.equals(other.userID))
+            return false;
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(sellOrderID, customer, discount, creationTime, ageGroup, gender, actualDiscountCash, actualDiscountPercentage, realCost, finalCost, userID, customerMessage, status, sellOrderItems);
+        final int prime = 31;
+        int result = 1;
+        long temp;
+        temp = Double.doubleToLongBits(actualDiscountCash);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(actualDiscountPercentage);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        result = prime * result + ((ageGroup == null) ? 0 : ageGroup.hashCode());
+        result = prime * result + ((creationTime == null) ? 0 : creationTime.hashCode());
+        result = prime * result + ((customer == null) ? 0 : customer.hashCode());
+        result = prime * result + ((customerMessage == null) ? 0 : customerMessage.hashCode());
+        result = prime * result + ((discount == null) ? 0 : discount.hashCode());
+        temp = Double.doubleToLongBits(finalCost);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        result = prime * result + ((gender == null) ? 0 : gender.hashCode());
+        temp = Double.doubleToLongBits(realCost);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        result = prime * result + ((sellOrderID == null) ? 0 : sellOrderID.hashCode());
+        result = prime * result + ((sellOrderItems == null) ? 0 : sellOrderItems.hashCode());
+        result = prime * result + ((status == null) ? 0 : status.hashCode());
+        result = prime * result + ((userID == null) ? 0 : userID.hashCode());
+        return result;
     }
 
     @Override
