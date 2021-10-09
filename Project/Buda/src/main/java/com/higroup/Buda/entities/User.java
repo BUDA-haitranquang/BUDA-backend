@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
+import java.util.ArrayList;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -13,6 +14,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -60,6 +65,13 @@ public class User implements UserDetails {
     public Set<Purchase> getPurchases() {
         return this.purchases;
     }
+
+    @ManyToMany
+    @JoinTable(name = "user_role",
+               joinColumns = @JoinColumn(name = "user_id"), 
+               inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Collection<Role> roles = new ArrayList<Role>();
 
     public User(Long userID, String userUUID, String userName, String password, String email, String phoneNumber, String lastName, String firstName, Long pictureID, Set<Purchase> purchases) {
         this.userID = userID;
