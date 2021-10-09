@@ -1,10 +1,13 @@
 package com.higroup.Buda.services;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
 import com.higroup.Buda.entities.User;
 import com.higroup.Buda.exception.APIBadRequestException;
+import com.higroup.Buda.repositories.RoleRepository;
 import com.higroup.Buda.repositories.UserRepository;
 import com.higroup.Buda.util.JwtTokenUtil;
 import com.higroup.Buda.util.SHA_256_Encode;
@@ -13,6 +16,7 @@ import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -32,6 +36,9 @@ public class UserService implements UserDetailsService{
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = new BCryptPasswordEncoder();
     }
+
+    @Autowired
+    private RoleRepository roleRepository;
 
     // dang ky user moi
     public ResponseEntity<?> registerNewUser(User newUser) {
@@ -113,7 +120,7 @@ public class UserService implements UserDetailsService{
         if (bCryptPasswordEncoder.matches(rawPassword, mailUser.get().getPassword()))
         {
             JwtTokenUtil jwtTokenUtil = new JwtTokenUtil();
-            UserDetails userDetails = mailUser.get();
+            UserDetails userDetails = loadUserByUsername(mailUser.get().getEmail());
             //System.out.println(userDetails);
             String returnBody = jwtTokenUtil.generateToken(userDetails);
             return ResponseEntity.ok().body(returnBody);
@@ -173,11 +180,26 @@ public class UserService implements UserDetailsService{
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+
+        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         Optional<User> mailUser = this.userRepository.findUserByEmail(email);
-        return mailUser.orElse(null);
-        // TODO Auto-generated method stub
+        
+        if(!mailUser.isPresent()){
+            return null;
+        }
+
+        mailUser.get().getRoles().forEach(role  -> 
+            {authorities.add(new SimpleGrantedAuthority(role.getName()));
+        });
+        return new org.springframework.security.core.userdetails.User(mailUser.get().getEmail(), 
+                                                                      mailUser.get().getPassword(), authorities);
+        
     }
 
+    // public ResponseEntity<?> addRoleToUser(String userName, String roleName){
+    //     Optional<User> user = userRepository.findUserByUserName(userName);
+    //     Optional<Role> user = roleRepository.findUser
+    // }
     // TUONG UNG VOI 4 REQUEST BEN USER CONTROLLER
     // LOGIC FLOW (IF - ELSE CAC THU SE NAM O DAY)
 }

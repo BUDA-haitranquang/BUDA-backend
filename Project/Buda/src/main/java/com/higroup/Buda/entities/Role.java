@@ -12,9 +12,34 @@ import javax.persistence.Table;
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long RoleID;
+    private long roleID;
 
-    @Column(length = 10)
+    @Column(length = 10, unique = true)
     private String name;
+    
+    public Role(){};
+
+    public Role(String name){
+        this.name = name;
+    }
+
+    public long getRoleID() {
+        return roleID;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "Role [name=" + name + ", roleID=" + roleID + "]";
+    }
+
+    
 }
 

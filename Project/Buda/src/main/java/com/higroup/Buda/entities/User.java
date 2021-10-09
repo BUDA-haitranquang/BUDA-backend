@@ -37,7 +37,7 @@ import org.springframework.security.core.userdetails.UserDetails;
     @Index(columnList = "userName", name = "user_user_name_index")
 })
 
-public class User implements UserDetails {
+public class User{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="user_ID")
@@ -66,7 +66,7 @@ public class User implements UserDetails {
         return this.purchases;
     }
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinTable(name = "user_role",
                joinColumns = @JoinColumn(name = "user_id"), 
                inverseJoinColumns = @JoinColumn(name = "role_id")
@@ -280,40 +280,31 @@ public class User implements UserDetails {
         return Objects.hash(userID, userUUID, userName, password, email, phoneNumber, lastName, firstName, pictureID, purchases);
     }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        // TODO Auto-generated method stub
-        return null;
+    // role 
+    // add role
+    public void addRole(Role ... roles){
+        for(Role role: roles){
+            if(!this.roles.contains(role)){
+                this.roles.add(role);
+            }
+        }
+    }
+    
+    // remove role 
+    public void removeRole(Role ... roles){
+        for(Role role: roles){
+            if(this.roles.contains(role)){
+                this.roles.remove(role);
+            }
+        }
     }
 
-    @Override
-    public String getUsername() {
-        // TODO Auto-generated method stub
-        return this.email;
+    public Collection<Role> getRoles() {
+        return roles;
     }
 
-    @Override
-    public boolean isAccountNonExpired() {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        // TODO Auto-generated method stub
-        return false;
+    public void setRoles(Collection<Role> roles) {
+        this.roles = roles;
     }
 
 }
