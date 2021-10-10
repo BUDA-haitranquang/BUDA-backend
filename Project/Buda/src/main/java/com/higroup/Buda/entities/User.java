@@ -250,19 +250,10 @@ public class User{
 
     @Override
     public String toString() {
-        return "{" +
-            " userID='" + getUserID() + "'" +
-            ", userUUID='" + getUserUUID() + "'" +
-            ", userName='" + getUserName() + "'" +
-             ", password='" + getPassword() + "'" +
-            ", email='" + getEmail() + "'" +
-            ", phoneNumber='" + getPhoneNumber() + "'" +
-            ", lastName='" + getLastName() + "'" +
-            ", firstName='" + getFirstName() + "'" +
-            ", pictureID='" + getPictureID() + "'" +
-            "}";
+        return "User [email=" + email + ", firstName=" + firstName + ", lastName=" + lastName + ", password=" + password
+                + ", phoneNumber=" + phoneNumber + ", pictureID=" + pictureID + ", purchases=" + purchases + ", roles="
+                + roles + ", userID=" + userID + ", userName=" + userName + ", userUUID=" + userUUID + "]";
     }
-
 
     @Override
     public boolean equals(Object o) {

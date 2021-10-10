@@ -38,6 +38,7 @@ public class UserController {
     // Lam du 4 request: CREATE - READ - UPDATE - DELETE
     // BEN NAY CAC FUNCTION CHI CO MOT DONG DUY NHAT
     // return this.userService.get(tham so)/update(tham so)/...
+
     @GetMapping
     public List<User> getUsers() {
         return userService.getUsers();

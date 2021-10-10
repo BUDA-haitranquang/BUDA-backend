@@ -4,7 +4,6 @@ import java.util.Optional;
 
 import com.higroup.Buda.entities.Role;
 import com.higroup.Buda.repositories.RoleRepository;
-import com.higroup.Buda.repositories.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

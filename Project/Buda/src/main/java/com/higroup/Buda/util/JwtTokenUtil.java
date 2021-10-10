@@ -18,10 +18,10 @@ import io.jsonwebtoken.SignatureAlgorithm;
 public class JwtTokenUtil implements Serializable {
     private static final long serialVersionUID = -2550185165626007488L;
 
-    public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
+    // public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
 
     //@Value("${jwt.secret}")
-	private String secret = "HRlELXqpSB";
+	private String secret = Config.secretKey;
 
     // retrieve username from jwt token
     public String getUsernameFromToken(String token){
@@ -49,10 +49,25 @@ public class JwtTokenUtil implements Serializable {
         return expiration.before(new Date());
     }
 
+    
+    // public String generateToken(UserDetails userDetails){
+    //     Map<String, Object> claims = new HashMap<String, Object>();
+    //     return doGenerateToken(claims, userDetails.getUsername());
+    // }
+
     // generate token for user
-    public String generateToken(UserDetails userDetails){
+    // access token
+    public String generataAccessToken(UserDetails userDetails){
         Map<String, Object> claims = new HashMap<String, Object>();
-        return doGenerateToken(claims, userDetails.getUsername());
+        claims.put("roles", userDetails.getAuthorities());
+        return doGenerateToken(claims, userDetails.getUsername(), Config.HoursAccessToken);
+    }
+
+    // refresh token
+    public String generataRefreshToken(UserDetails userDetails){
+        Map<String, Object> claims = new HashMap<String, Object>();
+        claims.put("roles", userDetails.getAuthorities());
+        return doGenerateToken(claims, userDetails.getUsername(), Config.HoursRefreshToken);
     }
 
     // while creating the token
@@ -60,9 +75,9 @@ public class JwtTokenUtil implements Serializable {
     // 2. Sign the JWT úing the HS512 algorithm and secret key
     // 3. According to JWS Compact Serialization 
     // compacton of the JWT to a URL-safe string 
-    private String doGenerateToken(Map<String, Object> claims, String subject){
+    private String doGenerateToken(Map<String, Object> claims, String subject, int expiredTime){
         return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-        .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
+        .setExpiration(new Date(System.currentTimeMillis() + expiredTime * 60 * 60 * 1000))
         .signWith(SignatureAlgorithm.HS512, secret).compact();
     }
 
