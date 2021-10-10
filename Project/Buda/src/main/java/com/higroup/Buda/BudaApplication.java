@@ -21,26 +21,26 @@ public class BudaApplication {
 	@Bean
 	public CommandLineRunner addRole(RoleRepository repo, UserRepository userRepository){
 		return args -> {
-			try{
-				repo.save(new Role("ADMIN"));
-				repo.save(new Role("MODERATOR"));
-				repo.save(new Role("USER"));
-				repo.save(new Role("STAFF"));
-			}
-			catch (Exception e){
+			// try{
+			// 	repo.save(new Role("ADMIN"));
+			// 	repo.save(new Role("MODERATOR"));
+			// 	repo.save(new Role("USER"));
+			// 	repo.save(new Role("STAFF"));
+			// }
+			// catch (Exception e){
 				
-			}
-			Role role = repo.findRoleByName("USER").get();
-			User user = new User();
-			user.setUserName("nguyenhoangvudtm23");
-			user.password("123456789");
-			user.setEmail("nguyenhoangvudtm23@gmail.com");
-			user.setFirstName("Vu");
-			user.setLastName("Nguyen Hoang");
-			user.setPhoneNumber("0367185116");
+			// }
+			// Role role = repo.findRoleByName("USER").get();
+			// User user = new User();
+			// user.setUserName("nguyenhoangvudtm23");
+			// user.password("123456789");
+			// user.setEmail("nguyenhoangvudtm23@gmail.com");
+			// user.setFirstName("Vu");
+			// user.setLastName("Nguyen Hoang");
+			// user.setPhoneNumber("0367185116");
 			
-			user.addRole(role);
-			userRepository.save(user);
+			// user.addRole(role);
+			// userRepository.save(user);
 
 		};
 	} 

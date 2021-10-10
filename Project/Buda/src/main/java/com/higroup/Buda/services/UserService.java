@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import com.higroup.Buda.entities.User;
 import com.higroup.Buda.exception.APIBadRequestException;
+import com.higroup.Buda.jwt.JwtResponse;
 import com.higroup.Buda.repositories.RoleRepository;
 import com.higroup.Buda.repositories.UserRepository;
 import com.higroup.Buda.util.JwtTokenUtil;
@@ -77,7 +78,7 @@ public class UserService implements UserDetailsService{
         {
             return ResponseEntity.badRequest().body("Weak password");
         }
-        System.out.println(newUser.getPassword());
+        // System.out.println(newUser.getPassword());
         newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
         userRepository.save(newUser);
         return ResponseEntity.ok().body(newUser);
@@ -106,7 +107,7 @@ public class UserService implements UserDetailsService{
         return ResponseEntity.ok().body("Deleted successfully");
     }
 
-    public ResponseEntity<String> correctLogin(String email, String rawPassword)
+    public ResponseEntity<?> correctLogin(String email, String rawPassword)
     {
         Optional<User> mailUser = userRepository.findUserByEmail(email);
         if (mailUser.isEmpty())
@@ -122,8 +123,9 @@ public class UserService implements UserDetailsService{
             JwtTokenUtil jwtTokenUtil = new JwtTokenUtil();
             UserDetails userDetails = loadUserByUsername(mailUser.get().getEmail());
             //System.out.println(userDetails);
-            String returnBody = jwtTokenUtil.generateToken(userDetails);
-            return ResponseEntity.ok().body(returnBody);
+            String jwtaccessToken = jwtTokenUtil.generataAccessToken(userDetails);
+            String jwtrefreshToken = jwtTokenUtil.generataRefreshToken(userDetails);
+            return ResponseEntity.ok(new JwtResponse(jwtaccessToken, jwtrefreshToken));
         }
         return ResponseEntity.badRequest().body("false");
     }
@@ -185,7 +187,7 @@ public class UserService implements UserDetailsService{
         Optional<User> mailUser = this.userRepository.findUserByEmail(email);
         
         if(!mailUser.isPresent()){
-            return null;
+            throw new UsernameNotFoundException("Not found user with email: " + email);
         }
 
         mailUser.get().getRoles().forEach(role  -> 
