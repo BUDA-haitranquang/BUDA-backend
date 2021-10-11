@@ -5,6 +5,7 @@ import com.higroup.Buda.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -53,15 +54,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override // defines which URL paths should be secured and which should not
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
-				// dont authenticate this particular request
-				.authorizeRequests().antMatchers("/api/user/login").permitAll().
-				// all other requests need to be authenticated
-				anyRequest().authenticated().and().
-				// make sure we use stateless session; session won't be used to
-				// store user's state.
-				exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
-				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.csrf().disable(); 
+		// make sure we use stateless session; session won't be used to
+		// store user's state.
+		http.exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
+			.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+		// dont authenticate this particular request
+		http.authorizeRequests().antMatchers("/api/user/login").permitAll();
+		// require ROLE USER to make get request for user 
+		http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/user/**").hasAnyAuthority("USER");
+		// Admin can do something
+		// http.authorizeRequests().antMatchers(HttpMethod.POST, "api/user/dosomething/**").hasAnyAuthority("ADMIN");
+		// all other requests need to be authenticated
+		http.authorizeRequests().anyRequest().authenticated();
+				
+		// http.authorizeRequests().anyRequest().authen
 		// Add a filter to validate the tokens with every request
 		http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
