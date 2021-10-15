@@ -80,6 +80,7 @@ public class UserService implements UserDetailsService{
         }
         // System.out.println(newUser.getPassword());
         newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
+        newUser.addRole(roleRepository.findRoleByName("USER").get());
         userRepository.save(newUser);
         return ResponseEntity.ok().body(newUser);
     }
@@ -123,8 +124,8 @@ public class UserService implements UserDetailsService{
             JwtTokenUtil jwtTokenUtil = new JwtTokenUtil();
             UserDetails userDetails = loadUserByUsername(mailUser.get().getEmail());
             //System.out.println(userDetails);
-            String jwtaccessToken = jwtTokenUtil.generataAccessToken(userDetails);
-            String jwtrefreshToken = jwtTokenUtil.generataRefreshToken(userDetails);
+            String jwtaccessToken = jwtTokenUtil.generataAccessToken(userDetails, mailUser.get().getUserID());
+            String jwtrefreshToken = jwtTokenUtil.generataRefreshToken(userDetails, mailUser.get().getUserID());
             return ResponseEntity.ok(new JwtResponse(jwtaccessToken, jwtrefreshToken));
         }
         return ResponseEntity.badRequest().body("false");

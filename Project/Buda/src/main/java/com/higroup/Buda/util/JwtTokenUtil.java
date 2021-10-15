@@ -63,10 +63,24 @@ public class JwtTokenUtil implements Serializable {
         return doGenerateToken(claims, userDetails.getUsername(), Config.HoursAccessToken);
     }
 
+    public String generataAccessToken(UserDetails userDetails, Long userID){
+        Map<String, Object> claims = new HashMap<String, Object>();
+        claims.put("roles", userDetails.getAuthorities());
+        claims.put("userID", userID);
+        return doGenerateToken(claims, userDetails.getUsername(), Config.HoursAccessToken);
+    }
+
     // refresh token
     public String generataRefreshToken(UserDetails userDetails){
         Map<String, Object> claims = new HashMap<String, Object>();
         claims.put("roles", userDetails.getAuthorities());
+        return doGenerateToken(claims, userDetails.getUsername(), Config.HoursRefreshToken);
+    }
+
+    public String generataRefreshToken(UserDetails userDetails, Long userID){
+        Map<String, Object> claims = new HashMap<String, Object>();
+        claims.put("roles", userDetails.getAuthorities());
+        claims.put("userID", userID);
         return doGenerateToken(claims, userDetails.getUsername(), Config.HoursRefreshToken);
     }
 
