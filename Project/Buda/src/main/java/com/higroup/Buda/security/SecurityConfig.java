@@ -60,7 +60,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
 			.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		// dont authenticate this particular request
-		http.authorizeRequests().antMatchers("/api/user/login").permitAll();
+		http.authorizeRequests().antMatchers("/api/user/login", "/api/user/register").permitAll();
+
 		// require ROLE USER to make get request for user 
 		http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/user/**").hasAnyAuthority("USER");
 		// Admin can do something
