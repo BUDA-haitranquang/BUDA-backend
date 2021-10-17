@@ -36,7 +36,7 @@ public class ProductController {
     {
         return this.productService.registerNewProduct(userID, product);
     }
-    
+
     @GetMapping(path = "/productID/{productID}")
     public ResponseEntity<?> findProductByProductID(HttpServletRequest request, @PathVariable Long productID)
     {
@@ -55,9 +55,20 @@ public class ProductController {
     }
 
     @GetMapping(path = "/userID/{userID}/all")
-    public List<Product> findAllProductByUserID(@PathVariable Long userID)
+    public ResponseEntity<?> findAllProductByUserID(HttpServletRequest request, @PathVariable Long userID)
     {
-        return this.productService.findAllProductByUserID(userID);
+        final String token = request.getHeader("Authorization").substring(7);
+
+        Long get_userID = jwtTokenUtil.getUserIDFromToken(token);
+        // if userid match ingredientID
+        if(get_userID == userID){
+            return ResponseEntity.ok(this.productService.findAllProductByUserID(userID));
+        }
+        // if not return unauthorized
+        else{
+            return new ResponseEntity<String>("Unauthorized", HttpStatus.UNAUTHORIZED);
+        }
+        
     }
     @GetMapping(path = "/product-groupID/{productGroupID}/all")
     public List<Product> findAllProductByProductGroupID(@PathVariable Long productGroupID)
