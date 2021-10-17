@@ -158,20 +158,28 @@ public class BuyOrderItem {
             return false;
         }
         BuyOrderItem buyOrderItem = (BuyOrderItem) o;
-        return Objects.equals(buyOrderItemID, buyOrderItem.buyOrderItemID) && Objects.equals(buyOrder, buyOrderItem.buyOrder) && Objects.equals(ingredient, buyOrderItem.ingredient) && quantity == buyOrderItem.quantity && pricePerUnit == buyOrderItem.pricePerUnit && Objects.equals(creationTime, buyOrderItem.creationTime) && Objects.equals(userID, buyOrderItem.userID) && Objects.equals(supplierID, buyOrderItem.supplierID);
+        return Objects.equals(buyOrderItemID, buyOrderItem.buyOrderItemID) 
+        // && Objects.equals(buyOrder, buyOrderItem.buyOrder) 
+        // && Objects.equals(ingredient, buyOrderItem.ingredient) 
+        && quantity == buyOrderItem.quantity 
+        && pricePerUnit == buyOrderItem.pricePerUnit 
+        && Objects.equals(creationTime, buyOrderItem.creationTime) 
+        && Objects.equals(userID, buyOrderItem.userID) 
+        && Objects.equals(supplierID, buyOrderItem.supplierID);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(buyOrderItemID, buyOrder, ingredient, quantity, pricePerUnit, creationTime, userID, supplierID);
+        //remove from hashCode: buyOrder, ingredient
+        return Objects.hash(buyOrderItemID, quantity, pricePerUnit, creationTime, userID, supplierID);
     }
 
     @Override
     public String toString() {
         return "{" +
             " buyOrderItemID='" + getBuyOrderItemID() + "'" +
-            ", buyOrder='" + getBuyOrder() + "'" +
-            ", ingredient='" + getIngredient() + "'" +
+            // ", buyOrder='" + getBuyOrder() + "'" +8
+            // ", ingredient='" + getIngredient() + "'" +
             ", quantity='" + getQuantity() + "'" +
             ", pricePerUnit='" + getPricePerUnit() + "'" +
             ", creationTime='" + getCreationTime() + "'" +

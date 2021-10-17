@@ -3,6 +3,7 @@ package com.higroup.Buda.entities;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -205,18 +206,18 @@ public class SellOrderItem {
             return false;
         }
         SellOrderItem sellOrderItem = (SellOrderItem) o;
-        return Objects.equals(sellOrder, sellOrderItem.sellOrder) && Objects.equals(product, sellOrderItem.product) && quantity == sellOrderItem.quantity && pricePerUnit == sellOrderItem.pricePerUnit && Objects.equals(userID, sellOrderItem.userID) && Objects.equals(creationTime, sellOrderItem.creationTime) && Objects.equals(gender, sellOrderItem.gender) && Objects.equals(ageGroup, sellOrderItem.ageGroup) && actualTotalSale == sellOrderItem.actualTotalSale && costPerUnit == sellOrderItem.costPerUnit;
+        return quantity == sellOrderItem.quantity && pricePerUnit == sellOrderItem.pricePerUnit && Objects.equals(userID, sellOrderItem.userID) && Objects.equals(creationTime, sellOrderItem.creationTime) && Objects.equals(gender, sellOrderItem.gender) && Objects.equals(ageGroup, sellOrderItem.ageGroup) && actualTotalSale == sellOrderItem.actualTotalSale && costPerUnit == sellOrderItem.costPerUnit;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(sellOrder, product, quantity, pricePerUnit, userID, creationTime, gender, ageGroup, actualTotalSale, costPerUnit);
+        return 5;
     }
 
     @Override
     public String toString() {
         return "{" +
-            " sellOrder='" + getSellOrder() + "'" +
+            //" sellOrder='" + getSellOrder() + "'" +
             ", product='" + getProduct() + "'" +
             ", quantity='" + getQuantity() + "'" +
             ", pricePerUnit='" + getPricePerUnit() + "'" +
