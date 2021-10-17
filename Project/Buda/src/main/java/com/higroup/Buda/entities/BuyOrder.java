@@ -29,7 +29,7 @@ public class BuyOrder {
     @Column(name = "user_id")
     private Long userID;
     @OneToMany(mappedBy = "buyOrder", fetch = FetchType.LAZY)
-    @JsonManagedReference
+    @JsonManagedReference(value = "buy_order - buy_order_item")
     private Set<BuyOrderItem> buyOrderItems;
 
 

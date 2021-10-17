@@ -1,5 +1,6 @@
 package com.higroup.Buda.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -10,6 +11,7 @@ import java.util.Set;
 @Table(name = "Ingredient", indexes = {
     @Index(columnList = "user_id", name = "ingredient_user_id_index")
 })
+@JsonIgnoreProperties({"buyOrderItems"})
 public class Ingredient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +29,7 @@ public class Ingredient {
     private Long pictureID;
     private int alertAmountLeft;
     @OneToMany(mappedBy = "ingredient", fetch = FetchType.LAZY)
-    @JsonManagedReference
+    @JsonManagedReference(value = "ingredient - buy_order_item")
     private Set<BuyOrderItem> buyOrderItems;
 
     public Ingredient() {
