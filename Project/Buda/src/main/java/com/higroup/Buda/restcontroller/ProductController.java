@@ -32,9 +32,19 @@ public class ProductController {
         this.productService = productService;
     }
     @PostMapping(path = "new/userID/{userID}")
-    public ResponseEntity<?> registerNewProduct(@PathVariable Long userID, @RequestBody Product product)
+    public ResponseEntity<?> registerNewProduct(HttpServletRequest request, @PathVariable Long userID, @RequestBody Product product)
     {
-        return this.productService.registerNewProduct(userID, product);
+        final String token = request.getHeader("Authorization").substring(7);
+
+        Long get_userID = jwtTokenUtil.getUserIDFromToken(token);
+
+        if(userID == get_userID){
+            return this.productService.registerNewProduct(userID, product);
+        }
+        // if not return unauthorized
+        else{
+            return new ResponseEntity<String>("Unauthorized", HttpStatus.UNAUTHORIZED);
+        }
     }
 
     @GetMapping(path = "/productID/{productID}")
@@ -60,7 +70,7 @@ public class ProductController {
         final String token = request.getHeader("Authorization").substring(7);
 
         Long get_userID = jwtTokenUtil.getUserIDFromToken(token);
-        // if userid match ingredientID
+        // if userid match productID
         if(get_userID == userID){
             return ResponseEntity.ok(this.productService.findAllProductByUserID(userID));
         }
