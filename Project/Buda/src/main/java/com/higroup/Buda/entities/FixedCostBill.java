@@ -29,7 +29,7 @@ public class FixedCostBill {
     private Long fixedCostBillID;
     @ManyToOne
     @JoinColumn(name = "fixed_Cost_ID", nullable = true)
-    @JsonBackReference
+    @JsonBackReference(value = "fixed_cost - fixed_cost_bill")
     private FixedCost fixedCost;
     @Column(name = "user_id")
     private Long userID;
@@ -168,19 +168,27 @@ public class FixedCostBill {
             return false;
         }
         FixedCostBill fixedCostBill = (FixedCostBill) o;
-        return Objects.equals(fixedCostBillID, fixedCostBill.fixedCostBillID) && Objects.equals(fixedCost, fixedCostBill.fixedCost) && Objects.equals(userID, fixedCostBill.userID) && totalSpend == fixedCostBill.totalSpend && Objects.equals(message, fixedCostBill.message) && Objects.equals(creationTime, fixedCostBill.creationTime) && Objects.equals(dueTime, fixedCostBill.dueTime) && Objects.equals(status, fixedCostBill.status);
+        return Objects.equals(fixedCostBillID, fixedCostBill.fixedCostBillID)
+//                && Objects.equals(fixedCost, fixedCostBill.fixedCost)
+                && Objects.equals(userID, fixedCostBill.userID)
+                && totalSpend == fixedCostBill.totalSpend
+                && Objects.equals(message, fixedCostBill.message)
+                && Objects.equals(creationTime, fixedCostBill.creationTime)
+                && Objects.equals(dueTime, fixedCostBill.dueTime)
+                && Objects.equals(status, fixedCostBill.status);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(fixedCostBillID, fixedCost, userID, totalSpend, message, creationTime, dueTime, status);
+//        return Objects.hash(fixedCostBillID, fixedCost, userID, totalSpend, message, creationTime, dueTime, status);
+        return 1;
     }
 
     @Override
     public String toString() {
         return "{" +
             " fixedCostBillID='" + getFixedCostBillID() + "'" +
-            ", fixedCost='" + getFixedCost() + "'" +
+//            ", fixedCost='" + getFixedCost() + "'" +
             ", userID='" + getUserID() + "'" +
             ", totalSpend='" + getTotalSpend() + "'" +
             ", message='" + getMessage() + "'" +

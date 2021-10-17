@@ -235,7 +235,18 @@ public class Product {
             return false;
         }
         Product product = (Product) o;
-        return Objects.equals(productID, product.productID) && Objects.equals(name, product.name) && Objects.equals(description, product.description) && Objects.equals(userID, product.userID) && Objects.equals(pictureID, product.pictureID) && sellingPrice == product.sellingPrice && alertAmount == product.alertAmount && amountLeft == product.amountLeft && costPerUnit == product.costPerUnit && Objects.equals(sellOrderItems, product.sellOrderItems) && Objects.equals(productLeftLogs, product.productLeftLogs) && Objects.equals(productGroup, product.productGroup);
+        return Objects.equals(productID, product.productID)
+                && Objects.equals(name, product.name)
+                && Objects.equals(description, product.description)
+                && Objects.equals(userID, product.userID)
+                && Objects.equals(pictureID, product.pictureID)
+                && sellingPrice == product.sellingPrice
+                && alertAmount == product.alertAmount
+                && amountLeft == product.amountLeft
+                && costPerUnit == product.costPerUnit
+                && Objects.equals(sellOrderItems, product.sellOrderItems)
+                && Objects.equals(productLeftLogs, product.productLeftLogs)
+                && Objects.equals(productGroup, product.productGroup);
     }
 
     @Override

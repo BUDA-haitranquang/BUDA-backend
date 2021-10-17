@@ -132,7 +132,12 @@ public class ProductComponent {
             return false;
         }
         ProductComponent productComponent = (ProductComponent) o;
-        return Objects.equals(productComponentID, productComponent.productComponentID) && Objects.equals(ingredient, productComponent.ingredient) && Objects.equals(product, productComponent.product) && Objects.equals(requiredQuantity, productComponent.requiredQuantity) && Objects.equals(userID, productComponent.userID) && Objects.equals(totalCost, productComponent.totalCost);
+        return Objects.equals(productComponentID, productComponent.productComponentID)
+                && Objects.equals(ingredient, productComponent.ingredient)
+                && Objects.equals(product, productComponent.product)
+                && Objects.equals(requiredQuantity, productComponent.requiredQuantity)
+                && Objects.equals(userID, productComponent.userID)
+                && Objects.equals(totalCost, productComponent.totalCost);
     }
 
     @Override
