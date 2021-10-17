@@ -17,11 +17,11 @@ public class BuyOrderItem {
     @Column(name = "buy_order_item_id")
     private Long buyOrderItemID;
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
-    @JsonBackReference
+    @JsonBackReference(value = "buy_order - buy_order_item")
     @JoinColumn(name = "buy_Order_ID", nullable = true)
     private BuyOrder buyOrder;
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
-    @JsonBackReference
+    @JsonBackReference(value = "ingredient - buy_order_item")
     @JoinColumn(name = "ingredient_ID", nullable = true)
     private Ingredient ingredient;
     private int quantity;
