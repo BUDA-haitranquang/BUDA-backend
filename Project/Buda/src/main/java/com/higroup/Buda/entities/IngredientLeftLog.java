@@ -153,7 +153,13 @@ public class IngredientLeftLog {
             return false;
         }
         IngredientLeftLog ingredientLeftLog = (IngredientLeftLog) o;
-        return Objects.equals(ingredientLeftLogID, ingredientLeftLog.ingredientLeftLogID) && Objects.equals(ingredient, ingredientLeftLog.ingredient) && amountLeftChange == ingredientLeftLog.amountLeftChange && Objects.equals(creationTime, ingredientLeftLog.creationTime) && Objects.equals(staffID, ingredientLeftLog.staffID) && Objects.equals(message, ingredientLeftLog.message) && Objects.equals(userID, ingredientLeftLog.userID);
+        return Objects.equals(ingredientLeftLogID, ingredientLeftLog.ingredientLeftLogID)
+                && Objects.equals(ingredient, ingredientLeftLog.ingredient)
+                && amountLeftChange == ingredientLeftLog.amountLeftChange
+                && Objects.equals(creationTime, ingredientLeftLog.creationTime)
+                && Objects.equals(staffID, ingredientLeftLog.staffID)
+                && Objects.equals(message, ingredientLeftLog.message)
+                && Objects.equals(userID, ingredientLeftLog.userID);
     }
 
     @Override

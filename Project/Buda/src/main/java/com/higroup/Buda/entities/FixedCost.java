@@ -156,7 +156,12 @@ public class FixedCost {
             return false;
         }
         FixedCost fixedCost = (FixedCost) o;
-        return Objects.equals(fixedCostID, fixedCost.fixedCostID) && Objects.equals(name, fixedCost.name) && Objects.equals(description, fixedCost.description) && moneyAmount == fixedCost.moneyAmount && period == fixedCost.period && Objects.equals(userID, fixedCost.userID);
+        return Objects.equals(fixedCostID, fixedCost.fixedCostID)
+                && Objects.equals(name, fixedCost.name)
+                && Objects.equals(description, fixedCost.description)
+                && moneyAmount == fixedCost.moneyAmount
+                && period == fixedCost.period
+                && Objects.equals(userID, fixedCost.userID);
     }
 
     @Override

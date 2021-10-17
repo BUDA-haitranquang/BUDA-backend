@@ -145,7 +145,13 @@ public class BuyOrder {
             return false;
         }
         BuyOrder buyOrder = (BuyOrder) o;
-        return Objects.equals(buyOrderID, buyOrder.buyOrderID) && Objects.equals(supplier, buyOrder.supplier) && Objects.equals(creationTime, buyOrder.creationTime) && Objects.equals(status, buyOrder.status) && totalCost == buyOrder.totalCost && Objects.equals(userID, buyOrder.userID) && Objects.equals(buyOrderItems, buyOrder.buyOrderItems);
+        return Objects.equals(buyOrderID, buyOrder.buyOrderID)
+                && Objects.equals(supplier, buyOrder.supplier)
+                && Objects.equals(creationTime, buyOrder.creationTime)
+                && Objects.equals(status, buyOrder.status)
+                && totalCost == buyOrder.totalCost
+                && Objects.equals(userID, buyOrder.userID)
+                && Objects.equals(buyOrderItems, buyOrder.buyOrderItems);
     }
 
     @Override
