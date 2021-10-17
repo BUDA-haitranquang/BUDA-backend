@@ -35,7 +35,7 @@ public class IngredientController {
         Ingredient ingredient = this.ingredientService.findIngredientByIngredientID(ingredientID);
         // if userid match ingredientID
         if(userID == ingredient.getUserID()){
-            return ResponseEntity.ok(ingredient.toString());
+            return ResponseEntity.ok(ingredient);
         }
         // if not return unauthorized
         else{
