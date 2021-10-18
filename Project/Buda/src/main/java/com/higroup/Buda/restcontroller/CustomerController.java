@@ -41,7 +41,7 @@ public class CustomerController {
             return ResponseEntity.ok(this.customerService.findAllByUserID(userID));
         }
         else{
-            return new ResponseEntity<String>("Unauthorized", HttpStatus.UNAUTHORIZED);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No authorized");
         } 
     }
 
@@ -56,7 +56,7 @@ public class CustomerController {
             return ResponseEntity.ok(this.customerService.registerNewCustomer(userID, customer));
         }
         else{
-            return new ResponseEntity<String>("Unauthorized", HttpStatus.UNAUTHORIZED);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No authorized");
         }
     }
     
@@ -71,7 +71,7 @@ public class CustomerController {
             return ResponseEntity.ok(this.customerService.findCustomerByUserIDAndPhoneNumber(userID, phoneNumber));
         }
         else{
-            return new ResponseEntity<String>("Unauthorized", HttpStatus.UNAUTHORIZED);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No authorized");
         }
     }
 }

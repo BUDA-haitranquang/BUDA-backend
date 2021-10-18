@@ -10,8 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.http.HttpRequest;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -39,7 +37,7 @@ public class IngredientController {
         }
         // if not return unauthorized
         else{
-            return new ResponseEntity<String>("Unauthorized", HttpStatus.UNAUTHORIZED);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No authorized");
         }
     }
     
@@ -49,8 +47,18 @@ public class IngredientController {
         return this.ingredientService.findIngredientByName(ingredientName);
     }
     @PostMapping(path = "new/userID/{userID}")
-    public ResponseEntity<?> creatNewIngredient(@PathVariable Long userID, @RequestBody Ingredient ingredient)
-    {
-        return this.ingredientService.createNewIngredient(userID, ingredient);
+    public ResponseEntity<?> creatNewIngredient(HttpServletRequest request, @PathVariable Long userID, @RequestBody Ingredient ingredient)
+    {   
+        final String token = request.getHeader("Authorization").substring(7);
+
+        Long get_userID = jwtTokenUtil.getUserIDFromToken(token);
+        // if userid match ingredientID
+        if(userID == get_userID){
+            return ResponseEntity.ok(this.ingredientService.createNewIngredient(userID, ingredient));
+        }
+        // if not return unauthorized
+        else{
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No authorized");
+        }
     }
 }

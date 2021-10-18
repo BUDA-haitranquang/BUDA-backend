@@ -8,6 +8,7 @@ import com.higroup.Buda.entities.Supplier;
 import com.higroup.Buda.services.SupplierService;
 import com.higroup.Buda.util.JwtTokenUtil;
 
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,7 +43,7 @@ public class SupplierController {
             return ResponseEntity.ok(this.supplierService.registerNewSupplier(userID, supplier));
         }
         else{
-            return new ResponseEntity<String>("Unauthorized", HttpStatus.UNAUTHORIZED);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No authorized");
         }
     }
 
@@ -57,7 +58,7 @@ public class SupplierController {
             return ResponseEntity.ok(this.supplierService.findAllByUserID(userID));
         }
         else{
-            return new ResponseEntity<String>("Unauthorized", HttpStatus.UNAUTHORIZED);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No authorized");
         }
     }
     @GetMapping(path = "/userID/{userID}/byphone")
@@ -71,7 +72,7 @@ public class SupplierController {
             return ResponseEntity.ok(this.supplierService.findSupplierByUserIDAndPhoneNumber(userID, phoneNumber));
         }
         else{
-            return new ResponseEntity<String>("Unauthorized", HttpStatus.UNAUTHORIZED);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No authorized");
         }
     }
 }

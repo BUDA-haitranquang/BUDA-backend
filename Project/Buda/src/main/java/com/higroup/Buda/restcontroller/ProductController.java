@@ -43,7 +43,7 @@ public class ProductController {
         }
         // if not return unauthorized
         else{
-            return new ResponseEntity<String>("Unauthorized", HttpStatus.UNAUTHORIZED);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No authorized");
         }
     }
 
@@ -60,7 +60,7 @@ public class ProductController {
         }
         // if not return unauthorized
         else{
-            return new ResponseEntity<String>("Unauthorized", HttpStatus.UNAUTHORIZED);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No authorized");
         }
     }
 
@@ -76,7 +76,7 @@ public class ProductController {
         }
         // if not return unauthorized
         else{
-            return new ResponseEntity<String>("Unauthorized", HttpStatus.UNAUTHORIZED);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No authorized");
         }
         
     }
