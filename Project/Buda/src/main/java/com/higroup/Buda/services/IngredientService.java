@@ -35,11 +35,11 @@ public class IngredientService {
         {
             return ResponseEntity.badRequest().body("User not found");
         }
-        Optional<Ingredient> ingredient = this.ingredientRepository.findIngredientByName(newIngredient.getName());
+        //Optional<Ingredient> ingredient = this.ingredientRepository.findIngredientByName(newIngredient.getName());
         // check if name of ingredient exist
-        if(ingredient.isPresent()){
-            return ResponseEntity.badRequest().body(String.format("Already existed ingredient %s", newIngredient.getName()));
-        }
+        // if(ingredient.isPresent()){
+        //     return ResponseEntity.badRequest().body(String.format("Already existed ingredient %s", newIngredient.getName()));
+        // }
         else{
             newIngredient.setUserID(userID);
             this.ingredientRepository.save(newIngredient);

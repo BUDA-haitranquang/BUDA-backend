@@ -27,6 +27,6 @@ public class FixedCostBillService {
     }
     public List<FixedCostBill> findAllByUserID(Long userID)
     {
-        return this.findAllByUserID(userID);
+        return fixedCostBillRepository.findAllByUserID(userID);
     }
 }

@@ -29,7 +29,7 @@ public class BuyOrder {
     @Column(name = "user_id")
     private Long userID;
     @OneToMany(mappedBy = "buyOrder", fetch = FetchType.LAZY)
-    @JsonManagedReference
+    @JsonManagedReference(value = "buy_order - buy_order_item")
     private Set<BuyOrderItem> buyOrderItems;
 
 
@@ -145,7 +145,13 @@ public class BuyOrder {
             return false;
         }
         BuyOrder buyOrder = (BuyOrder) o;
-        return Objects.equals(buyOrderID, buyOrder.buyOrderID) && Objects.equals(supplier, buyOrder.supplier) && Objects.equals(creationTime, buyOrder.creationTime) && Objects.equals(status, buyOrder.status) && totalCost == buyOrder.totalCost && Objects.equals(userID, buyOrder.userID) && Objects.equals(buyOrderItems, buyOrder.buyOrderItems);
+        return Objects.equals(buyOrderID, buyOrder.buyOrderID)
+                && Objects.equals(supplier, buyOrder.supplier)
+                && Objects.equals(creationTime, buyOrder.creationTime)
+                && Objects.equals(status, buyOrder.status)
+                && totalCost == buyOrder.totalCost
+                && Objects.equals(userID, buyOrder.userID)
+                && Objects.equals(buyOrderItems, buyOrder.buyOrderItems);
     }
 
     @Override
