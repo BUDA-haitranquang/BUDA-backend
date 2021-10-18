@@ -65,7 +65,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		// require ROLE USER to make get request for user 
 		http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/user/**").hasAnyAuthority("USER");
 		// Admin can do something
-		// http.authorizeRequests().antMatchers(HttpMethod.POST, "api/user/dosomething/**").hasAnyAuthority("ADMIN");
+		// http.authorizeRequests().antMatchers(HttpMethod.POST, "api/product/productID/**").hasAnyAuthority("ADMIN");
 		// all other requests need to be authenticated
 		http.authorizeRequests().anyRequest().authenticated();
 				

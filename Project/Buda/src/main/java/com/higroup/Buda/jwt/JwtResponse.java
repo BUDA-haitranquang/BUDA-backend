@@ -7,7 +7,7 @@ public class JwtResponse{
         this.jwtaccesstoken = jwtaccesstoken;
         this.jwtrefreshtoken = jwtrefreshtoken;
     }
-    public String getAcessToken(){
+    public String getAccessToken(){
         return this.jwtaccesstoken;
     }
     public String getRefreshToken(){

@@ -69,7 +69,7 @@ public class Product {
         this.sellOrderItems = sellOrderItems;
         this.productLeftLogs = productLeftLogs;
         this.productGroup = productGroup;
-    }
+    }  
 
     public Long getProductID() {
         return this.productID;
