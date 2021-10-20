@@ -28,7 +28,7 @@ public class BuyOrderController {
     @PostMapping(path = "new/userID/{userID}")
     public ResponseEntity<?> registerNewBuyOrder(@PathVariable Long userID, @RequestBody BuyOrder buyOrder)
     {
-        return null;
+        return this.buyOrderService.registerNewBuyOrder(userID, buyOrder);
     }
     @GetMapping(path = "user/{userID}/all")
     public List<BuyOrder> findAllBuyOrderByUserID(@PathVariable Long userID)
