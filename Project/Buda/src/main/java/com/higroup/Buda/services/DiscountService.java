@@ -39,8 +39,8 @@ public class DiscountService {
         Optional<Discount> discount = this.discountRepository.findDiscountByDiscountID(discountID);
         return discount.<ResponseEntity<?>>map(value -> ResponseEntity.ok().body(value.toString())).orElseGet(() -> ResponseEntity.badRequest().body("Not found"));
     }
-    public List<Discount> findAllDiscountByUserID(Long userID)
+    public ResponseEntity<?> findAllDiscountByUserID(Long userID)
     {
-        return this.discountRepository.findAllDiscountByUserID(userID);
+        return ResponseEntity.ok().body(this.discountRepository.findAllDiscountByUserID(userID));
     }
 }

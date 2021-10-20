@@ -38,7 +38,7 @@ public class ProductController {
 
         Long get_userID = jwtTokenUtil.getUserIDFromToken(token);
 
-        if(userID == get_userID){
+        if((userID == get_userID)&&(jwtTokenUtil.isValid(token))){
             return this.productService.registerNewProduct(userID, product);
         }
         // if not return unauthorized
@@ -55,7 +55,7 @@ public class ProductController {
         Long userID = jwtTokenUtil.getUserIDFromToken(token);
         Product product = (Product)this.productService.findProductByProductID(productID).getBody();
         // if userid match ingredientID
-        if(userID == product.getUserID()){
+        if(userID == product.getUserID() && jwtTokenUtil.isValid(token)){
             return ResponseEntity.ok(product);
         }
         // if not return unauthorized
@@ -71,7 +71,7 @@ public class ProductController {
 
         Long get_userID = jwtTokenUtil.getUserIDFromToken(token);
         // if userid match productID
-        if(get_userID == userID){
+        if((get_userID == userID) && (jwtTokenUtil.isValid(token))){
             return ResponseEntity.ok(this.productService.findAllProductByUserID(userID));
         }
         // if not return unauthorized

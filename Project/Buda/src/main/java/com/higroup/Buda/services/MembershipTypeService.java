@@ -6,6 +6,7 @@ import com.higroup.Buda.entities.MembershipType;
 import com.higroup.Buda.repositories.MembershipTypeRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,8 +17,12 @@ public class MembershipTypeService {
     {
         this.membershipTypeRepository = membershipTypeRepository;
     }
-    public List<MembershipType> findAllByUserID(Long userID)
+    public ResponseEntity<?> findAllByUserID(Long userID)
     {
-        return this.membershipTypeRepository.findAllByUserID(userID);
+        return ResponseEntity.ok().body(this.membershipTypeRepository.findAllByUserID(userID));
+    }
+    public ResponseEntity<?> findMembershipTypeByMembershipTypeID(Long membershipTypeID)
+    {
+        return ResponseEntity.ok().body(this.membershipTypeRepository.findMembershipTypeByMembershipTypeID(membershipTypeID));
     }
 }

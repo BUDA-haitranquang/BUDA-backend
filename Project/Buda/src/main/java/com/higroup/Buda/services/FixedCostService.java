@@ -24,8 +24,8 @@ public class FixedCostService {
         Optional<FixedCost> fixedCost = this.fixedCostRepository.findFixedCostByFixedCostID(fixedCostID);
         return fixedCost.<ResponseEntity<?>>map(cost -> ResponseEntity.ok().body(cost)).orElseGet(() -> ResponseEntity.badRequest().body("FixedCost not found"));
     }
-    public List<FixedCost> findAllByUserID(Long userID)
+    public ResponseEntity<?> findAllByUserID(Long userID)
     {
-        return this.fixedCostRepository.findAllByUserID(userID);
+        return ResponseEntity.ok().body(this.fixedCostRepository.findAllByUserID(userID));
     }
 }
