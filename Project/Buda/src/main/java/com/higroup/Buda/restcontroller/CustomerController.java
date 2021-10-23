@@ -61,7 +61,7 @@ public class CustomerController {
     }
     
     @GetMapping(path = "/byphone")
-    public ResponseEntity<?> findCustomerByCurrentUserWithPhoneNumber(HttpServletRequest request, @RequestParam(required = true) String phoneNumber)
+    public ResponseEntity<?> findCustomerByCurrentUserWithPhoneNumber(HttpServletRequest request, @RequestBody String phoneNumber)
     {
         final String token = request.getHeader("Authorization").substring(7);
 

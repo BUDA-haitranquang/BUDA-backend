@@ -63,7 +63,7 @@ public class SupplierController {
         }
     }
     @GetMapping(path = "/byphone")
-    public ResponseEntity<?> findSupplierByUserIDAndPhoneNumber(HttpServletRequest request, @RequestBody String phoneNumber)
+    public ResponseEntity<?> findSupplierByCurrentUserWithPhoneNumber(HttpServletRequest request, @RequestBody String phoneNumber)
     {
         final String token = request.getHeader("Authorization").substring(7);
 
