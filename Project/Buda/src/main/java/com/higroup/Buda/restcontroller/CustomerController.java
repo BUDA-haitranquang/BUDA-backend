@@ -38,7 +38,7 @@ public class CustomerController {
         Long userID = jwtTokenUtil.getUserIDFromToken(token);
 
         if((userID != null) && (jwtTokenUtil.isValid(token))){
-            return ResponseEntity.ok(this.customerService.findAllByUserID(userID));
+            return this.customerService.findAllByUserID(userID);
         }
         else{
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No authorized");
@@ -53,7 +53,7 @@ public class CustomerController {
         Long userID = jwtTokenUtil.getUserIDFromToken(token);
 
         if((userID != null) && (jwtTokenUtil.isValid(token))){
-            return ResponseEntity.ok(this.customerService.registerNewCustomer(userID, customer));
+            return this.customerService.registerNewCustomer(userID, customer);
         }
         else{
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No authorized");
@@ -68,7 +68,7 @@ public class CustomerController {
         Long userID = jwtTokenUtil.getUserIDFromToken(token);
 
         if((userID != null) && (jwtTokenUtil.isValid(token))){
-            return ResponseEntity.ok(this.customerService.findCustomerByUserIDAndPhoneNumber(userID, phoneNumber));
+            return this.customerService.findCustomerByUserIDAndPhoneNumber(userID, phoneNumber);
         }
         else{
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No authorized");

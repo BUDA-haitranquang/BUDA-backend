@@ -31,9 +31,9 @@ public class SupplierService {
         return ResponseEntity.ok().body(supplier);
     }
 
-    public List<Supplier> findAllByUserID(Long userID)
+    public ResponseEntity<?> findAllByUserID(Long userID)
     {
-        return this.supplierRepository.findAllByUserID(userID);
+        return ResponseEntity.ok().body(this.supplierRepository.findAllByUserID(userID));
     }
     public ResponseEntity<?> findSupplierByUserIDAndPhoneNumber(Long userID, String phoneNumber)
     {
