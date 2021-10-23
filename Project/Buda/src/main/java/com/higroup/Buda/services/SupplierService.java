@@ -38,6 +38,11 @@ public class SupplierService {
     public ResponseEntity<?> findSupplierByUserIDAndPhoneNumber(Long userID, String phoneNumber)
     {
         Optional<Supplier> phoneSupplier = this.supplierRepository.findSupplierByUserIDAndPhoneNumber(userID, phoneNumber);
-        return phoneSupplier.<ResponseEntity<?>>map(supplier -> ResponseEntity.ok().body(supplier)).orElseGet(() -> ResponseEntity.badRequest().body("Not found"));
+        if (phoneSupplier.isPresent())
+        {
+            return ResponseEntity.ok().body(phoneSupplier.get());
+        }
+        return ResponseEntity.ok().body("Not found");
+        //return phoneSupplier.<ResponseEntity<?>>map(supplier -> ResponseEntity.ok().body(supplier)).orElseGet(() -> ResponseEntity.badRequest().body("Not found"));
     }
 }

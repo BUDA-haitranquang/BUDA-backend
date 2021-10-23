@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.fasterxml.jackson.databind.node.TextNode;
 import com.higroup.Buda.entities.Supplier;
 import com.higroup.Buda.services.SupplierService;
 import com.higroup.Buda.util.JwtTokenUtil;
@@ -32,14 +33,14 @@ public class SupplierController {
     {
         this.supplierService = supplierService;
     }
-    @PostMapping(path = "/userID/{userID}")
-    public ResponseEntity<?> registerNewSupplier(HttpServletRequest request, @PathVariable Long userID, @RequestBody Supplier supplier)
+    @PostMapping(path = "new")
+    public ResponseEntity<?> registerNewSupplier(HttpServletRequest request,  @RequestBody Supplier supplier)
     {   
         final String token = request.getHeader("Authorization").substring(7);
 
-        Long get_userID = jwtTokenUtil.getUserIDFromToken(token);
+        Long userID = jwtTokenUtil.getUserIDFromToken(token);
 
-        if(get_userID == userID){
+        if((userID != null) && (jwtTokenUtil.isValid(token))){
             return this.supplierService.registerNewSupplier(userID, supplier);
         }
         else{
@@ -62,12 +63,12 @@ public class SupplierController {
         }
     }
     @GetMapping(path = "/byphone")
-    public ResponseEntity<?> findSupplierByUserIDAndPhoneNumber(HttpServletRequest request, @RequestParam(required = true) String phoneNumber)
+    public ResponseEntity<?> findSupplierByUserIDAndPhoneNumber(HttpServletRequest request, @RequestBody String phoneNumber)
     {
         final String token = request.getHeader("Authorization").substring(7);
 
         Long userID = jwtTokenUtil.getUserIDFromToken(token);
-
+        System.out.println(phoneNumber);
         if((userID != null ) && (jwtTokenUtil.isValid(token))){
             return this.supplierService.findSupplierByUserIDAndPhoneNumber(userID, phoneNumber);
         }
