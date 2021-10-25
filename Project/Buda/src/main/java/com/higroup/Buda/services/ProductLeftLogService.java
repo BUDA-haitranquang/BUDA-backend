@@ -9,6 +9,7 @@ import com.higroup.Buda.entities.User;
 import com.higroup.Buda.repositories.ProductLeftLogRepository;
 import com.higroup.Buda.repositories.ProductRepository;
 import com.higroup.Buda.repositories.UserRepository;
+import com.higroup.Buda.util.Checker.PresentChecker;
 
 import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,10 @@ public class ProductLeftLogService {
         this.productLeftLogRepository = productLeftLogRepository;
         this.productRepository = productRepository;
     }
+
+    @Autowired
+    private PresentChecker presentChecker;
+
     public ResponseEntity<?> findProductLeftLogByProductLeftLogID(Long productLeftLogID)
     {
         Optional<ProductLeftLog> productLeftLog = this.productLeftLogRepository.findProductLeftLogByProductLeftLogID(productLeftLogID);
@@ -45,8 +50,9 @@ public class ProductLeftLogService {
     }
     public List<ProductLeftLog> findAllProductLeftLogByProduct(Long productID)
     {
-        Optional<Product> product = this.productRepository.findProductByProductID(productID);
-        return product.map(this.productLeftLogRepository::findAllProductLeftLogByProduct).orElse(null);
+        presentChecker.checkIdAndRepository(productID, productRepository);
+        Product product = this.productRepository.findProductByProductID(productID);
+        return this.productLeftLogRepository.findAllProductLeftLogByProduct(product);
     }
     public List<ProductLeftLog> findAllProductLeftLogByStaffID(Long staffID)
     {

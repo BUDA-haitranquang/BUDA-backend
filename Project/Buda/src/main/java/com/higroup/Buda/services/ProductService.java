@@ -9,6 +9,7 @@ import com.higroup.Buda.entities.User;
 import com.higroup.Buda.repositories.ProductGroupRepository;
 import com.higroup.Buda.repositories.ProductRepository;
 import com.higroup.Buda.repositories.UserRepository;
+import com.higroup.Buda.util.Checker.PresentChecker;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,9 @@ public class ProductService {
         this.userRepository = userRepository;
         this.productRepository = productRepository;
     }
+    @Autowired
+    private PresentChecker presentChecker;
+
     public ResponseEntity<?> registerNewProduct(Long userID, Product product)
     {
         Optional<User> user = this.userRepository.findUserByUserID(userID);
@@ -41,10 +45,11 @@ public class ProductService {
     {
         return this.productRepository.findAllProductByUserID(userID);
     }
-    public ResponseEntity<?> findProductByProductID(Long productID)
+    public Product findProductByProductID(Long productID)
     {
-        Optional<Product> product = this.productRepository.findProductByProductID(productID);
-        return product.<ResponseEntity<?>>map(value -> ResponseEntity.ok().body(value)).orElseGet(() -> ResponseEntity.badRequest().body("Not found"));
+        presentChecker.checkIdAndRepository(productID, productRepository);
+        Product product = this.productRepository.findProductByProductID(productID);
+        return product;
     }
     public List<Product> findAllProductByProductGroupID(Long productGroupID)
     {

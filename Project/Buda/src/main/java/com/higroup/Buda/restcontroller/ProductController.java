@@ -53,7 +53,7 @@ public class ProductController {
         final String token = request.getHeader("Authorization").substring(7);
 
         Long userID = jwtTokenUtil.getUserIDFromToken(token);
-        Product product = (Product)this.productService.findProductByProductID(productID).getBody();
+        Product product = this.productService.findProductByProductID(productID);
         // if userid match ingredientID
         if(userID == product.getUserID() && jwtTokenUtil.isValid(token)){
             return ResponseEntity.ok(product);

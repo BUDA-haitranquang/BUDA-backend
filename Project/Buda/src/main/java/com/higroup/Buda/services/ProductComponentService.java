@@ -6,6 +6,8 @@ import com.higroup.Buda.entities.ProductComponent;
 import com.higroup.Buda.repositories.IngredientRepository;
 import com.higroup.Buda.repositories.ProductComponentRepository;
 import com.higroup.Buda.repositories.ProductRepository;
+import com.higroup.Buda.util.Checker.PresentChecker;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,13 +26,14 @@ public class ProductComponentService {
         this.ingredientRepository = ingredientRepository;
     }
 
+    @Autowired
+    private PresentChecker presentChecker;
+
     public ProductComponent findByProductAndIngredient(Long productID, Long ingredientID)
     {
-        Optional<Product> product = this.productRepository.findProductByProductID(productID);
-        if (product.isEmpty())
-        {
-            return null;
-        }
+        presentChecker.checkIdAndRepository(productID, productRepository);
+        Product product = this.productRepository.findProductByProductID(productID);
+        
         Optional<Ingredient> ingredient = this.ingredientRepository.findIngredientByIngredientID(ingredientID);
         if (ingredient.isEmpty())
         {
