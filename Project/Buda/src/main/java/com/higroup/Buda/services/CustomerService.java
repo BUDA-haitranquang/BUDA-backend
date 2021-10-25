@@ -6,6 +6,7 @@ import java.util.Optional;
 import com.higroup.Buda.entities.Customer;
 import com.higroup.Buda.repositories.CustomerRepository;
 
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -18,9 +19,9 @@ public class CustomerService {
     {
         this.customerRepository = customerRepository;
     }
-    public List<Customer> findAllByUserID(Long userID)
+    public ResponseEntity<?> findAllByUserID(Long userID)
     {
-        return this.customerRepository.findAllByUserID(userID);
+        return ResponseEntity.ok().body(this.customerRepository.findAllByUserID(userID));
     }
     public ResponseEntity<?> registerNewCustomer(Long userID, Customer customer)
     {

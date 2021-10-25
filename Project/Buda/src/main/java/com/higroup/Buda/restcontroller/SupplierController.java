@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.fasterxml.jackson.databind.node.TextNode;
 import com.higroup.Buda.entities.Supplier;
 import com.higroup.Buda.services.SupplierService;
 import com.higroup.Buda.util.JwtTokenUtil;
@@ -32,44 +33,44 @@ public class SupplierController {
     {
         this.supplierService = supplierService;
     }
-    @PostMapping(path = "/userID/{userID}")
-    public ResponseEntity<?> registerNewSupplier(HttpServletRequest request, @PathVariable Long userID, @RequestBody Supplier supplier)
+    @PostMapping(path = "new")
+    public ResponseEntity<?> registerNewSupplier(HttpServletRequest request,  @RequestBody Supplier supplier)
     {   
         final String token = request.getHeader("Authorization").substring(7);
 
-        Long get_userID = jwtTokenUtil.getUserIDFromToken(token);
+        Long userID = jwtTokenUtil.getUserIDFromToken(token);
 
-        if(get_userID == userID){
-            return ResponseEntity.ok(this.supplierService.registerNewSupplier(userID, supplier));
+        if((userID != null) && (jwtTokenUtil.isValid(token))){
+            return this.supplierService.registerNewSupplier(userID, supplier);
         }
         else{
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No authorized");
         }
     }
 
-    @GetMapping(path = "/userID/{userID}/all")
-    public ResponseEntity<?> findAllByUserID(HttpServletRequest request, @PathVariable Long userID)
+    @GetMapping(path = "/all")
+    public ResponseEntity<?> findAllByUserID(HttpServletRequest request)
     {
         final String token = request.getHeader("Authorization").substring(7);
 
-        Long get_userID = jwtTokenUtil.getUserIDFromToken(token);
+        Long userID = jwtTokenUtil.getUserIDFromToken(token);
 
-        if(get_userID == userID){
-            return ResponseEntity.ok(this.supplierService.findAllByUserID(userID));
+        if((userID != null) && (jwtTokenUtil.isValid(token))){
+            return this.supplierService.findAllByUserID(userID);
         }
         else{
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No authorized");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
         }
     }
-    @GetMapping(path = "/userID/{userID}/byphone")
-    public ResponseEntity<?> findSupplierByUserIDAndPhoneNumber(HttpServletRequest request, @PathVariable Long userID, @RequestParam(required = true) String phoneNumber)
+    @GetMapping(path = "/byphone")
+    public ResponseEntity<?> findSupplierByCurrentUserWithPhoneNumber(HttpServletRequest request, @RequestBody String phoneNumber)
     {
         final String token = request.getHeader("Authorization").substring(7);
 
-        Long get_userID = jwtTokenUtil.getUserIDFromToken(token);
-
-        if(get_userID == userID){
-            return ResponseEntity.ok(this.supplierService.findSupplierByUserIDAndPhoneNumber(userID, phoneNumber));
+        Long userID = jwtTokenUtil.getUserIDFromToken(token);
+        System.out.println(phoneNumber);
+        if((userID != null ) && (jwtTokenUtil.isValid(token))){
+            return this.supplierService.findSupplierByUserIDAndPhoneNumber(userID, phoneNumber);
         }
         else{
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No authorized");

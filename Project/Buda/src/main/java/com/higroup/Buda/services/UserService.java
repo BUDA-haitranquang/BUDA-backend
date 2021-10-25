@@ -124,8 +124,8 @@ public class UserService implements UserDetailsService{
             JwtTokenUtil jwtTokenUtil = new JwtTokenUtil();
             UserDetails userDetails = loadUserByUsername(mailUser.get().getEmail());
             //System.out.println(userDetails);
-            String jwtaccessToken = jwtTokenUtil.generataAccessToken(userDetails, mailUser.get().getUserID());
-            String jwtrefreshToken = jwtTokenUtil.generataRefreshToken(userDetails, mailUser.get().getUserID());
+            String jwtaccessToken = jwtTokenUtil.generateAccessToken(userDetails, mailUser.get().getUserID());
+            String jwtrefreshToken = jwtTokenUtil.generateRefreshToken(userDetails, mailUser.get().getUserID());
 
             return ResponseEntity.ok(new JwtResponse(jwtaccessToken, jwtrefreshToken));
         }

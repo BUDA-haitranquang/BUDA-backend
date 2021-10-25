@@ -32,7 +32,7 @@ public class IngredientController {
         Long userID = jwtTokenUtil.getUserIDFromToken(token);
         Ingredient ingredient = this.ingredientService.findIngredientByIngredientID(ingredientID);
         // if userid match ingredientID
-        if(userID == ingredient.getUserID()){
+        if((userID == ingredient.getUserID()) && (jwtTokenUtil.isValid(token))){
             return ResponseEntity.ok(ingredient);
         }
         // if not return unauthorized
@@ -53,8 +53,8 @@ public class IngredientController {
 
         Long get_userID = jwtTokenUtil.getUserIDFromToken(token);
         // if userid match ingredientID
-        if(userID == get_userID){
-            return ResponseEntity.ok(this.ingredientService.createNewIngredient(userID, ingredient));
+        if((userID == get_userID) && (jwtTokenUtil.isValid(token))){
+            return this.ingredientService.createNewIngredient(userID, ingredient);
         }
         // if not return unauthorized
         else{

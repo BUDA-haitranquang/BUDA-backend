@@ -101,7 +101,7 @@ public class DiscountServiceTest {
         discountRepository.save(discount);
 
         // check
-        List<Discount> list = discountService.findAllDiscountByUserID(userID);
+        List<Discount> list = (List<Discount>)discountService.findAllDiscountByUserID(userID).getBody();
 
         assertEquals(list, Arrays.asList(discount));
     }

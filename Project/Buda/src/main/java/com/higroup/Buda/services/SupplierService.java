@@ -31,13 +31,18 @@ public class SupplierService {
         return ResponseEntity.ok().body(supplier);
     }
 
-    public List<Supplier> findAllByUserID(Long userID)
+    public ResponseEntity<?> findAllByUserID(Long userID)
     {
-        return this.supplierRepository.findAllByUserID(userID);
+        return ResponseEntity.ok().body(this.supplierRepository.findAllByUserID(userID));
     }
     public ResponseEntity<?> findSupplierByUserIDAndPhoneNumber(Long userID, String phoneNumber)
     {
         Optional<Supplier> phoneSupplier = this.supplierRepository.findSupplierByUserIDAndPhoneNumber(userID, phoneNumber);
-        return phoneSupplier.<ResponseEntity<?>>map(supplier -> ResponseEntity.ok().body(supplier)).orElseGet(() -> ResponseEntity.badRequest().body("Not found"));
+        if (phoneSupplier.isPresent())
+        {
+            return ResponseEntity.ok().body(phoneSupplier.get());
+        }
+        return ResponseEntity.ok().body("Not found");
+        //return phoneSupplier.<ResponseEntity<?>>map(supplier -> ResponseEntity.ok().body(supplier)).orElseGet(() -> ResponseEntity.badRequest().body("Not found"));
     }
 }

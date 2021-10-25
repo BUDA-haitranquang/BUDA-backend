@@ -30,45 +30,45 @@ public class CustomerController {
     {
         this.customerService = customerService;
     }
-    @GetMapping(path = "user/{userID}")
-    public ResponseEntity<?> findAllByUserID(HttpServletRequest request, @PathVariable Long userID)
+    @GetMapping(path = "/all")
+    public ResponseEntity<?> findAllByCurrentUser(HttpServletRequest request)
     {   
         final String token = request.getHeader("Authorization").substring(7);
 
-        Long get_userID = jwtTokenUtil.getUserIDFromToken(token);
+        Long userID = jwtTokenUtil.getUserIDFromToken(token);
 
-        if(get_userID == userID){
-            return ResponseEntity.ok(this.customerService.findAllByUserID(userID));
+        if((userID != null) && (jwtTokenUtil.isValid(token))){
+            return this.customerService.findAllByUserID(userID);
         }
         else{
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No authorized");
         } 
     }
 
-    @PostMapping(path = "user/{userID}")
-    public ResponseEntity<?> registerNewCustomer(HttpServletRequest request, @PathVariable Long userID, @RequestBody Customer customer)
+    @PostMapping(path = "/new")
+    public ResponseEntity<?> registerNewCustomer(HttpServletRequest request, @RequestBody Customer customer)
     {
         final String token = request.getHeader("Authorization").substring(7);
 
-        Long get_userID = jwtTokenUtil.getUserIDFromToken(token);
+        Long userID = jwtTokenUtil.getUserIDFromToken(token);
 
-        if(get_userID == userID){
-            return ResponseEntity.ok(this.customerService.registerNewCustomer(userID, customer));
+        if((userID != null) && (jwtTokenUtil.isValid(token))){
+            return this.customerService.registerNewCustomer(userID, customer);
         }
         else{
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No authorized");
         }
     }
     
-    @GetMapping(path = "user/{userID}/byphone")
-    public ResponseEntity<?> findCustomerByUserIDAndPhoneNumber(HttpServletRequest request, @PathVariable Long userID, @RequestParam(required = true) String phoneNumber)
+    @GetMapping(path = "/byphone")
+    public ResponseEntity<?> findCustomerByCurrentUserWithPhoneNumber(HttpServletRequest request, @RequestBody String phoneNumber)
     {
         final String token = request.getHeader("Authorization").substring(7);
 
-        Long get_userID = jwtTokenUtil.getUserIDFromToken(token);
+        Long userID = jwtTokenUtil.getUserIDFromToken(token);
 
-        if(get_userID == userID){
-            return ResponseEntity.ok(this.customerService.findCustomerByUserIDAndPhoneNumber(userID, phoneNumber));
+        if((userID != null) && (jwtTokenUtil.isValid(token))){
+            return this.customerService.findCustomerByUserIDAndPhoneNumber(userID, phoneNumber);
         }
         else{
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No authorized");

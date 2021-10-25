@@ -8,11 +8,14 @@ import com.higroup.Buda.repositories.SupplierRepository;
 import com.higroup.Buda.repositories.BuyOrderItemRepository;
 import com.higroup.Buda.repositories.BuyOrderRepository;
 import com.higroup.Buda.repositories.UserRepository;
+
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,36 +27,59 @@ public class BuyOrderService {
     private final BuyOrderItemRepository buyOrderItemRepository;
 
     @Autowired
-    public BuyOrderService(BuyOrderRepository buyOrderRepository, SupplierRepository supplierRepository, UserRepository userRepository, BuyOrderItemRepository buyOrderItemRepository) {
+    public BuyOrderService(BuyOrderRepository buyOrderRepository, SupplierRepository supplierRepository,
+            UserRepository userRepository, BuyOrderItemRepository buyOrderItemRepository) {
         this.buyOrderRepository = buyOrderRepository;
         this.supplierRepository = supplierRepository;
         this.userRepository = userRepository;
         this.buyOrderItemRepository = buyOrderItemRepository;
     }
-    public ResponseEntity<?> registerNewBuyOrder(Long userID, BuyOrder buyOrder)
-    {
+
+    public ResponseEntity<?> registerNewBuyOrder(Long userID, BuyOrder buyOrder) {
         Optional<User> user = this.userRepository.findUserByUserID(userID);
-        if (user.isEmpty())
-        {
+        if (user.isEmpty()) {
             return ResponseEntity.badRequest().body("User not found");
         }
+        buyOrder.setCreationTime(ZonedDateTime.now());
         buyOrder.setUserID(userID);
-        this.buyOrderRepository.save(buyOrder);
-        for (BuyOrderItem buyOrderItem: buyOrder.getBuyOrderItems())
-        {
-            this.buyOrderItemRepository.save(buyOrderItem);
+        try {
+            Optional<Supplier> supplier = this.supplierRepository.findSupplierByUserIDAndPhoneNumber(userID,
+                    buyOrder.getSupplier().getPhoneNumber());
+            // supplier.ifPresent(this.supplierRepository::save);
+            if (supplier.isPresent()) {
+                buyOrder.setSupplier(supplier.get());
+            } else {
+                buyOrder.getSupplier().setUserID(userID);
+                this.supplierRepository.save(buyOrder.getSupplier());
+            }
+        } catch (Exception e) {
+
         }
-        Optional<Supplier> supplier = this.supplierRepository.findSupplierBySupplierID(buyOrder.getSupplier().getSupplierID());
-        supplier.ifPresent(this.supplierRepository::save);
+        this.buyOrderRepository.save(buyOrder);
+        try {
+            for (BuyOrderItem buyOrderItem : buyOrder.getBuyOrderItems()) {
+                buyOrderItem.setUserID(userID);
+                buyOrderItem.setCreationTime(buyOrder.getCreationTime());
+                if (!buyOrder.getSupplier().equals(null)) {
+                    buyOrderItem.setSupplierID(buyOrder.getSupplier().getSupplierID());
+                }
+                this.buyOrderItemRepository.save(buyOrderItem);
+            }
+        } catch (Exception e) {
+
+        }
         return ResponseEntity.ok().body(buyOrder);
     }
-    public List<BuyOrder> findAllBuyOrderBySupplierID(Long supplierID)
-    {
+
+    public ResponseEntity<?> findAllBuyOrderBySupplierID(Long userID, Long supplierID) {
         Optional<Supplier> supplier = this.supplierRepository.findSupplierBySupplierID(supplierID);
-        return supplier.map(this.buyOrderRepository::findAllBuyOrderBySupplier).orElse(null);
+        if ((supplier.isPresent()) && (supplier.get().getUserID() == userID)) {
+            return ResponseEntity.ok().body(this.buyOrderRepository.findAllBuyOrderBySupplier(supplier.get()));
+        } else
+            return ResponseEntity.ok().body("Supplier does not exist");
     }
-    public List<BuyOrder> findAllBuyOrderByUserID(Long userID)
-    {
-        return this.buyOrderRepository.findAllBuyOrderByUserID(userID);
+
+    public ResponseEntity<?> findAllBuyOrderByUserID(Long userID) {
+        return ResponseEntity.ok().body(this.buyOrderRepository.findAllBuyOrderByUserID(userID));
     }
 }

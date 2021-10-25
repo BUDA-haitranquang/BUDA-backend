@@ -32,15 +32,15 @@ public class DiscountService {
         }
         discount.setUserID(userID);
         this.discountRepository.save(discount);
-        return ResponseEntity.ok().body(discount.toString());
+        return ResponseEntity.ok().body(discount);
     }
     public ResponseEntity<?> findDiscountByDiscountID(Long discountID)
     {
         Optional<Discount> discount = this.discountRepository.findDiscountByDiscountID(discountID);
-        return discount.<ResponseEntity<?>>map(value -> ResponseEntity.ok().body(value.toString())).orElseGet(() -> ResponseEntity.badRequest().body("Not found"));
+        return discount.<ResponseEntity<?>>map(value -> ResponseEntity.ok().body(value)).orElseGet(() -> ResponseEntity.badRequest().body("Not found"));
     }
-    public List<Discount> findAllDiscountByUserID(Long userID)
+    public ResponseEntity<?> findAllDiscountByUserID(Long userID)
     {
-        return this.discountRepository.findAllDiscountByUserID(userID);
+        return ResponseEntity.ok().body(this.discountRepository.findAllDiscountByUserID(userID));
     }
 }
