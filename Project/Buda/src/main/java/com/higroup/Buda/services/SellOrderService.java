@@ -1,6 +1,8 @@
 package com.higroup.Buda.services;
 
 import java.time.ZonedDateTime;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,12 +14,14 @@ import com.higroup.Buda.repositories.CustomerRepository;
 import com.higroup.Buda.repositories.SellOrderItemRepository;
 import com.higroup.Buda.repositories.SellOrderRepository;
 import com.higroup.Buda.repositories.UserRepository;
+import com.higroup.Buda.util.Checker.PresentChecker;
 
 import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class SellOrderService {
@@ -34,11 +38,12 @@ public class SellOrderService {
         this.customerRepository = customerRepository;
         this.sellOrderRepository = sellOrderRepository;
     }
-
-    public ResponseEntity<?> registerNewSellOrder(Long userID, SellOrder sellOrder) {
+    @Autowired
+    private PresentChecker presentChecker;
+    public SellOrder registerNewSellOrder(Long userID, SellOrder sellOrder) {
         Optional<User> user = this.userRepository.findUserByUserID(userID);
         if (user.isEmpty()) {
-            return ResponseEntity.badRequest().body("User not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
         }
         sellOrder.setUserID(userID);
         sellOrder.setCreationTime(ZonedDateTime.now());
@@ -74,27 +79,48 @@ public class SellOrderService {
         // customer.get().setTotalSpend(totalSpend);
         // this.customerRepository.save(customer.get());
         // }
-        return ResponseEntity.ok().body(sellOrder);
+        return sellOrder;
     }
 
-    public ResponseEntity<?> findAllSellOrderByCustomerID(Long userID, Long customerID) {
+    public List<SellOrder> findAllSellOrderByCustomerID(Long userID, Long customerID) {
         Optional<User> user = this.userRepository.findUserByUserID(userID);
         if (user.isEmpty()) {
-            return ResponseEntity.badRequest().body("User not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
         }
         Optional<Customer> customer = this.customerRepository.findCustomerByCustomerID(customerID);
         if ((customer.isPresent()) && (customer.get().getUserID() == userID)) {
-            return ResponseEntity.ok().body(this.sellOrderRepository.findAllSellOrderByCustomer(customer.get()));
+            return this.sellOrderRepository.findAllSellOrderByCustomer(customer.get());
         } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+            return Collections.emptyList();
         }
     }
 
-    public ResponseEntity<?> findAllSellOrderByUserID(Long userID) {
+    public List<SellOrder> findAllSellOrderByUserID(Long userID) {
         Optional<User> user = this.userRepository.findUserByUserID(userID);
         if (user.isEmpty()) {
-            return ResponseEntity.badRequest().body("User not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
         }
-        return ResponseEntity.ok().body(this.sellOrderRepository.findAllSellOrderByUserID(userID));
+        return this.sellOrderRepository.findAllSellOrderByUserID(userID);
+    }
+
+    public void deleteSellOrderBySellOrderID(Long userID, Long sellOrderID)
+    {
+        Optional<SellOrder> sellOrder = this.sellOrderRepository.findById(sellOrderID);
+        
+        try{
+            if (sellOrder.get().getUserID()!=userID)
+            {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "UserID does not match");
+            }
+            for (SellOrderItem sellOrderItem: sellOrder.get().getSellOrderItems())
+            {
+                this.sellOrderItemRepository.delete(sellOrderItem);
+            }
+            this.sellOrderRepository.deleteById(sellOrderID);
+        }
+        catch(Exception e)
+        {
+            
+        }
     }
 }

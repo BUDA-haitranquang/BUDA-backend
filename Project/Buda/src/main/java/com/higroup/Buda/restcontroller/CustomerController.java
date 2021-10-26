@@ -5,7 +5,9 @@ import javax.servlet.http.HttpServletRequest;
 import com.higroup.Buda.entities.Customer;
 import com.higroup.Buda.services.CustomerService;
 import com.higroup.Buda.util.JwtTokenUtil;
+import com.higroup.Buda.util.Checker.RequestUtil;
 
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,55 +25,32 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/customer")
 public class CustomerController {
 
-    private final JwtTokenUtil jwtTokenUtil = new JwtTokenUtil();
+    private final RequestUtil requestUtil;
     private final CustomerService customerService;
     @Autowired
-    public CustomerController(CustomerService customerService)
+    public CustomerController(CustomerService customerService, RequestUtil requestUtil)
     {
+        this.requestUtil = requestUtil;
         this.customerService = customerService;
     }
     @GetMapping(path = "/all")
-    public ResponseEntity<?> findAllByCurrentUser(HttpServletRequest request)
+    public ResponseEntity<?> findAllByCurrentUser(HttpServletRequest httpServletRequest)
     {   
-        final String token = request.getHeader("Authorization").substring(7);
-
-        Long userID = jwtTokenUtil.getUserIDFromToken(token);
-
-        if((userID != null) && (jwtTokenUtil.isValid(token))){
-            return this.customerService.findAllByUserID(userID);
-        }
-        else{
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No authorized");
-        } 
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        return ResponseEntity.ok().body(this.customerService.findAllByUserID(userID));
     }
 
     @PostMapping(path = "/new")
-    public ResponseEntity<?> registerNewCustomer(HttpServletRequest request, @RequestBody Customer customer)
+    public ResponseEntity<?> registerNewCustomer(HttpServletRequest httpServletRequest, @RequestBody Customer customer)
     {
-        final String token = request.getHeader("Authorization").substring(7);
-
-        Long userID = jwtTokenUtil.getUserIDFromToken(token);
-
-        if((userID != null) && (jwtTokenUtil.isValid(token))){
-            return this.customerService.registerNewCustomer(userID, customer);
-        }
-        else{
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No authorized");
-        }
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        return ResponseEntity.ok().body(this.customerService.registerNewCustomer(userID, customer));   
     }
     
     @GetMapping(path = "/byphone")
-    public ResponseEntity<?> findCustomerByCurrentUserWithPhoneNumber(HttpServletRequest request, @RequestBody String phoneNumber)
+    public ResponseEntity<?> findCustomerByCurrentUserWithPhoneNumber(HttpServletRequest httpServletRequest, @RequestBody String phoneNumber)
     {
-        final String token = request.getHeader("Authorization").substring(7);
-
-        Long userID = jwtTokenUtil.getUserIDFromToken(token);
-
-        if((userID != null) && (jwtTokenUtil.isValid(token))){
-            return this.customerService.findCustomerByUserIDAndPhoneNumber(userID, phoneNumber);
-        }
-        else{
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No authorized");
-        }
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        return this.customerService.findCustomerByUserIDAndPhoneNumber(userID, phoneNumber);
     }
 }
