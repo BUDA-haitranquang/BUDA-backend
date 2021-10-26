@@ -67,7 +67,10 @@ public class SellOrderItem {
         this.actualTotalSale = actualTotalSale;
         this.costPerUnit = costPerUnit;
     }
-
+    public Long getSellOrderItemID()
+    {
+        return this.sellOrderItemID;
+    }
     public SellOrder getSellOrder() {
         return this.sellOrder;
     }

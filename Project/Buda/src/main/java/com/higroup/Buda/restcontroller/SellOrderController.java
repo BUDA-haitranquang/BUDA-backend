@@ -7,12 +7,14 @@ import javax.servlet.http.HttpServletRequest;
 import com.higroup.Buda.entities.SellOrder;
 import com.higroup.Buda.services.SellOrderService;
 import com.higroup.Buda.util.JwtTokenUtil;
+import com.higroup.Buda.util.Checker.RequestUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,44 +28,36 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(path = "api/sell-order")
 public class SellOrderController {
     private final SellOrderService sellOrderService;
-    private final JwtTokenUtil jwtTokenUtil;
+    private final RequestUtil requestUtil;
     @Autowired
-    public SellOrderController(SellOrderService sellOrderService, JwtTokenUtil jwtTokenUtil)
+    public SellOrderController(SellOrderService sellOrderService, RequestUtil requestUtil)
     {
-        this.jwtTokenUtil = jwtTokenUtil;
+        this.requestUtil = requestUtil;
         this.sellOrderService = sellOrderService;
     }
     @PostMapping(path = "/new")
     public ResponseEntity<?> registerNewSellOrder(HttpServletRequest httpServletRequest, @RequestBody SellOrder sellOrder)
     {
-        final String token = httpServletRequest.getHeader("Authorization").substring(7);
-        Long userID = this.jwtTokenUtil.getUserIDFromToken(token);
-        if (userID!=null && jwtTokenUtil.isValid(token))
-        {
-            return this.sellOrderService.registerNewSellOrder(userID, sellOrder);
-        }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        return ResponseEntity.ok().body(this.sellOrderService.registerNewSellOrder(userID, sellOrder));
     }
     @GetMapping(path = "/all")
-    public ResponseEntity<?> findAllSellOrderByUserID(HttpServletRequest httpServletRequest)
+    public ResponseEntity<?> findAllSellOrderByCurrentUser(HttpServletRequest httpServletRequest)
     {
-        final String token = httpServletRequest.getHeader("Authorization").substring(7);
-        Long userID = this.jwtTokenUtil.getUserIDFromToken(token);
-        if (userID!=null && jwtTokenUtil.isValid(token))
-        {
-            return this.sellOrderService.findAllSellOrderByUserID(userID);
-        }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        return ResponseEntity.ok().body(this.sellOrderService.findAllSellOrderByUserID(userID));
     }
     @GetMapping(path = "customer/{customerID}/all")
     public ResponseEntity<?> findAllSellOrderByCustomerID(HttpServletRequest httpServletRequest, @PathVariable Long customerID)
     {
-        final String token = httpServletRequest.getHeader("Authorization").substring(7);
-        Long userID = this.jwtTokenUtil.getUserIDFromToken(token);
-        if (userID!=null && jwtTokenUtil.isValid(token))
-        {
-            return this.sellOrderService.findAllSellOrderByCustomerID(userID, customerID);
-        }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        return ResponseEntity.ok().body(this.sellOrderService.findAllSellOrderByCustomerID(userID, customerID));
+    }
+    @DeleteMapping(path = "/{sellOrderID}")
+    public ResponseEntity<?> deleteSellOrderBySellOrderID(HttpServletRequest httpServletRequest, @PathVariable Long sellOrderID)
+    {
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        this.sellOrderService.deleteSellOrderBySellOrderID(userID, sellOrderID);
+        return ResponseEntity.ok().body("Delete succesfully");
     }
 }
