@@ -73,8 +73,8 @@ public class ProductRepositoryTest {
     public void canFindProductbyProductID(){
         Long ProductID = newProduct.getProductID();
 
-        Optional<Product> res = productReposTest.findProductByProductID(ProductID);
-        assertEquals(res.get().getProductID(), newProduct.getProductID());
+        Product res = productReposTest.findProductByProductID(ProductID);
+        assertEquals(res.getProductID(), newProduct.getProductID());
     }
 
     @Test 

@@ -92,7 +92,7 @@ public class ProductServiceTest {
         // check
         assertEquals(res.getBody().toString(), product.toString());
         assertEquals(sizebeforeUpdate + 1, productRepository.count());   
-        Product new_product = productRepository.findProductByProductID(product.getProductID()).get();
+        Product new_product = productRepository.findProductByProductID(product.getProductID());
         
         assertEquals(new_product, product);
     }
