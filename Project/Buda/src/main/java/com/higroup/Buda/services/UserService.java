@@ -24,6 +24,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 
 @Service
@@ -42,7 +43,7 @@ public class UserService implements UserDetailsService{
     private RoleRepository roleRepository;
 
     // dang ky user moi
-    public ResponseEntity<?> registerNewUser(User newUser) {
+    public User registerNewUser(User newUser) {
         String email = newUser.getEmail();
         String phoneNumber = newUser.getPhoneNumber();
         String userName = newUser.getUserName();
@@ -50,39 +51,39 @@ public class UserService implements UserDetailsService{
         if ((email!=null) && (mailUser.isPresent()))
         {
             //BAD REQUEST da ton tai email
-            return ResponseEntity.badRequest().body("Already exists email");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Already exists email");
         }
         if (!EmailValidator.getInstance().isValid(email) || email.length() > 60)
         {
             //khong phai email
-            return ResponseEntity.badRequest().body("Invalid email");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid email");
         }
         Optional<User> phoneUser = userRepository.findUserByPhoneNumber(phoneNumber);
         if ((phoneNumber!=null) && (phoneUser.isPresent()))
         {
             //BAD REQUEST da ton tai phone
-            return ResponseEntity.badRequest().body("Already exists phoneNumber");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Already exists phoneNumber");
         }
         if (!phoneNumber.matches("[0-9]+"))
         {
             //khong phai phone
-            return ResponseEntity.badRequest().body("Invalid phone");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid phone");
         }
         Optional<User> userNameUser = userRepository.findUserByUserName(userName);
         if ((userName!=null) && (userNameUser.isPresent()))
         {
             //BAD REQUEST da ton tai username
-            return ResponseEntity.badRequest().body("Already exists userName");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Already exists userName");
         }
         if (newUser.getPassword().length() < 8)
         {
-            return ResponseEntity.badRequest().body("Weak password");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Weak password");
         }
         // System.out.println(newUser.getPassword());
         newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
         newUser.addRole(roleRepository.findRoleByName("USER").get());
         userRepository.save(newUser);
-        return ResponseEntity.ok().body(newUser);
+        return newUser;
     }
 
     public List<User> getUsers() {
@@ -99,21 +100,20 @@ public class UserService implements UserDetailsService{
         return userRepository.findUserByUserUUID(uuid).get();
     }
 
-    public ResponseEntity<?> deleteUserByID(Long id) {
+    public void deleteUserByID(Long id) {
         if (id == null)
         {
-            return ResponseEntity.badRequest().body("Invalid id");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid id");
         }
         userRepository.deleteById(id);
-        return ResponseEntity.ok().body("Deleted successfully");
     }
 
-    public ResponseEntity<?> correctLogin(String email, String rawPassword)
+    public JwtResponse correctLogin(String email, String rawPassword)
     {
         Optional<User> mailUser = userRepository.findUserByEmail(email);
         if (mailUser.isEmpty())
         {
-            return ResponseEntity.badRequest().body("User not found");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found");
         }
         //System.out.println(mailUser.get().getPassword());
         //System.out.println(bCryptPasswordEncoder.encode(rawPassword));
@@ -127,45 +127,45 @@ public class UserService implements UserDetailsService{
             String jwtaccessToken = jwtTokenUtil.generateAccessToken(userDetails, mailUser.get().getUserID());
             String jwtrefreshToken = jwtTokenUtil.generateRefreshToken(userDetails, mailUser.get().getUserID());
 
-            return ResponseEntity.ok(new JwtResponse(jwtaccessToken, jwtrefreshToken));
+            return new JwtResponse(jwtaccessToken, jwtrefreshToken);
         }
-        return ResponseEntity.badRequest().body("false");
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "false");
     }
 
     @Transactional
-    public ResponseEntity<?> updateUserByID(Long id, String userName, String email, String phoneNumber, String firstName, String lastName, String password) {
+    public User updateUserByID(Long id, String userName, String email, String phoneNumber, String firstName, String lastName, String password) {
         User thisUser = userRepository.findUserByUserID(id).get();
         Optional<User> mailUser = userRepository.findUserByEmail(email);
         if ((email!=null) && (mailUser.isPresent()) && (!mailUser.get().getUserID().equals(thisUser.getUserID())))
         {
             //BAD REQUEST da ton tai email
-            return ResponseEntity.badRequest().body("Already used by another user Email");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Already used by another user Email");
         }
         if ((email!=null) && ((!EmailValidator.getInstance().isValid(email) || email.length() > 60)))
         {
             //khong phai email
-            return ResponseEntity.badRequest().body("Invalid email");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid email");
         }
         Optional<User> phoneUser = userRepository.findUserByPhoneNumber(phoneNumber);
         if ((phoneNumber==null) || (!phoneNumber.matches("[0-9]+")))
         {
             //khong phai phone
-            return ResponseEntity.badRequest().body("Invalid phoneNumber");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid phoneNumber");
         }
         if (phoneUser.isPresent() && !phoneUser.get().getUserID().equals(thisUser.getUserID()))
         {
             //BAD REQUEST da ton tai phone
-            return ResponseEntity.badRequest().body("Already used by another user phoneNumber");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Aldready used by another phoneNumber");
         }
         Optional<User> userNameUser = userRepository.findUserByUserName(userName);
         if ((userName!=null) && (userNameUser.isPresent()) && (!userNameUser.get().getUserID().equals(thisUser.getUserID())))
         {
             //BAD REQUEST da ton tai username
-            return ResponseEntity.badRequest().body(thisUser);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Already used by another username");
         }
         if ((password!=null) && (password.length() < 8))
         {
-            return ResponseEntity.badRequest().body("Password is too short");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Password is too short");
         }
         thisUser.setPassword(password);
         thisUser.setEmail(email);
@@ -174,7 +174,7 @@ public class UserService implements UserDetailsService{
         thisUser.setFirstName(firstName);
         thisUser.setPhoneNumber(phoneNumber);
         userRepository.save(thisUser);
-        return ResponseEntity.ok().body(thisUser);
+        return thisUser;
     }
 
     @Transactional
