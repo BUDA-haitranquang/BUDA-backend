@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import com.higroup.Buda.entities.Discount;
 import com.higroup.Buda.services.DiscountService;
 import com.higroup.Buda.util.JwtTokenUtil;
+import com.higroup.Buda.util.Checker.RequestUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,51 +19,41 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("api/discount")
 @CrossOrigin("*")
 public class DiscountController {
     private final DiscountService discountService;
-    private final JwtTokenUtil jwtTokenUtil;
+    private final RequestUtil requestUtil;
     @Autowired
-    public DiscountController(DiscountService discountService, JwtTokenUtil jwtTokenUtil)
+    public DiscountController(DiscountService discountService, RequestUtil requestUtil)
     {
-        this.jwtTokenUtil = jwtTokenUtil;
+        this.requestUtil = requestUtil;
         this.discountService = discountService;
     }
     @PostMapping(path = "/new")
     public ResponseEntity<?> registerNewDiscount(HttpServletRequest httpServletRequest, @RequestBody Discount discount)
     {
-        final String token = httpServletRequest.getHeader("Authorization").substring(7);
-        Long userID = jwtTokenUtil.getUserIDFromToken(token);
-        if ((userID!=null) && (jwtTokenUtil.isValid(token)))
-        {
-            return this.discountService.registerNewDiscount(userID, discount);
-        }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        return ResponseEntity.ok().body(this.discountService.createNewDiscount(userID, discount));
     }
     @GetMapping(path = "/discountID/{discountID}")
     public ResponseEntity<?> findDiscountByDiscountID(HttpServletRequest httpServletRequest, @PathVariable Long discountID)
     {
-        final String token = httpServletRequest.getHeader("Authorization").substring(7);
-        Long userID = jwtTokenUtil.getUserIDFromToken(token);
-        Discount discount = (Discount)this.discountService.findDiscountByDiscountID(discountID).getBody();
-        if (userID == discount.getUserID() && (jwtTokenUtil.isValid(token)))
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Discount discount = this.discountService.findDiscountByDiscountID(discountID);
+        if (discount.getUserID()!=userID)
         {
-            return ResponseEntity.ok().body(discount);
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized");
         }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+        return ResponseEntity.ok().body(discount);
     }
     @GetMapping(path = "/all")
     public ResponseEntity<?> findAllDiscountByCurrentUser(HttpServletRequest httpServletRequest)
     {
-        final String token = httpServletRequest.getHeader("Authorization").substring(7);
-        Long userID = jwtTokenUtil.getUserIDFromToken(token);
-        if ((userID!=null) && (jwtTokenUtil.isValid(token)))
-        {
-            return this.discountService.findAllDiscountByUserID(userID);
-        }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        return ResponseEntity.ok().body(this.discountService.findAllDiscountByUserID(userID));
     }
 }

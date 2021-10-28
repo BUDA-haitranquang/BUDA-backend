@@ -5,11 +5,14 @@ import java.util.Optional;
 
 import com.higroup.Buda.entities.Customer;
 import com.higroup.Buda.repositories.CustomerRepository;
+import com.higroup.Buda.util.Checker.PresentChecker;
 
 import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class CustomerService {
@@ -19,20 +22,32 @@ public class CustomerService {
     {
         this.customerRepository = customerRepository;
     }
-    public ResponseEntity<?> findAllByUserID(Long userID)
+    @Autowired
+    private PresentChecker presentChecker;
+    public List<Customer> findAllByUserID(Long userID)
     {
-        return ResponseEntity.ok().body(this.customerRepository.findAllByUserID(userID));
+        return this.customerRepository.findAllByUserID(userID);
     }
-    public ResponseEntity<?> registerNewCustomer(Long userID, Customer customer)
+    public Customer registerNewCustomer(Long userID, Customer customer)
     {
         Optional<Customer> phoneCustomer = this.customerRepository.findCustomerByUserIDAndPhoneNumber(userID, customer.getPhoneNumber());
         if (phoneCustomer.isPresent())
         {
-            return ResponseEntity.badRequest().body("Already used phoneNumber");
+            throw new ResponseStatusException(HttpStatus.OK, "Already existed customer");
         }
         customer.setUserID(userID);
         this.customerRepository.save(customer);
-        return ResponseEntity.ok().body(customer);
+        return customer;
+    }
+    public Customer updateCustomer(Long userID, Customer customer)
+    {
+        if (customer.getUserID()!=userID)
+        {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "UserID does not match");
+        }
+        presentChecker.checkIdAndRepository(customer.getCustomerID(), customerRepository);
+        this.customerRepository.save(customer);
+        return customer;
     }
     public ResponseEntity<?> findCustomerByUserIDAndPhoneNumber(Long userID, String phoneNumber)
     {
