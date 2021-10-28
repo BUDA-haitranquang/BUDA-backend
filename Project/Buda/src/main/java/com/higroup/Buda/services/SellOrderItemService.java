@@ -27,10 +27,17 @@ public class SellOrderItemService {
     }
     @Autowired
     private PresentChecker presentChecker;
-    public List<SellOrderItem> findAllBySellOrderID(Long sellOrderID)
+    public List<SellOrderItem> findAllBySellOrderID(Long userID, Long sellOrderID)
     {
         Optional<SellOrder> sellOrder = this.sellOrderRepository.findSellOrderBySellOrderID(sellOrderID);
-        return sellOrder.map(this.sellOrderItemRepository::findAllSellOrderItemBySellOrder).orElse(Collections.emptyList());
+        if (!sellOrder.isPresent())
+        {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Sell Order not found");
+        }
+        else if (sellOrder.get().getUserID() == userID){
+            return this.sellOrderItemRepository.findAllSellOrderItemBySellOrder(sellOrder.get());
+        }
+        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized");
     }
     public SellOrderItem updateSellOrderItem(Long userID, SellOrderItem sellOrderItem)
     {
@@ -56,7 +63,7 @@ public class SellOrderItemService {
             this.sellOrderItemRepository.deleteById(sellOrderItemID);
         }
         else{
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "sSellOrderItem not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "SellOrderItem not found");
         }
     }
 }
