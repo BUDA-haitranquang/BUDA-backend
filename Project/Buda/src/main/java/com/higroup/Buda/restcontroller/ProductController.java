@@ -3,6 +3,7 @@ package com.higroup.Buda.restcontroller;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import com.higroup.Buda.entities.Product;
 import com.higroup.Buda.services.ProductService;
@@ -32,7 +33,7 @@ public class ProductController {
         this.productService = productService;
     }
     @PostMapping(path = "new/userID/{userID}")
-    public ResponseEntity<?> registerNewProduct(HttpServletRequest request, @PathVariable Long userID, @RequestBody Product product)
+    public ResponseEntity<?> registerNewProduct(HttpServletRequest request, @PathVariable Long userID, @Valid @RequestBody Product product)
     {
         final String token = request.getHeader("Authorization").substring(7);
 

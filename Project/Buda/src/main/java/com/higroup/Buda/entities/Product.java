@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.PositiveOrZero;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -30,18 +32,33 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_id")
     private Long productID;
+
     @Column(length = 100)
+    @NotBlank(message = "name cannot be null")
     private String name;
+
     @Column(length = 1000)
     private String description;
+
     @Column(name = "user_id")
+    @NotBlank(message = "user_id cannot be null")
     private Long userID;
+
     @Column(name = "picture_id")
     private Long pictureID;
-    private double sellingPrice;
-    private int alertAmount;
-    private int amountLeft;
-    private double costPerUnit;
+
+    @PositiveOrZero(message = "Price must be at least 0")
+    private Double sellingPrice;
+
+    @PositiveOrZero(message = "Alert amount must be at least 0")
+    private Integer alertAmount;
+
+    @PositiveOrZero(message = "Amount left must be at least 0")
+    private Integer amountLeft;
+
+    @PositiveOrZero(message = "Cost must be at least 0")
+    private Double costPerUnit;
+
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     @JsonManagedReference(value = "product - sell_order_item")
     private Set<SellOrderItem> sellOrderItems;
@@ -56,7 +73,7 @@ public class Product {
     public Product() {
     }
 
-    public Product(Long productID, String name, String description, Long userID, Long pictureID, double sellingPrice, int alertAmount, int amountLeft, double costPerUnit, Set<SellOrderItem> sellOrderItems, Set<ProductLeftLog> productLeftLogs, ProductGroup productGroup) {
+    public Product(Long productID, String name, String description, Long userID, Long pictureID, Double sellingPrice, Integer alertAmount, Integer amountLeft, Double costPerUnit, Set<SellOrderItem> sellOrderItems, Set<ProductLeftLog> productLeftLogs, ProductGroup productGroup) {
         this.productID = productID;
         this.name = name;
         this.description = description;
@@ -111,35 +128,35 @@ public class Product {
         this.pictureID = pictureID;
     }
 
-    public double getSellingPrice() {
+    public Double getSellingPrice() {
         return this.sellingPrice;
     }
 
-    public void setSellingPrice(double sellingPrice) {
+    public void setSellingPrice(Double sellingPrice) {
         this.sellingPrice = sellingPrice;
     }
 
-    public int getAlertAmount() {
+    public Integer getAlertAmount() {
         return this.alertAmount;
     }
 
-    public void setAlertAmount(int alertAmount) {
+    public void setAlertAmount(Integer alertAmount) {
         this.alertAmount = alertAmount;
     }
 
-    public int getAmountLeft() {
+    public Integer getAmountLeft() {
         return this.amountLeft;
     }
 
-    public void setAmountLeft(int amountLeft) {
+    public void setAmountLeft(Integer amountLeft) {
         this.amountLeft = amountLeft;
     }
 
-    public double getCostPerUnit() {
+    public Double getCostPerUnit() {
         return this.costPerUnit;
     }
 
-    public void setCostPerUnit(double costPerUnit) {
+    public void setCostPerUnit(Double costPerUnit) {
         this.costPerUnit = costPerUnit;
     }
 
