@@ -120,7 +120,21 @@ public class SellOrderService {
         }
         catch(Exception e)
         {
-            
+                        
         }
+    }
+    public SellOrder updateSellOrder(Long userID, SellOrder sellOrder)
+    {
+        presentChecker.checkIdAndRepository(userID, this.userRepository);
+        if ((sellOrder.getUserID()==userID)&&(sellOrder.getSellOrderID()!=null))
+        {
+            for (SellOrderItem sellOrderItem: sellOrder.getSellOrderItems())
+            {
+                this.sellOrderItemRepository.save(sellOrderItem);
+            }
+            this.sellOrderRepository.save(sellOrder);
+            return sellOrder;
+        }
+        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized");
     }
 }

@@ -1,35 +1,25 @@
 package com.higroup.Buda.ServiceTest;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import com.github.dockerjava.zerodep.shaded.org.apache.hc.client5.http.auth.KerberosConfig.Option;
-import com.higroup.Buda.RepositoryTest.UserRepositoryTest;
 import com.higroup.Buda.entities.User;
 import com.higroup.Buda.repositories.UserRepository;
 import com.higroup.Buda.services.UserService;
 
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.data.repository.support.Repositories;
-import org.springframework.http.RequestEntity;
-import org.springframework.http.ResponseEntity;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-
-import junit.framework.AssertionFailedError;
 
 
 
@@ -80,11 +70,11 @@ public class UserServiceTest {
     public void canRegisterNewUser(){
         // initilize
         long sizebeforeUpdate = userRepository.findAll().size();
-        ResponseEntity<?> response =  userService.registerNewUser(user);
+        User response =  userService.registerNewUser(user);
 
         // check user added
         User addedUser = userRepository.findUserByUserID(user.getUserID()).get();
-        assertEquals(response.getBody().toString(), addedUser.toString());
+        assertEquals(response.toString(), addedUser.toString());
         assertEquals(sizebeforeUpdate + 1, userRepository.count());
         assertEquals(addedUser.getPhoneNumber(), user.getPhoneNumber());
         assertEquals(addedUser.getEmail(), user.getEmail());
@@ -122,16 +112,16 @@ public class UserServiceTest {
     @Test
     public void canDeleteUserbyID(){
         // initialize
-        ResponseEntity<?> register_reponse = userService.registerNewUser(user);
+        User register_reponse = userService.registerNewUser(user);
         long id = user.getUserID();
         long sizebeforeUpdate = userRepository.count();
         
         // action 
-        ResponseEntity<?> del_reponse = userService.deleteUserByID(id);
+        userService.deleteUserByID(id);
         // check
         assertEquals(sizebeforeUpdate - 1, userRepository.count());
-        assertEquals(register_reponse.getBody().toString(), user.toString());
-        assertEquals(del_reponse.getBody().toString(), "Deleted successfully");
+        assertEquals(register_reponse.toString(), user.toString());
+        // assertEquals(del_reponse.getBody().toString(), "Deleted successfully");
 
     }
 
@@ -173,11 +163,11 @@ public class UserServiceTest {
                 password = "vu123ajdjfads";
         
         // check
-        ResponseEntity<?> response = userService.updateUserByID(id, userName, email, phoneNumber, firstName, lastName, password);
+        User response = userService.updateUserByID(id, userName, email, phoneNumber, firstName, lastName, password);
         User getUser = userRepository.findUserByUserID(id).get();
 
 
-        assertEquals(getUser.toString(), response.getBody().toString());
+        assertEquals(getUser.toString(), response.toString());
         assertEquals(getUser.getUserName(), userName);
         assertEquals(getUser.getEmail(), email);
         assertEquals(getUser.getPhoneNumber(), phoneNumber);

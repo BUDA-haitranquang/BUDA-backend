@@ -33,7 +33,7 @@ public class CustomerService {
         Optional<Customer> phoneCustomer = this.customerRepository.findCustomerByUserIDAndPhoneNumber(userID, customer.getPhoneNumber());
         if (phoneCustomer.isPresent())
         {
-            throw new ResponseStatusException(HttpStatus.OK, "Already existed customer");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Already existed customer");
         }
         customer.setUserID(userID);
         this.customerRepository.save(customer);
