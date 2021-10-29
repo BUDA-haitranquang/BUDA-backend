@@ -1,5 +1,7 @@
 package com.higroup.Buda.services;
 
+import java.util.List;
+
 import com.higroup.Buda.entities.Plan;
 import com.higroup.Buda.repositories.PlanRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +15,11 @@ public class PlanService {
     {
         this.planRepository = planRepository;
     }
-    public void addPlan(Plan plan)
+    public List<Plan> findAllPlan()
+    {
+        return this.planRepository.findAll();
+    }
+    public void createNewPlan(Plan plan)
     {
         this.planRepository.save(plan);
     }

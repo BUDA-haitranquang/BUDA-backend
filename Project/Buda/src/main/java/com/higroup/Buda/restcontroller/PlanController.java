@@ -4,9 +4,12 @@ import com.higroup.Buda.entities.Plan;
 import com.higroup.Buda.services.PlanService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,10 +25,16 @@ public class PlanController {
     {
         this.planService = planService;
     }
-    @PutMapping
-    public void addPlan(@RequestBody Plan plan)
+    @GetMapping(path = "all")
+    public ResponseEntity<?> findAllPlan()
     {
-        this.planService.addPlan(plan);
+        return ResponseEntity.ok().body(this.planService.findAllPlan());
+    }
+    @PostMapping
+    public void createNewPlan(@RequestBody Plan plan)
+    {
+        //ADMIN moi duoc them
+        this.planService.createNewPlan(plan);
     }
     @DeleteMapping(path = "{id}")
     public void deletePlanByID(@PathVariable("id") Long id)
