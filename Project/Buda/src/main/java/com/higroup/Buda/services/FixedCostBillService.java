@@ -9,7 +9,9 @@ import com.higroup.Buda.repositories.FixedCostBillRepository;
 import com.higroup.Buda.repositories.FixedCostRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 @Service
 public class FixedCostBillService {
     private final FixedCostBillRepository fixedCostBillRepository;
@@ -20,10 +22,14 @@ public class FixedCostBillService {
         this.fixedCostRepository = fixedCostRepository;
         this.fixedCostBillRepository = fixedCostBillRepository;
     }
-    public List<FixedCostBill> findAllByFixedCostID(Long fixedCostID)
+    public List<FixedCostBill> findAllByFixedCostID(Long userID, Long fixedCostID)
     {
         Optional<FixedCost> fixedCost = this.fixedCostRepository.findFixedCostByFixedCostID(fixedCostID);
-        return fixedCost.map(this.fixedCostBillRepository::findAllByFixedCost).orElse(null);
+        if ((fixedCost.isPresent()) && (fixedCost.get().getUserID() == userID))
+        {   
+            return this.fixedCostBillRepository.findAllByFixedCost(fixedCost.get());
+        }
+        else throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Fixed Cost ID does not exist");
     }
     public List<FixedCostBill> findAllByUserID(Long userID)
     {

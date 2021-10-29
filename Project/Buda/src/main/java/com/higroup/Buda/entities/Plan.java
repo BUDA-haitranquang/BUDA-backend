@@ -31,7 +31,7 @@ public class Plan {
     private Set<Purchase> purchases;
     @Column(length = 50)
     private String name;
-    private double Price;
+    private double price;
     private int duration;
     @Column(name = "picture_id")
     private Long pictureID;
@@ -42,7 +42,7 @@ public class Plan {
         this.planID = planID;
         this.purchases = purchases;
         this.name = name;
-        this.Price = Price;
+        this.price = Price;
         this.duration = duration;
         this.pictureID = pictureID;
         this.description = description;
@@ -97,7 +97,7 @@ public class Plan {
         this.planID = planID;
         this.purchases = purchases;
         this.name = name;
-        this.Price = Price;
+        this.price = Price;
         this.duration = duration;
         this.pictureID = pictureID;
     }
@@ -127,11 +127,11 @@ public class Plan {
     }
 
     public double getPrice() {
-        return this.Price;
+        return this.price;
     }
 
     public void setPrice(double Price) {
-        this.Price = Price;
+        this.price = Price;
     }
 
     public int getDuration() {
@@ -158,12 +158,12 @@ public class Plan {
             return false;
         }
         Plan plan = (Plan) o;
-        return Objects.equals(planID, plan.planID) && Objects.equals(purchases, plan.purchases) && Objects.equals(name, plan.name) && Price == plan.Price && duration == plan.duration && Objects.equals(pictureID, plan.pictureID);
+        return Objects.equals(planID, plan.planID) && Objects.equals(purchases, plan.purchases) && Objects.equals(name, plan.name) && price == plan.price && duration == plan.duration && Objects.equals(pictureID, plan.pictureID);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(planID, purchases, name, Price, duration, pictureID);
+        return Objects.hash(planID, purchases, name, price, duration, pictureID);
     }
     
 
