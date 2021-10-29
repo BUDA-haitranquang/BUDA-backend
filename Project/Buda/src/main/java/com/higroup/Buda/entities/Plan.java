@@ -13,10 +13,12 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "Plan")
+@JsonIgnoreProperties({"purchases"})
 public class Plan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +27,7 @@ public class Plan {
     @OneToMany(mappedBy = "plan",
     fetch = FetchType.LAZY,
     cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JsonManagedReference(value = "plan - purchase")
     private Set<Purchase> purchases;
     @Column(length = 50)
     private String name;
