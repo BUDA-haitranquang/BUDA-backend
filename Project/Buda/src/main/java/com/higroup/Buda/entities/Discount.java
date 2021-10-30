@@ -33,14 +33,14 @@ public class Discount {
     private String name;
     @Column(length = 1000)
     private String description;
-    @Column(columnDefinition = "double default 0.0")
-    private double cash;
-    @Column(columnDefinition = "double default 0.0")
-    private double percentage;
-    @Column(columnDefinition = "double default 0.0")
-    private double cashLimit;
+    @Column(columnDefinition = "Double default 0.0")
+    private Double cash;
+    @Column(columnDefinition = "Double default 0.0")
+    private Double percentage;
+    @Column(columnDefinition = "Double default 0.0")
+    private Double cashLimit;
     @Column(columnDefinition = "int default 0")
-    private int orderCount;
+    private Integer orderCount;
     private ZonedDateTime expiryTime;
     private ZonedDateTime createdTime;
     @Column(name = "user_id")
@@ -54,7 +54,7 @@ public class Discount {
     @Enumerated(EnumType.STRING)
     private DiscountType discountType;
 
-    public Discount(Long discountID, String name, String description, double cash, double percentage, double cashLimit, int orderCount, ZonedDateTime expiryTime, ZonedDateTime createdTime, Long userID, Set<SellOrder> sellOrders, Set<MembershipType> membershipTypes, DiscountType discountType) {
+    public Discount(Long discountID, String name, String description, Double cash, Double percentage, Double cashLimit, Integer orderCount, ZonedDateTime expiryTime, ZonedDateTime createdTime, Long userID, Set<SellOrder> sellOrders, Set<MembershipType> membershipTypes, DiscountType discountType) {
         this.discountID = discountID;
         this.name = name;
         this.description = description;
@@ -82,7 +82,7 @@ public class Discount {
         setDiscountType(discountType);
         return this;
     }
-    public Discount(Long discountID, String name, String description, double cash, double percentage, double cashLimit, int orderCount, ZonedDateTime expiryTime, ZonedDateTime createdTime, Long userID, Set<SellOrder> sellOrders, Set<MembershipType> membershipTypes) {
+    public Discount(Long discountID, String name, String description, Double cash, Double percentage, Double cashLimit, Integer orderCount, ZonedDateTime expiryTime, ZonedDateTime createdTime, Long userID, Set<SellOrder> sellOrders, Set<MembershipType> membershipTypes) {
         this.discountID = discountID;
         this.name = name;
         this.description = description;
@@ -112,7 +112,7 @@ public class Discount {
     public Discount() {
     }
 
-    public Discount(Long discountID, String name, String description, double cash, double percentage, double cashLimit, int orderCount, ZonedDateTime expiryTime, ZonedDateTime createdTime, Long userID, Set<SellOrder> sellOrders) {
+    public Discount(Long discountID, String name, String description, Double cash, Double percentage, Double cashLimit, Integer orderCount, ZonedDateTime expiryTime, ZonedDateTime createdTime, Long userID, Set<SellOrder> sellOrders) {
         this.discountID = discountID;
         this.name = name;
         this.description = description;
@@ -150,35 +150,35 @@ public class Discount {
         this.description = description;
     }
 
-    public double getCash() {
+    public Double getCash() {
         return this.cash;
     }
 
-    public void setCash(double cash) {
+    public void setCash(Double cash) {
         this.cash = cash;
     }
 
-    public double getPercentage() {
+    public Double getPercentage() {
         return this.percentage;
     }
 
-    public void setPercentage(double percentage) {
+    public void setPercentage(Double percentage) {
         this.percentage = percentage;
     }
 
-    public double getCashLimit() {
+    public Double getCashLimit() {
         return this.cashLimit;
     }
 
-    public void setCashLimit(double cashLimit) {
+    public void setCashLimit(Double cashLimit) {
         this.cashLimit = cashLimit;
     }
 
-    public int getOrderCount() {
+    public Integer getOrderCount() {
         return this.orderCount;
     }
 
-    public void setOrderCount(int orderCount) {
+    public void setOrderCount(Integer orderCount) {
         this.orderCount = orderCount;
     }
 
@@ -229,22 +229,22 @@ public class Discount {
         return this;
     }
 
-    public Discount cash(double cash) {
+    public Discount cash(Double cash) {
         setCash(cash);
         return this;
     }
 
-    public Discount percentage(double percentage) {
+    public Discount percentage(Double percentage) {
         setPercentage(percentage);
         return this;
     }
 
-    public Discount cashLimit(double cashLimit) {
+    public Discount cashLimit(Double cashLimit) {
         setCashLimit(cashLimit);
         return this;
     }
 
-    public Discount orderCount(int orderCount) {
+    public Discount orderCount(Integer orderCount) {
         setOrderCount(orderCount);
         return this;
     }

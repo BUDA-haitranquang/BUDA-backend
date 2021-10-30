@@ -33,8 +33,8 @@ public class Staff {
     private StaffPosition staffPosition;
     @Column(columnDefinition = "varchar(36) default (uuid())", name = "staff_uuid")
     private String staffUUID;
-    @Column(columnDefinition = "double default 0.0")
-    private double salary;
+    @Column(columnDefinition = "Double default 0.0")
+    private Double salary;
 
     public String getStaffUUID() {
         return this.staffUUID;
@@ -47,7 +47,7 @@ public class Staff {
     public Staff() {
     }
 
-    public Staff(Long staffID, String name, String phoneNumber, String password, String address, Long userID, StaffPosition staffPosition, String loginID, double salary) {
+    public Staff(Long staffID, String name, String phoneNumber, String password, String address, Long userID, StaffPosition staffPosition, String loginID, Double salary) {
         this.staffID = staffID;
         this.name = name;
         this.phoneNumber = phoneNumber;
@@ -123,11 +123,11 @@ public class Staff {
         this.staffUUID = loginID;
     }
 
-    public double getSalary() {
+    public Double getSalary() {
         return this.salary;
     }
 
-    public void setSalary(double salary) {
+    public void setSalary(Double salary) {
         this.salary = salary;
     }
 
@@ -171,7 +171,7 @@ public class Staff {
         return this;
     }
 
-    public Staff salary(double salary) {
+    public Staff salary(Double salary) {
         setSalary(salary);
         return this;
     }

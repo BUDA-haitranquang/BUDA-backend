@@ -32,13 +32,13 @@ public class Plan {
     @Column(length = 50)
     private String name;
     private double price;
-    private int duration;
+    private Integer duration;
     @Column(name = "picture_id")
     private Long pictureID;
     @Column(length = 200)
     private String description;
 
-    public Plan(Long planID, Set<Purchase> purchases, String name, double Price, int duration, Long pictureID, String description) {
+    public Plan(Long planID, Set<Purchase> purchases, String name, double Price, Integer duration, Long pictureID, String description) {
         this.planID = planID;
         this.purchases = purchases;
         this.name = name;
@@ -68,7 +68,7 @@ public class Plan {
         return this;
     }
 
-    public Plan duration(int duration) {
+    public Plan duration(Integer duration) {
         setDuration(duration);
         return this;
     }
@@ -93,7 +93,7 @@ public class Plan {
     public Plan() {
     }
 
-    public Plan(Long planID, Set<Purchase> purchases, String name, double Price, int duration, Long pictureID) {
+    public Plan(Long planID, Set<Purchase> purchases, String name, double Price, Integer duration, Long pictureID) {
         this.planID = planID;
         this.purchases = purchases;
         this.name = name;
@@ -134,11 +134,11 @@ public class Plan {
         this.price = Price;
     }
 
-    public int getDuration() {
+    public Integer getDuration() {
         return this.duration;
     }
 
-    public void setDuration(int duration) {
+    public void setDuration(Integer duration) {
         this.duration = duration;
     }
 

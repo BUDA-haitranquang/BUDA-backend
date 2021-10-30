@@ -21,13 +21,13 @@ public class Ingredient {
     private String name;
     @Column(length = 1000)
     private String description;
-    private int amountLeft;
-    private double price;
+    private Integer amountLeft;
+    private Double price;
     @Column(name = "user_id")
     private Long userID;
     @Column(name = "picture_id")
     private Long pictureID;
-    private int alertAmountLeft;
+    private Integer alertAmountLeft;
     @OneToMany(mappedBy = "ingredient", fetch = FetchType.LAZY)
     @JsonManagedReference(value = "ingredient - buy_order_item")
     private Set<BuyOrderItem> buyOrderItems;
@@ -35,7 +35,7 @@ public class Ingredient {
     public Ingredient() {
     }
 
-    public Ingredient(Long IngredientID, String name, String description, int amountLeft, double price, Long storeID, Long pictureID, int alertAmountLeft) {
+    public Ingredient(Long IngredientID, String name, String description, Integer amountLeft, Double price, Long storeID, Long pictureID, Integer alertAmountLeft) {
         this.ingredientID = IngredientID;
         this.name = name;
         this.description = description;
@@ -70,19 +70,19 @@ public class Ingredient {
         this.description = description;
     }
 
-    public int getAmountLeft() {
+    public Integer getAmountLeft() {
         return amountLeft;
     }
 
-    public void setAmountLeft(int amountLeft) {
+    public void setAmountLeft(Integer amountLeft) {
         this.amountLeft = amountLeft;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
@@ -113,11 +113,11 @@ public class Ingredient {
         this.pictureID = pictureID;
     }
 
-    public int getAlertAmountLeft() {
+    public Integer getAlertAmountLeft() {
         return alertAmountLeft;
     }
 
-    public void setAlertAmountLeft(int alertAmountLeft) {
+    public void setAlertAmountLeft(Integer alertAmountLeft) {
         this.alertAmountLeft = alertAmountLeft;
     }
 

@@ -22,8 +22,8 @@ public class OtherCost {
     private Long otherCostID;
     @Column(name = "user_id")
     private Long userID;
-    @Column(columnDefinition = "double default 0.0")
-    private double totalCost;
+    @Column(columnDefinition = "Double default 0.0")
+    private Double totalCost;
     private ZonedDateTime creationTime;
     @Column(length = 200)
     private String name;
@@ -35,7 +35,7 @@ public class OtherCost {
     public OtherCost() {
     }
 
-    public OtherCost(Long otherCostID, Long userID, double totalCost, ZonedDateTime creationTime, String name, String description) {
+    public OtherCost(Long otherCostID, Long userID, Double totalCost, ZonedDateTime creationTime, String name, String description) {
         this.otherCostID = otherCostID;
         this.userID = userID;
         this.totalCost = totalCost;
@@ -60,11 +60,11 @@ public class OtherCost {
         this.userID = userID;
     }
 
-    public double getTotalCost() {
+    public Double getTotalCost() {
         return this.totalCost;
     }
 
-    public void setTotalCost(double totalCost) {
+    public void setTotalCost(Double totalCost) {
         this.totalCost = totalCost;
     }
 
@@ -102,7 +102,7 @@ public class OtherCost {
         return this;
     }
 
-    public OtherCost totalCost(double totalCost) {
+    public OtherCost totalCost(Double totalCost) {
         setTotalCost(totalCost);
         return this;
     }

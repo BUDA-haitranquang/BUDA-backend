@@ -23,7 +23,7 @@ public class SalaryLog {
     private Long salaryLogID;
     @Column(name = "staff_id")
     private Long staffID;
-    private double salary;
+    private Double salary;
     private ZonedDateTime creationTime;
     @Column(name = "user_id")
     private Long userID;
@@ -32,7 +32,7 @@ public class SalaryLog {
     public SalaryLog() {
     }
 
-    public SalaryLog(Long salaryLogID, Long staffID, double salary, ZonedDateTime creationTime, Long userID) {
+    public SalaryLog(Long salaryLogID, Long staffID, Double salary, ZonedDateTime creationTime, Long userID) {
         this.salaryLogID = salaryLogID;
         this.staffID = staffID;
         this.salary = salary;
@@ -56,11 +56,11 @@ public class SalaryLog {
         this.staffID = staffID;
     }
 
-    public double getSalary() {
+    public Double getSalary() {
         return this.salary;
     }
 
-    public void setSalary(double salary) {
+    public void setSalary(Double salary) {
         this.salary = salary;
     }
 
@@ -90,7 +90,7 @@ public class SalaryLog {
         return this;
     }
 
-    public SalaryLog salary(double salary) {
+    public SalaryLog salary(Double salary) {
         setSalary(salary);
         return this;
     }

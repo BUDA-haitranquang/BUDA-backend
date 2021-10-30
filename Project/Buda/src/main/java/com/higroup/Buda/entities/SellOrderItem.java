@@ -40,8 +40,8 @@ public class SellOrderItem {
     @JsonBackReference(value = "product - sell_order_item")
     @JoinColumn(name = "product_ID", nullable = true)
     private Product product;
-    private int quantity;
-    private double pricePerUnit;
+    private Integer quantity;
+    private Double pricePerUnit;
     @Column(name = "user_id")
     private Long userID;
     private ZonedDateTime creationTime;
@@ -49,13 +49,13 @@ public class SellOrderItem {
     private Gender gender;
     @Enumerated(EnumType.STRING)
     private AgeGroup ageGroup;
-    private double actualTotalSale;
-    private double costPerUnit;
+    private Double actualTotalSale;
+    private Double costPerUnit;
 
     public SellOrderItem() {
     }
 
-    public SellOrderItem(SellOrder sellOrder, Product product, int quantity, double pricePerUnit, Long userID, ZonedDateTime creationTime, Gender gender, AgeGroup ageGroup, double actualTotalSale, double costPerUnit) {
+    public SellOrderItem(SellOrder sellOrder, Product product, Integer quantity, Double pricePerUnit, Long userID, ZonedDateTime creationTime, Gender gender, AgeGroup ageGroup, Double actualTotalSale, Double costPerUnit) {
         this.sellOrder = sellOrder;
         this.product = product;
         this.quantity = quantity;
@@ -87,19 +87,19 @@ public class SellOrderItem {
         this.product = product;
     }
 
-    public int getQuantity() {
+    public Integer getQuantity() {
         return this.quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 
-    public double getPricePerUnit() {
+    public Double getPricePerUnit() {
         return this.pricePerUnit;
     }
 
-    public void setPricePerUnit(double pricePerUnit) {
+    public void setPricePerUnit(Double pricePerUnit) {
         this.pricePerUnit = pricePerUnit;
     }
 
@@ -135,19 +135,19 @@ public class SellOrderItem {
         this.ageGroup = ageGroup;
     }
 
-    public double getActualTotalSale() {
+    public Double getActualTotalSale() {
         return this.actualTotalSale;
     }
 
-    public void setActualTotalSale(double actualTotalSale) {
+    public void setActualTotalSale(Double actualTotalSale) {
         this.actualTotalSale = actualTotalSale;
     }
 
-    public double getCostPerUnit() {
+    public Double getCostPerUnit() {
         return this.costPerUnit;
     }
 
-    public void setCostPerUnit(double costPerUnit) {
+    public void setCostPerUnit(Double costPerUnit) {
         this.costPerUnit = costPerUnit;
     }
 
@@ -161,12 +161,12 @@ public class SellOrderItem {
         return this;
     }
 
-    public SellOrderItem quantity(int quantity) {
+    public SellOrderItem quantity(Integer quantity) {
         setQuantity(quantity);
         return this;
     }
 
-    public SellOrderItem pricePerUnit(double pricePerUnit) {
+    public SellOrderItem pricePerUnit(Double pricePerUnit) {
         setPricePerUnit(pricePerUnit);
         return this;
     }
@@ -191,12 +191,12 @@ public class SellOrderItem {
         return this;
     }
 
-    public SellOrderItem actualTotalSale(double actualTotalSale) {
+    public SellOrderItem actualTotalSale(Double actualTotalSale) {
         setActualTotalSale(actualTotalSale);
         return this;
     }
 
-    public SellOrderItem costPerUnit(double costPerUnit) {
+    public SellOrderItem costPerUnit(Double costPerUnit) {
         setCostPerUnit(costPerUnit);
         return this;
     }
