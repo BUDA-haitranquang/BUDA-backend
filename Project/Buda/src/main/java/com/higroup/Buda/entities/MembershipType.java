@@ -34,12 +34,12 @@ public class MembershipType {
     @JoinColumn(name = "discount_ID", nullable = true)
     @JsonBackReference
     private Discount discount;
-    private double minimumSpend;
+    private Double minimumSpend;
 
     public MembershipType() {
     }
 
-    public MembershipType(Long membershipTypeID, String membershipName, String description, Long userID, Discount discount, double minimumSpend) {
+    public MembershipType(Long membershipTypeID, String membershipName, String description, Long userID, Discount discount, Double minimumSpend) {
         this.membershipTypeID = membershipTypeID;
         this.membershipName = membershipName;
         this.description = description;
@@ -88,11 +88,11 @@ public class MembershipType {
         this.discount = discount;
     }
 
-    public double getMinimumSpend() {
+    public Double getMinimumSpend() {
         return this.minimumSpend;
     }
 
-    public void setMinimumSpend(double minimumSpend) {
+    public void setMinimumSpend(Double minimumSpend) {
         this.minimumSpend = minimumSpend;
     }
 
@@ -121,7 +121,7 @@ public class MembershipType {
         return this;
     }
 
-    public MembershipType minimumSpend(double minimumSpend) {
+    public MembershipType minimumSpend(Double minimumSpend) {
         setMinimumSpend(minimumSpend);
         return this;
     }

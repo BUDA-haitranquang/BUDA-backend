@@ -31,7 +31,7 @@ public class IngredientLeftLog {
     @JsonBackReference
     @JoinColumn(name = "ingredient_ID", nullable = true)
     private Ingredient ingredient;
-    private int amountLeftChange;
+    private Integer amountLeftChange;
     private ZonedDateTime creationTime;
     @Column(name = "staff_id")
     private Long staffID;
@@ -44,7 +44,7 @@ public class IngredientLeftLog {
     public IngredientLeftLog() {
     }
 
-    public IngredientLeftLog(Long ingredientLeftLogID, Ingredient ingredient, int amountLeftChange, ZonedDateTime creationTime, Long staffID, String message, Long userID) {
+    public IngredientLeftLog(Long ingredientLeftLogID, Ingredient ingredient, Integer amountLeftChange, ZonedDateTime creationTime, Long staffID, String message, Long userID) {
         this.ingredientLeftLogID = ingredientLeftLogID;
         this.ingredient = ingredient;
         this.amountLeftChange = amountLeftChange;
@@ -70,11 +70,11 @@ public class IngredientLeftLog {
         this.ingredient = ingredient;
     }
 
-    public int getAmountLeftChange() {
+    public Integer getAmountLeftChange() {
         return this.amountLeftChange;
     }
 
-    public void setAmountLeftChange(int amountLeftChange) {
+    public void setAmountLeftChange(Integer amountLeftChange) {
         this.amountLeftChange = amountLeftChange;
     }
 
@@ -120,7 +120,7 @@ public class IngredientLeftLog {
         return this;
     }
 
-    public IngredientLeftLog amountLeftChange(int amountLeftChange) {
+    public IngredientLeftLog amountLeftChange(Integer amountLeftChange) {
         setAmountLeftChange(amountLeftChange);
         return this;
     }

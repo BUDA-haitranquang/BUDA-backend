@@ -33,7 +33,7 @@ public class ProductLeftLog {
     @JsonBackReference
     @JoinColumn(name = "product_ID", nullable = true)
     private Product product;
-    private int amountLeftChange;
+    private Integer amountLeftChange;
     private ZonedDateTime creationTime;
     @Column(name = "staff_id")
     private Long staffID;
@@ -45,7 +45,7 @@ public class ProductLeftLog {
     public ProductLeftLog() {
     }
 
-    public ProductLeftLog(Long productLeftLogID, Product product, int amountLeftChange, ZonedDateTime creationTime, Long staffID, String message, Long userID) {
+    public ProductLeftLog(Long productLeftLogID, Product product, Integer amountLeftChange, ZonedDateTime creationTime, Long staffID, String message, Long userID) {
         this.productLeftLogID = productLeftLogID;
         this.product = product;
         this.amountLeftChange = amountLeftChange;
@@ -71,11 +71,11 @@ public class ProductLeftLog {
         this.product = product;
     }
 
-    public int getAmountLeftChange() {
+    public Integer getAmountLeftChange() {
         return this.amountLeftChange;
     }
 
-    public void setAmountLeftChange(int amountLeftChange) {
+    public void setAmountLeftChange(Integer amountLeftChange) {
         this.amountLeftChange = amountLeftChange;
     }
 
@@ -121,7 +121,7 @@ public class ProductLeftLog {
         return this;
     }
 
-    public ProductLeftLog amountLeftChange(int amountLeftChange) {
+    public ProductLeftLog amountLeftChange(Integer amountLeftChange) {
         setAmountLeftChange(amountLeftChange);
         return this;
     }

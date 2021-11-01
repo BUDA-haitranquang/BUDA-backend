@@ -25,7 +25,7 @@ public class BuyOrder {
     private ZonedDateTime creationTime;
     @Enumerated(EnumType.STRING)
     private Status status;
-    private double totalCost;
+    private Double totalCost;
     @Column(name = "user_id")
     private Long userID;
     @OneToMany(mappedBy = "buyOrder", fetch = FetchType.LAZY)
@@ -36,7 +36,7 @@ public class BuyOrder {
     public BuyOrder() {
     }
 
-    public BuyOrder(Long buyOrderID, Supplier supplier, ZonedDateTime creationTime, Status status, double TotalCost, Long userID, Set<BuyOrderItem> buyOrderItems) {
+    public BuyOrder(Long buyOrderID, Supplier supplier, ZonedDateTime creationTime, Status status, Double TotalCost, Long userID, Set<BuyOrderItem> buyOrderItems) {
         this.buyOrderID = buyOrderID;
         this.supplier = supplier;
         this.creationTime = creationTime;
@@ -78,11 +78,11 @@ public class BuyOrder {
         this.status = status;
     }
 
-    public double getTotalCost() {
+    public Double getTotalCost() {
         return this.totalCost;
     }
 
-    public void setTotalCost(double TotalCost) {
+    public void setTotalCost(Double TotalCost) {
         this.totalCost = TotalCost;
     }
 
@@ -122,7 +122,7 @@ public class BuyOrder {
         return this;
     }
 
-    public BuyOrder TotalCost(double TotalCost) {
+    public BuyOrder TotalCost(Double TotalCost) {
         setTotalCost(TotalCost);
         return this;
     }

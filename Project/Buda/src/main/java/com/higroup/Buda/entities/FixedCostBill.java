@@ -33,7 +33,7 @@ public class FixedCostBill {
     private FixedCost fixedCost;
     @Column(name = "user_id")
     private Long userID;
-    private double totalSpend;
+    private Double totalSpend;
     @Column(length = 1000)
     private String message;
     private ZonedDateTime creationTime;
@@ -45,7 +45,7 @@ public class FixedCostBill {
     public FixedCostBill() {
     }
 
-    public FixedCostBill(Long fixedCostBillID, FixedCost fixedCost, Long userID, double totalSpend, String message, ZonedDateTime creationTime, ZonedDateTime dueTime, Status status) {
+    public FixedCostBill(Long fixedCostBillID, FixedCost fixedCost, Long userID, Double totalSpend, String message, ZonedDateTime creationTime, ZonedDateTime dueTime, Status status) {
         this.fixedCostBillID = fixedCostBillID;
         this.fixedCost = fixedCost;
         this.userID = userID;
@@ -80,11 +80,11 @@ public class FixedCostBill {
         this.userID = userID;
     }
 
-    public double getTotalSpend() {
+    public Double getTotalSpend() {
         return this.totalSpend;
     }
 
-    public void setTotalSpend(double totalSpend) {
+    public void setTotalSpend(Double totalSpend) {
         this.totalSpend = totalSpend;
     }
 
@@ -135,7 +135,7 @@ public class FixedCostBill {
         return this;
     }
 
-    public FixedCostBill totalSpend(double totalSpend) {
+    public FixedCostBill totalSpend(Double totalSpend) {
         setTotalSpend(totalSpend);
         return this;
     }

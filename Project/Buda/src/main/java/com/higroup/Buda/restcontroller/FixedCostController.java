@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import com.higroup.Buda.entities.FixedCost;
 import com.higroup.Buda.services.FixedCostService;
 import com.higroup.Buda.util.JwtTokenUtil;
+import com.higroup.Buda.util.Checker.RequestUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,22 +23,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api/fixed-cost")
 public class FixedCostController {
     private final FixedCostService fixedCostService;
-    private final JwtTokenUtil jwtTokenUtil;
+    private final RequestUtil requestUtil;
     @Autowired
-    public FixedCostController(FixedCostService fixedCostService, JwtTokenUtil jwtTokenUtil)
+    public FixedCostController(FixedCostService fixedCostService, RequestUtil requestUtil)
     {
-        this.jwtTokenUtil = jwtTokenUtil;
+        this.requestUtil = requestUtil;
         this.fixedCostService = fixedCostService;
     }
     @GetMapping(path = "/all")
     public ResponseEntity<?> findAllByCurrentUser(HttpServletRequest httpServletRequest)
     {
-        final String token = httpServletRequest.getHeader("Authorization").substring(7);
-        Long userID = jwtTokenUtil.getUserIDFromToken(token);
-        if (userID!=null && jwtTokenUtil.isValid(token))
-        {
-            return this.fixedCostService.findAllByUserID(userID);
-        }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        return this.fixedCostService.findAllByUserID(userID);
     }
 }

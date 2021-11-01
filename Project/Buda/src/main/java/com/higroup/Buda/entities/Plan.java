@@ -13,10 +13,12 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "Plan")
+@JsonIgnoreProperties({"purchases"})
 public class Plan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,22 +27,22 @@ public class Plan {
     @OneToMany(mappedBy = "plan",
     fetch = FetchType.LAZY,
     cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JsonManagedReference(value = "plan - purchase")
     private Set<Purchase> purchases;
     @Column(length = 50)
     private String name;
-    private double Price;
-    private int duration;
+    private double price;
+    private Integer duration;
     @Column(name = "picture_id")
     private Long pictureID;
     @Column(length = 200)
     private String description;
 
-    public Plan(Long planID, Set<Purchase> purchases, String name, double Price, int duration, Long pictureID, String description) {
+    public Plan(Long planID, Set<Purchase> purchases, String name, double Price, Integer duration, Long pictureID, String description) {
         this.planID = planID;
         this.purchases = purchases;
         this.name = name;
-        this.Price = Price;
+        this.price = Price;
         this.duration = duration;
         this.pictureID = pictureID;
         this.description = description;
@@ -66,7 +68,7 @@ public class Plan {
         return this;
     }
 
-    public Plan duration(int duration) {
+    public Plan duration(Integer duration) {
         setDuration(duration);
         return this;
     }
@@ -91,11 +93,11 @@ public class Plan {
     public Plan() {
     }
 
-    public Plan(Long planID, Set<Purchase> purchases, String name, double Price, int duration, Long pictureID) {
+    public Plan(Long planID, Set<Purchase> purchases, String name, double Price, Integer duration, Long pictureID) {
         this.planID = planID;
         this.purchases = purchases;
         this.name = name;
-        this.Price = Price;
+        this.price = Price;
         this.duration = duration;
         this.pictureID = pictureID;
     }
@@ -125,18 +127,18 @@ public class Plan {
     }
 
     public double getPrice() {
-        return this.Price;
+        return this.price;
     }
 
     public void setPrice(double Price) {
-        this.Price = Price;
+        this.price = Price;
     }
 
-    public int getDuration() {
+    public Integer getDuration() {
         return this.duration;
     }
 
-    public void setDuration(int duration) {
+    public void setDuration(Integer duration) {
         this.duration = duration;
     }
 
@@ -156,12 +158,12 @@ public class Plan {
             return false;
         }
         Plan plan = (Plan) o;
-        return Objects.equals(planID, plan.planID) && Objects.equals(purchases, plan.purchases) && Objects.equals(name, plan.name) && Price == plan.Price && duration == plan.duration && Objects.equals(pictureID, plan.pictureID);
+        return Objects.equals(planID, plan.planID) && Objects.equals(purchases, plan.purchases) && Objects.equals(name, plan.name) && price == plan.price && duration == plan.duration && Objects.equals(pictureID, plan.pictureID);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(planID, purchases, name, Price, duration, pictureID);
+        return Objects.hash(planID, purchases, name, price, duration, pictureID);
     }
     
 

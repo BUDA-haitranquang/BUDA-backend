@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.node.TextNode;
 import com.higroup.Buda.entities.Supplier;
 import com.higroup.Buda.services.SupplierService;
 import com.higroup.Buda.util.JwtTokenUtil;
+import com.higroup.Buda.util.Checker.RequestUtil;
 
 import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,54 +27,33 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin("*")
 @RequestMapping("api/supplier")
 public class SupplierController {
-    private final JwtTokenUtil jwtTokenUtil = new JwtTokenUtil();
+    private final RequestUtil requestUtil;
     private final SupplierService supplierService;
     @Autowired
-    public SupplierController(SupplierService supplierService)
+    public SupplierController(SupplierService supplierService, RequestUtil requestUtil)
     {
+        this.requestUtil = requestUtil;
         this.supplierService = supplierService;
     }
     @PostMapping(path = "new")
-    public ResponseEntity<?> registerNewSupplier(HttpServletRequest request,  @RequestBody Supplier supplier)
-    {   
-        final String token = request.getHeader("Authorization").substring(7);
-
-        Long userID = jwtTokenUtil.getUserIDFromToken(token);
-
-        if((userID != null) && (jwtTokenUtil.isValid(token))){
-            return this.supplierService.registerNewSupplier(userID, supplier);
-        }
-        else{
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No authorized");
-        }
+    public ResponseEntity<?> registerNewSupplier(HttpServletRequest httpServletRequest,  @RequestBody Supplier supplier)
+    { 
+        Long userID = requestUtil.getUserID(httpServletRequest);
+        return this.supplierService.registerNewSupplier(userID, supplier);
+        
     }
 
     @GetMapping(path = "/all")
-    public ResponseEntity<?> findAllByUserID(HttpServletRequest request)
+    public ResponseEntity<?> findAllByUserID(HttpServletRequest httpServletRequest)
     {
-        final String token = request.getHeader("Authorization").substring(7);
-
-        Long userID = jwtTokenUtil.getUserIDFromToken(token);
-
-        if((userID != null) && (jwtTokenUtil.isValid(token))){
-            return this.supplierService.findAllByUserID(userID);
-        }
-        else{
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
-        }
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        return this.supplierService.findAllByUserID(userID);
     }
     @GetMapping(path = "/byphone")
-    public ResponseEntity<?> findSupplierByCurrentUserWithPhoneNumber(HttpServletRequest request, @RequestBody String phoneNumber)
+    public ResponseEntity<?> findSupplierByCurrentUserWithPhoneNumber(HttpServletRequest httpServletRequest, @RequestBody String phoneNumber)
     {
-        final String token = request.getHeader("Authorization").substring(7);
-
-        Long userID = jwtTokenUtil.getUserIDFromToken(token);
+        Long userID = requestUtil.getUserID(httpServletRequest);
         System.out.println(phoneNumber);
-        if((userID != null ) && (jwtTokenUtil.isValid(token))){
-            return this.supplierService.findSupplierByUserIDAndPhoneNumber(userID, phoneNumber);
-        }
-        else{
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No authorized");
-        }
+        return this.supplierService.findSupplierByUserIDAndPhoneNumber(userID, phoneNumber);
     }
 }

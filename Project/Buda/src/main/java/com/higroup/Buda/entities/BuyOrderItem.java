@@ -24,8 +24,8 @@ public class BuyOrderItem {
     @JsonBackReference(value = "ingredient - buy_order_item")
     @JoinColumn(name = "ingredient_ID", nullable = true)
     private Ingredient ingredient;
-    private int quantity;
-    private double pricePerUnit;
+    private Integer quantity;
+    private Double pricePerUnit;
     private ZonedDateTime creationTime;
     @Column(name = "user_id")
     private Long userID;
@@ -35,7 +35,7 @@ public class BuyOrderItem {
     public BuyOrderItem() {
     }
 
-    public BuyOrderItem(Long buyOrderItemID, BuyOrder buyOrder, Ingredient ingredient, int quantity, double pricePerUnit, ZonedDateTime creationTime, Long userID, Long supplierID) {
+    public BuyOrderItem(Long buyOrderItemID, BuyOrder buyOrder, Ingredient ingredient, Integer quantity, Double pricePerUnit, ZonedDateTime creationTime, Long userID, Long supplierID) {
         this.buyOrderItemID = buyOrderItemID;
         this.buyOrder = buyOrder;
         this.ingredient = ingredient;
@@ -70,19 +70,19 @@ public class BuyOrderItem {
         this.ingredient = ingredient;
     }
 
-    public int getQuantity() {
+    public Integer getQuantity() {
         return this.quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 
-    public double getPricePerUnit() {
+    public Double getPricePerUnit() {
         return this.pricePerUnit;
     }
 
-    public void setPricePerUnit(double pricePerUnit) {
+    public void setPricePerUnit(Double pricePerUnit) {
         this.pricePerUnit = pricePerUnit;
     }
 
@@ -125,12 +125,12 @@ public class BuyOrderItem {
         return this;
     }
 
-    public BuyOrderItem quantity(int quantity) {
+    public BuyOrderItem quantity(Integer quantity) {
         setQuantity(quantity);
         return this;
     }
 
-    public BuyOrderItem pricePerUnit(double pricePerUnit) {
+    public BuyOrderItem pricePerUnit(Double pricePerUnit) {
         setPricePerUnit(pricePerUnit);
         return this;
     }

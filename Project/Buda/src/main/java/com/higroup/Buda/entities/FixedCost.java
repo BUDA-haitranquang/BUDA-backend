@@ -27,15 +27,15 @@ public class FixedCost {
     private String name;
     @Column(length = 1000)
     private String description;
-    private double moneyAmount;
-    private int period;
+    private Double moneyAmount;
+    private Integer period;
     @Column(name = "user_id")
     private Long userID;
     @OneToMany(mappedBy = "fixedCost", fetch = FetchType.LAZY)
     @JsonManagedReference
     private Set<FixedCostBill> fixedCostBills;
 
-    public FixedCost(Long fixedCostID, String name, String description, double moneyAmount, int period, Long userID, Set<FixedCostBill> fixedCostBills) {
+    public FixedCost(Long fixedCostID, String name, String description, Double moneyAmount, Integer period, Long userID, Set<FixedCostBill> fixedCostBills) {
         this.fixedCostID = fixedCostID;
         this.name = name;
         this.description = description;
@@ -61,7 +61,7 @@ public class FixedCost {
     public FixedCost() {
     }
 
-    public FixedCost(Long fixedCostID, String name, String description, double moneyAmount, int period, Long userID) {
+    public FixedCost(Long fixedCostID, String name, String description, Double moneyAmount, Integer period, Long userID) {
         this.fixedCostID = fixedCostID;
         this.name = name;
         this.description = description;
@@ -94,19 +94,19 @@ public class FixedCost {
         this.description = description;
     }
 
-    public double getMoneyAmount() {
+    public Double getMoneyAmount() {
         return this.moneyAmount;
     }
 
-    public void setMoneyAmount(double moneyAmount) {
+    public void setMoneyAmount(Double moneyAmount) {
         this.moneyAmount = moneyAmount;
     }
 
-    public int getPeriod() {
+    public Integer getPeriod() {
         return this.period;
     }
 
-    public void setPeriod(int period) {
+    public void setPeriod(Integer period) {
         this.period = period;
     }
 
@@ -133,12 +133,12 @@ public class FixedCost {
         return this;
     }
 
-    public FixedCost moneyAmount(double moneyAmount) {
+    public FixedCost moneyAmount(Double moneyAmount) {
         setMoneyAmount(moneyAmount);
         return this;
     }
 
-    public FixedCost period(int period) {
+    public FixedCost period(Integer period) {
         setPeriod(period);
         return this;
     }

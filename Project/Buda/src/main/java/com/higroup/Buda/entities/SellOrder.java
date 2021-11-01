@@ -54,12 +54,12 @@ public class SellOrder implements Serializable{
     private AgeGroup ageGroup;
     @Enumerated(EnumType.STRING)
     private Gender gender;
-    @Column(columnDefinition = "double default 0.0")
-    private double actualDiscountCash;
-    @Column(columnDefinition = "double default 0.0")
-    private double actualDiscountPercentage;
-    private double realCost;
-    private double finalCost;
+    @Column(columnDefinition = "Double default 0.0")
+    private Double actualDiscountCash;
+    @Column(columnDefinition = "Double default 0.0")
+    private Double actualDiscountPercentage;
+    private Double realCost;
+    private Double finalCost;
     @Column(name = "user_id")
     private Long userID;
     @Column(length = 1000)
@@ -124,35 +124,35 @@ public class SellOrder implements Serializable{
         this.gender = gender;
     }
 
-    public double getActualDiscountCash() {
+    public Double getActualDiscountCash() {
         return this.actualDiscountCash;
     }
 
-    public void setActualDiscountCash(double actualDiscountCash) {
+    public void setActualDiscountCash(Double actualDiscountCash) {
         this.actualDiscountCash = actualDiscountCash;
     }
 
-    public double getActualDiscountPercentage() {
+    public Double getActualDiscountPercentage() {
         return this.actualDiscountPercentage;
     }
 
-    public void setActualDiscountPercentage(double actualDiscountPercentage) {
+    public void setActualDiscountPercentage(Double actualDiscountPercentage) {
         this.actualDiscountPercentage = actualDiscountPercentage;
     }
 
-    public double getRealCost() {
+    public Double getRealCost() {
         return this.realCost;
     }
 
-    public void setRealCost(double realCost) {
+    public void setRealCost(Double realCost) {
         this.realCost = realCost;
     }
 
-    public double getFinalCost() {
+    public Double getFinalCost() {
         return this.finalCost;
     }
 
-    public void setFinalCost(double finalCost) {
+    public void setFinalCost(Double finalCost) {
         this.finalCost = finalCost;
     }
 
@@ -218,22 +218,22 @@ public class SellOrder implements Serializable{
         return this;
     }
 
-    public SellOrder actualDiscountCash(double actualDiscountCash) {
+    public SellOrder actualDiscountCash(Double actualDiscountCash) {
         setActualDiscountCash(actualDiscountCash);
         return this;
     }
 
-    public SellOrder actualDiscountPercentage(double actualDiscountPercentage) {
+    public SellOrder actualDiscountPercentage(Double actualDiscountPercentage) {
         setActualDiscountPercentage(actualDiscountPercentage);
         return this;
     }
 
-    public SellOrder realCost(double realCost) {
+    public SellOrder realCost(Double realCost) {
         setRealCost(realCost);
         return this;
     }
 
-    public SellOrder finalCost(double finalCost) {
+    public SellOrder finalCost(Double finalCost) {
         setFinalCost(finalCost);
         return this;
     }

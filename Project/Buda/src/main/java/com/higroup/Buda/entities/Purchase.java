@@ -37,14 +37,14 @@ public class Purchase {
     private ZonedDateTime expiryDate;
     @Column(length = 1000)
     private String message;
-    @Column(columnDefinition = "double default 0.0")
-    private double totalCost;
+    @Column(columnDefinition = "Double default 0.0")
+    private Double totalCost;
 
 
     public Purchase() {
     }
 
-    public Purchase(Long purchaseID, User user, Plan plan, ZonedDateTime creationTime, ZonedDateTime expiryDate, String message, double totalCost) {
+    public Purchase(Long purchaseID, User user, Plan plan, ZonedDateTime creationTime, ZonedDateTime expiryDate, String message, Double totalCost) {
         this.purchaseID = purchaseID;
         this.user = user;
         this.plan = plan;
@@ -102,11 +102,11 @@ public class Purchase {
         this.message = message;
     }
 
-    public double getTotalCost() {
+    public Double getTotalCost() {
         return this.totalCost;
     }
 
-    public void setTotalCost(double totalCost) {
+    public void setTotalCost(Double totalCost) {
         this.totalCost = totalCost;
     }
 
@@ -140,7 +140,7 @@ public class Purchase {
         return this;
     }
 
-    public Purchase totalCost(double totalCost) {
+    public Purchase totalCost(Double totalCost) {
         setTotalCost(totalCost);
         return this;
     }
