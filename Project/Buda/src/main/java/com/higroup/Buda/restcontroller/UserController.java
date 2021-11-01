@@ -76,9 +76,13 @@ public class UserController {
     }
 
     @DeleteMapping(path = "id/{userID}")
-    public ResponseEntity<?> deleteUserByID(@PathVariable("userID") Long id) {
-        userService.deleteUserByID(id);
-        return ResponseEntity.ok().body("Delete Succesfully");
+    public ResponseEntity<?> deleteUserByID(@PathVariable("userID") Long id, HttpServletRequest request) {
+        Long get_userid = requestUtil.getUserID(request);
+        if(get_userid == id){
+            userService.deleteUserByID(id);
+            return ResponseEntity.ok().body("Delete Succesfully");
+        }
+        else return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No authorized");
     }
 
     @PostMapping("/login")
@@ -98,4 +102,5 @@ public class UserController {
             userService.updateUserByID(id, userName, email, phoneNumber, firstName, lastName, password)
         );
     }
+
 }

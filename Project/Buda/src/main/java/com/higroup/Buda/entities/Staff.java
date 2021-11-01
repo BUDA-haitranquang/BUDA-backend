@@ -1,15 +1,22 @@
 package com.higroup.Buda.entities;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Objects;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.persistence.JoinColumn;
 import javax.persistence.Id;
 import javax.persistence.Index;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -35,6 +42,13 @@ public class Staff {
     private String staffUUID;
     @Column(columnDefinition = "double default 0.0")
     private double salary;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @JoinTable(name = "staff_role",
+               joinColumns = @JoinColumn(name = "staff_id"), 
+               inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Collection<Role> roles = new ArrayList<Role>();
 
     public String getStaffUUID() {
         return this.staffUUID;
@@ -205,6 +219,33 @@ public class Staff {
             ", staffUUID='" + getStaffUUID() + "'" +
             ", salary='" + getSalary() + "'" +
             "}";
+    }
+
+    // role 
+    // add role
+    public void addRole(Role ... roles){
+        for(Role role: roles){
+            if(!this.roles.contains(role)){
+                this.roles.add(role);
+            }
+        }
+    }
+    
+    // remove role 
+    public void removeRole(Role ... roles){
+        for(Role role: roles){
+            if(this.roles.contains(role)){
+                this.roles.remove(role);
+            }
+        }
+    }
+
+    public Collection<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Collection<Role> roles) {
+        this.roles = roles;
     }
 
 }

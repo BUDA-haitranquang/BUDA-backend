@@ -3,7 +3,6 @@ package com.higroup.Buda.entities;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.Set;
-import java.util.UUID;
 import java.util.ArrayList;
 
 import javax.persistence.CascadeType;
