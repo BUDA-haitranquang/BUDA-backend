@@ -54,13 +54,9 @@ public class SellOrderItemService {
     public void deleteSellOrderItem(Long userID, Long sellOrderItemID)
     {
         Optional<SellOrderItem> sellOrderItem = this.sellOrderItemRepository.findById(sellOrderItemID);
-        if (sellOrderItem.isPresent())
+        if ((sellOrderItem.isPresent()) && (sellOrderItem.get().getUserID() != userID))
         {
-            if (sellOrderItem.get().getUserID() != userID)
-            {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "UserID does not match");
-            }
-            this.sellOrderItemRepository.deleteById(sellOrderItemID);
+            this.sellOrderItemRepository.delete(sellOrderItem.get());
         }
         else{
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "SellOrderItem not found");
