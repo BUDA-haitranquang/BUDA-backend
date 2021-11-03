@@ -1,6 +1,7 @@
 package com.higroup.Buda.util;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,6 +11,7 @@ import com.higroup.Buda.repositories.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -38,6 +40,20 @@ public class JwtTokenUtil implements Serializable {
         Long userID = claims.get("userID", Long.class);
         return userID;
     }
+    // get staff uuid from jwttoken
+    public String getStaffUUIDFromToken(String token){
+        Claims claims = getAllClaimsFromToken(token);
+        String staffUUID = claims.get("staffID", String.class);
+        return staffUUID;
+    }
+
+    // get roles from jwttoken
+    public Collection<?> getRolesFromToken(String token){
+        Claims claims = getAllClaimsFromToken(token);
+        Collection<?> authorities = claims.get("roles", Collection.class);
+        return authorities; 
+    }
+
 
     // retrieve expiration date from jwt token
     public Date getExpirationDateFromToken(String token){
@@ -94,6 +110,11 @@ public class JwtTokenUtil implements Serializable {
         claims.put("userID", userID);
 
         return doGenerateToken(claims, userDetails.getUsername(), Config.HoursRefreshToken);
+    }
+
+    public String generateToken(UserDetails userDetails, Map<String, Object> claims, int HourExpiredToken){
+        claims.put("roles", userDetails.getAuthorities());
+        return doGenerateToken(claims, userDetails.getUsername(), HourExpiredToken);
     }
 
     // while creating the token
