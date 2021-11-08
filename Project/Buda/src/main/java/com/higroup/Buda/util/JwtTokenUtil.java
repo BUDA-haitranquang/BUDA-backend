@@ -40,6 +40,13 @@ public class JwtTokenUtil implements Serializable {
         Long userID = claims.get("userID", Long.class);
         return userID;
     }
+
+    // get staffID from jwttoken
+    public Long getStaffIDFromToken(String token){
+        Claims claims = getAllClaimsFromToken(token);
+        Long staffID = claims.get("staffID", Long.class);
+        return staffID;
+    }
     // get staff uuid from jwttoken
     public String getStaffUUIDFromToken(String token){
         Claims claims = getAllClaimsFromToken(token);
