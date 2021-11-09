@@ -1,5 +1,7 @@
 package com.higroup.Buda.services;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,8 +14,10 @@ import com.higroup.Buda.repositories.UserRepository;
 import com.higroup.Buda.util.Checker.PresentChecker;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class ProductService {
@@ -45,15 +49,53 @@ public class ProductService {
     {
         return this.productRepository.findAllProductByUserID(userID);
     }
-    public Product findProductByProductID(Long productID)
+    public List<Product> findAllHiddenProductByUserID(Long userID)
     {
-        presentChecker.checkIdAndRepository(productID, productRepository);
-        Product product = this.productRepository.findProductByProductID(productID);
-        return product;
+        return this.productRepository.findAllHiddenProductByUserID(userID);
     }
-    public List<Product> findAllProductByProductGroupID(Long productGroupID)
+    public Product hideProductByProductID(Long userID, Long productID)
+    {
+        Product product = this.productRepository.findProductByProductID(productID);
+        if ((product!=null) && (product.getUserID() == userID))
+        {
+            product.setVisible(false);
+            this.productRepository.save(product);
+            return product;
+        }
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found");
+    }
+    public Product findProductByProductID(Long userID, Long productID)
+    {
+        Product product = this.productRepository.findProductByProductID(productID);
+        if ((product!=null) && (product.getUserID() == userID))
+        {
+            return product;
+        }
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found");
+    }
+    public void deleteProductByProductID(Long userID, Long productID)
+    {
+        Product product = this.productRepository.findProductByProductID(productID);
+        if ((product!=null) && (product.getUserID() == userID))
+        {
+            if (product.getVisible() == true)
+            {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Can not delete a visible product");
+            }
+            else
+            {
+                this.productRepository.delete(product);
+            }
+        }
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product does not exists");
+    }
+    public List<Product> findAllProductByProductGroupID(Long userID, Long productGroupID)
     {
         Optional<ProductGroup> productGroup = this.productGroupRepository.findProductGroupByProductGroupID(productGroupID);
-        return productGroup.map(this.productRepository::findAllProductByProductGroup).orElse(null);
+        if ((productGroup.isPresent()) && (productGroup.get().getUserID() == userID))
+        {
+            return this.productRepository.findAllProductByProductGroup(productGroup.get());
+        }
+        return Collections.emptyList();
     }
 }

@@ -21,12 +21,17 @@ public class Ingredient {
     private String name;
     @Column(length = 1000)
     private String description;
+    @Column(columnDefinition = "int default 0", name = "amount_left")
     private Integer amountLeft;
+    @Column(columnDefinition = "double default 0.0", name = "price")
     private Double price;
+    @Column(columnDefinition = "boolean default true", name = "visible")
+    private Boolean visible;
     @Column(name = "user_id")
     private Long userID;
     @Column(name = "picture_id")
     private Long pictureID;
+    @Column(name = "alert_amount_left", columnDefinition = "int default 0")
     private Integer alertAmountLeft;
     @OneToMany(mappedBy = "ingredient", fetch = FetchType.LAZY)
     @JsonManagedReference(value = "ingredient - buy_order_item")
@@ -35,17 +40,32 @@ public class Ingredient {
     public Ingredient() {
     }
 
-    public Ingredient(Long IngredientID, String name, String description, Integer amountLeft, Double price, Long storeID, Long pictureID, Integer alertAmountLeft) {
-        this.ingredientID = IngredientID;
+    public Boolean isVisible() {
+        return this.visible;
+    }
+
+    public Boolean getVisible() {
+        return this.visible;
+    }
+
+    public void setVisible(Boolean visible) {
+        this.visible = visible;
+    }
+
+
+    public Ingredient(Long ingredientID, String name, String description, Integer amountLeft, Double price, Boolean visible, Long userID, Long pictureID, Integer alertAmountLeft, Set<BuyOrderItem> buyOrderItems) {
+        this.ingredientID = ingredientID;
         this.name = name;
         this.description = description;
         this.amountLeft = amountLeft;
         this.price = price;
-        this.userID = storeID;
+        this.visible = visible;
+        this.userID = userID;
         this.pictureID = pictureID;
         this.alertAmountLeft = alertAmountLeft;
+        this.buyOrderItems = buyOrderItems;
     }
-
+    
     public Long getIngredientID() {
         return ingredientID;
     }
