@@ -4,7 +4,9 @@ import com.higroup.Buda.entities.Ingredient;
 import com.higroup.Buda.entities.Product;
 import com.higroup.Buda.services.IngredientService;
 import com.higroup.Buda.util.JwtTokenUtil;
+import com.higroup.Buda.util.Checker.RequestUtil;
 
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,30 +16,30 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping("api/Ingredient")
+@RequestMapping("api/ingredient")
 @CrossOrigin("*")
 public class IngredientController {
-    private final JwtTokenUtil jwtTokenUtil = new JwtTokenUtil();
+    private final RequestUtil requestUtil;
     private final IngredientService ingredientService;
     @Autowired
-    public IngredientController(IngredientService ingredientService)
+    public IngredientController(IngredientService ingredientService, RequestUtil requestUtil)
     {
+        this.requestUtil = requestUtil;
         this.ingredientService = ingredientService;
     }
     @GetMapping(path = "/ingredientID/{ingredientID}")
-    public ResponseEntity<?> findIngredientByIngredientID(HttpServletRequest request, @PathVariable long ingredientID)
+    public ResponseEntity<?> findIngredientByIngredientID(HttpServletRequest httpServletRequest, @PathVariable long ingredientID)
     {   
-        final String token = request.getHeader("Authorization").substring(7);
 
-        Long userID = jwtTokenUtil.getUserIDFromToken(token);
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
         Ingredient ingredient = this.ingredientService.findIngredientByIngredientID(ingredientID);
         // if userid match ingredientID
-        if((userID == ingredient.getUserID()) && (jwtTokenUtil.isValid(token))){
-            return ResponseEntity.ok(ingredient);
+        if(userID == ingredient.getUserID()){
+            return ResponseEntity.ok().body(ingredient);
         }
         // if not return unauthorized
         else{
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No authorized");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
         }
     }
     
@@ -47,18 +49,21 @@ public class IngredientController {
         return this.ingredientService.findIngredientByName(ingredientName);
     }
     @PostMapping(path = "new/userID/{userID}")
-    public ResponseEntity<?> creatNewIngredient(HttpServletRequest request, @PathVariable Long userID, @RequestBody Ingredient ingredient)
+    public ResponseEntity<?> creatNewIngredient(HttpServletRequest httpServletRequest, @RequestBody Ingredient ingredient)
     {   
-        final String token = request.getHeader("Authorization").substring(7);
-
-        Long get_userID = jwtTokenUtil.getUserIDFromToken(token);
-        // if userid match ingredientID
-        if((userID == get_userID) && (jwtTokenUtil.isValid(token))){
-            return this.ingredientService.createNewIngredient(userID, ingredient);
-        }
-        // if not return unauthorized
-        else{
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No authorized");
-        }
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        return ResponseEntity.ok().body(this.ingredientService.createNewIngredient(userID, ingredient));
+    }
+    @GetMapping(path = "/all")
+    public ResponseEntity<?> findAllIngredientByCurrentUser(HttpServletRequest httpServletRequest)
+    {
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        return ResponseEntity.ok().body(this.ingredientService.findAllIngredientByUserID(userID));
+    }
+    @GetMapping(path = "/hidden/all")
+    public ResponseEntity<?> findAllHiddenIngredientByCurrentUser(HttpServletRequest httpServletRequest)
+    {
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        return ResponseEntity.ok().body(this.ingredientService.findAllHiddenIngredientByUserID(userID));
     }
 }
