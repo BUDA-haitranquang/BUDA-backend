@@ -85,7 +85,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private void StaffConfig(HttpSecurity http) throws Exception{
 		// dont authenticate this particular request
-		http.authorizeRequests().antMatchers("/api/staff/login", "/api/staff/register").permitAll();
+		http.authorizeRequests().antMatchers("/api/staff/login").permitAll();
 		http.authorizeRequests().antMatchers(HttpMethod.DELETE, "api/staff/id/**").hasAnyAuthority("ADMIN", "USER");
+		http.authorizeRequests().antMatchers(HttpMethod.GET, "api/staff/userID/all").hasAnyAuthority("USER");
+		http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/staff/register").hasAnyAuthority("USER");
+
 	}
 }

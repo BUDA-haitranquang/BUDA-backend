@@ -37,7 +37,7 @@ public class BuyOrderService {
         this.buyOrderItemRepository = buyOrderItemRepository;
     }
 
-    public BuyOrder registerNewBuyOrder(Long userID, BuyOrder buyOrder) {
+    public BuyOrder createNewBuyOrder(Long userID, BuyOrder buyOrder) {
         Optional<User> user = this.userRepository.findUserByUserID(userID);
         if (user.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "UserID does not exist");
@@ -83,5 +83,22 @@ public class BuyOrderService {
 
     public List<BuyOrder> findAllBuyOrderByUserID(Long userID) {
         return this.buyOrderRepository.findAllBuyOrderByUserID(userID);
+    }
+
+    public void deleteBuyOrderByBuyOrderID(Long userID, Long buyOrderID)
+    {
+        Optional<BuyOrder> buyOrder = this.buyOrderRepository.findBuyOrderByBuyOrderID(buyOrderID);
+        
+        if ((buyOrder.isPresent()) && (userID == buyOrder.get().getUserID()))
+        {
+            for (BuyOrderItem buyOrderItem: buyOrder.get().getBuyOrderItems())
+            {
+                this.buyOrderItemRepository.delete(buyOrderItem);
+            }
+            this.buyOrderRepository.delete(buyOrder.get());
+        }
+        else{
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Buy Order not found");
+        }
     }
 }
