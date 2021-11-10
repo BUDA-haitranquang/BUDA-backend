@@ -43,13 +43,14 @@ public class IngredientController {
         }
     }
     
-    @GetMapping(path = "/{ingredientName}")
-    public Ingredient findIngredientByName(@PathVariable String ingredientName)
-    {
-        return this.ingredientService.findIngredientByName(ingredientName);
-    }
-    @PostMapping(path = "new/userID/{userID}")
-    public ResponseEntity<?> creatNewIngredient(HttpServletRequest httpServletRequest, @RequestBody Ingredient ingredient)
+    // @GetMapping(path = "/{ingredientName}")
+    // public ResponseEntity<?> findIngredientByName(HttpServletRequest httpServletRequest, @PathVariable String ingredientName)
+    // {
+    //     Long userID = this.requestUtil.getUserID(httpServletRequest);
+    //     return ResponseEntity.ok().body(this.ingredientService.findIngredientByName(userID, ingredientName));
+    // }
+    @PostMapping(path = "/new")
+    public ResponseEntity<?> createNewIngredient(HttpServletRequest httpServletRequest, @RequestBody Ingredient ingredient)
     {   
         Long userID = this.requestUtil.getUserID(httpServletRequest);
         return ResponseEntity.ok().body(this.ingredientService.createNewIngredient(userID, ingredient));
@@ -65,5 +66,11 @@ public class IngredientController {
     {
         Long userID = this.requestUtil.getUserID(httpServletRequest);
         return ResponseEntity.ok().body(this.ingredientService.findAllHiddenIngredientByUserID(userID));
+    }
+    @GetMapping(path = "/hide/{ingredientID}")
+    public ResponseEntity<?> hideIngredientByIngredientID(HttpServletRequest httpServletRequest, @PathVariable Long ingredientID)
+    {
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        return ResponseEntity.ok().body(this.ingredientService.hideIngredientByIngredientID(userID, ingredientID));
     }
 }

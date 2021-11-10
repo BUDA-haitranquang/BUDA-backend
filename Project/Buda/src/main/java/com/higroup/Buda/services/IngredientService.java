@@ -50,10 +50,8 @@ public class IngredientService {
         }
     }
 
-    public Ingredient findIngredientByName(String ingredientName) {
-        Optional<Ingredient> ingredient = this.ingredientRepository.findIngredientByName(ingredientName);
-
-        return ingredient.orElse(null);
+    public List<Ingredient> findIngredientByName(Long userID, String ingredientName) {
+        return this.ingredientRepository.findIngredientByName(userID, ingredientName);
     }
 
     public List<Ingredient> findAllHiddenIngredientByUserID(Long userID)
@@ -65,4 +63,17 @@ public class IngredientService {
     {
         return this.ingredientRepository.findAllIngredientByUserID(userID);
     } 
+
+    public Ingredient hideIngredientByIngredientID(Long userID, Long ingredientID)
+    {
+        Optional<Ingredient> ingredient = this.ingredientRepository.findIngredientByIngredientID(ingredientID);
+        System.out.println(ingredient.get());
+        if ((ingredient.isPresent()) && (ingredient.get().getUserID() == userID))
+        {
+            ingredient.get().setVisible(false);
+            this.ingredientRepository.save(ingredient.get());
+            return ingredient.get();
+        }
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Ingredient not found");
+    }
 }
