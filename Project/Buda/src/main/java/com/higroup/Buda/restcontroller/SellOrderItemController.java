@@ -51,4 +51,10 @@ public class SellOrderItemController {
         Long userID = this.requestUtil.getUserID(httpServletRequest);
         return ResponseEntity.ok().body(this.sellOrderItemService.updateSellOrderItem(userID, sellOrderItem));
     }
+    @GetMapping("/product/{productID}")
+    public ResponseEntity<?> findAllSellOrderItemByProductID(HttpServletRequest httpServletRequest, @PathVariable Long productID)
+    {
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        return ResponseEntity.ok().body(this.sellOrderItemService.findAllSellOrderItemByProductID(userID, productID));
+    }
 }
