@@ -8,11 +8,14 @@ import javax.validation.Valid;
 import com.higroup.Buda.entities.Product;
 import com.higroup.Buda.services.ProductService;
 import com.higroup.Buda.util.JwtTokenUtil;
+import com.higroup.Buda.util.Checker.RequestUtil;
 
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,66 +27,60 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api/product")
 @CrossOrigin("*")
 public class ProductController {
-
-    private final JwtTokenUtil jwtTokenUtil = new JwtTokenUtil();
+    private final RequestUtil requestUtil;
     private final ProductService productService;
     @Autowired
-    public ProductController(ProductService productService)
+    public ProductController(ProductService productService, RequestUtil requestUtil)
     {
+        this.requestUtil = requestUtil;
         this.productService = productService;
     }
-    @PostMapping(path = "new/userID/{userID}")
-    public ResponseEntity<?> registerNewProduct(HttpServletRequest request, @PathVariable Long userID, @Valid @RequestBody Product product)
+    @PostMapping(path = "/new")
+    public ResponseEntity<?> registerNewProduct(HttpServletRequest httpServletRequest, @Valid @RequestBody Product product)
     {
-        final String token = request.getHeader("Authorization").substring(7);
-
-        Long get_userID = jwtTokenUtil.getUserIDFromToken(token);
-
-        if((userID == get_userID)&&(jwtTokenUtil.isValid(token))){
-            return this.productService.registerNewProduct(userID, product);
-        }
-        // if not return unauthorized
-        else{
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No authorized");
-        }
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        return this.productService.registerNewProduct(userID, product);
     }
 
     @GetMapping(path = "/productID/{productID}")
-    public ResponseEntity<?> findProductByProductID(HttpServletRequest request, @PathVariable Long productID)
+    public ResponseEntity<?> findProductByProductID(HttpServletRequest httpServletRequest, @PathVariable Long productID)
     {
-        final String token = request.getHeader("Authorization").substring(7);
-
-        Long userID = jwtTokenUtil.getUserIDFromToken(token);
-        Product product = this.productService.findProductByProductID(productID);
-        // if userid match ingredientID
-        if(userID == product.getUserID() && jwtTokenUtil.isValid(token)){
-            return ResponseEntity.ok(product);
-        }
-        // if not return unauthorized
-        else{
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No authorized");
-        }
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        return ResponseEntity.ok().body(this.productService.findProductByProductID(userID, productID));
     }
 
-    @GetMapping(path = "/userID/{userID}/all")
-    public ResponseEntity<?> findAllProductByUserID(HttpServletRequest request, @PathVariable Long userID)
+    @GetMapping(path = "/all")
+    public ResponseEntity<?> findAllProductByCurrentUser(HttpServletRequest httpServletRequest)
     {
-        final String token = request.getHeader("Authorization").substring(7);
-
-        Long get_userID = jwtTokenUtil.getUserIDFromToken(token);
-        // if userid match productID
-        if((get_userID == userID) && (jwtTokenUtil.isValid(token))){
-            return ResponseEntity.ok(this.productService.findAllProductByUserID(userID));
-        }
-        // if not return unauthorized
-        else{
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No authorized");
-        }
-        
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        return ResponseEntity.ok().body(this.productService.findAllProductByUserID(userID));                
     }
-    @GetMapping(path = "/product-groupID/{productGroupID}/all")
-    public List<Product> findAllProductByProductGroupID(@PathVariable Long productGroupID)
+
+    @GetMapping(path = "/hidden/all")
+    public ResponseEntity<?> findAllHiddenProduct(HttpServletRequest httpServletRequest)
     {
-        return null;
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        return ResponseEntity.ok().body(this.productService.findAllHiddenProductByUserID(userID));
+    }
+
+    @GetMapping(path = "/hide/{productID}")
+    public ResponseEntity<?> hideProductByProductID(HttpServletRequest httpServletRequest, @PathVariable Long productID)
+    {
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        return ResponseEntity.ok().body(this.productService.hideProductByProductID(userID, productID));
+    }
+
+    @GetMapping(path = "/group/{productGroupID}/all")
+    public ResponseEntity<?> findAllProductByProductGroupID(HttpServletRequest httpServletRequest, @PathVariable Long productGroupID)
+    {
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        return ResponseEntity.ok().body(this.productService.findAllProductByProductGroupID(userID, productGroupID));
+    }
+    @DeleteMapping(path = "productID/{productID}")
+    public ResponseEntity<?> deleteProductByProductID(HttpServletRequest httpServletRequest, @PathVariable Long productID)
+    {
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        this.productService.deleteProductByProductID(userID, productID);
+        return ResponseEntity.ok().body("Delete successfully, this action can not be reversed");
     }
 }

@@ -4,8 +4,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import com.higroup.Buda.entities.Product;
 import com.higroup.Buda.entities.SellOrder;
 import com.higroup.Buda.entities.SellOrderItem;
+import com.higroup.Buda.repositories.ProductRepository;
 import com.higroup.Buda.repositories.SellOrderItemRepository;
 import com.higroup.Buda.repositories.SellOrderRepository;
 import com.higroup.Buda.util.Checker.PresentChecker;
@@ -19,9 +21,11 @@ import org.springframework.web.server.ResponseStatusException;
 public class SellOrderItemService {
     private final SellOrderItemRepository sellOrderItemRepository;
     private final SellOrderRepository sellOrderRepository;
+    private final ProductRepository productRepository;
     @Autowired
-    public SellOrderItemService(SellOrderItemRepository sellOrderItemRepository, SellOrderRepository sellOrderRepository)
+    public SellOrderItemService(SellOrderItemRepository sellOrderItemRepository, SellOrderRepository sellOrderRepository, ProductRepository productRepository)
     {
+        this.productRepository = productRepository;
         this.sellOrderRepository = sellOrderRepository;
         this.sellOrderItemRepository = sellOrderItemRepository;
     }
@@ -54,16 +58,21 @@ public class SellOrderItemService {
     public void deleteSellOrderItem(Long userID, Long sellOrderItemID)
     {
         Optional<SellOrderItem> sellOrderItem = this.sellOrderItemRepository.findById(sellOrderItemID);
-        if (sellOrderItem.isPresent())
+        if ((sellOrderItem.isPresent()) && (sellOrderItem.get().getUserID() != userID))
         {
-            if (sellOrderItem.get().getUserID() != userID)
-            {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "UserID does not match");
-            }
-            this.sellOrderItemRepository.deleteById(sellOrderItemID);
+            this.sellOrderItemRepository.delete(sellOrderItem.get());
         }
         else{
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "SellOrderItem not found");
         }
+    }
+    public List<SellOrderItem> findAllSellOrderItemByProductID(Long userID, Long productID)
+    {
+        Product product = this.productRepository.findProductByProductID(productID);
+        if (!product.equals(null) && (product.getUserID() == userID))
+        {
+            return this.sellOrderItemRepository.findAllSellOrderItemByProductID(productID);
+        }
+        return Collections.emptyList();
     }
 }

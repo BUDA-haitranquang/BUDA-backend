@@ -11,10 +11,12 @@ import com.higroup.Buda.services.BuyOrderService;
 import com.higroup.Buda.util.JwtTokenUtil;
 import com.higroup.Buda.util.Checker.RequestUtil;
 
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,10 +37,10 @@ public class BuyOrderController {
         this.buyOrderService = buyOrderService;
     }
     @PostMapping(path = "/new")
-    public ResponseEntity<?> registerNewBuyOrder(HttpServletRequest httpServletRequest, @RequestBody BuyOrder buyOrder)
+    public ResponseEntity<?> createNewBuyOrder(HttpServletRequest httpServletRequest, @RequestBody BuyOrder buyOrder)
     {
         Long userID = this.requestUtil.getUserID(httpServletRequest);
-        return ResponseEntity.ok().body(this.buyOrderService.registerNewBuyOrder(userID, buyOrder));
+        return ResponseEntity.ok().body(this.buyOrderService.createNewBuyOrder(userID, buyOrder));
     }
     @GetMapping(path = "user/all")
     public ResponseEntity<?> findAllBuyOrderByUserID(HttpServletRequest httpServletRequest)
@@ -51,5 +53,12 @@ public class BuyOrderController {
     {
         Long userID = this.requestUtil.getUserID(httpServletRequest);
         return ResponseEntity.ok().body(this.buyOrderService.findAllBuyOrderBySupplierID(userID, supplierID));
+    }
+    @DeleteMapping(path = "{buyOrderID}")
+    public ResponseEntity<?> deleteBuyOrderByBuyOrderID(HttpServletRequest httpServletRequest, @PathVariable Long buyOrderID)
+    {
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        this.buyOrderService.deleteBuyOrderByBuyOrderID(userID, buyOrderID);
+        return ResponseEntity.ok().body("Delete successfully");
     }
 }
