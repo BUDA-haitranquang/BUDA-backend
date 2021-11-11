@@ -79,7 +79,7 @@ public class StaffController {
             @RequestParam(required = false) Double salary) {
         
         return ResponseEntity.ok(
-            staffService.updateStaffByID(id, Name, phoneNumber, password, address, salary, staffUUID);
+            staffService.updateStaffByID(id, Name, phoneNumber, password, address, salary, staffUUID)
         );
     }
 }
