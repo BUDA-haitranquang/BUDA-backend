@@ -61,4 +61,16 @@ public class BuyOrderController {
         this.buyOrderService.deleteBuyOrderByBuyOrderID(userID, buyOrderID);
         return ResponseEntity.ok().body("Delete successfully");
     }
+    @GetMapping(path = "all/last/{X}")
+    public ResponseEntity<?> findAllLastXDaysBuyOrderByCurrentUser(HttpServletRequest httpServletRequest, @PathVariable Long X)
+    {
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        return ResponseEntity.ok().body(this.buyOrderService.findAllBuyOrderByUserIDLastXDays(userID, X));
+    }
+    @GetMapping(path = "all/incompleted")
+    public ResponseEntity<?> findAllIncompletedBuyOrderByCurrentUser(HttpServletRequest httpServletRequest)
+    {
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        return ResponseEntity.ok().body(this.buyOrderService.findAllIncompletedBuyOrderByUser(userID));
+    }
 }

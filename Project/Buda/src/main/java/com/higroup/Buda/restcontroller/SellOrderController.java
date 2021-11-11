@@ -67,4 +67,16 @@ public class SellOrderController {
         Long userID = this.requestUtil.getUserID(httpServletRequest);
         return ResponseEntity.ok().body(this.sellOrderService.updateSellOrder(userID, sellOrder));
     }
+    @GetMapping(path = "all/last/{X}")
+    public ResponseEntity<?> findAllLastXDaysSellOrderByCurrentUser(HttpServletRequest httpServletRequest, @PathVariable Long X)
+    {
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        return ResponseEntity.ok().body(this.sellOrderService.findAllSellOrderByUserIDLastXDays(userID, X));
+    }
+    @GetMapping(path = "all/incompleted")
+    public ResponseEntity<?> findAllIncompletedSellOrderByCurrentUser(HttpServletRequest httpServletRequest)
+    {
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        return ResponseEntity.ok().body(this.sellOrderService.findAllIIncompletedSellOrderByUserID(userID));
+    }
 }

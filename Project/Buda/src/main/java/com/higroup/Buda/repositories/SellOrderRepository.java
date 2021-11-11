@@ -18,4 +18,8 @@ public interface SellOrderRepository extends JpaRepository<SellOrder, Long> {
     @Query(value = "select * from sell_order s where s.discount_id = :discountID", nativeQuery = true)
     List<SellOrder> findAllSellOrderByDiscountID(@Param("discountID") Long discountID);
     List<SellOrder> findAllSellOrderByStatus(Status status);
+    @Query(value = "select * from sell_order s where (s.creation_time BETWEEN NOW() - INTERVAL :X DAY and NOW()) and s.user_id = :userID", nativeQuery = true)
+    List<SellOrder> findAllSellOrderByUserIDLastXDays(@Param("userID") Long userID, @Param("X") Long X);
+    @Query(value = "select * from sell_order s where s.status != 'FINISHED' and s.status != 'CANCELLED' and s.user_id = :userID", nativeQuery = true)
+    List<SellOrder> findAllIncompletedSellOrderByUser(@Param("userID") Long userID);
 }
