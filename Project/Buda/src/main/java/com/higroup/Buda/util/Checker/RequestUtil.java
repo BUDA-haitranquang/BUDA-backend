@@ -27,4 +27,14 @@ public class RequestUtil {
         }
         throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized");
     }
+    // public Long getStaffID(HttpServletRequest httpServletRequest)
+    // {
+    //     final String token = httpServletRequest.getHeader("Authorization").substring(7);
+    //     Long staffID = this.jwtTokenUtil.getStaffIDFromToken(token);
+    //     if (staffID!=null && jwtTokenUtil.isValid(token))
+    //     {
+    //         return staffID;
+    //     }
+    //     throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized");
+    // }
 }

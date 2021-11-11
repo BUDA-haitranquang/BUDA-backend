@@ -5,6 +5,7 @@ import javax.persistence.Table;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "ProductComponent", indexes = {
@@ -12,19 +13,20 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
     @Index(columnList = "product_id", name = "product_component_product_id_index"),
     @Index(columnList = "ingredient_id", name = "product_component_ingredient_id_index")
 })
+@JsonIgnoreProperties({"product"})
 public class ProductComponent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_component_id")
     private Long productComponentID;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = true)
-    @JsonBackReference
+    @ManyToOne(fetch = FetchType.EAGER, optional = true)
+    //@JsonBackReference(value = "ingredient - product_component")
     @JoinColumn(name = "Ingredient_ID", nullable = true)
     private Ingredient ingredient;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
-    @JsonBackReference
+    @JsonBackReference(value = "product - product_component")
     @JoinColumn(name = "Product_ID", nullable = true)
     private Product product;
 

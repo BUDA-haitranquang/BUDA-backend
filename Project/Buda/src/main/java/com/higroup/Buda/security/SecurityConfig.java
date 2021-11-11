@@ -59,19 +59,36 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		// store user's state.
 		http.exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
 			.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+		
+		// user config
+		this.UserConfig(http);
+		// role config
+		this.StaffConfig(http);
+		// staff config
+		// all other requests need to be authenticated
+		http.authorizeRequests().anyRequest().authenticated();
+		// http.authorizeRequests().anyRequest().authen
+		// Add a filter to validate the tokens with every request
+		http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+    }
+
+	private void UserConfig(HttpSecurity http) throws Exception{
 		// dont authenticate this particular request
 		http.authorizeRequests().antMatchers("/api/user/login", "/api/user/register").permitAll();
 
 		// require ROLE USER to make get request for user 
 		http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/user/**").hasAnyAuthority("USER");
 		// Admin can do something
-		// http.authorizeRequests().antMatchers(HttpMethod.POST, "api/product/productID/**").hasAnyAuthority("ADMIN");
-		// all other requests need to be authenticated
-		http.authorizeRequests().anyRequest().authenticated();
-				
-		// http.authorizeRequests().anyRequest().authen
-		// Add a filter to validate the tokens with every request
-		http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
-    }
+		http.authorizeRequests().antMatchers(HttpMethod.DELETE, "api/user/id/**").hasAnyAuthority("ADMIN");
+	}
     
+
+	private void StaffConfig(HttpSecurity http) throws Exception{
+		// dont authenticate this particular request
+		http.authorizeRequests().antMatchers("/api/staff/login").permitAll();
+		http.authorizeRequests().antMatchers(HttpMethod.DELETE, "api/staff/id/**").hasAnyAuthority("ADMIN", "USER");
+		http.authorizeRequests().antMatchers(HttpMethod.GET, "api/staff/userID/all").hasAnyAuthority("USER");
+		http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/staff/register").hasAnyAuthority("USER");
+
+	}
 }

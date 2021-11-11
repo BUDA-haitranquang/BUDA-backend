@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -34,28 +35,35 @@ public class Product {
     private Long productID;
 
     @Column(length = 100)
-    @NotBlank(message = "name cannot be null")
+    @NotNull
     private String name;
 
     @Column(length = 1000)
     private String description;
 
     @Column(name = "user_id")
-    @NotBlank(message = "user_id cannot be null")
+    @NotNull
     private Long userID;
+
+    @Column(name = "visible", columnDefinition = "boolean default true")
+    private Boolean visible;
 
     @Column(name = "picture_id")
     private Long pictureID;
 
+    @Column(name = "selling_price", columnDefinition = "double default 0.0")
     @PositiveOrZero(message = "Price must be at least 0")
     private Double sellingPrice;
 
+    @Column(name = "alert_amount", columnDefinition = "int default 0")
     @PositiveOrZero(message = "Alert amount must be at least 0")
     private Integer alertAmount;
 
+    @Column(name = "amount_left", columnDefinition = "int default 0")
     @PositiveOrZero(message = "Amount left must be at least 0")
     private Integer amountLeft;
 
+    @Column(name = "cost_per_unit", columnDefinition = "double default 0.0")
     @PositiveOrZero(message = "Cost must be at least 0")
     private Double costPerUnit;
 
@@ -73,11 +81,25 @@ public class Product {
     public Product() {
     }
 
-    public Product(Long productID, String name, String description, Long userID, Long pictureID, Double sellingPrice, Integer alertAmount, Integer amountLeft, Double costPerUnit, Set<SellOrderItem> sellOrderItems, Set<ProductLeftLog> productLeftLogs, ProductGroup productGroup) {
+    public Boolean isVisible() {
+        return this.visible;
+    }
+
+    public Boolean getVisible() {
+        return this.visible;
+    }
+
+    public void setVisible(Boolean visible) {
+        this.visible = visible;
+    }
+
+
+    public Product(Long productID, String name, String description, Long userID, Boolean visible, Long pictureID, Double sellingPrice, Integer alertAmount, Integer amountLeft, Double costPerUnit, Set<SellOrderItem> sellOrderItems, Set<ProductLeftLog> productLeftLogs, ProductGroup productGroup) {
         this.productID = productID;
         this.name = name;
         this.description = description;
         this.userID = userID;
+        this.visible = visible;
         this.pictureID = pictureID;
         this.sellingPrice = sellingPrice;
         this.alertAmount = alertAmount;
@@ -86,8 +108,8 @@ public class Product {
         this.sellOrderItems = sellOrderItems;
         this.productLeftLogs = productLeftLogs;
         this.productGroup = productGroup;
-    }  
-
+    }
+    
     public Long getProductID() {
         return this.productID;
     }
