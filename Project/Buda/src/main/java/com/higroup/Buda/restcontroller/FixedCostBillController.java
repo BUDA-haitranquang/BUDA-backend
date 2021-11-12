@@ -29,7 +29,7 @@ public class FixedCostBillController {
         this.requestUtil = requestUtil;
     }
     @GetMapping("/all")
-    public ResponseEntity<?> findAllByUserID(HttpServletRequest httpServletRequest)
+    public ResponseEntity<?> findAllByCurrentUser(HttpServletRequest httpServletRequest)
     {
         Long userID = this.requestUtil.getUserID(httpServletRequest);
         return ResponseEntity.ok().body(this.fixedCostBillService.findAllByUserID(userID));
@@ -39,5 +39,17 @@ public class FixedCostBillController {
     {
         Long userID = this.requestUtil.getUserID(httpServletRequest);
         return ResponseEntity.ok().body(fixedCostBillService.findAllByFixedCostID(userID, fixedCostID));
+    }
+    @GetMapping("all/last-x-days/{X}")
+    public ResponseEntity<?> findAllFixedCostBillByCurrentUserLastXDays(HttpServletRequest httpServletRequest, @PathVariable Long X)
+    {
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        return ResponseEntity.ok().body(this.fixedCostBillService.findAllFixedCostBillByUserIDLastXDays(userID, X));
+    }
+    @GetMapping("all/incompleted")
+    public ResponseEntity<?> findAllIncompletedFixedCostBillByCurrentUser(HttpServletRequest httpServletRequest)
+    {
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        return ResponseEntity.ok().body(this.fixedCostBillService.findAllIncompletedFixedCostBillByUserID(userID));
     }
 }

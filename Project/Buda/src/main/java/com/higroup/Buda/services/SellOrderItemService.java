@@ -4,6 +4,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import com.higroup.Buda.entities.Product;
 import com.higroup.Buda.entities.SellOrder;
 import com.higroup.Buda.entities.SellOrderItem;
@@ -43,6 +45,7 @@ public class SellOrderItemService {
         }
         throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized");
     }
+    @Transactional
     public SellOrderItem updateSellOrderItem(Long userID, SellOrderItem sellOrderItem)
     {
         presentChecker.checkIdAndRepository(sellOrderItem.getSellOrderItemID(), sellOrderItemRepository);
@@ -55,6 +58,7 @@ public class SellOrderItemService {
         }
         return sellOrderItem;
     }
+    @Transactional
     public void deleteSellOrderItem(Long userID, Long sellOrderItemID)
     {
         Optional<SellOrderItem> sellOrderItem = this.sellOrderItemRepository.findById(sellOrderItemID);
