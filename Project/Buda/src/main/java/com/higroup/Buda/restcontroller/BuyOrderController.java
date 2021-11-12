@@ -42,7 +42,7 @@ public class BuyOrderController {
         Long userID = this.requestUtil.getUserID(httpServletRequest);
         return ResponseEntity.ok().body(this.buyOrderService.createNewBuyOrder(userID, buyOrder));
     }
-    @GetMapping(path = "user/all")
+    @GetMapping(path = "/all")
     public ResponseEntity<?> findAllBuyOrderByUserID(HttpServletRequest httpServletRequest)
     {
         Long userID = this.requestUtil.getUserID(httpServletRequest);
