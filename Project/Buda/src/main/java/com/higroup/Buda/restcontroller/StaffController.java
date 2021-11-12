@@ -78,7 +78,7 @@ public class StaffController {
             @RequestParam(required = false) String staffUUID, @RequestParam(required = false) String password, 
             @RequestParam(required = false) Double salary) {
         
-        return ResponseEntity.ok().body(
+        return ResponseEntity.ok(
             staffService.updateStaffByID(id, Name, phoneNumber, password, address, salary, staffUUID)
         );
     }
