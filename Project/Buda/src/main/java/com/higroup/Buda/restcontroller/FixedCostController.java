@@ -43,6 +43,7 @@ public class FixedCostController {
     @PostMapping(path = "/new")
     public ResponseEntity<?> createNewFixedCost(HttpServletRequest httpServletRequest, @RequestBody FixedCost fixedCost)
     {
-        return ResponseEntity.ok().body("arg0");
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        return ResponseEntity.ok().body(this.fixedCostService.createNewFixedCost(userID, fixedCost));
     }
 }

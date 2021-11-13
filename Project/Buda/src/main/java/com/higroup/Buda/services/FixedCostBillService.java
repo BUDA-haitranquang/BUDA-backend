@@ -1,7 +1,10 @@
 package com.higroup.Buda.services;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
+
+import javax.transaction.Transactional;
 
 import com.higroup.Buda.entities.FixedCost;
 import com.higroup.Buda.entities.FixedCostBill;
@@ -51,5 +54,14 @@ public class FixedCostBillService {
     {
         presentChecker.checkIdAndRepository(userID, userRepository);
         return fixedCostBillRepository.findAllIncompletedFixedCostBillByUser(userID);
+    }
+    @Transactional
+    public FixedCostBill createNewFixedCostBill(Long userID, FixedCostBill fixedCostBill)
+    {
+        presentChecker.checkIdAndRepository(userID, userRepository);
+        fixedCostBill.setUserID(userID);
+        fixedCostBill.setCreationTime(ZonedDateTime.now());
+        this.fixedCostBillRepository.save(fixedCostBill);
+        return fixedCostBill;
     }
 }
