@@ -61,7 +61,7 @@ public class BuyOrderController {
         this.buyOrderService.deleteBuyOrderByBuyOrderID(userID, buyOrderID);
         return ResponseEntity.ok().body("Delete successfully");
     }
-    @GetMapping(path = "all/last/{X}")
+    @GetMapping(path = "all/last-x-days/{X}")
     public ResponseEntity<?> findAllLastXDaysBuyOrderByCurrentUser(HttpServletRequest httpServletRequest, @PathVariable Long X)
     {
         Long userID = this.requestUtil.getUserID(httpServletRequest);
