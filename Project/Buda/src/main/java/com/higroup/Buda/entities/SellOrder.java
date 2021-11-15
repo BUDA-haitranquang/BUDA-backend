@@ -28,6 +28,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 @Entity
 @Table(name = "Sell_order", indexes = {
     @Index(columnList = "user_id", name = "sell_order_user_id_index"),
@@ -66,8 +69,9 @@ public class SellOrder implements Serializable{
     private String customerMessage;
     @Enumerated(EnumType.STRING)
     private Status status;
-    @OneToMany(mappedBy = "sellOrder", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "sellOrder", fetch = FetchType.LAZY)
     @JsonManagedReference(value = "sell_order - sell_order_item")
+    @Fetch(FetchMode.SUBSELECT)
     private Set<SellOrderItem> sellOrderItems;
 
 

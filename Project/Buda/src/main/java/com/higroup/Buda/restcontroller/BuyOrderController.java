@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 
 import com.higroup.Buda.entities.BuyOrder;
+import com.higroup.Buda.entities.Status;
 import com.higroup.Buda.entities.Supplier;
 import com.higroup.Buda.services.BuyOrderService;
 import com.higroup.Buda.util.JwtTokenUtil;
@@ -72,5 +73,11 @@ public class BuyOrderController {
     {
         Long userID = this.requestUtil.getUserID(httpServletRequest);
         return ResponseEntity.ok().body(this.buyOrderService.findAllIncompletedBuyOrderByUser(userID));
+    }
+    @GetMapping(path = "all/status/{status}")
+    public ResponseEntity<?> findAllBuyOrderByCurrentUserAndStatus(HttpServletRequest httpServletRequest, @PathVariable Status status)
+    {
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        return ResponseEntity.ok().body(this.buyOrderService.findAllBuyOrderByStatus(userID, status));
     }
 }

@@ -3,6 +3,8 @@ package com.higroup.Buda.services;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import com.higroup.Buda.entities.Customer;
 import com.higroup.Buda.repositories.CustomerRepository;
 import com.higroup.Buda.util.Checker.PresentChecker;
@@ -28,6 +30,7 @@ public class CustomerService {
     {
         return this.customerRepository.findAllByUserID(userID);
     }
+    @Transactional
     public Customer registerNewCustomer(Long userID, Customer customer)
     {
         Optional<Customer> phoneCustomer = this.customerRepository.findCustomerByUserIDAndPhoneNumber(userID, customer.getPhoneNumber());
@@ -39,19 +42,26 @@ public class CustomerService {
         this.customerRepository.save(customer);
         return customer;
     }
+    @Transactional
     public Customer updateCustomer(Long userID, Customer customer)
     {
-        if (customer.getUserID()!=userID)
+        Optional<Customer> oldCustomer = this.customerRepository.findCustomerByCustomerID(customer.getCustomerID());
+        if ((oldCustomer.isPresent())&&(oldCustomer.get().getUserID()==userID))
         {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "UserID does not match");
+            presentChecker.checkIdAndRepository(customer.getCustomerID(), customerRepository);
+            this.customerRepository.save(customer);
+            return customer;
         }
-        presentChecker.checkIdAndRepository(customer.getCustomerID(), customerRepository);
-        this.customerRepository.save(customer);
-        return customer;
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Customer not found");
     }
-    public ResponseEntity<?> findCustomerByUserIDAndPhoneNumber(Long userID, String phoneNumber)
+    public Customer findCustomerByUserIDAndPhoneNumber(Long userID, String phoneNumber)
     {
         Optional<Customer> phoneCustomer = this.customerRepository.findCustomerByUserIDAndPhoneNumber(userID, phoneNumber);
-        return phoneCustomer.<ResponseEntity<?>>map(customer -> ResponseEntity.ok().body(customer)).orElseGet(() -> ResponseEntity.badRequest().body("Not found"));
+        if (phoneCustomer.isPresent())
+        {
+            return phoneCustomer.get();
+        }
+        return null;
     }
+    
 }

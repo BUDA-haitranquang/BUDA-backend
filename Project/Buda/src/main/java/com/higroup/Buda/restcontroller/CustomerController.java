@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -51,6 +52,12 @@ public class CustomerController {
     public ResponseEntity<?> findCustomerByCurrentUserWithPhoneNumber(HttpServletRequest httpServletRequest, @RequestBody String phoneNumber)
     {
         Long userID = this.requestUtil.getUserID(httpServletRequest);
-        return this.customerService.findCustomerByUserIDAndPhoneNumber(userID, phoneNumber);
+        return ResponseEntity.ok().body(this.customerService.findCustomerByUserIDAndPhoneNumber(userID, phoneNumber));
+    }
+    @PutMapping(path = "/update")
+    public ResponseEntity<?> updateCustomer(HttpServletRequest httpServletRequest, @RequestBody Customer customer)
+    {
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        return ResponseEntity.ok().body(this.customerService.updateCustomer(userID, customer));
     }
 }

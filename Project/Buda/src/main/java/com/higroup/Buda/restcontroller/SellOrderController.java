@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import com.higroup.Buda.entities.SellOrder;
+import com.higroup.Buda.entities.Status;
 import com.higroup.Buda.services.SellOrderService;
 import com.higroup.Buda.util.JwtTokenUtil;
 import com.higroup.Buda.util.Checker.RequestUtil;
@@ -78,5 +79,11 @@ public class SellOrderController {
     {
         Long userID = this.requestUtil.getUserID(httpServletRequest);
         return ResponseEntity.ok().body(this.sellOrderService.findAllIIncompletedSellOrderByUserID(userID));
+    }
+    @GetMapping(path = "all/status/{status}")
+    public ResponseEntity<?> findAllSellOrderByCurrentUserAndStatus(HttpServletRequest httpServletRequest, @PathVariable Status status)
+    {
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        return ResponseEntity.ok().body(this.sellOrderService.findAllSellOrderByUserAndStatus(userID, status));
     }
 }

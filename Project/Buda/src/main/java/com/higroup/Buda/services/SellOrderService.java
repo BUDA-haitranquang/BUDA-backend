@@ -11,6 +11,7 @@ import javax.transaction.Transactional;
 import com.higroup.Buda.entities.Customer;
 import com.higroup.Buda.entities.SellOrder;
 import com.higroup.Buda.entities.SellOrderItem;
+import com.higroup.Buda.entities.Status;
 import com.higroup.Buda.entities.User;
 import com.higroup.Buda.repositories.CustomerRepository;
 import com.higroup.Buda.repositories.SellOrderItemRepository;
@@ -170,5 +171,11 @@ public class SellOrderService {
     {
         presentChecker.checkIdAndRepository(userID, this.userRepository);
         return this.sellOrderRepository.findAllIncompletedSellOrderByUser(userID);
+    }
+
+    public List<SellOrder> findAllSellOrderByUserAndStatus(Long userID, Status status)
+    {
+        // return this.sellOrderRepository.findAllSellOrderByStatusAndUserID(userID, status.toString());
+        return this.sellOrderRepository.findAllSellOrderByUserIDAndStatus(userID, status);
     }
 }
