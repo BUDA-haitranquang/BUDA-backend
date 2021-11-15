@@ -50,6 +50,8 @@ public class BudaApplication {
 	// 		staff.setName("tran quang hai");
 	// 		staff.password("123456789");
 	// 		staff.setPhoneNumber("0972787125");
+	// 		staff.setAccount("toilahai");
+	// 		staff.setEmail("tranquanghai@gmail.com");
 	// 		staff.loginID("XXXXXXXX");
 	// 		staff.salary(20.0);
 	// 		staff.address("Ha Noi");
