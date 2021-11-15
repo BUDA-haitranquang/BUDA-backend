@@ -49,11 +49,16 @@ public class OtherCostService {
         return this.otherCostRepository.findOtherCostByOtherCostID(otherCostID);
     }
     @Transactional
-    public OtherCost updateOtherCost(Long otherCostID, OtherCost otherCost)
+    public OtherCost updateOtherCost(Long userID, OtherCost otherCost)
     {
-        presentChecker.checkIdAndRepository(otherCostID, otherCostRepository);
-        this.otherCostRepository.save(otherCost);
-        return otherCost;
+        OtherCost oldOtherCost = this.otherCostRepository.findOtherCostByOtherCostID(otherCost.getOtherCostID());
+        if ((oldOtherCost!=null) && (oldOtherCost.getUserID() == userID))
+        {
+            otherCost.setUserID(userID);
+            this.otherCostRepository.save(otherCost);
+            return otherCost;
+        }
+        else throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized");
     }
     @Transactional
     public void deleteOtherCostByOtherCostID(Long userID, Long otherCostID)

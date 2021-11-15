@@ -130,12 +130,29 @@ public class SellOrderService {
     @Transactional
     public SellOrder updateSellOrder(Long userID, SellOrder sellOrder)
     {
-        presentChecker.checkIdAndRepository(userID, this.userRepository);
-        if ((sellOrder.getUserID()==userID)&&(sellOrder.getSellOrderID()!=null))
+        Optional<SellOrder> oldSellOrder = this.sellOrderRepository.findSellOrderBySellOrderID(sellOrder.getSellOrderID());
+        if ((oldSellOrder.isPresent()) && (oldSellOrder.get().getUserID() == userID))
         {
+            sellOrder.setUserID(userID);
             for (SellOrderItem sellOrderItem: sellOrder.getSellOrderItems())
             {
+                sellOrderItem.setUserID(userID);
                 this.sellOrderItemRepository.save(sellOrderItem);
+            }
+            try
+            {
+                Optional<Customer> customer = this.customerRepository.findCustomerByUserIDAndPhoneNumber(userID,
+                    sellOrder.getCustomer().getPhoneNumber());
+                if (customer.isPresent()) {
+                    sellOrder.setCustomer(customer.get());
+                } else {
+                    sellOrder.getCustomer().setUserID(userID);
+                    this.customerRepository.save(sellOrder.getCustomer());
+                }
+            }
+            catch(Exception e)
+            {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Customer can not be added");
             }
             this.sellOrderRepository.save(sellOrder);
             return sellOrder;

@@ -62,7 +62,7 @@ public class SellOrderController {
         return ResponseEntity.ok().body("Delete succesfully");
     }
     @PutMapping(path = "/update")
-    public ResponseEntity<?> updateSellOrder(HttpServletRequest httpServletRequest, SellOrder sellOrder)
+    public ResponseEntity<?> updateSellOrder(HttpServletRequest httpServletRequest, @RequestBody SellOrder sellOrder)
     {
         Long userID = this.requestUtil.getUserID(httpServletRequest);
         return ResponseEntity.ok().body(this.sellOrderService.updateSellOrder(userID, sellOrder));
