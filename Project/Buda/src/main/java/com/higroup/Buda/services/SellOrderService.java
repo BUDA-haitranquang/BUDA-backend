@@ -11,6 +11,7 @@ import javax.transaction.Transactional;
 import com.higroup.Buda.entities.Customer;
 import com.higroup.Buda.entities.SellOrder;
 import com.higroup.Buda.entities.SellOrderItem;
+import com.higroup.Buda.entities.Status;
 import com.higroup.Buda.entities.User;
 import com.higroup.Buda.repositories.CustomerRepository;
 import com.higroup.Buda.repositories.SellOrderItemRepository;
@@ -130,12 +131,29 @@ public class SellOrderService {
     @Transactional
     public SellOrder updateSellOrder(Long userID, SellOrder sellOrder)
     {
-        presentChecker.checkIdAndRepository(userID, this.userRepository);
-        if ((sellOrder.getUserID()==userID)&&(sellOrder.getSellOrderID()!=null))
+        Optional<SellOrder> oldSellOrder = this.sellOrderRepository.findSellOrderBySellOrderID(sellOrder.getSellOrderID());
+        if ((oldSellOrder.isPresent()) && (oldSellOrder.get().getUserID() == userID))
         {
+            sellOrder.setUserID(userID);
             for (SellOrderItem sellOrderItem: sellOrder.getSellOrderItems())
             {
+                sellOrderItem.setUserID(userID);
                 this.sellOrderItemRepository.save(sellOrderItem);
+            }
+            try
+            {
+                Optional<Customer> customer = this.customerRepository.findCustomerByUserIDAndPhoneNumber(userID,
+                    sellOrder.getCustomer().getPhoneNumber());
+                if (customer.isPresent()) {
+                    sellOrder.setCustomer(customer.get());
+                } else {
+                    sellOrder.getCustomer().setUserID(userID);
+                    this.customerRepository.save(sellOrder.getCustomer());
+                }
+            }
+            catch(Exception e)
+            {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Customer can not be added");
             }
             this.sellOrderRepository.save(sellOrder);
             return sellOrder;
@@ -153,5 +171,11 @@ public class SellOrderService {
     {
         presentChecker.checkIdAndRepository(userID, this.userRepository);
         return this.sellOrderRepository.findAllIncompletedSellOrderByUser(userID);
+    }
+
+    public List<SellOrder> findAllSellOrderByUserAndStatus(Long userID, Status status)
+    {
+        // return this.sellOrderRepository.findAllSellOrderByStatusAndUserID(userID, status.toString());
+        return this.sellOrderRepository.findAllSellOrderByUserIDAndStatus(userID, status);
     }
 }

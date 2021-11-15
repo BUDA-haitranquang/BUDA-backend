@@ -27,12 +27,14 @@ public class FixedCost {
     private String name;
     @Column(length = 1000)
     private String description;
+    @Column(columnDefinition = "double default 0.0")
     private Double moneyAmount;
+    @Column(columnDefinition = "int default 0")
     private Integer period;
     @Column(name = "user_id")
     private Long userID;
     @OneToMany(mappedBy = "fixedCost", fetch = FetchType.LAZY)
-    @JsonManagedReference
+    @JsonManagedReference(value = "fixed_cost - fixed_cost_bill")
     private Set<FixedCostBill> fixedCostBills;
 
     public FixedCost(Long fixedCostID, String name, String description, Double moneyAmount, Integer period, Long userID, Set<FixedCostBill> fixedCostBills) {

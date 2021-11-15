@@ -2,6 +2,8 @@ package com.higroup.Buda.services;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import com.higroup.Buda.entities.Plan;
 import com.higroup.Buda.repositories.PlanRepository;
 import com.higroup.Buda.util.Checker.PresentChecker;
@@ -23,11 +25,13 @@ public class PlanService {
     {
         return this.planRepository.findAll();
     }
+    @Transactional
     public Plan createNewPlan(Plan plan)
     {
         this.planRepository.save(plan);
         return plan;
     }
+    @Transactional
     public void deletePlanByID(Long id)
     {
         this.presentChecker.checkIdAndRepository(id, this.planRepository);
