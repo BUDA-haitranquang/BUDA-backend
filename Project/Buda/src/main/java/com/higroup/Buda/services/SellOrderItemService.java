@@ -4,8 +4,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
+import com.higroup.Buda.entities.Product;
 import com.higroup.Buda.entities.SellOrder;
 import com.higroup.Buda.entities.SellOrderItem;
+import com.higroup.Buda.repositories.ProductRepository;
 import com.higroup.Buda.repositories.SellOrderItemRepository;
 import com.higroup.Buda.repositories.SellOrderRepository;
 import com.higroup.Buda.util.Checker.PresentChecker;
@@ -19,9 +23,11 @@ import org.springframework.web.server.ResponseStatusException;
 public class SellOrderItemService {
     private final SellOrderItemRepository sellOrderItemRepository;
     private final SellOrderRepository sellOrderRepository;
+    private final ProductRepository productRepository;
     @Autowired
-    public SellOrderItemService(SellOrderItemRepository sellOrderItemRepository, SellOrderRepository sellOrderRepository)
+    public SellOrderItemService(SellOrderItemRepository sellOrderItemRepository, SellOrderRepository sellOrderRepository, ProductRepository productRepository)
     {
+        this.productRepository = productRepository;
         this.sellOrderRepository = sellOrderRepository;
         this.sellOrderItemRepository = sellOrderItemRepository;
     }
@@ -39,6 +45,7 @@ public class SellOrderItemService {
         }
         throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized");
     }
+    @Transactional
     public SellOrderItem updateSellOrderItem(Long userID, SellOrderItem sellOrderItem)
     {
         presentChecker.checkIdAndRepository(sellOrderItem.getSellOrderItemID(), sellOrderItemRepository);
@@ -51,6 +58,7 @@ public class SellOrderItemService {
         }
         return sellOrderItem;
     }
+    @Transactional
     public void deleteSellOrderItem(Long userID, Long sellOrderItemID)
     {
         Optional<SellOrderItem> sellOrderItem = this.sellOrderItemRepository.findById(sellOrderItemID);
@@ -61,5 +69,14 @@ public class SellOrderItemService {
         else{
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "SellOrderItem not found");
         }
+    }
+    public List<SellOrderItem> findAllSellOrderItemByProductID(Long userID, Long productID)
+    {
+        Product product = this.productRepository.findProductByProductID(productID);
+        if (!product.equals(null) && (product.getUserID() == userID))
+        {
+            return this.sellOrderItemRepository.findAllSellOrderItemByProductID(productID);
+        }
+        return Collections.emptyList();
     }
 }

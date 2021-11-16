@@ -68,7 +68,7 @@ public class StaffService implements UserDetailsService{
         {
             return ResponseEntity.badRequest().body("Exists UUID, try again");
         }
-        String phoneNumber = staff.get().getPhoneNumber();
+        String phoneNumber = newStaff.getPhoneNumber();
         if ((phoneNumber==null) || (!phoneNumber.matches("[0-9]+")))
         {
             return ResponseEntity.badRequest().body("Invalid PhoneNumber");
