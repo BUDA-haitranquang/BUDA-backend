@@ -35,14 +35,12 @@ public class Product {
     private Long productID;
 
     @Column(length = 100)
-    @NotNull
     private String name;
 
     @Column(length = 1000)
     private String description;
 
     @Column(name = "user_id")
-    @NotNull
     private Long userID;
 
     @Column(name = "visible", columnDefinition = "boolean default true")
