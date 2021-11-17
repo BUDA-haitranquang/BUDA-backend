@@ -5,6 +5,8 @@ import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -29,19 +31,30 @@ public class OtherCost {
     private String name;
     @Column(length = 2000)
     private String description;
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
 
 
     public OtherCost() {
     }
 
-    public OtherCost(Long otherCostID, Long userID, Double totalCost, ZonedDateTime creationTime, String name, String description) {
+    public OtherCost(Long otherCostID, Long userID, Double totalCost, ZonedDateTime creationTime, String name, String description, Status status) {
         this.otherCostID = otherCostID;
+        this.status = status;
         this.userID = userID;
         this.totalCost = totalCost;
         this.creationTime = creationTime;
         this.name = name;
         this.description = description;
+    }
+
+    public Status getStatus() {
+        return this.status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     public Long getOtherCostID() {

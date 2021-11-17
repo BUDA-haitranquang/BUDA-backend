@@ -6,6 +6,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import com.higroup.Buda.entities.Customer;
 import com.higroup.Buda.entities.SellOrder;
 import com.higroup.Buda.entities.SellOrderItem;
@@ -40,6 +42,7 @@ public class SellOrderService {
     }
     @Autowired
     private PresentChecker presentChecker;
+    @Transactional
     public SellOrder registerNewSellOrder(Long userID, SellOrder sellOrder) {
         Optional<User> user = this.userRepository.findUserByUserID(userID);
         if (user.isEmpty()) {
@@ -103,6 +106,7 @@ public class SellOrderService {
         return this.sellOrderRepository.findAllSellOrderByUserID(userID);
     }
 
+    @Transactional
     public void deleteSellOrderBySellOrderID(Long userID, Long sellOrderID)
     {
         Optional<SellOrder> sellOrder = this.sellOrderRepository.findById(sellOrderID);
@@ -123,6 +127,7 @@ public class SellOrderService {
                         
         }
     }
+    @Transactional
     public SellOrder updateSellOrder(Long userID, SellOrder sellOrder)
     {
         presentChecker.checkIdAndRepository(userID, this.userRepository);
@@ -136,5 +141,17 @@ public class SellOrderService {
             return sellOrder;
         }
         throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized");
+    }
+
+    public List<SellOrder> findAllSellOrderByUserIDLastXDays(Long userID, Long X)
+    {
+        presentChecker.checkIdAndRepository(userID, this.userRepository);
+        return this.sellOrderRepository.findAllSellOrderByUserIDLastXDays(userID, X);
+    }
+
+    public List<SellOrder> findAllIIncompletedSellOrderByUserID(Long userID)
+    {
+        presentChecker.checkIdAndRepository(userID, this.userRepository);
+        return this.sellOrderRepository.findAllIncompletedSellOrderByUser(userID);
     }
 }
