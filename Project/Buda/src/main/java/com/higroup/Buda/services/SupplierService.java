@@ -7,8 +7,10 @@ import com.higroup.Buda.entities.Supplier;
 import com.higroup.Buda.repositories.SupplierRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class SupplierService {
@@ -19,30 +21,41 @@ public class SupplierService {
         this.supplierRepository = supplierRepository;
     }
     
-    public ResponseEntity<?> registerNewSupplier(Long userID, Supplier supplier)
+    public Supplier registerNewSupplier(Long userID, Supplier supplier)
     {
         Optional<Supplier> phoneSupplier = this.supplierRepository.findSupplierByUserIDAndPhoneNumber(userID, supplier.getPhoneNumber());
         if (phoneSupplier.isPresent())
         {
-            return ResponseEntity.badRequest().body("Already exists another supplier with this phone number");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Supplier with this phoneNumber already exists");
         }
         supplier.setUserID(userID);
         this.supplierRepository.save(supplier);
-        return ResponseEntity.ok().body(supplier);
+        return supplier;
     }
 
-    public ResponseEntity<?> findAllByUserID(Long userID)
+    public List<Supplier> findAllByUserID(Long userID)
     {
-        return ResponseEntity.ok().body(this.supplierRepository.findAllByUserID(userID));
+        return this.supplierRepository.findAllByUserID(userID);
     }
-    public ResponseEntity<?> findSupplierByUserIDAndPhoneNumber(Long userID, String phoneNumber)
+    public Supplier findSupplierByUserIDAndPhoneNumber(Long userID, String phoneNumber)
     {
         Optional<Supplier> phoneSupplier = this.supplierRepository.findSupplierByUserIDAndPhoneNumber(userID, phoneNumber);
         if (phoneSupplier.isPresent())
         {
-            return ResponseEntity.ok().body(phoneSupplier.get());
+            return phoneSupplier.get();
         }
-        return ResponseEntity.ok().body("Not found");
+        else return null;
         //return phoneSupplier.<ResponseEntity<?>>map(supplier -> ResponseEntity.ok().body(supplier)).orElseGet(() -> ResponseEntity.badRequest().body("Not found"));
+    }
+
+    public Supplier updateSupplier(Long userID, Supplier supplier)
+    {
+        Optional<Supplier> oldSupplier = this.supplierRepository.findSupplierBySupplierID(supplier.getSupplierID());
+        if ((oldSupplier.isPresent()) && (oldSupplier.get().getUserID() == userID))
+        {
+            supplier.setUserID(userID);
+            return supplier;
+        }
+        else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Supplier does not exists");
     }
 }

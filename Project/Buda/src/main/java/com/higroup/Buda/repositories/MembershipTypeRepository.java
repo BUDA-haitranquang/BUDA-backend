@@ -8,6 +8,6 @@ import com.higroup.Buda.entities.MembershipType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MembershipTypeRepository extends JpaRepository<MembershipType, Long>{
-    Optional<MembershipType> findMembershipTypeByMembershipTypeID(Long membershipTypeID);
+    MembershipType findMembershipTypeByMembershipTypeID(Long membershipTypeID);
     List<MembershipType> findAllByUserID(Long userID);
 }

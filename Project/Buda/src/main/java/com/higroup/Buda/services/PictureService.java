@@ -2,6 +2,8 @@ package com.higroup.Buda.services;
 
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import com.higroup.Buda.entities.Picture;
 import com.higroup.Buda.repositories.PictureRepository;
 
@@ -25,6 +27,7 @@ public class PictureService {
         Optional<Picture> picture = this.pictureRepository.findPictureByPictureID(pictureID);
         return picture.orElse(null);
     }
+    @Transactional
     public void deletePicture(Long pictureID)
     {
         Optional<Picture> picture = this.pictureRepository.findPictureByPictureID(pictureID);
@@ -34,6 +37,7 @@ public class PictureService {
         }
         else throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Picture does not exist");
     }
+    @Transactional
     public Picture saveNewPicture(Picture picture)
     {
         if (picture.getPictureLink() != null)
@@ -43,6 +47,7 @@ public class PictureService {
         }
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Link can not be null");
     }
+    @Transactional
     public Picture updatePicture(Picture picture)
     {
         if ((picture.getPictureID()!=null) && (picture.getPictureLink()!=null))

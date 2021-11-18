@@ -4,6 +4,7 @@ import com.higroup.Buda.entities.Supplier;
 import com.higroup.Buda.entities.BuyOrder;
 import com.higroup.Buda.entities.User;
 import com.higroup.Buda.entities.BuyOrderItem;
+import com.higroup.Buda.entities.Status;
 import com.higroup.Buda.repositories.SupplierRepository;
 import com.higroup.Buda.repositories.BuyOrderItemRepository;
 import com.higroup.Buda.repositories.BuyOrderRepository;
@@ -114,5 +115,10 @@ public class BuyOrderService {
     public List<BuyOrder> findAllIncompletedBuyOrderByUser(Long userID)
     {
         return this.buyOrderRepository.findAllIncompletedBuyOrderByUser(userID);
+    }
+
+    public List<BuyOrder> findAllBuyOrderByStatus(Long userID, Status status)
+    {
+        return this.buyOrderRepository.findAllBuyOrderByUserIDAndStatus(userID, status);
     }
 }
