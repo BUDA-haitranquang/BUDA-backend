@@ -37,7 +37,16 @@ public class ProductComponentController {
     @PostMapping(path = "/{productID}/{ingredientID}")
     public ResponseEntity<?> addIngredientToProduct(HttpServletRequest httpServletRequest, @PathVariable Long productID, @PathVariable Long ingredientID)
     {
-        return ResponseEntity.ok().body("");
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        this.productComponentService.addIngredientToProduct(userID, productID, ingredientID);
+        return ResponseEntity.ok().body("Add successfully");
+    }
+    @PostMapping(path = "/{productID}/{ingredientID}")
+    public ResponseEntity<?> removeIngredientFromProduct(HttpServletRequest httpServletRequest, @PathVariable Long productID, @PathVariable Long ingredientID)
+    {
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        this.productComponentService.removeIngredientFromProduct(userID, productID, ingredientID);
+        return ResponseEntity.ok().body("Remove successfully");
     }
 
     @GetMapping(path = "contains/ingredient/{ingredientID}")
