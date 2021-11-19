@@ -9,12 +9,18 @@ import com.higroup.Buda.services.FixedCostService;
 import com.higroup.Buda.util.JwtTokenUtil;
 import com.higroup.Buda.util.Checker.RequestUtil;
 
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.web.ResourceProperties.Fixed;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,6 +40,25 @@ public class FixedCostController {
     public ResponseEntity<?> findAllByCurrentUser(HttpServletRequest httpServletRequest)
     {
         Long userID = this.requestUtil.getUserID(httpServletRequest);
-        return this.fixedCostService.findAllByUserID(userID);
+        return ResponseEntity.ok().body(this.fixedCostService.findAllByUserID(userID));
+    }
+    @PostMapping(path = "/new")
+    public ResponseEntity<?> createNewFixedCost(HttpServletRequest httpServletRequest, @RequestBody FixedCost fixedCost)
+    {
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        return ResponseEntity.ok().body(this.fixedCostService.createNewFixedCost(userID, fixedCost));
+    }
+    @DeleteMapping(path = "{fixedCostID}")
+    public ResponseEntity<?> deleteFixedCostByFixedCostID(HttpServletRequest httpServletRequest, @PathVariable Long fixedCostID)
+    {
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        this.fixedCostService.deleteFixedCost(userID, fixedCostID);
+        return ResponseEntity.ok().body("Delete successfully");
+    }
+    @PutMapping(path = "/update")
+    public ResponseEntity<?> updateFixedCost(HttpServletRequest httpServletRequest, @RequestBody FixedCost fixedCost)
+    {
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        return ResponseEntity.ok().body(this.fixedCostService.updateFixedCost(userID, fixedCost));
     }
 }

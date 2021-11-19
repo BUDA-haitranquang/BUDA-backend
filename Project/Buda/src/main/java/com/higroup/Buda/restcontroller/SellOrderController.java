@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import com.higroup.Buda.entities.SellOrder;
+import com.higroup.Buda.entities.Status;
 import com.higroup.Buda.services.SellOrderService;
 import com.higroup.Buda.util.JwtTokenUtil;
 import com.higroup.Buda.util.Checker.RequestUtil;
@@ -62,9 +63,27 @@ public class SellOrderController {
         return ResponseEntity.ok().body("Delete succesfully");
     }
     @PutMapping(path = "/update")
-    public ResponseEntity<?> updateSellOrder(HttpServletRequest httpServletRequest, SellOrder sellOrder)
+    public ResponseEntity<?> updateSellOrder(HttpServletRequest httpServletRequest, @RequestBody SellOrder sellOrder)
     {
         Long userID = this.requestUtil.getUserID(httpServletRequest);
         return ResponseEntity.ok().body(this.sellOrderService.updateSellOrder(userID, sellOrder));
+    }
+    @GetMapping(path = "all/last-x-days/{X}")
+    public ResponseEntity<?> findAllLastXDaysSellOrderByCurrentUser(HttpServletRequest httpServletRequest, @PathVariable Long X)
+    {
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        return ResponseEntity.ok().body(this.sellOrderService.findAllSellOrderByUserIDLastXDays(userID, X));
+    }
+    @GetMapping(path = "all/incompleted")
+    public ResponseEntity<?> findAllIncompletedSellOrderByCurrentUser(HttpServletRequest httpServletRequest)
+    {
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        return ResponseEntity.ok().body(this.sellOrderService.findAllIIncompletedSellOrderByUserID(userID));
+    }
+    @GetMapping(path = "all/status/{status}")
+    public ResponseEntity<?> findAllSellOrderByCurrentUserAndStatus(HttpServletRequest httpServletRequest, @PathVariable Status status)
+    {
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        return ResponseEntity.ok().body(this.sellOrderService.findAllSellOrderByUserAndStatus(userID, status));
     }
 }

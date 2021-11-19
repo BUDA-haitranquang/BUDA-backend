@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 
 import com.higroup.Buda.entities.BuyOrder;
+import com.higroup.Buda.entities.Status;
 import com.higroup.Buda.entities.Supplier;
 import com.higroup.Buda.services.BuyOrderService;
 import com.higroup.Buda.util.JwtTokenUtil;
@@ -42,7 +43,7 @@ public class BuyOrderController {
         Long userID = this.requestUtil.getUserID(httpServletRequest);
         return ResponseEntity.ok().body(this.buyOrderService.createNewBuyOrder(userID, buyOrder));
     }
-    @GetMapping(path = "user/all")
+    @GetMapping(path = "/all")
     public ResponseEntity<?> findAllBuyOrderByUserID(HttpServletRequest httpServletRequest)
     {
         Long userID = this.requestUtil.getUserID(httpServletRequest);
@@ -60,5 +61,23 @@ public class BuyOrderController {
         Long userID = this.requestUtil.getUserID(httpServletRequest);
         this.buyOrderService.deleteBuyOrderByBuyOrderID(userID, buyOrderID);
         return ResponseEntity.ok().body("Delete successfully");
+    }
+    @GetMapping(path = "all/last-x-days/{X}")
+    public ResponseEntity<?> findAllLastXDaysBuyOrderByCurrentUser(HttpServletRequest httpServletRequest, @PathVariable Long X)
+    {
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        return ResponseEntity.ok().body(this.buyOrderService.findAllBuyOrderByUserIDLastXDays(userID, X));
+    }
+    @GetMapping(path = "all/incompleted")
+    public ResponseEntity<?> findAllIncompletedBuyOrderByCurrentUser(HttpServletRequest httpServletRequest)
+    {
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        return ResponseEntity.ok().body(this.buyOrderService.findAllIncompletedBuyOrderByUser(userID));
+    }
+    @GetMapping(path = "all/status/{status}")
+    public ResponseEntity<?> findAllBuyOrderByCurrentUserAndStatus(HttpServletRequest httpServletRequest, @PathVariable Status status)
+    {
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        return ResponseEntity.ok().body(this.buyOrderService.findAllBuyOrderByStatus(userID, status));
     }
 }

@@ -3,6 +3,9 @@ package com.higroup.Buda.entities;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.*;
 import java.time.ZonedDateTime;
 import java.util.Objects;
@@ -30,6 +33,7 @@ public class BuyOrder {
     private Long userID;
     @OneToMany(mappedBy = "buyOrder", fetch = FetchType.LAZY)
     @JsonManagedReference(value = "buy_order - buy_order_item")
+    @Fetch(FetchMode.SUBSELECT)
     private Set<BuyOrderItem> buyOrderItems;
 
 

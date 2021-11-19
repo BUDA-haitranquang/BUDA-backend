@@ -4,10 +4,12 @@ import com.higroup.Buda.entities.Supplier;
 import com.higroup.Buda.entities.BuyOrder;
 import com.higroup.Buda.entities.User;
 import com.higroup.Buda.entities.BuyOrderItem;
+import com.higroup.Buda.entities.Status;
 import com.higroup.Buda.repositories.SupplierRepository;
 import com.higroup.Buda.repositories.BuyOrderItemRepository;
 import com.higroup.Buda.repositories.BuyOrderRepository;
 import com.higroup.Buda.repositories.UserRepository;
+import com.higroup.Buda.util.Checker.PresentChecker;
 
 import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +23,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 @Service
 public class BuyOrderService {
     private final BuyOrderRepository buyOrderRepository;
     private final SupplierRepository supplierRepository;
     private final UserRepository userRepository;
     private final BuyOrderItemRepository buyOrderItemRepository;
-
     @Autowired
     public BuyOrderService(BuyOrderRepository buyOrderRepository, SupplierRepository supplierRepository,
             UserRepository userRepository, BuyOrderItemRepository buyOrderItemRepository) {
@@ -37,6 +40,7 @@ public class BuyOrderService {
         this.buyOrderItemRepository = buyOrderItemRepository;
     }
 
+    @Transactional
     public BuyOrder createNewBuyOrder(Long userID, BuyOrder buyOrder) {
         Optional<User> user = this.userRepository.findUserByUserID(userID);
         if (user.isEmpty()) {
@@ -85,6 +89,7 @@ public class BuyOrderService {
         return this.buyOrderRepository.findAllBuyOrderByUserID(userID);
     }
 
+    @Transactional
     public void deleteBuyOrderByBuyOrderID(Long userID, Long buyOrderID)
     {
         Optional<BuyOrder> buyOrder = this.buyOrderRepository.findBuyOrderByBuyOrderID(buyOrderID);
@@ -100,5 +105,20 @@ public class BuyOrderService {
         else{
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Buy Order not found");
         }
+    }
+
+    public List<BuyOrder> findAllBuyOrderByUserIDLastXDays(Long userID, Long X)
+    {
+        return this.buyOrderRepository.findAllBuyOrderByUserIDLastXDays(userID, X);
+    }
+
+    public List<BuyOrder> findAllIncompletedBuyOrderByUser(Long userID)
+    {
+        return this.buyOrderRepository.findAllIncompletedBuyOrderByUser(userID);
+    }
+
+    public List<BuyOrder> findAllBuyOrderByStatus(Long userID, Status status)
+    {
+        return this.buyOrderRepository.findAllBuyOrderByUserIDAndStatus(userID, status);
     }
 }
