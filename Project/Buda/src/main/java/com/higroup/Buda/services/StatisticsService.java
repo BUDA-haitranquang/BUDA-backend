@@ -5,6 +5,7 @@ import java.util.List;
 import com.higroup.Buda.customDTO.AgeGroupStatistics;
 import com.higroup.Buda.customDTO.GenderStatistics;
 import com.higroup.Buda.customDTO.ProductStatistics;
+import com.higroup.Buda.customDTO.RevenueByTimeStatistics;
 import com.higroup.Buda.repositories.SellOrderItemRepository;
 import com.higroup.Buda.repositories.SellOrderRepository;
 import com.higroup.Buda.repositories.UserRepository;
@@ -35,5 +36,21 @@ public class StatisticsService {
     public List<ProductStatistics> findTotalRevenueOfAllProductByUserID(Long userID)
     {
         return this.sellOrderItemRepository.findTotalRevenueOfAllProductByUserID(userID);
+    }
+    public List<RevenueByTimeStatistics> findRevenueGroupByMonth(Long userID)
+    {
+        return this.sellOrderRepository.findRevenueGroupByMonth(userID);
+    }
+    public List<RevenueByTimeStatistics> findRevenueGroupByWeek(Long userID)
+    {
+        return this.sellOrderRepository.findRevenueGroupByWeek(userID);
+    }
+    public List<RevenueByTimeStatistics> findRevenueGroupByWeekday(Long userID)
+    {
+        return this.sellOrderRepository.findRevenueGroupByWeekday(userID);
+    }
+    public List<RevenueByTimeStatistics> findRevenueAllDaysCurrentMonth(Long userID)
+    {
+        return this.sellOrderRepository.findRevenueAllDaysCurrentMonth(userID);
     }
 }
