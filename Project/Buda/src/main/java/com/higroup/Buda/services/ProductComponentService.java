@@ -15,7 +15,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -31,6 +30,7 @@ public class ProductComponentService {
         this.ingredientRepository = ingredientRepository;
     }
 
+    @Autowired
     private PresentChecker presentChecker;
 
     public ProductComponent findByProductAndIngredient(Long productID, Long ingredientID)
@@ -50,7 +50,7 @@ public class ProductComponentService {
     public List<ProductComponent> findAllByProductID(Long userID, Long productID)
     {
         Product product = this.productRepository.findProductByProductID(productID);
-        if ((product!=null) && (Objects.equals(product.getUserID(), userID)))
+        if ((product!=null) && (product.getUserID() == userID))
         {
             return this.productComponentRepository.findAllByProductID(productID);
         }
@@ -60,39 +60,10 @@ public class ProductComponentService {
     public List<Product> findAllProductContainIngredient(Long userID, Long ingredientID)
     {
         Optional<Ingredient> ingredient = this.ingredientRepository.findIngredientByIngredientID(ingredientID);
-        if ((ingredient.isPresent()) && (Objects.equals(ingredient.get().getUserID(), userID)))
+        if ((ingredient.isPresent()) && (ingredient.get().getUserID() == userID))
         {
             return this.productRepository.findAllProductContainIngredient(ingredientID);
         }
         else return Collections.emptyList();
-    }
-
-    public void addIngredientToProduct(Long userID, Long productID, Long ingredientID)
-    {
-        Optional<Ingredient> ingredient = this.ingredientRepository.findIngredientByIngredientID(ingredientID);
-        Product product = this.productRepository.findProductByProductID(productID);
-        if ((ingredient.isPresent()) && (Objects.equals(ingredient.get().getUserID(), userID)))
-        {
-            ProductComponent productComponent = new ProductComponent();
-            productComponent.setProduct(product);
-            productComponent.setIngredient(ingredient.get());
-            productComponent.setUserID(userID);
-            this.productComponentRepository.save(productComponent);
-        }
-        else{
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Ingredient not found");
-        }
-    }
-    public void removeIngredientFromProduct(Long userID, Long productID, Long ingredientID)
-    {
-        Optional<ProductComponent> productComponent = this.productComponentRepository.findByProductAndIngredient(productID, ingredientID);
-        if ((productComponent.isPresent()) && (Objects.equals(productComponent.get().getUserID(), userID)))
-        {
-            this.productComponentRepository.delete(productComponent.get());
-        }
-        else
-        {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Ingredient not in Product");
-        }
     }
 }

@@ -1,6 +1,9 @@
 package com.higroup.Buda.services;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 import com.higroup.Buda.entities.Product;
 import com.higroup.Buda.entities.ProductGroup;
@@ -28,7 +31,7 @@ public class ProductService {
         this.userRepository = userRepository;
         this.productRepository = productRepository;
     }
-
+    @Autowired
     private PresentChecker presentChecker;
 
     public ResponseEntity<?> registerNewProduct(Long userID, Product product)
@@ -42,7 +45,6 @@ public class ProductService {
         this.productRepository.save(product);
         return ResponseEntity.ok().body(product);
     }
-
     public List<Product> findAllProductByUserID(Long userID)
     {
         return this.productRepository.findAllProductByUserID(userID);
@@ -54,7 +56,7 @@ public class ProductService {
     public Product hideProductByProductID(Long userID, Long productID)
     {
         Product product = this.productRepository.findProductByProductID(productID);
-        if ((product!=null) && (Objects.equals(product.getUserID(), userID)))
+        if ((product!=null) && (product.getUserID() == userID))
         {
             product.setVisible(false);
             this.productRepository.save(product);
@@ -65,7 +67,7 @@ public class ProductService {
     public Product findProductByProductID(Long userID, Long productID)
     {
         Product product = this.productRepository.findProductByProductID(productID);
-        if ((product!=null) && (Objects.equals(product.getUserID(), userID)))
+        if ((product!=null) && (product.getUserID() == userID))
         {
             return product;
         }
@@ -74,9 +76,9 @@ public class ProductService {
     public void deleteProductByProductID(Long userID, Long productID)
     {
         Product product = this.productRepository.findProductByProductID(productID);
-        if ((product!=null) && (Objects.equals(product.getUserID(), userID)))
+        if ((product!=null) && (product.getUserID() == userID))
         {
-            if (product.getVisible())
+            if (product.getVisible() == true)
             {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Can not delete a visible product");
             }
@@ -90,11 +92,10 @@ public class ProductService {
     public List<Product> findAllProductByProductGroupID(Long userID, Long productGroupID)
     {
         Optional<ProductGroup> productGroup = this.productGroupRepository.findProductGroupByProductGroupID(productGroupID);
-        if ((productGroup.isPresent()) && (Objects.equals(productGroup.get().getUserID(), userID)))
+        if ((productGroup.isPresent()) && (productGroup.get().getUserID() == userID))
         {
             return this.productRepository.findAllProductByProductGroup(productGroup.get());
         }
         return Collections.emptyList();
     }
-
 }
