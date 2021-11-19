@@ -31,7 +31,7 @@ import org.springframework.web.server.ResponseStatusException;
 public class UserService implements UserDetailsService{
     private final UserRepository userRepository;
 
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
     public UserService(UserRepository userRepository) {

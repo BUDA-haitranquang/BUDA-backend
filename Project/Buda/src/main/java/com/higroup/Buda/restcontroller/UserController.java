@@ -1,6 +1,7 @@
 package com.higroup.Buda.restcontroller;
 
 import java.util.List;
+import java.util.Objects;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -78,7 +79,7 @@ public class UserController {
     @DeleteMapping(path = "id/{userID}")
     public ResponseEntity<?> deleteUserByID(@PathVariable("userID") Long id, HttpServletRequest request) {
         Long get_userid = requestUtil.getUserID(request);
-        if(get_userid == id){
+        if(Objects.equals(get_userid, id)){
             userService.deleteUserByID(id);
             return ResponseEntity.ok().body("Delete Succesfully");
         }
