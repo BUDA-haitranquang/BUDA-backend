@@ -8,6 +8,7 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import com.higroup.Buda.customDTO.AgeGroupStatistics;
 import com.higroup.Buda.entities.Customer;
 import com.higroup.Buda.entities.SellOrder;
 import com.higroup.Buda.entities.SellOrderItem;
@@ -178,4 +179,5 @@ public class SellOrderService {
         // return this.sellOrderRepository.findAllSellOrderByStatusAndUserID(userID, status.toString());
         return this.sellOrderRepository.findAllSellOrderByUserIDAndStatus(userID, status);
     }
+
 }
