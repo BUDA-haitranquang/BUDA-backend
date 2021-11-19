@@ -1,17 +1,22 @@
 package com.higroup.Buda.security;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedHashMap;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.higroup.Buda.services.StaffService;
 import com.higroup.Buda.services.UserService;
 import com.higroup.Buda.util.JwtTokenUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -26,6 +31,8 @@ public class JwtRequestFilter extends OncePerRequestFilter{
 
     @Autowired
     private UserService jwtUserDetailsService;
+    @Autowired
+    private StaffService jwtStaffDetailService;
 
     @Autowired 
     private JwtTokenUtil jwtTokenUtil;
@@ -34,12 +41,14 @@ public class JwtRequestFilter extends OncePerRequestFilter{
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
         throws ServletException, IOException {
             final String requestTokenHeader = request.getHeader("Authorization");
-            System.out.println(requestTokenHeader);
+            // System.out.println(requestTokenHeader);
             String username = null;
             String jwtToken = null;
             // JWT Token is in the form "Bearer token". Remove Bearer word and get
             // only the Token
             // System.out.println(requestTokenHeader.toString());
+            //get role 
+            
             if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
                 jwtToken = requestTokenHeader.substring(7);
                 try {
@@ -58,11 +67,28 @@ public class JwtRequestFilter extends OncePerRequestFilter{
 
             // Once we get the token validate it.
 		    if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                ArrayList<?> roles = (ArrayList<?>) this.jwtTokenUtil.getRolesFromToken(requestTokenHeader.substring(7));
 
-                UserDetails userDetails = this.jwtUserDetailsService.loadUserByUsername(username);
-
+                if(roles.isEmpty()){
+                    throw new IOException("Role empty");
+                }
+                
+                String role = (String)((LinkedHashMap<?, ?>)roles.get(0)).get("authority");
+                UserDetails userDetails;
+                
+                System.out.println("ROLE: " + role);
+            
+                // if ROLE USER
+                if(role.equals("USER")){
+                    userDetails = this.jwtUserDetailsService.loadUserByUsername(username);
+                }
+                else if (role.equals("STAFF")){
+                    userDetails = this.jwtStaffDetailService.loadUserByUsername(username);
+                }
+                else return; // NOT YET
                 // if token is valid configure Spring Security to manually set
                 // authentication
+                System.out.println(userDetails.toString());
                 if (jwtTokenUtil.validateToken(jwtToken, userDetails)) {
 
                     UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(

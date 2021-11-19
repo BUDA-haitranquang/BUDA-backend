@@ -40,14 +40,16 @@ public class StaffController {
     @PostMapping(path = "/login")
     public ResponseEntity<?> correctLogin(@RequestBody StaffLogin staffLogin)
     {
-        String uuid = staffLogin.getUuid();
+        String account = staffLogin.getAccount();
         String password = staffLogin.getPassword();
-        return ResponseEntity.ok(this.staffService.correctLogin(uuid, password));
+        return ResponseEntity.ok(this.staffService.correctLogin(account, password));
     }
     
     @PostMapping(path = "/register")
-    public ResponseEntity<?> registerNewStaff(@RequestBody Staff newStaff)
+    public ResponseEntity<?> registerNewStaff(HttpServletRequest request, @RequestBody Staff newStaff)
     {
+        Long userID = requestUtil.getUserID(request);
+        newStaff.setUserID(userID);
         return this.staffService.registerNewStaff(newStaff);
     }
 
@@ -59,7 +61,7 @@ public class StaffController {
     }
 
     @DeleteMapping(path = "/id/{staffID}")
-    public ResponseEntity<?> deleteStaffByStaffUUID(HttpServletRequest request, @PathVariable("StaffID") Long id){
+    public ResponseEntity<?> deleteStaffByStaffID(HttpServletRequest request, @PathVariable("staffID") Long id){
         Long userID = requestUtil.getUserID(request);
         Staff staff = staffService.getStaffByID(id);
         if(staff.getUserID() == userID){
@@ -72,14 +74,55 @@ public class StaffController {
     }
 
     @PutMapping(path = "id/{staffID}")
-    public ResponseEntity<?> updateStaffByID(@PathVariable("staffID") Long id,
-            @RequestParam(required = false) String Name, @RequestParam(required = false) String address,
+    public ResponseEntity<?> updateStaffByID(HttpServletRequest request, @PathVariable("staffID") Long id,
+            @RequestParam(required = false) String name, @RequestParam(required = false) String address,
             @RequestParam(required = false) String phoneNumber, @RequestParam(required = false) StaffPosition staffPosition,
             @RequestParam(required = false) String staffUUID, @RequestParam(required = false) String password, 
-            @RequestParam(required = false) Double salary) {
-        
+            @RequestParam(required = false) Double salary, @RequestParam(required = false) String account) 
+    {
+        Long userID = requestUtil.getUserID(request);
+        Staff staff = staffService.getStaffByID(id);
+        if(staff == null){
+            return ResponseEntity.badRequest().body("Staff ID not exist: " + String.valueOf(id));
+        }
+        if(staff.getUserID() != userID){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No authorized");
+        }
+
+        if(name == null){
+            System.out.println("Name null");
+            name = staff.getName();
+        }
+        if(address == null){
+            System.out.println("Address null");
+            address = staff.getAddress();
+        }
+        if(phoneNumber == null){
+            System.out.println("Phone null");
+            phoneNumber = staff.getPhoneNumber();
+        }
+        if(staffPosition == null){
+            System.out.println("staff position null");
+            staffPosition = staff.getStaffPosition();
+        }
+        if(staffUUID == null){
+            System.out.println("staffUUID null");
+            staffUUID = staff.getStaffUUID();
+        }
+        if(password == null){
+            System.out.println("password null");
+            password = staff.getPassword();
+        }
+        if(account == null){
+            System.out.println("account null");
+            account = staff.getAccount();
+        }
+        if(salary == null){
+            System.out.println("salary null");
+            salary = staff.getSalary();
+        }
         return ResponseEntity.ok(
-            staffService.updateStaffByID(id, Name, phoneNumber, password, address, salary, staffUUID)
+            staffService.updateStaffByID(id, name, phoneNumber, password, address, salary, staffUUID, account, staffPosition)
         );
     }
 }
