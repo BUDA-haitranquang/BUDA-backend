@@ -75,11 +75,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private void UserConfig(HttpSecurity http) throws Exception{
 		// dont authenticate this particular request
 		http.authorizeRequests().antMatchers("/api/user/login", "/api/user/register").permitAll();
-
+		
 		// require ROLE USER to make get request for user 
 		http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/user/**").hasAnyAuthority("USER");
 		// Admin can do something
 		http.authorizeRequests().antMatchers(HttpMethod.DELETE, "api/user/id/**").hasAnyAuthority("ADMIN");
+		
 	}
     
 
@@ -90,5 +91,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests().antMatchers(HttpMethod.GET, "api/staff/userID/all").hasAnyAuthority("USER");
 		http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/staff/register").hasAnyAuthority("USER");
 		http.authorizeRequests().antMatchers(HttpMethod.PUT, "/api/staff/id/**").hasAnyAuthority("USER");
+		
 	}
 }
