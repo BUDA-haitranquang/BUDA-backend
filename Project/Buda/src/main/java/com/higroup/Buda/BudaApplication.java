@@ -13,6 +13,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
 public class BudaApplication {
@@ -20,9 +21,10 @@ public class BudaApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(BudaApplication.class, args);
 	}
-
+	
 	// @Bean
 	// public CommandLineRunner addRole(RoleRepository repo, UserRepository userRepository, StaffRepository staffRepository){
+	// 	BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 	// 	return args -> {
 	// 		try{
 	// 			repo.save(new Role("ADMIN"));
@@ -36,7 +38,7 @@ public class BudaApplication {
 	// 		Role role = repo.findRoleByName("USER").get();
 	// 		User user = new User();
 	// 		user.setUserName("nguyenhoangvudtm23");
-	// 		user.password("123456789");
+	// 		user.password(bCryptPasswordEncoder.encode("123456789"));
 	// 		user.setEmail("nguyenhoangvudtm23@gmail.com");
 	// 		user.setFirstName("Vu");
 	// 		user.setLastName("Nguyen Hoang");
@@ -48,8 +50,10 @@ public class BudaApplication {
 	// 		Role role_staff = repo.findRoleByName("STAFF").get();
 	// 		Staff staff = new Staff();
 	// 		staff.setName("tran quang hai");
-	// 		staff.password("123456789");
+	// 		staff.password(bCryptPasswordEncoder.encode("123456789"));
 	// 		staff.setPhoneNumber("0972787125");
+	// 		staff.setAccount("toilahai");
+	// 		staff.setEmail("tranquanghai@gmail.com");
 	// 		staff.loginID("XXXXXXXX");
 	// 		staff.salary(20.0);
 	// 		staff.address("Ha Noi");

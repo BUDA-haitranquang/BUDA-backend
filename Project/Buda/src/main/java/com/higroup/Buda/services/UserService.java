@@ -111,6 +111,7 @@ public class UserService implements UserDetailsService{
     public JwtResponse correctLogin(String email, String rawPassword)
     {
         Optional<User> mailUser = userRepository.findUserByEmail(email);
+        System.out.println(mailUser.get().toString());
         if (mailUser.isEmpty())
         {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found");
