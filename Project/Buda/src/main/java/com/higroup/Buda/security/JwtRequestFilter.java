@@ -77,7 +77,7 @@ public class JwtRequestFilter extends OncePerRequestFilter{
                 UserDetails userDetails;
                 
                 System.out.println("ROLE: " + role);
-            
+                
                 // if ROLE USER
                 if(role.equals("USER")){
                     userDetails = this.jwtUserDetailsService.loadUserByUsername(username);
