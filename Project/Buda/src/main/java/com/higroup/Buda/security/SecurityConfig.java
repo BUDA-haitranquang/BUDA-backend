@@ -65,6 +65,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		// role config
 		this.StaffConfig(http);
 		// staff config
+		// staff note config
+		this.StaffNoteConfig(http);
 		// all other requests need to be authenticated
 		http.authorizeRequests().anyRequest().authenticated();
 		// http.authorizeRequests().anyRequest().authen
@@ -79,7 +81,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		// require ROLE USER to make get request for user 
 		http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/user/**").hasAnyAuthority("USER");
 		// Admin can do something
-		http.authorizeRequests().antMatchers(HttpMethod.DELETE, "api/user/id/**").hasAnyAuthority("ADMIN");
+		http.authorizeRequests().antMatchers(HttpMethod.DELETE, "/api/user/id/**").hasAnyAuthority("ADMIN");
 		
 	}
     
@@ -87,10 +89,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private void StaffConfig(HttpSecurity http) throws Exception{
 		// dont authenticate this particular request
 		http.authorizeRequests().antMatchers("/api/staff/login").permitAll();
-		http.authorizeRequests().antMatchers(HttpMethod.DELETE, "api/staff/id/**").hasAnyAuthority("ADMIN", "USER");
-		http.authorizeRequests().antMatchers(HttpMethod.GET, "api/staff/userID/all").hasAnyAuthority("USER");
+		http.authorizeRequests().antMatchers(HttpMethod.DELETE, "/api/staff/id/**").hasAnyAuthority("ADMIN", "USER");
+		http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/staff/userID/all").hasAnyAuthority("USER");
 		http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/staff/register").hasAnyAuthority("USER");
 		http.authorizeRequests().antMatchers(HttpMethod.PUT, "/api/staff/id/**").hasAnyAuthority("USER");
 		
+	}
+
+	private void StaffNoteConfig(HttpSecurity http) throws Exception{
+		http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/staff-note/register").hasAnyAuthority("USER", "STAFF");
+		http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/staff-note/userID/{userID}/all", 
+															 "/api/staff-note/staffID/{staffID}/all").hasAnyAuthority("USER", "STAFF");
+		http.authorizeRequests().antMatchers(HttpMethod.PUT, "/api/staff-note/noteID/**").hasAnyAuthority("USER", "STAFF");
+		http.authorizeRequests().antMatchers(HttpMethod.DELETE, "/api/staff-note/noteID/**").hasAnyAuthority("USER", "STAFF");
 	}
 }
