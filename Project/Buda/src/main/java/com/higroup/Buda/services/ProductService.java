@@ -1,14 +1,10 @@
 package com.higroup.Buda.services;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
-import com.higroup.Buda.entities.Product;
-import com.higroup.Buda.entities.ProductGroup;
-import com.higroup.Buda.entities.User;
+import com.higroup.Buda.entities.*;
 import com.higroup.Buda.repositories.ProductGroupRepository;
+import com.higroup.Buda.repositories.ProductLeftLogRepository;
 import com.higroup.Buda.repositories.ProductRepository;
 import com.higroup.Buda.repositories.UserRepository;
 import com.higroup.Buda.util.Checker.PresentChecker;
@@ -24,12 +20,14 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
     private final ProductGroupRepository productGroupRepository;
+    private final ProductLeftLogRepository productLeftLogRepository;
     @Autowired
-    public ProductService(ProductRepository productRepository, ProductGroupRepository productGroupRepository, UserRepository userRepository)
+    public ProductService(ProductRepository productRepository, ProductGroupRepository productGroupRepository, UserRepository userRepository, ProductLeftLogRepository productLeftLogRepository)
     {
         this.productGroupRepository = productGroupRepository;
         this.userRepository = userRepository;
         this.productRepository = productRepository;
+        this.productLeftLogRepository = productLeftLogRepository;
     }
     @Autowired
     private PresentChecker presentChecker;
@@ -56,7 +54,7 @@ public class ProductService {
     public Product hideProductByProductID(Long userID, Long productID)
     {
         Product product = this.productRepository.findProductByProductID(productID);
-        if ((product!=null) && (product.getUserID() == userID))
+        if ((product!=null) && (Objects.equals(product.getUserID(), userID)))
         {
             product.setVisible(false);
             this.productRepository.save(product);
@@ -67,7 +65,7 @@ public class ProductService {
     public Product findProductByProductID(Long userID, Long productID)
     {
         Product product = this.productRepository.findProductByProductID(productID);
-        if ((product!=null) && (product.getUserID() == userID))
+        if ((product!=null) && (Objects.equals(product.getUserID(), userID)))
         {
             return product;
         }
@@ -76,9 +74,9 @@ public class ProductService {
     public void deleteProductByProductID(Long userID, Long productID)
     {
         Product product = this.productRepository.findProductByProductID(productID);
-        if ((product!=null) && (product.getUserID() == userID))
+        if ((product!=null) && (Objects.equals(product.getUserID(), userID)))
         {
-            if (product.getVisible() == true)
+            if (product.getVisible())
             {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Can not delete a visible product");
             }
@@ -92,10 +90,36 @@ public class ProductService {
     public List<Product> findAllProductByProductGroupID(Long userID, Long productGroupID)
     {
         Optional<ProductGroup> productGroup = this.productGroupRepository.findProductGroupByProductGroupID(productGroupID);
-        if ((productGroup.isPresent()) && (productGroup.get().getUserID() == userID))
+        if ((productGroup.isPresent()) && (Objects.equals(productGroup.get().getUserID(), userID)))
         {
             return this.productRepository.findAllProductByProductGroup(productGroup.get());
         }
         return Collections.emptyList();
+    }
+    public Product editProductQuantity(Long userID, Long ProductID, Integer amountLeftChange)
+    {
+        Optional<User> user = this.userRepository.findUserByUserID(userID);
+        if (user.isEmpty())
+        {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
+        }
+        Product product = this.productRepository.findProductByProductID(ProductID);
+        if (Objects.equals(product.getUserID(), userID))
+        {
+            Integer amountLeft = product.getAmountLeft();
+            if (amountLeft + amountLeftChange < 0)
+            {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not enough amount for the request");
+            }
+            product.setAmountLeft(amountLeft + amountLeftChange);
+            this.productRepository.save(product);
+            ProductLeftLog productLeftLog = new ProductLeftLog();
+            productLeftLog.setProduct(product);
+            productLeftLog.setAmountLeftChange(amountLeftChange);
+            productLeftLog.setUserID(userID);
+            this.productLeftLogRepository.save(productLeftLog);
+            return product;
+        }
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
     }
 }

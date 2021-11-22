@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("api/ingredient")
@@ -34,7 +35,7 @@ public class IngredientController {
         Long userID = this.requestUtil.getUserID(httpServletRequest);
         Ingredient ingredient = this.ingredientService.findIngredientByIngredientID(ingredientID);
         // if userid match ingredientID
-        if(userID == ingredient.getUserID()){
+        if(Objects.equals(userID, ingredient.getUserID())){
             return ResponseEntity.ok().body(ingredient);
         }
         // if not return unauthorized
@@ -72,5 +73,11 @@ public class IngredientController {
     {
         Long userID = this.requestUtil.getUserID(httpServletRequest);
         return ResponseEntity.ok().body(this.ingredientService.hideIngredientByIngredientID(userID, ingredientID));
+    }
+    @PostMapping(path = "/edit/quantity/{ingredientID}")
+    public ResponseEntity<?> editIngredientQuantity(HttpServletRequest httpServletRequest, @PathVariable Long ingredientID, @RequestParam Integer amountLeftChange)
+    {
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        return ResponseEntity.ok().body(this.ingredientService.editIngredientQuantity(userID, ingredientID, amountLeftChange));
     }
 }

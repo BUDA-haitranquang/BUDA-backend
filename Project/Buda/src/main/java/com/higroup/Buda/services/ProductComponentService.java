@@ -10,6 +10,7 @@ import com.higroup.Buda.util.Checker.PresentChecker;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -67,7 +68,7 @@ public class ProductComponentService {
         }
         else return Collections.emptyList();
     }
-    public void addIngredientToProduct(Long userID, Long productID, Long ingredientID)
+    public ResponseEntity<?> addIngredientToProduct(Long userID, Long productID, Long ingredientID)
     {
         Optional<Ingredient> ingredient = this.ingredientRepository.findIngredientByIngredientID(ingredientID);
         Product product = this.productRepository.findProductByProductID(productID);
@@ -78,6 +79,7 @@ public class ProductComponentService {
             productComponent.setIngredient(ingredient.get());
             productComponent.setUserID(userID);
             this.productComponentRepository.save(productComponent);
+            return ResponseEntity.ok().body(productComponent);
         }
         else{
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Ingredient not found");

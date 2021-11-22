@@ -1,11 +1,15 @@
 package com.higroup.Buda.services;
 
 
+import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import com.higroup.Buda.entities.Ingredient;
+import com.higroup.Buda.entities.IngredientLeftLog;
 import com.higroup.Buda.entities.User;
+import com.higroup.Buda.repositories.IngredientLeftLogRepository;
 import com.higroup.Buda.repositories.IngredientRepository;
 
 import com.higroup.Buda.repositories.UserRepository;
@@ -19,11 +23,13 @@ import org.springframework.web.server.ResponseStatusException;
 public class IngredientService {
     private final IngredientRepository ingredientRepository;
     private final UserRepository userRepository;
+    private final IngredientLeftLogRepository ingredientLeftLogRepository;
 
     @Autowired
-    public IngredientService(IngredientRepository ingredientRepository, UserRepository userRepository){
+    public IngredientService(IngredientRepository ingredientRepository, UserRepository userRepository, IngredientLeftLogRepository ingredientLeftLogRepository){
         this.ingredientRepository = ingredientRepository;
         this.userRepository = userRepository;
+        this.ingredientLeftLogRepository = ingredientLeftLogRepository;
     }
 
     public Ingredient findIngredientByIngredientID(Long ingredientID){
@@ -68,10 +74,39 @@ public class IngredientService {
     {
         Optional<Ingredient> ingredient = this.ingredientRepository.findIngredientByIngredientID(ingredientID);
         System.out.println(ingredient.get());
-        if ((ingredient.isPresent()) && (ingredient.get().getUserID() == userID))
+        if (Objects.equals(ingredient.get().getUserID(), userID))
         {
             ingredient.get().setVisible(false);
             this.ingredientRepository.save(ingredient.get());
+            return ingredient.get();
+        }
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Ingredient not found");
+    }
+
+    public Ingredient editIngredientQuantity(Long userID, Long ingredientID, Integer amountLeftChange)
+    {
+        Optional<User> user = this.userRepository.findUserByUserID(userID);
+        if (user.isEmpty())
+        {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
+        }
+        Optional<Ingredient> ingredient = this.ingredientRepository.findIngredientByIngredientID(ingredientID);
+        if (ingredient.isPresent() && Objects.equals(ingredient.get().getUserID(), userID))
+        {
+            Integer amountLeft = ingredient.get().getAmountLeft();
+            if (amountLeft + amountLeftChange < 0)
+            {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not enough amount for the request");
+            }
+            //Insert alert amount left here
+            ingredient.get().setAmountLeft(amountLeft + amountLeftChange);
+            this.ingredientRepository.save(ingredient.get());
+            IngredientLeftLog ingredientLeftLog = new IngredientLeftLog();
+            ingredientLeftLog.setIngredient(ingredient.get());
+            ingredientLeftLog.setAmountLeftChange(amountLeftChange);
+            ingredientLeftLog.setUserID(userID);
+            ingredientLeftLog.setCreationTime(ZonedDateTime.now());
+            this.ingredientLeftLogRepository.save(ingredientLeftLog);
             return ingredient.get();
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Ingredient not found");
