@@ -1,13 +1,18 @@
 package com.higroup.Buda.restcontroller;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import com.higroup.Buda.customDTO.GoogleUserPayload;
 import com.higroup.Buda.entities.User;
 import com.higroup.Buda.entities.UserLogin;
 import com.higroup.Buda.entities.UserRegister;
+import com.higroup.Buda.jwt.JwtSimple;
+import com.higroup.Buda.security.BudaGoogleTokenVerifier;
 import com.higroup.Buda.services.UserService;
 import com.higroup.Buda.util.Checker.RequestUtil;
 
@@ -90,6 +95,12 @@ public class UserController {
         String email = userLogin.getEmail();
         String password = userLogin.getPassword();
         return ResponseEntity.ok(userService.correctLogin(email, password));
+    }
+
+    @PostMapping("/login/google")
+    public ResponseEntity<?> loginWithGoogle(@RequestBody JwtSimple jwtSimple) throws GeneralSecurityException, IOException{
+        GoogleUserPayload googleUserPayload = BudaGoogleTokenVerifier.userCustomPayload(jwtSimple.getToken());
+        return ResponseEntity.ok().body(this.userService.processGoogleUserPostLogin(googleUserPayload));
     }
 
     @PutMapping(path = "/id/{userID}")

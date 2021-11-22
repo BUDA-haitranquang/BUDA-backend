@@ -77,7 +77,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private void UserConfig(HttpSecurity http) throws Exception{
 		// dont authenticate this particular request
 		http.authorizeRequests().antMatchers("/api/user/login", "/api/user/register").permitAll();
-		
+		http.authorizeRequests().antMatchers("/api/user/login/google").permitAll();
 		// require ROLE USER to make get request for user 
 		http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/user/**").hasAnyAuthority("USER");
 		// Admin can do something
