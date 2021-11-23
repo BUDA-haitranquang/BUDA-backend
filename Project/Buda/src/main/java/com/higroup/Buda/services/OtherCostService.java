@@ -61,16 +61,32 @@ public class OtherCostService {
         else throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized");
     }
     @Transactional
+    public OtherCost hideOtherCost(Long userID, Long otherCostID)
+    {
+        OtherCost otherCost = this.otherCostRepository.findOtherCostByOtherCostID(otherCostID);
+        if ((otherCost!=null) && (otherCost.getUserID() == userID))
+        {
+            otherCost.setVisible(false);
+            this.otherCostRepository.save(otherCost);
+            return otherCost;
+        }
+        else throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized");
+    }
+    @Transactional
     public void deleteOtherCostByOtherCostID(Long userID, Long otherCostID)
     {
         OtherCost otherCost = this.otherCostRepository.findOtherCostByOtherCostID(otherCostID);
         if ((otherCost!=null) && (otherCost.getUserID() == userID))
         {
+            if ((otherCost.getVisible() == true))
+            {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "This Other Cost has not been moved to trash can");
+            }
             this.otherCostRepository.delete(otherCost);
         }
         else
         {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Other cost not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Other cost does not found");
         }
     }
     public List<OtherCost> findAllOtherCostByUserIDLastXDays(Long userID, Long X)
@@ -80,5 +96,9 @@ public class OtherCostService {
     public List<OtherCost> findAllIncompletedOtherCostByUserID(Long userID)
     {
         return this.otherCostRepository.findAllIncompletedOtherCostByUserID(userID);
+    }
+    public List<OtherCost> findAllHiddenOtherCostByUserID(Long userID)
+    {
+        return this.otherCostRepository.findAllHiddenOtherCostByUserID(userID);
     }
 }

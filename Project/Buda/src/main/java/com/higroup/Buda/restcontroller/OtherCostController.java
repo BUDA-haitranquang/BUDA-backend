@@ -52,4 +52,16 @@ public class OtherCostController {
         Long userID = this.requestUtil.getUserID(httpServletRequest);
         return ResponseEntity.ok().body(this.otherCostService.createNewOtherCost(userID, otherCost));
     }
+    @GetMapping("/hide/{otherCostID}")
+    public ResponseEntity<?> hideOtherCost(HttpServletRequest httpServletRequest, @PathVariable Long otherCostID)
+    {
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        return ResponseEntity.ok().body(this.otherCostService.hideOtherCost(userID, otherCostID));
+    }
+    @GetMapping("/all/hidden")
+    public ResponseEntity<?> findAllHiddenOtherCostByCurrentUser(HttpServletRequest httpServletRequest)
+    {
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        return ResponseEntity.ok().body(this.otherCostService.findAllHiddenOtherCostByUserID(userID));
+    }
 }
