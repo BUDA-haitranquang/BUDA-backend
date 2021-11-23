@@ -59,9 +59,16 @@ public class FixedCostBillService {
     public FixedCostBill createNewFixedCostBill(Long userID, FixedCostBill fixedCostBill)
     {
         presentChecker.checkIdAndRepository(userID, userRepository);
-        fixedCostBill.setUserID(userID);
-        fixedCostBill.setCreationTime(ZonedDateTime.now());
-        this.fixedCostBillRepository.save(fixedCostBill);
-        return fixedCostBill;
+        //presentChecker.checkIdAndRepository(fixedCostBill.getFixedCost().getFixedCostID(), fixedCostRepository);
+        Optional<FixedCost> fixedCost = this.fixedCostRepository.findFixedCostByFixedCostID(fixedCostBill.getFixedCost().getFixedCostID());
+        if ((fixedCost.isPresent()) && (fixedCost.get().getUserID() == userID))
+        {
+            fixedCostBill.setUserID(userID);
+            fixedCostBill.setFixedCost(fixedCost.get());
+            fixedCostBill.setCreationTime(ZonedDateTime.now());
+            this.fixedCostBillRepository.save(fixedCostBill);
+            return fixedCostBill;
+        }
+        else throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Fixed Cost not found");
     }
 }
