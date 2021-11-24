@@ -61,4 +61,16 @@ public class FixedCostController {
         Long userID = this.requestUtil.getUserID(httpServletRequest);
         return ResponseEntity.ok().body(this.fixedCostService.updateFixedCost(userID, fixedCost));
     }
+    @GetMapping(path = "/hide/{fixedCostID}")
+    public ResponseEntity<?> hideFixedCost(HttpServletRequest httpServletRequest, @PathVariable Long fixedCostID)
+    {
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        return ResponseEntity.ok().body(this.fixedCostService.hideFixedCost(userID, fixedCostID));
+    }
+    @GetMapping(path = "/all/hidden")
+    public ResponseEntity<?> findAllHiddenFixedCostByCurrentUser(HttpServletRequest httpServletRequest)
+    {
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        return ResponseEntity.ok().body(this.fixedCostService.findAllHiddenFixedCostByUserID(userID));
+    }
 }

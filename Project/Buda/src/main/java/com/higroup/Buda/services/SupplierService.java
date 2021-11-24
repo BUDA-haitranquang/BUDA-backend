@@ -51,7 +51,7 @@ public class SupplierService {
     public Supplier updateSupplier(Long userID, Supplier supplier)
     {
         Optional<Supplier> oldSupplier = this.supplierRepository.findSupplierBySupplierID(supplier.getSupplierID());
-        if ((oldSupplier.isPresent()) && (oldSupplier.get().getUserID() == userID))
+        if ((oldSupplier.isPresent()) && (oldSupplier.get().getUserID().equals(userID)))
         {
             supplier.setUserID(userID);
             return supplier;

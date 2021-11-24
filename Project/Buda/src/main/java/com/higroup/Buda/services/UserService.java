@@ -189,7 +189,7 @@ public class UserService implements UserDetailsService{
             //BAD REQUEST da ton tai email
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Already used by another user Email");
         }
-        if ((email!=null) && ((!EmailValidator.getInstance().isValid(email) || email.length() > 60)))
+        if ((email==null) || ((!EmailValidator.getInstance().isValid(email) || email.length() > 60)))
         {
             //khong phai email
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid email");
@@ -211,7 +211,7 @@ public class UserService implements UserDetailsService{
             //BAD REQUEST da ton tai username
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Already used by another username");
         }
-        if ((password!=null) && (password.length() < 8))
+        if ((password==null) || (password.length() < 8))
         {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Password is too short");
         }
