@@ -34,7 +34,7 @@ public class FixedCostBillService {
     public List<FixedCostBill> findAllByFixedCostID(Long userID, Long fixedCostID)
     {
         Optional<FixedCost> fixedCost = this.fixedCostRepository.findFixedCostByFixedCostID(fixedCostID);
-        if ((fixedCost.isPresent()) && (fixedCost.get().getUserID() == userID))
+        if ((fixedCost.isPresent()) && (fixedCost.get().getUserID().equals(userID)))
         {   
             return this.fixedCostBillRepository.findAllByFixedCost(fixedCost.get());
         }
@@ -61,7 +61,7 @@ public class FixedCostBillService {
         presentChecker.checkIdAndRepository(userID, userRepository);
         //presentChecker.checkIdAndRepository(fixedCostBill.getFixedCost().getFixedCostID(), fixedCostRepository);
         Optional<FixedCost> fixedCost = this.fixedCostRepository.findFixedCostByFixedCostID(fixedCostBill.getFixedCost().getFixedCostID());
-        if ((fixedCost.isPresent()) && (fixedCost.get().getUserID() == userID))
+        if ((fixedCost.isPresent()) && (fixedCost.get().getUserID().equals(userID)))
         {
             fixedCostBill.setUserID(userID);
             fixedCostBill.setFixedCost(fixedCost.get());

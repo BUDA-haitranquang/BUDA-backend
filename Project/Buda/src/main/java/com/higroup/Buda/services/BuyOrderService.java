@@ -79,7 +79,7 @@ public class BuyOrderService {
 
     public List<BuyOrder> findAllBuyOrderBySupplierID(Long userID, Long supplierID) {
         Optional<Supplier> supplier = this.supplierRepository.findSupplierBySupplierID(supplierID);
-        if ((supplier.isPresent()) && (supplier.get().getUserID() == userID)) {
+        if ((supplier.isPresent()) && (supplier.get().getUserID().equals(userID))) {
             return this.buyOrderRepository.findAllBuyOrderBySupplier(supplier.get());
         } else
             return Collections.emptyList();

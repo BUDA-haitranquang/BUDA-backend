@@ -32,7 +32,7 @@ public class FixedCostService {
     public FixedCost findFixedCostByFixedCostID(Long userID, Long fixedCostID)
     {
         Optional<FixedCost> fixedCost = this.fixedCostRepository.findFixedCostByFixedCostID(fixedCostID);
-        if ((fixedCost.isPresent()) && (fixedCost.get().getUserID() == userID))
+        if ((fixedCost.isPresent()) && (fixedCost.get().getUserID().equals(userID)))
         {
             return fixedCost.get();
         }
@@ -54,7 +54,7 @@ public class FixedCostService {
     public FixedCost updateFixedCost(Long userID, FixedCost fixedCost)
     {
         Optional<FixedCost> oldFixedCost = this.fixedCostRepository.findFixedCostByFixedCostID(fixedCost.getFixedCostID());
-        if ((oldFixedCost.isPresent()) && (oldFixedCost.get().getUserID() == userID))
+        if ((oldFixedCost.isPresent()) && (oldFixedCost.get().getUserID().equals(userID)))
         {
             fixedCost.setUserID(userID);
             this.fixedCostRepository.save(fixedCost);
@@ -66,9 +66,9 @@ public class FixedCostService {
     public FixedCost hideFixedCost(Long userID, Long fixedCostID)
     {
         Optional<FixedCost> fixedCost = this.fixedCostRepository.findFixedCostByFixedCostID(fixedCostID);
-        if ((fixedCost.isPresent()) && (fixedCost.get().getUserID() == userID))
+        if ((fixedCost.isPresent()) && (fixedCost.get().getUserID().equals(userID)))
         {
-            fixedCost.get().setVisible(false);
+            fixedCost.get().setVisible(Boolean.FALSE);
             this.fixedCostRepository.save(fixedCost.get());
             return fixedCost.get();
         }
@@ -78,9 +78,9 @@ public class FixedCostService {
     public void deleteFixedCost(Long userID, Long fixedCostID)
     {
         Optional<FixedCost> fixedCost = this.fixedCostRepository.findFixedCostByFixedCostID(fixedCostID);
-        if ((fixedCost.isPresent()) && (fixedCost.get().getUserID() == userID))
+        if ((fixedCost.isPresent()) && (fixedCost.get().getUserID().equals(userID)))
         {
-            if (fixedCost.get().getVisible() == true)
+            if (fixedCost.get().getVisible().equals(Boolean.TRUE))
             {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "This Fixed Cost has not been moved to trash can");
             }

@@ -52,7 +52,7 @@ public class OtherCostService {
     public OtherCost updateOtherCost(Long userID, OtherCost otherCost)
     {
         OtherCost oldOtherCost = this.otherCostRepository.findOtherCostByOtherCostID(otherCost.getOtherCostID());
-        if ((oldOtherCost!=null) && (oldOtherCost.getUserID() == userID))
+        if ((oldOtherCost!=null) && (oldOtherCost.getUserID().equals(userID)))
         {
             otherCost.setUserID(userID);
             this.otherCostRepository.save(otherCost);
@@ -64,7 +64,7 @@ public class OtherCostService {
     public OtherCost hideOtherCost(Long userID, Long otherCostID)
     {
         OtherCost otherCost = this.otherCostRepository.findOtherCostByOtherCostID(otherCostID);
-        if ((otherCost!=null) && (otherCost.getUserID() == userID))
+        if ((otherCost!=null) && (otherCost.getUserID().equals(userID)))
         {
             otherCost.setVisible(false);
             this.otherCostRepository.save(otherCost);
@@ -76,9 +76,9 @@ public class OtherCostService {
     public void deleteOtherCostByOtherCostID(Long userID, Long otherCostID)
     {
         OtherCost otherCost = this.otherCostRepository.findOtherCostByOtherCostID(otherCostID);
-        if ((otherCost!=null) && (otherCost.getUserID() == userID))
+        if ((otherCost!=null) && (otherCost.getUserID().equals(userID)))
         {
-            if ((otherCost.getVisible() == true))
+            if ((otherCost.getVisible().equals(Boolean.TRUE)))
             {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "This Other Cost has not been moved to trash can");
             }
