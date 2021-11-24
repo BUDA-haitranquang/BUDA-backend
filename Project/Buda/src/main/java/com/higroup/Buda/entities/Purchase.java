@@ -158,7 +158,7 @@ public class Purchase {
 
     @Override
     public int hashCode() {
-        return Objects.hash(purchaseID, user, plan, creationTime, expiryDate, message, totalCost);
+        return Objects.hash(purchaseID);
     }
 
     @Override
