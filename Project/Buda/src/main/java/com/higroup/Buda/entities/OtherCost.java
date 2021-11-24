@@ -168,7 +168,7 @@ public class OtherCost {
 
     @Override
     public int hashCode() {
-        return Objects.hash(otherCostID, userID, totalCost, creationTime, name, description);
+        return Objects.hash(otherCostID);
     }
 
     @Override

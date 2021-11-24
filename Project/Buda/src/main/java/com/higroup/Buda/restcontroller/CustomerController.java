@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -59,5 +60,11 @@ public class CustomerController {
     {
         Long userID = this.requestUtil.getUserID(httpServletRequest);
         return ResponseEntity.ok().body(this.customerService.updateCustomer(userID, customer));
+    }
+    @DeleteMapping(path = "hide/{customerID}")
+    public ResponseEntity<?> hideProduct(HttpServletRequest httpServletRequest, @PathVariable Long customerID)
+    {
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        return ResponseEntity.ok().body(this.customerService.hideCustomer(userID, customerID));
     }
 }

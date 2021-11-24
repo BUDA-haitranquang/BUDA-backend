@@ -190,7 +190,7 @@ public class FixedCost {
 
     @Override
     public int hashCode() {
-        return Objects.hash(fixedCostID, name, description, moneyAmount, period, userID);
+        return Objects.hash(fixedCostID);
     }
 
     @Override
