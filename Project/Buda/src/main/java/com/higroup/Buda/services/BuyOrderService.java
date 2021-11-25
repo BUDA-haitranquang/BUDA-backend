@@ -1,6 +1,7 @@
 package com.higroup.Buda.services;
 
 import com.higroup.Buda.entities.Supplier;
+import com.higroup.Buda.customDTO.ExpenseByTimeStatistics;
 import com.higroup.Buda.entities.BuyOrder;
 import com.higroup.Buda.entities.User;
 import com.higroup.Buda.entities.BuyOrderItem;
@@ -120,5 +121,20 @@ public class BuyOrderService {
     public List<BuyOrder> findAllBuyOrderByStatus(Long userID, Status status)
     {
         return this.buyOrderRepository.findAllBuyOrderByUserIDAndStatus(userID, status);
+    }
+
+    public List<ExpenseByTimeStatistics> findBuyOrderExpenseByWeek(Long userID)
+    {
+        return this.buyOrderRepository.findBuyOrderExpenseByWeek(userID);
+    }
+
+    public List<ExpenseByTimeStatistics> findBuyOrderExpenseCurrentMonth(Long userID)
+    {
+        return this.buyOrderRepository.findBuyOrderExpenseCurrentMonth(userID);
+    }
+
+    public List<ExpenseByTimeStatistics> findBuyOrderExpenseGroupByMonth(Long userID)
+    {
+        return this.buyOrderRepository.findBuyOrderExpenseGroupByMonth(userID);
     }
 }

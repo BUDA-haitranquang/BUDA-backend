@@ -80,4 +80,22 @@ public class BuyOrderController {
         Long userID = this.requestUtil.getUserID(httpServletRequest);
         return ResponseEntity.ok().body(this.buyOrderService.findAllBuyOrderByStatus(userID, status));
     }
+    @GetMapping(path = "expense/monthly")
+    public ResponseEntity<?> findBuyOrderExpenseGroupByMonth(HttpServletRequest httpServletRequest)
+    {
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        return ResponseEntity.ok().body(this.buyOrderService.findBuyOrderExpenseGroupByMonth(userID));
+    }
+    @GetMapping(path = "expense/this-month")
+    public ResponseEntity<?> findBuyOrderExpenseCurrentMonth(HttpServletRequest httpServletRequest)
+    {
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        return ResponseEntity.ok().body(this.buyOrderService.findBuyOrderExpenseCurrentMonth(userID));
+    }
+    @GetMapping(path = "expense/weekly")
+    public ResponseEntity<?> findBuyOrderExpenseByWeek(HttpServletRequest httpServletRequest)
+    {
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        return ResponseEntity.ok().body(this.buyOrderService.findBuyOrderExpenseByWeek(userID));
+    }
 }

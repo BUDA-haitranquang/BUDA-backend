@@ -7,6 +7,7 @@ import java.util.Optional;
 import javax.print.attribute.standard.MediaSize.Other;
 import javax.transaction.Transactional;
 
+import com.higroup.Buda.customDTO.ExpenseByTimeStatistics;
 import com.higroup.Buda.entities.OtherCost;
 import com.higroup.Buda.entities.User;
 import com.higroup.Buda.repositories.OtherCostRepository;
@@ -100,5 +101,17 @@ public class OtherCostService {
     public List<OtherCost> findAllHiddenOtherCostByUserID(Long userID)
     {
         return this.otherCostRepository.findAllHiddenOtherCostByUserID(userID);
+    }
+    public List<ExpenseByTimeStatistics> findOtherCostExpenseByWeek(Long userID)
+    {
+        return this.otherCostRepository.findOtherCostExpenseByWeek(userID);
+    }
+    public List<ExpenseByTimeStatistics> findOtherCostExpenseCurrentMonth(Long userID)
+    {
+        return this.otherCostRepository.findOtherCostExpenseCurrentMonth(userID);
+    }
+    public List<ExpenseByTimeStatistics> findOtherCostExpenseGroupByMonth(Long userID)
+    {
+        return this.otherCostRepository.findOtherCostExpenseGroupByMonth(userID);
     }
 }

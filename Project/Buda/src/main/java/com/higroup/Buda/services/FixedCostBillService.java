@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import com.higroup.Buda.customDTO.ExpenseByTimeStatistics;
 import com.higroup.Buda.entities.FixedCost;
 import com.higroup.Buda.entities.FixedCostBill;
 import com.higroup.Buda.repositories.FixedCostBillRepository;
@@ -70,5 +71,17 @@ public class FixedCostBillService {
             return fixedCostBill;
         }
         else throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Fixed Cost not found");
+    }
+    public List<ExpenseByTimeStatistics> findFixedCostBillExpenseByWeek(Long userID)
+    {
+        return this.fixedCostBillRepository.findFixedCostBillExpenseByWeek(userID);
+    }
+    public List<ExpenseByTimeStatistics> findFixedCostBillExpenseCurrentMonth(Long userID)
+    {
+        return this.fixedCostBillRepository.findFixedCostBillExpenseCurrentMonth(userID);
+    }
+    public List<ExpenseByTimeStatistics> findFixedCostBillExpenseGroupByMonth(Long userID)
+    {
+        return this.fixedCostBillRepository.findFixedCostBillExpenseGroupByMonth(userID);
     }
 }
