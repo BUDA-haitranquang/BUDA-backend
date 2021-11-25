@@ -8,6 +8,7 @@ import com.higroup.Buda.entities.FixedCostBill;
 import com.higroup.Buda.services.FixedCostBillService;
 import com.higroup.Buda.util.Checker.RequestUtil;
 
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -59,6 +60,12 @@ public class FixedCostBillController {
     {
         Long userID = this.requestUtil.getUserID(httpServletRequest);
         return ResponseEntity.ok().body(this.fixedCostBillService.createNewFixedCostBill(userID, fixedCostBill));
+    }
+    @GetMapping("/expense/weekly")
+    public ResponseEntity<?> findFixedCostExpenseByWeek(HttpServletRequest httpServletRequest)
+    {
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        return ResponseEntity.ok().body(this.fixedCostBillService.findFixedCostBillExpenseByWeek(userID));
     }
 
 }

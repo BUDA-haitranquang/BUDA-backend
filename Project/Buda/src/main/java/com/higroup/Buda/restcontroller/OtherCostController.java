@@ -64,4 +64,10 @@ public class OtherCostController {
         Long userID = this.requestUtil.getUserID(httpServletRequest);
         return ResponseEntity.ok().body(this.otherCostService.findAllHiddenOtherCostByUserID(userID));
     }
+    @GetMapping("expense/weekly")
+    public ResponseEntity<?> findOtherCostExpenseByWeek(HttpServletRequest httpServletRequest)
+    {
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        return ResponseEntity.ok().body(this.otherCostService.findOtherCostExpenseByWeek(userID));
+    }
 }

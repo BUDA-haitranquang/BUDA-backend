@@ -24,4 +24,9 @@ public interface BuyOrderRepository extends JpaRepository<BuyOrder, Long> {
     List<BuyOrder> findAllIncompletedBuyOrderByUser(@Param("userID") Long userID);
     @Query(value = "select * from buy_order s where s.status LIKE 'FINISHED' and s.user_id = :userID", nativeQuery = true)
     List<BuyOrder> findAllCompletedBuyOrderByUser(@Param("userID") Long userID);
+    @Query(value = "select new com.higroup.Buda.customDTO.ExpenseByTimeStatistics(DATE_FORMAT(f.creationTime, '%V-%Y'), SUM(f.totalCost)) "
+    + "from BuyOrder f where f.userID = :userID and year(f.creationTime) = year(current_date) "
+    + "group by DATE_FORMAT(f.creationTime, '%V-%Y')"
+    + "order by DATE_FORMAT(f.creationTime, '%V-%Y')")
+    List<BuyOrder> findBuyOrderExpenseByWeek(@Param("userID") Long userID);
 }

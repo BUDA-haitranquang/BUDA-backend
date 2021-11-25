@@ -40,18 +40,22 @@ public interface SellOrderRepository extends JpaRepository<SellOrder, Long> {
     List<GenderStatistics> findTotalSpendOfGenderByUserID(Long userID);
     @Query(value = "select new com.higroup.Buda.customDTO.RevenueByTimeStatistics(DATE_FORMAT(s.creationTime, '%m-%Y'), SUM(s.realCost))"
     + " from SellOrder s where s.userID = :userID"
-    + " GROUP BY DATE_FORMAT(s.creationTime, '%m-%Y')")
+    + " GROUP BY DATE_FORMAT(s.creationTime, '%m-%Y')"
+    + " ORDER BY DATE_FORMAT(s.creationTime, '%V-%Y')")
     List<RevenueByTimeStatistics> findRevenueGroupByMonth(Long userID);
     @Query(value = "select new com.higroup.Buda.customDTO.RevenueByTimeStatistics(DATE_FORMAT(s.creationTime, '%V-%Y'), SUM(s.realCost))"
     + " from SellOrder s where s.userID = :userID"
-    + " GROUP BY DATE_FORMAT(s.creationTime, '%V-%Y')")
+    + " GROUP BY DATE_FORMAT(s.creationTime, '%V-%Y')"
+    + " ORDER BY DATE_FORMAT(s.creationTime, '%V-%Y')")
     List<RevenueByTimeStatistics> findRevenueGroupByWeek(Long userID);
     @Query(value = "select new com.higroup.Buda.customDTO.RevenueByTimeStatistics(DATE_FORMAT(s.creationTime, '%W-%Y'), SUM(s.realCost))"
     + " from SellOrder s where s.userID = :userID and year(s.creationTime) = year(current_date)"
-    + " GROUP BY DATE_FORMAT(s.creationTime, '%W-%Y')")
+    + " GROUP BY DATE_FORMAT(s.creationTime, '%W-%Y')"
+    + " ORDER BY DATE_FORMAT(s.creationTime, '%W-%Y')")
     List<RevenueByTimeStatistics> findRevenueGroupByWeekday(Long userID);
     @Query(value = "select new com.higroup.Buda.customDTO.RevenueByTimeStatistics(DATE_FORMAT(s.creationTime, '%d-%m-%Y'), SUM(s.realCost))"
     + " from SellOrder s where s.userID = :userID and month(s.creationTime) = month(current_date)"
-    + " GROUP BY DATE_FORMAT(s.creationTime, '%d-%m-%Y')")
+    + " GROUP BY DATE_FORMAT(s.creationTime, '%d-%m-%Y')"
+    + " ORDER BY DATE_FORMAT(s.creationTime, '%d-%m-%Y')")
     List<RevenueByTimeStatistics> findRevenueAllDaysCurrentMonth(Long userID);
 }
