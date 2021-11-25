@@ -125,6 +125,16 @@ public class BuyOrderService {
 
     public List<ExpenseByTimeStatistics> findBuyOrderExpenseByWeek(Long userID)
     {
-        return this.findBuyOrderExpenseByWeek(userID);
+        return this.buyOrderRepository.findBuyOrderExpenseByWeek(userID);
+    }
+
+    public List<ExpenseByTimeStatistics> findBuyOrderExpenseCurrentMonth(Long userID)
+    {
+        return this.buyOrderRepository.findBuyOrderExpenseCurrentMonth(userID);
+    }
+
+    public List<ExpenseByTimeStatistics> findBuyOrderExpenseGroupByMonth(Long userID)
+    {
+        return this.buyOrderRepository.findBuyOrderExpenseGroupByMonth(userID);
     }
 }

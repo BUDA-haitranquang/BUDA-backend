@@ -3,7 +3,7 @@ package com.higroup.Buda.repositories;
 import java.util.List;
 import java.util.Optional;
 
-
+import com.higroup.Buda.customDTO.ExpenseByTimeStatistics;
 import com.higroup.Buda.entities.BuyOrder;
 import com.higroup.Buda.entities.Status;
 import com.higroup.Buda.entities.Supplier;
@@ -26,7 +26,17 @@ public interface BuyOrderRepository extends JpaRepository<BuyOrder, Long> {
     List<BuyOrder> findAllCompletedBuyOrderByUser(@Param("userID") Long userID);
     @Query(value = "select new com.higroup.Buda.customDTO.ExpenseByTimeStatistics(DATE_FORMAT(f.creationTime, '%V-%Y'), SUM(f.totalCost)) "
     + "from BuyOrder f where f.userID = :userID and year(f.creationTime) = year(current_date) "
-    + "group by DATE_FORMAT(f.creationTime, '%V-%Y')"
-    + "order by DATE_FORMAT(f.creationTime, '%V-%Y')")
-    List<BuyOrder> findBuyOrderExpenseByWeek(@Param("userID") Long userID);
+    + "group by DATE_FORMAT(f.creationTime, '%V-%Y') "
+    + "order by DATE_FORMAT(f.creationTime, '%V-%Y') ")
+    List<ExpenseByTimeStatistics> findBuyOrderExpenseByWeek(@Param("userID") Long userID);
+    @Query(value = "select new com.higroup.Buda.customDTO.ExpenseByTimeStatistics(DATE_FORMAT(f.creationTime, '%d-%m-%Y'), SUM(f.totalCost)) "
+    + "from BuyOrder f where f.userID = :userID and month(f.creationTime) = month(current_date) "
+    + "group by DATE_FORMAT(f.creationTime, '%d-%m-%Y') "
+    + "order by DATE_FORMAT(f.creationTime, '%d-%m-%Y') ")
+    List<ExpenseByTimeStatistics> findBuyOrderExpenseCurrentMonth(@Param("userID") Long userID);
+    @Query(value = "select new com.higroup.Buda.customDTO.ExpenseByTimeStatistics(DATE_FORMAT(f.creationTime, '%m-%Y'), SUM(f.totalCost)) "
+    + "from BuyOrder f where f.userID = :userID and year(f.creationTime) >= (year(current_date) - 1) "
+    + "group by DATE_FORMAT(f.creationTime, '%m-%Y') "
+    + "order by DATE_FORMAT(f.creationTime, '%m-%Y') ")
+    List<ExpenseByTimeStatistics> findBuyOrderExpenseGroupByMonth(@Param("userID") Long userID);
 }

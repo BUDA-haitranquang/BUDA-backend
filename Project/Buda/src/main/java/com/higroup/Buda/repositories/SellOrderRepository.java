@@ -39,7 +39,7 @@ public interface SellOrderRepository extends JpaRepository<SellOrder, Long> {
     + " GROUP BY s.gender")
     List<GenderStatistics> findTotalSpendOfGenderByUserID(Long userID);
     @Query(value = "select new com.higroup.Buda.customDTO.RevenueByTimeStatistics(DATE_FORMAT(s.creationTime, '%m-%Y'), SUM(s.realCost))"
-    + " from SellOrder s where s.userID = :userID"
+    + " from SellOrder s where s.userID = :userID and year(s.creationTime) >= (year(current_date) - 1)"
     + " GROUP BY DATE_FORMAT(s.creationTime, '%m-%Y')"
     + " ORDER BY DATE_FORMAT(s.creationTime, '%V-%Y')")
     List<RevenueByTimeStatistics> findRevenueGroupByMonth(Long userID);

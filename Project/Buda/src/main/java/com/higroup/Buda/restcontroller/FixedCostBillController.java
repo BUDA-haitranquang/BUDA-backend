@@ -67,5 +67,16 @@ public class FixedCostBillController {
         Long userID = this.requestUtil.getUserID(httpServletRequest);
         return ResponseEntity.ok().body(this.fixedCostBillService.findFixedCostBillExpenseByWeek(userID));
     }
-
+    @GetMapping("/expense/this-month")
+    public ResponseEntity<?> findFixedCostBillExpenseCurrentMonth(HttpServletRequest httpServletRequest)
+    {
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        return ResponseEntity.ok().body(this.fixedCostBillService.findFixedCostBillExpenseCurrentMonth(userID));
+    }
+    @GetMapping("/expense/monthly")
+    public ResponseEntity<?> findFixedCostBillExpenseGroupByMonth(HttpServletRequest httpServletRequest)
+    {
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        return ResponseEntity.ok().body(this.fixedCostBillService.findFixedCostBillExpenseGroupByMonth(userID));
+    }
 }

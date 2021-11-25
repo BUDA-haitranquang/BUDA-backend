@@ -106,4 +106,12 @@ public class OtherCostService {
     {
         return this.otherCostRepository.findOtherCostExpenseByWeek(userID);
     }
+    public List<ExpenseByTimeStatistics> findOtherCostExpenseCurrentMonth(Long userID)
+    {
+        return this.otherCostRepository.findOtherCostExpenseCurrentMonth(userID);
+    }
+    public List<ExpenseByTimeStatistics> findOtherCostExpenseGroupByMonth(Long userID)
+    {
+        return this.otherCostRepository.findOtherCostExpenseGroupByMonth(userID);
+    }
 }

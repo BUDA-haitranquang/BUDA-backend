@@ -76,4 +76,12 @@ public class FixedCostBillService {
     {
         return this.fixedCostBillRepository.findFixedCostBillExpenseByWeek(userID);
     }
+    public List<ExpenseByTimeStatistics> findFixedCostBillExpenseCurrentMonth(Long userID)
+    {
+        return this.fixedCostBillRepository.findFixedCostBillExpenseCurrentMonth(userID);
+    }
+    public List<ExpenseByTimeStatistics> findFixedCostBillExpenseGroupByMonth(Long userID)
+    {
+        return this.fixedCostBillRepository.findFixedCostBillExpenseGroupByMonth(userID);
+    }
 }
