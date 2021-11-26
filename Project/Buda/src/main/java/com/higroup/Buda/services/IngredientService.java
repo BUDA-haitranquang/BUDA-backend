@@ -83,7 +83,7 @@ public class IngredientService {
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Ingredient not found");
     }
 
-    public Ingredient editIngredientQuantity(Long userID, Long ingredientID, Integer amountLeftChange)
+    public Ingredient editIngredientQuantity(Long userID, Long ingredientID, Integer amountLeftChange, String message)
     {
         Optional<User> user = this.userRepository.findUserByUserID(userID);
         if (user.isEmpty())
@@ -98,17 +98,26 @@ public class IngredientService {
             {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not enough amount for the request");
             }
-            //Insert alert amount left here
             ingredient.get().setAmountLeft(amountLeft + amountLeftChange);
             this.ingredientRepository.save(ingredient.get());
             IngredientLeftLog ingredientLeftLog = new IngredientLeftLog();
             ingredientLeftLog.setIngredient(ingredient.get());
             ingredientLeftLog.setAmountLeftChange(amountLeftChange);
             ingredientLeftLog.setUserID(userID);
+            ingredientLeftLog.setMessage(message);
             ingredientLeftLog.setCreationTime(ZonedDateTime.now());
             this.ingredientLeftLogRepository.save(ingredientLeftLog);
             return ingredient.get();
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Ingredient not found");
+    }
+
+    public List<Ingredient> findAlertAmountIngredient(Long userID){
+        Optional<User> user = this.userRepository.findUserByUserID(userID);
+        if (user.isEmpty())
+        {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
+        }
+        return this.ingredientRepository.findAlertAmountIngredient();
     }
 }

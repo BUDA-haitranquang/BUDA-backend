@@ -77,9 +77,15 @@ public class ProductController {
         return ResponseEntity.ok().body("Delete successfully, this action can not be reversed");
     }
     @PostMapping(path = "/edit/quantity/{productID}")
-    public ResponseEntity<?> editProductQuantity(HttpServletRequest httpServletRequest, @PathVariable Long productID, @RequestParam Integer amountLeftChange)
+    public ResponseEntity<?> editProductQuantity(HttpServletRequest httpServletRequest, @PathVariable Long productID, @RequestBody Integer amountLeftChange, @RequestBody String message)
     {
         Long userID = this.requestUtil.getUserID(httpServletRequest);
-        return ResponseEntity.ok().body(this.productService.editProductQuantity(userID, productID, amountLeftChange));
+        return ResponseEntity.ok().body(this.productService.editProductQuantity(userID, productID, amountLeftChange, message));
+    }
+    @GetMapping(path = "/alert")
+    public ResponseEntity<?> findAlertAmountProduct(HttpServletRequest httpServletRequest)
+    {
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        return ResponseEntity.ok().body(this.productService.findAlertAmountProduct(userID));
     }
 }

@@ -1,5 +1,6 @@
 package com.higroup.Buda.services;
 
+import java.time.ZonedDateTime;
 import java.util.*;
 
 import com.higroup.Buda.entities.*;
@@ -96,7 +97,7 @@ public class ProductService {
         }
         return Collections.emptyList();
     }
-    public Product editProductQuantity(Long userID, Long ProductID, Integer amountLeftChange)
+    public Product editProductQuantity(Long userID, Long ProductID, Integer amountLeftChange, String message)
     {
         Optional<User> user = this.userRepository.findUserByUserID(userID);
         if (user.isEmpty())
@@ -117,9 +118,19 @@ public class ProductService {
             productLeftLog.setProduct(product);
             productLeftLog.setAmountLeftChange(amountLeftChange);
             productLeftLog.setUserID(userID);
+            productLeftLog.setMessage(message);
+            productLeftLog.setCreationTime(ZonedDateTime.now());
             this.productLeftLogRepository.save(productLeftLog);
             return product;
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
+    }
+    public List<Ingredient> findAlertAmountProduct(Long userID){
+        Optional<User> user = this.userRepository.findUserByUserID(userID);
+        if (user.isEmpty())
+        {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
+        }
+        return this.productRepository.findAlertAmountProduct();
     }
 }

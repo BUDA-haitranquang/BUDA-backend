@@ -3,6 +3,7 @@ package com.higroup.Buda.repositories;
 import java.util.List;
 import java.util.Optional;
 
+import com.higroup.Buda.entities.Ingredient;
 import com.higroup.Buda.entities.Product;
 import com.higroup.Buda.entities.ProductGroup;
 
@@ -19,4 +20,6 @@ public interface ProductRepository extends JpaRepository<Product, Long>{
     List<Product> findAllProductByProductGroup(ProductGroup productGroup);
     @Query(value = "select * from product p where p.product_id in (select pc.product_id from product_component pc where pc.ingredient_id = :ingredientID)", nativeQuery = true)
     List<Product> findAllProductContainIngredient(@Param("ingredientID") Long ingredientID);
+    @Query(value = "select p from Product p where p.amountLeft <= p.alertAmount")
+    List<Ingredient> findAlertAmountProduct();
 }

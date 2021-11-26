@@ -75,9 +75,15 @@ public class IngredientController {
         return ResponseEntity.ok().body(this.ingredientService.hideIngredientByIngredientID(userID, ingredientID));
     }
     @PostMapping(path = "/edit/quantity/{ingredientID}")
-    public ResponseEntity<?> editIngredientQuantity(HttpServletRequest httpServletRequest, @PathVariable Long ingredientID, @RequestParam Integer amountLeftChange)
+    public ResponseEntity<?> editIngredientQuantity(HttpServletRequest httpServletRequest, @PathVariable Long ingredientID, @RequestBody Integer amountLeftChange, @RequestBody String message)
     {
         Long userID = this.requestUtil.getUserID(httpServletRequest);
-        return ResponseEntity.ok().body(this.ingredientService.editIngredientQuantity(userID, ingredientID, amountLeftChange));
+        return ResponseEntity.ok().body(this.ingredientService.editIngredientQuantity(userID, ingredientID, amountLeftChange, message));
+    }
+    @GetMapping(path = "/alert")
+    public ResponseEntity<?> findAlertAmountIngredient(HttpServletRequest httpServletRequest)
+    {
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        return ResponseEntity.ok().body(this.ingredientService.findAlertAmountIngredient(userID));
     }
 }
