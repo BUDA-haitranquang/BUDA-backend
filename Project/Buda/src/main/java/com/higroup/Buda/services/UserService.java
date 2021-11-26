@@ -4,10 +4,16 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
+import com.higroup.Buda.customDTO.GoogleUserPayload;
+import com.higroup.Buda.entities.Picture;
 import com.higroup.Buda.entities.User;
+
+
 import com.higroup.Buda.exception.APIBadRequestException;
 import com.higroup.Buda.jwt.JwtResponse;
+import com.higroup.Buda.repositories.PictureRepository;
 import com.higroup.Buda.repositories.RoleRepository;
 import com.higroup.Buda.repositories.UserRepository;
 import com.higroup.Buda.util.JwtTokenUtil;
@@ -30,12 +36,14 @@ import org.springframework.web.server.ResponseStatusException;
 @Service
 public class UserService implements UserDetailsService{
     private final UserRepository userRepository;
+    private final PictureRepository pictureRepository;
 
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PictureRepository pictureRepository) {
         this.userRepository = userRepository;
+        this.pictureRepository = pictureRepository;
         this.bCryptPasswordEncoder = new BCryptPasswordEncoder();
     }
 
@@ -43,7 +51,7 @@ public class UserService implements UserDetailsService{
     private RoleRepository roleRepository;
 
     // dang ky user moi
-    public User registerNewUser(User newUser) {
+    public JwtResponse registerNewUser(User newUser) {
         String email = newUser.getEmail();
         String phoneNumber = newUser.getPhoneNumber();
         String userName = newUser.getUserName();
@@ -83,7 +91,46 @@ public class UserService implements UserDetailsService{
         newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
         newUser.addRole(roleRepository.findRoleByName("USER").get());
         userRepository.save(newUser);
-        return newUser;
+        JwtTokenUtil jwtTokenUtil = new JwtTokenUtil();
+        UserDetails userDetails = loadUserByUsername(newUser.getEmail());
+        String jwtAccessToken = jwtTokenUtil.generateAccessToken(userDetails, newUser.getUserID());
+        String jwtRefreshToken = jwtTokenUtil.generateRefreshToken(userDetails, newUser.getUserID());
+        return new JwtResponse(jwtAccessToken, jwtRefreshToken);
+    }
+
+    public JwtResponse processGoogleUserPostLogin(GoogleUserPayload googleUserPayload)
+    {
+        String email = googleUserPayload.getEmail();
+        Optional<User> mailUser = this.userRepository.findUserByEmail(email);
+        JwtTokenUtil jwtTokenUtil = new JwtTokenUtil();
+        //Da tung dang nhap bang email giong voi gmail dang dung de dang nhap
+        if (mailUser.isPresent())
+        {
+            UserDetails userDetails = loadUserByUsername(mailUser.get().getEmail());
+            String jwtAccessToken = jwtTokenUtil.generateAccessToken(userDetails, mailUser.get().getUserID());
+            String jwtRefreshToken = jwtTokenUtil.generateRefreshToken(userDetails, mailUser.get().getUserID());
+            return new JwtResponse(jwtAccessToken, jwtRefreshToken);
+        }
+        //Chua tung dang nhap bang email nao giong voi gmail dang dung de dang nhap
+        else
+        {
+            User newUser = new User();
+            newUser.setEmail(email);
+            newUser.setFirstName(googleUserPayload.getFamilyName());
+            newUser.setLastName(googleUserPayload.getGivenName());
+            Picture picture = new Picture();
+            picture.setPictureLink(googleUserPayload.getPictureUrl());
+            pictureRepository.save(picture);
+            newUser.setPictureID(picture.getPictureID());
+            newUser.addRole(roleRepository.findRoleByName("USER").get());
+            UUID uuid = UUID.randomUUID();
+            newUser.setPassword(bCryptPasswordEncoder.encode(uuid.toString()));
+            userRepository.save(newUser);
+            UserDetails userDetails = loadUserByUsername(email);
+            String jwtAccessToken = jwtTokenUtil.generateAccessToken(userDetails, newUser.getUserID());
+            String jwtRefreshToken = jwtTokenUtil.generateRefreshToken(userDetails, newUser.getUserID());
+            return new JwtResponse(jwtAccessToken, jwtRefreshToken);
+        }
     }
 
     public List<User> getUsers() {
@@ -142,7 +189,7 @@ public class UserService implements UserDetailsService{
             //BAD REQUEST da ton tai email
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Already used by another user Email");
         }
-        if ((email!=null) && ((!EmailValidator.getInstance().isValid(email) || email.length() > 60)))
+        if ((email==null) || ((!EmailValidator.getInstance().isValid(email) || email.length() > 60)))
         {
             //khong phai email
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid email");
@@ -164,7 +211,7 @@ public class UserService implements UserDetailsService{
             //BAD REQUEST da ton tai username
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Already used by another username");
         }
-        if ((password!=null) && (password.length() < 8))
+        if ((password==null) || (password.length() < 8))
         {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Password is too short");
         }

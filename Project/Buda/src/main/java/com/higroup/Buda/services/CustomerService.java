@@ -63,5 +63,16 @@ public class CustomerService {
         }
         return null;
     }
-    
+    @Transactional
+    public Customer hideCustomer(Long userID, Long customerID)
+    {
+        Optional<Customer> customer = this.customerRepository.findCustomerByCustomerID(customerID);
+        if ((customer.isPresent()) && (customer.get().getUserID().equals(userID)))
+        {
+            customer.get().setVisible(Boolean.FALSE);
+            this.customerRepository.save(customer.get());
+            return customer.get();
+        }
+        else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Customer not found"); 
+    }
 }

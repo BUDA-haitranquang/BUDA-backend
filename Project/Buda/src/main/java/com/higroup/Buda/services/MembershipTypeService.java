@@ -49,7 +49,7 @@ public class MembershipTypeService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "UserID does not exist");
         }
         Discount discount = this.discountRepository.findDiscountByDiscountID(membershipType.getDiscount().getDiscountID());
-        if (userID!=discount.getUserID()) {
+        if (!userID.equals(discount.getUserID())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "UserID does not match");
         }
         else

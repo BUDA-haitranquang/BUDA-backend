@@ -21,6 +21,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.higroup.Buda.util.SHA_256_Encode;
@@ -35,7 +36,7 @@ import org.springframework.security.core.userdetails.UserDetails;
     @Index(columnList = "phoneNumber", name = "user_phone_number_index"),
     @Index(columnList = "userName", name = "user_user_name_index")
 })
-
+@JsonIgnoreProperties("purchases")
 public class User{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -250,7 +251,7 @@ public class User{
     @Override
     public String toString() {
         return "User [email=" + email + ", firstName=" + firstName + ", lastName=" + lastName + ", password=" + password
-                + ", phoneNumber=" + phoneNumber + ", pictureID=" + pictureID + ", purchases=" + purchases + ", roles="
+                + ", phoneNumber=" + phoneNumber + ", pictureID=" + pictureID + ", roles="
                 + roles + ", userID=" + userID + ", userName=" + userName + ", userUUID=" + userUUID + "]";
     }
 
@@ -267,7 +268,7 @@ public class User{
 
     @Override
     public int hashCode() {
-        return Objects.hash(userID, userUUID, userName, password, email, phoneNumber, lastName, firstName, pictureID, purchases);
+        return Objects.hash(userID);
     }
 
     // role 

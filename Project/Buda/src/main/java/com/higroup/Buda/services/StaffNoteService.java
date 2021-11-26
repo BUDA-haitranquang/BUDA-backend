@@ -1,5 +1,6 @@
 package com.higroup.Buda.services;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,9 +12,11 @@ import com.higroup.Buda.repositories.StaffRepository;
 import com.higroup.Buda.repositories.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class StaffNoteService {
@@ -27,22 +30,30 @@ public class StaffNoteService {
         this.userRepository = userRepository;
         this.staffNoteRepository = staffNoteRepository;
     }
-    public ResponseEntity<?> registerNewStaffNote(Long userID, StaffNote staffNote)
+    public StaffNote registerNewStaffNote(Long userID, StaffNote staffNote)
     {
         Optional<User> user = this.userRepository.findUserByUserID(userID);
         if (user.isEmpty())
         {
-            return ResponseEntity.badRequest().body("User not found");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User Not Found !!");
         }
         Optional<Staff> staff = this.staffRepository.findStaffByStaffID(staffNote.getStaffID());
         if (staff.isEmpty())
         {
-            return ResponseEntity.badRequest().body("Staff not found");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Staff Not Found !!");
         }
         staffNote.setUserID(userID);
         this.staffNoteRepository.save(staffNote);
-        return ResponseEntity.ok().body(staffNote.toString());
+        return staffNote;
     }
+    public StaffNote findStaffNotebyID(Long id){
+        Optional<StaffNote> staffNote = staffNoteRepository.findById(id);
+        if(staffNote.isPresent()){
+            return staffNote.get();
+        }
+        return null;
+    }
+
     public List<StaffNote> findAllByStaffID(Long staffID)
     {
         return this.staffNoteRepository.findAllByStaffID(staffID);
@@ -50,5 +61,40 @@ public class StaffNoteService {
     public List<StaffNote> findAllByUserID(Long userID)
     {
         return this.staffNoteRepository.findAllByUserID(userID);
+    }
+
+    public void deleteStaffNotebyID(Long id){
+        if(id == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid staff note id");
+        }
+        this.staffNoteRepository.deleteById(id);
+    }
+
+    public StaffNote updateStaffNotebyID(Long id, ZonedDateTime noteDate, String message, Boolean seen, Long userID, Long staffID){
+        StaffNote staffNote = this.staffNoteRepository.findById(id).get();
+        Staff staff = this.staffRepository.findById(staffID).get();
+        // not found staffnote
+        if(staffNote == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "staffnote not exists");
+        }
+        // staff id cannot be null
+        if(staffID != null && staff == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "staff not exists");
+        }
+        // cannot change userid in staffnote
+        if(staffNote.getUserID() != userID){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "staffNote not belong to userID: " + String.valueOf(userID));
+        }
+        // check if staff exitst and belong to user
+        if(staff != null && staff.getUserID() != userID){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Staff not belong to userID: " + String.valueOf(userID));
+        }
+        staffNote.setStaffID(staffID);
+        staffNote.setNoteDate(noteDate);
+        staffNote.setMessage(message);
+        staffNote.setSeen(seen);
+        this.staffNoteRepository.save(staffNote);
+        return staffNote;
+
     }
 }

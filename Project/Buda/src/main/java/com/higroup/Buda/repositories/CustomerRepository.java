@@ -6,9 +6,12 @@ import java.util.Optional;
 import com.higroup.Buda.entities.Customer;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface CustomerRepository extends JpaRepository<Customer, Long>{
-    List<Customer> findAllByUserID(Long userID);
+    @Query(value = "select c from Customer c where c.userID = :userID and c.visible = true")
+    List<Customer> findAllByUserID(@Param("userID") Long userID);
     Optional<Customer> findCustomerByCustomerID(Long customerID);
     Optional<Customer> findCustomerByUserIDAndPhoneNumber(Long userID, String phoneNumber);
 }

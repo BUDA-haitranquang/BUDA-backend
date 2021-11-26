@@ -40,7 +40,7 @@ public class SellOrderItemService {
         {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Sell Order not found");
         }
-        else if (sellOrder.get().getUserID() == userID){
+        else if (sellOrder.get().getUserID().equals(userID)){
             return this.sellOrderItemRepository.findAllSellOrderItemBySellOrder(sellOrder.get());
         }
         throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized");
@@ -49,7 +49,7 @@ public class SellOrderItemService {
     public SellOrderItem updateSellOrderItem(Long userID, SellOrderItem sellOrderItem)
     {
         presentChecker.checkIdAndRepository(sellOrderItem.getSellOrderItemID(), sellOrderItemRepository);
-        if (sellOrderItem.getUserID()==userID)
+        if (sellOrderItem.getUserID().equals(userID))
         {
             this.sellOrderItemRepository.save(sellOrderItem);
         }
@@ -62,7 +62,7 @@ public class SellOrderItemService {
     public void deleteSellOrderItem(Long userID, Long sellOrderItemID)
     {
         Optional<SellOrderItem> sellOrderItem = this.sellOrderItemRepository.findById(sellOrderItemID);
-        if ((sellOrderItem.isPresent()) && (sellOrderItem.get().getUserID() != userID))
+        if ((sellOrderItem.isPresent()) && (sellOrderItem.get().getUserID().equals(userID)))
         {
             this.sellOrderItemRepository.delete(sellOrderItem.get());
         }
@@ -73,7 +73,7 @@ public class SellOrderItemService {
     public List<SellOrderItem> findAllSellOrderItemByProductID(Long userID, Long productID)
     {
         Product product = this.productRepository.findProductByProductID(productID);
-        if (!product.equals(null) && (product.getUserID() == userID))
+        if (!product.equals(null) && (product.getUserID().equals(userID)))
         {
             return this.sellOrderItemRepository.findAllSellOrderItemByProductID(productID);
         }

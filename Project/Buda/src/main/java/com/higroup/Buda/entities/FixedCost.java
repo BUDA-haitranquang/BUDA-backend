@@ -33,9 +33,31 @@ public class FixedCost {
     private Integer period;
     @Column(name = "user_id")
     private Long userID;
+    @Column(name = "visible", columnDefinition = "boolean default true")
+    private Boolean visible;
     @OneToMany(mappedBy = "fixedCost", fetch = FetchType.LAZY)
     @JsonManagedReference(value = "fixed_cost - fixed_cost_bill")
     private Set<FixedCostBill> fixedCostBills;
+
+    public Boolean getVisible() {
+        return visible;
+    }
+
+    public void setVisible(Boolean visible) {
+        this.visible = visible;
+    }
+
+    public FixedCost(Long fixedCostID, String name, String description, Double moneyAmount, Integer period, Long userID,
+            Boolean visible, Set<FixedCostBill> fixedCostBills) {
+        this.fixedCostID = fixedCostID;
+        this.name = name;
+        this.description = description;
+        this.moneyAmount = moneyAmount;
+        this.period = period;
+        this.userID = userID;
+        this.visible = visible;
+        this.fixedCostBills = fixedCostBills;
+    }
 
     public FixedCost(Long fixedCostID, String name, String description, Double moneyAmount, Integer period, Long userID, Set<FixedCostBill> fixedCostBills) {
         this.fixedCostID = fixedCostID;
@@ -168,7 +190,7 @@ public class FixedCost {
 
     @Override
     public int hashCode() {
-        return Objects.hash(fixedCostID, name, description, moneyAmount, period, userID);
+        return Objects.hash(fixedCostID);
     }
 
     @Override
