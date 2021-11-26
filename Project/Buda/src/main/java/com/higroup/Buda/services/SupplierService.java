@@ -22,6 +22,15 @@ public class SupplierService {
     {
         this.supplierRepository = supplierRepository;
     }
+    public Supplier findSupplierBySupplierID(Long userID, Long supplierID)
+    {
+        Optional<Supplier> supplier = this.supplierRepository.findSupplierBySupplierID(supplierID);
+        if (supplier.isPresent() && (supplier.get().getUserID().equals(userID)))
+        {
+            return supplier.get();
+        }
+        else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Supplier not found");
+    }
     @Transactional
     public Supplier registerNewSupplier(Long userID, Supplier supplier)
     {
