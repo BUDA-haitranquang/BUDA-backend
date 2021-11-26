@@ -67,6 +67,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		// staff config
 		// staff note config
 		this.StaffNoteConfig(http);
+		// salary log
+		this.SalaryLogConfig(http);
 		// all other requests need to be authenticated
 		http.authorizeRequests().anyRequest().authenticated();
 		// http.authorizeRequests().anyRequest().authen
@@ -102,5 +104,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 															 "/api/staff-note/staffID/{staffID}/all").hasAnyAuthority("USER", "STAFF");
 		http.authorizeRequests().antMatchers(HttpMethod.PUT, "/api/staff-note/noteID/**").hasAnyAuthority("USER", "STAFF");
 		http.authorizeRequests().antMatchers(HttpMethod.DELETE, "/api/staff-note/noteID/**").hasAnyAuthority("USER", "STAFF");
+	}
+
+	private void SalaryLogConfig(HttpSecurity http) throws Exception{
+		http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/salary-log/userID/**", "/api/salary-log/staffID/**").hasAnyAuthority("USER");
 	}
 }

@@ -4,6 +4,7 @@ import java.time.ZonedDateTime;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.swing.text.StyledEditorKit.BoldAction;
 
 import com.higroup.Buda.entities.Purchase;
 import com.higroup.Buda.entities.Staff;
@@ -64,7 +65,7 @@ public class StaffNoteController {
     public ResponseEntity<?> findAllByStaffID(HttpServletRequest request, @PathVariable Long staffID)
     {
         Long jwtUserID = requestUtil.getUserID(request);
-        Staff staff = staffService.getStaffByID(staffID);
+        Staff staff = staffService.findStaffByID(staffID);
         // check staff belong to user
         if(staff.getUserID() != jwtUserID){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Staff not belong to userID: " + String.valueOf(staffID));
@@ -100,9 +101,13 @@ public class StaffNoteController {
     }
 
     @PutMapping(path = "noteID/{staffNoteID}")
-    public ResponseEntity<?> updateStaffByID(HttpServletRequest request, @PathVariable Long staffNoteID, 
-            @RequestParam(required = false) String message, @RequestParam(required = false) Boolean is_seen, @RequestParam(required = false) Long staffID)
+    public ResponseEntity<?> updateStaffByID(HttpServletRequest request, @RequestBody StaffNote newstaffNote)
     {
+        Long staffNoteID = newstaffNote.getStaffNoteID();
+        Boolean is_seen = newstaffNote.getSeen();
+        String message = newstaffNote.getMessage();
+        Long staffID = newstaffNote.getStaffID();
+
         Long jwtUserID = requestUtil.getUserID(request);
         StaffNote staffNote = this.staffNoteService.findStaffNotebyID(staffNoteID);
         if(staffNote == null){

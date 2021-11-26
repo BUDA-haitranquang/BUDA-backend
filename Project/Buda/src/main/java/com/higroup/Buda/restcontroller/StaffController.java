@@ -63,7 +63,7 @@ public class StaffController {
     @DeleteMapping(path = "/id/{staffID}")
     public ResponseEntity<?> deleteStaffByStaffID(HttpServletRequest request, @PathVariable("staffID") Long id){
         Long userID = requestUtil.getUserID(request);
-        Staff staff = staffService.getStaffByID(id);
+        Staff staff = staffService.findStaffByID(id);
         if(staff.getUserID() == userID){
             staffService.deleteStaffByID(id);
             return ResponseEntity.ok().body("Delete Succesfully");
@@ -81,7 +81,7 @@ public class StaffController {
             @RequestParam(required = false) Double salary, @RequestParam(required = false) String account) 
     {
         Long userID = requestUtil.getUserID(request);
-        Staff staff = staffService.getStaffByID(id);
+        Staff staff = staffService.findStaffByID(id);
         if(staff == null){
             return ResponseEntity.badRequest().body("Staff ID not exist: " + String.valueOf(id));
         }

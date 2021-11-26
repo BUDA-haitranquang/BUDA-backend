@@ -2,12 +2,19 @@ package com.higroup.Buda.restcontroller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.higroup.Buda.entities.SalaryLog;
+import com.higroup.Buda.entities.Staff;
 import com.higroup.Buda.services.SalaryLogService;
+import com.higroup.Buda.services.StaffService;
+import com.higroup.Buda.util.Checker.RequestUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,24 +27,58 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api/salary-log")
 public class SalaryLogController {
     private final SalaryLogService salaryLogService;
+    private final RequestUtil requestUtil;
+    private final StaffService staffService;
+
     @Autowired
-    public SalaryLogController(SalaryLogService salaryLogService)
+    public SalaryLogController(SalaryLogService salaryLogService, RequestUtil requestUtil, StaffService staffService)
     {
+        this.staffService = staffService;
+        this.requestUtil = requestUtil;
         this.salaryLogService = salaryLogService;
     }
     @PostMapping("userID/{userID}")
-    public ResponseEntity<?> registerNewSalaryLog(@PathVariable Long userID, @RequestBody SalaryLog salaryLog)
+    public ResponseEntity<?> registerNewSalaryLog(HttpServletRequest request, @PathVariable Long userID, @RequestBody SalaryLog salaryLog)
     {
-        return this.salaryLogService.registerNewSalaryLog(userID, salaryLog);
+        Long jwtuserID = requestUtil.getUserID(request);
+        if(jwtuserID != userID){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No authorized");
+        }
+        return ResponseEntity.ok(this.salaryLogService.registerNewSalaryLog(userID, salaryLog));
     }
     @GetMapping("userID/{userID}/all")
-    public List<SalaryLog> findAllByUserID(@PathVariable Long userID)
+    public ResponseEntity<?> findAllByUserID(HttpServletRequest request, @PathVariable Long userID)
     {
-        return this.salaryLogService.findAllByUserID(userID);
+        Long jwtuserID = requestUtil.getUserID(request);
+        if(jwtuserID != userID){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No authorized");
+        }
+        return ResponseEntity.ok(this.salaryLogService.findAllByUserID(userID));
     }
+
     @GetMapping("staffID/{staffID}/all")
-    public List<SalaryLog> findAllByStaffID(@PathVariable Long staffID)
+    public ResponseEntity<?> findAllByStaffID(HttpServletRequest request, @PathVariable Long staffID)
     {
-        return this.salaryLogService.findAllByStaffID(staffID);
+        Long jwtuserID = requestUtil.getUserID(request);
+        Staff staff = staffService.findStaffByID(staffID);
+        if(staff == null){
+            return ResponseEntity.badRequest().body("Staff not exists");
+        }
+        if(staff.getUserID() == jwtuserID){
+            return ResponseEntity.badRequest().body("Staff not belong to user ID");
+        }
+        return ResponseEntity.ok(this.salaryLogService.findAllByStaffID(staffID));
     }
+
+    @DeleteMapping("salary-logID/{salary_logID}")
+    public ResponseEntity<?> deleteSalaryLogbyID(HttpServletRequest request, @PathVariable Long salary_logID){
+        Long jwtuserID = requestUtil.getUserID(request);
+        SalaryLog salaryLog = salaryLogService.findByID(salary_logID);
+        if(salaryLog.getUserID() != jwtuserID){
+            return ResponseEntity.badRequest().body("SalaryLog not belong to user ID");
+        }
+        this.salaryLogService.deleteSalaryLogbyID(salary_logID);
+        return ResponseEntity.ok("delete successfully");
+    }
+    
 }
