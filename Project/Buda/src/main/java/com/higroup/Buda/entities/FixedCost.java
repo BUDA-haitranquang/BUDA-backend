@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -33,8 +34,8 @@ public class FixedCost {
     private Integer period;
     @Column(name = "user_id")
     private Long userID;
-    @Column(name = "visible", columnDefinition = "boolean default true")
-    private Boolean visible;
+    @Column(name = "visible", columnDefinition = "boolean default true", nullable = false)
+    private Boolean visible = Boolean.TRUE;
     @OneToMany(mappedBy = "fixedCost", fetch = FetchType.LAZY)
     @JsonManagedReference(value = "fixed_cost - fixed_cost_bill")
     private Set<FixedCostBill> fixedCostBills;

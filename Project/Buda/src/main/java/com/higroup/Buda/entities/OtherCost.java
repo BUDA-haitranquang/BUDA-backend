@@ -33,8 +33,8 @@ public class OtherCost {
     private String description;
     @Enumerated(EnumType.STRING)
     private Status status;
-    @Column(name = "visible", columnDefinition = "boolean default true")
-    private Boolean visible;
+    @Column(name = "visible", columnDefinition = "boolean default true", nullable = false)
+    private Boolean visible = Boolean.TRUE;
 
     public OtherCost(Long otherCostID, Long userID, Double totalCost, ZonedDateTime creationTime, String name,
             String description, Status status, Boolean visible) {

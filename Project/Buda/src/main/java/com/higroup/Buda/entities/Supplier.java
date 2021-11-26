@@ -32,8 +32,8 @@ public class Supplier {
     private String phoneNumber;
     @Column(name = "user_id")
     private Long userID;
-    @Column(name = "visible", columnDefinition = "boolean default true")
-    private Boolean visible;
+    @Column(name = "visible", columnDefinition = "boolean default true", nullable = false)
+    private Boolean visible = Boolean.TRUE;
 
     public Supplier() {
         super();
