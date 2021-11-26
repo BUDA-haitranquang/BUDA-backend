@@ -139,7 +139,7 @@ public class StaffService implements UserDetailsService{
         return thisstaff;
     }   
 
-    public Staff getStaffByID(Long id){
+    public Staff findStaffByID(Long id){
         Optional<Staff> staff = staffRepository.findStaffByStaffID(id);
         if(staff.isPresent()) return staff.get();
         return null;

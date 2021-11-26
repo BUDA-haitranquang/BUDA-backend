@@ -10,9 +10,11 @@ import com.higroup.Buda.repositories.SalaryLogRepository;
 import com.higroup.Buda.repositories.StaffRepository;
 import com.higroup.Buda.repositories.UserRepository;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class SalaryLogService {
@@ -26,21 +28,21 @@ public class SalaryLogService {
         this.staffRepository = staffRepository;
         this.salaryLogRepository = salaryLogRepository;
     }
-    public ResponseEntity<?> registerNewSalaryLog(Long userID, SalaryLog salaryLog)
+    public SalaryLog registerNewSalaryLog(Long userID, SalaryLog salaryLog)
     {
         Optional<User> user = userRepository.findUserByUserID(userID);
         if (user.isEmpty())
         {
-            return ResponseEntity.badRequest().body("User not found");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found");
         }
         Optional<Staff> staff = staffRepository.findStaffByStaffID(salaryLog.getStaffID());
         if (staff.isEmpty())
         {
-            return ResponseEntity.badRequest().body("Staff not found");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Staff not found");
         }
         salaryLog.setUserID(userID);
         this.salaryLogRepository.save(salaryLog);
-        return ResponseEntity.ok().body(salaryLog);
+        return salaryLog;
     }
     public List<SalaryLog> findAllByUserID(Long userID)
     {
@@ -49,5 +51,14 @@ public class SalaryLogService {
     public List<SalaryLog> findAllByStaffID(Long staffID)
     {
         return this.salaryLogRepository.findAllByStaffID(staffID);
+    }
+    public SalaryLog findByID(Long salaryLogID){
+        return this.salaryLogRepository.findById(salaryLogID).get();
+    }
+    public void deleteSalaryLogbyID(Long id){
+        if(id == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid id");
+        }
+        this.salaryLogRepository.deleteById(id);
     }
 }
