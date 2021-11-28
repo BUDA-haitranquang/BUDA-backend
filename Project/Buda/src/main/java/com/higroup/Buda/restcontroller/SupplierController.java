@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,7 +44,12 @@ public class SupplierController {
         return ResponseEntity.ok().body(this.supplierService.registerNewSupplier(userID, supplier));
         
     }
-
+    @GetMapping(path = "/{supplierID}")
+    public ResponseEntity<?> findSupplierBySupplierID(HttpServletRequest httpServletRequest, @PathVariable Long supplierID)
+    {
+        Long userID = requestUtil.getUserID(httpServletRequest);
+        return ResponseEntity.ok().body(this.supplierService.findSupplierBySupplierID(userID, supplierID));
+    }
     @GetMapping(path = "/all")
     public ResponseEntity<?> findAllByUserID(HttpServletRequest httpServletRequest)
     {
@@ -62,5 +68,11 @@ public class SupplierController {
     {
         Long userID = requestUtil.getUserID(httpServletRequest);
         return ResponseEntity.ok().body(this.supplierService.updateSupplier(userID, supplier));        
+    }
+    @DeleteMapping(path = "/hide/{supplierID}")
+    public ResponseEntity<?> hideSupplier(HttpServletRequest httpServletRequest, @PathVariable Long supplierID)
+    {
+        Long userID = requestUtil.getUserID(httpServletRequest);
+        return ResponseEntity.ok().body(this.supplierService.hideSupplier(userID, supplierID));
     }
 }

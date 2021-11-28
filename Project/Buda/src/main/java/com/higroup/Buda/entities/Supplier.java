@@ -32,9 +32,31 @@ public class Supplier {
     private String phoneNumber;
     @Column(name = "user_id")
     private Long userID;
+    @Column(name = "visible", columnDefinition = "boolean default true", nullable = false)
+    private Boolean visible = Boolean.TRUE;
 
     public Supplier() {
         super();
+    }
+
+    public Boolean getVisible() {
+        return visible;
+    }
+
+    public void setVisible(Boolean visibile) {
+        this.visible = visibile;
+    }
+
+    public Supplier(Long supplierID, String email, Long pictureID, String name, String address, String phoneNumber,
+            Long userID, Boolean visibile) {
+        this.supplierID = supplierID;
+        this.email = email;
+        this.pictureID = pictureID;
+        this.name = name;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+        this.userID = userID;
+        this.visible = visibile;
     }
 
     public Supplier(Long supplierID, String email, Long pictureID) {
@@ -115,7 +137,7 @@ public class Supplier {
 
     @Override
     public int hashCode() {
-        return Objects.hash(supplierID, email, pictureID, name, address, phoneNumber, userID);
+        return Objects.hash(supplierID);
     }
 
     @Override

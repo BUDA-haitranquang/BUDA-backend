@@ -49,10 +49,35 @@ public class Customer{
     private String phoneNumber;
     @Column(name = "user_id")
     private Long userID;
+    @Column(name = "visible", columnDefinition = "boolean default true", nullable = false)
+    private Boolean visible = Boolean.TRUE;
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
     @JsonManagedReference(value = "customer - sell_order")
     private Set<SellOrder> sellOrders;
     public Customer() {
+    }
+
+    public Boolean getVisible() {
+        return visible;
+    }
+
+    public void setVisible(Boolean visible) {
+        this.visible = visible;
+    }
+
+    public Customer(Long customerID, AgeGroup ageGroup, Gender gender, double totalSpend, Long membershipID,
+            String name, String address, String phoneNumber, Long userID, Boolean visible, Set<SellOrder> sellOrders) {
+        this.customerID = customerID;
+        this.ageGroup = ageGroup;
+        this.gender = gender;
+        this.totalSpend = totalSpend;
+        this.membershipID = membershipID;
+        this.name = name;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+        this.userID = userID;
+        this.visible = visible;
+        this.sellOrders = sellOrders;
     }
 
     public Customer(Long customerID, AgeGroup ageGroup, Gender gender, double totalSpend, Long membershipID, String name, String address, String phoneNumber, Long userID, Set<SellOrder> sellOrders) {
@@ -232,7 +257,7 @@ public class Customer{
 
     @Override
     public int hashCode() {
-        return Objects.hash(customerID, ageGroup, gender, totalSpend, membershipID, name, address, phoneNumber, userID);
+        return Objects.hash(customerID);
     }
 
     @Override

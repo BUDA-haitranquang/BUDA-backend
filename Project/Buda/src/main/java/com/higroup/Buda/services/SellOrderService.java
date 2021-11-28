@@ -8,6 +8,7 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import com.higroup.Buda.customDTO.AgeGroupStatistics;
 import com.higroup.Buda.entities.Customer;
 import com.higroup.Buda.entities.SellOrder;
 import com.higroup.Buda.entities.SellOrderItem;
@@ -92,7 +93,7 @@ public class SellOrderService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
         }
         Optional<Customer> customer = this.customerRepository.findCustomerByCustomerID(customerID);
-        if ((customer.isPresent()) && (customer.get().getUserID() == userID)) {
+        if ((customer.isPresent()) && (customer.get().getUserID().equals(userID))) {
             return this.sellOrderRepository.findAllSellOrderByCustomer(customer.get());
         } else {
             return Collections.emptyList();
@@ -132,7 +133,7 @@ public class SellOrderService {
     public SellOrder updateSellOrder(Long userID, SellOrder sellOrder)
     {
         Optional<SellOrder> oldSellOrder = this.sellOrderRepository.findSellOrderBySellOrderID(sellOrder.getSellOrderID());
-        if ((oldSellOrder.isPresent()) && (oldSellOrder.get().getUserID() == userID))
+        if ((oldSellOrder.isPresent()) && (oldSellOrder.get().getUserID().equals(userID)))
         {
             sellOrder.setUserID(userID);
             for (SellOrderItem sellOrderItem: sellOrder.getSellOrderItems())
@@ -178,4 +179,5 @@ public class SellOrderService {
         // return this.sellOrderRepository.findAllSellOrderByStatusAndUserID(userID, status.toString());
         return this.sellOrderRepository.findAllSellOrderByUserIDAndStatus(userID, status);
     }
+
 }

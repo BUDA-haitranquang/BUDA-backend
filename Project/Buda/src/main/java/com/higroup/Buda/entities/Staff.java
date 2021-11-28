@@ -34,6 +34,11 @@ public class Staff {
     private String phoneNumber;
     private String password;
     private String address;
+    @Column(length = 50)
+    private String email;
+
+    @Column(length=30)
+    private String account;
     @Column(name = "user_id")
     private Long userID;  
     @Enumerated(EnumType.STRING)
@@ -61,7 +66,9 @@ public class Staff {
     public Staff() {
     }
 
-    public Staff(Long staffID, String name, String phoneNumber, String password, String address, Long userID, StaffPosition staffPosition, String loginID, Double salary) {
+    public Staff(Long staffID, String name, String phoneNumber, String password, String address, Long userID, 
+                 StaffPosition staffPosition, String loginID, Double salary, String account, String email) 
+    {
         this.staffID = staffID;
         this.name = name;
         this.phoneNumber = phoneNumber;
@@ -71,6 +78,24 @@ public class Staff {
         this.staffPosition = staffPosition;
         this.staffUUID = loginID;
         this.salary = salary;
+        this.account = account;
+        this.email = email;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
     }
 
     public Long getStaffID() {
@@ -212,8 +237,10 @@ public class Staff {
             " staffID='" + getStaffID() + "'" +
             ", name='" + getName() + "'" +
             ", phoneNumber='" + getPhoneNumber() + "'" +
+            ", account='" + getAccount() + "'" +
             ", password='" + getPassword() + "'" +
             ", address='" + getAddress() + "'" +
+            ", email='" + getEmail() + "'" +
             ", userID='" + getUserID() + "'" +
             ", staffPosition='" + getStaffPosition() + "'" +
             ", staffUUID='" + getStaffUUID() + "'" +

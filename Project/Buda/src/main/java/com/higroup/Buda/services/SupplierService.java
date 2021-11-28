@@ -3,6 +3,8 @@ package com.higroup.Buda.services;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import com.higroup.Buda.entities.Supplier;
 import com.higroup.Buda.repositories.SupplierRepository;
 
@@ -20,7 +22,16 @@ public class SupplierService {
     {
         this.supplierRepository = supplierRepository;
     }
-    
+    public Supplier findSupplierBySupplierID(Long userID, Long supplierID)
+    {
+        Optional<Supplier> supplier = this.supplierRepository.findSupplierBySupplierID(supplierID);
+        if (supplier.isPresent() && (supplier.get().getUserID().equals(userID)))
+        {
+            return supplier.get();
+        }
+        else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Supplier not found");
+    }
+    @Transactional
     public Supplier registerNewSupplier(Long userID, Supplier supplier)
     {
         Optional<Supplier> phoneSupplier = this.supplierRepository.findSupplierByUserIDAndPhoneNumber(userID, supplier.getPhoneNumber());
@@ -47,15 +58,28 @@ public class SupplierService {
         else return null;
         //return phoneSupplier.<ResponseEntity<?>>map(supplier -> ResponseEntity.ok().body(supplier)).orElseGet(() -> ResponseEntity.badRequest().body("Not found"));
     }
-
+    @Transactional
     public Supplier updateSupplier(Long userID, Supplier supplier)
     {
         Optional<Supplier> oldSupplier = this.supplierRepository.findSupplierBySupplierID(supplier.getSupplierID());
-        if ((oldSupplier.isPresent()) && (oldSupplier.get().getUserID() == userID))
+        if ((oldSupplier.isPresent()) && (oldSupplier.get().getUserID().equals(userID)))
         {
             supplier.setUserID(userID);
+            this.supplierRepository.save(supplier);
             return supplier;
         }
-        else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Supplier does not exists");
+        else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Supplier does not exist");
+    }
+    @Transactional
+    public Supplier hideSupplier(Long userID, Long supplierID)
+    {
+        Optional<Supplier> supplier = this.supplierRepository.findSupplierBySupplierID(supplierID);
+        if ((supplier.isPresent()) && (supplier.get().getUserID().equals(userID)))
+        {
+            supplier.get().setVisible(Boolean.FALSE);
+            this.supplierRepository.save(supplier.get());
+            return supplier.get();
+        }
+        else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Supplier does not exist");
     }
 }

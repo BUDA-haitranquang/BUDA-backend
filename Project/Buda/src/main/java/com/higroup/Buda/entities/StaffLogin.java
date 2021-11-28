@@ -3,23 +3,23 @@ package com.higroup.Buda.entities;
 import java.util.Objects;
 
 public class StaffLogin {
-    private String uuid;
+    private String account;
     private String password;
 
     public StaffLogin() {
     }
 
-    public StaffLogin(String uuid, String password) {
-        this.uuid = uuid;
+    public StaffLogin(String account, String password) {
+        this.account = account;
         this.password = password;
     }
 
-    public String getUuid() {
-        return this.uuid;
+    public String getAccount() {
+        return this.account;
     }
 
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
+    public void setAccount(String account) {
+        this.account = account;
     }
 
     public String getPassword() {
@@ -30,8 +30,8 @@ public class StaffLogin {
         this.password = password;
     }
 
-    public StaffLogin uuid(String uuid) {
-        setUuid(uuid);
+    public StaffLogin account(String acouunt) {
+        setAccount(acouunt);
         return this;
     }
 
@@ -48,18 +48,18 @@ public class StaffLogin {
             return false;
         }
         StaffLogin staffLogin = (StaffLogin) o;
-        return Objects.equals(uuid, staffLogin.uuid) && Objects.equals(password, staffLogin.password);
+        return Objects.equals(account, staffLogin.account) && Objects.equals(password, staffLogin.password);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(uuid, password);
+        return Objects.hash(account, password);
     }
 
     @Override
     public String toString() {
         return "{" +
-            " uuid='" + getUuid() + "'" +
+            " uuid='" + getAccount() + "'" +
             ", password='" + getPassword() + "'" +
             "}";
     }

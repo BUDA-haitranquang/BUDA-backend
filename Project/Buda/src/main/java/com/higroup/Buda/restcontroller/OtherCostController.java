@@ -6,6 +6,7 @@ import com.higroup.Buda.entities.OtherCost;
 import com.higroup.Buda.services.OtherCostService;
 import com.higroup.Buda.util.Checker.RequestUtil;
 
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -51,5 +52,35 @@ public class OtherCostController {
     {
         Long userID = this.requestUtil.getUserID(httpServletRequest);
         return ResponseEntity.ok().body(this.otherCostService.createNewOtherCost(userID, otherCost));
+    }
+    @GetMapping("/hide/{otherCostID}")
+    public ResponseEntity<?> hideOtherCost(HttpServletRequest httpServletRequest, @PathVariable Long otherCostID)
+    {
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        return ResponseEntity.ok().body(this.otherCostService.hideOtherCost(userID, otherCostID));
+    }
+    @GetMapping("/all/hidden")
+    public ResponseEntity<?> findAllHiddenOtherCostByCurrentUser(HttpServletRequest httpServletRequest)
+    {
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        return ResponseEntity.ok().body(this.otherCostService.findAllHiddenOtherCostByUserID(userID));
+    }
+    @GetMapping("expense/weekly")
+    public ResponseEntity<?> findOtherCostExpenseByWeek(HttpServletRequest httpServletRequest)
+    {
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        return ResponseEntity.ok().body(this.otherCostService.findOtherCostExpenseByWeek(userID));
+    }
+    @GetMapping("expense/this-month")
+    public ResponseEntity<?> findOtherCostExpenseCurrentMonth(HttpServletRequest httpServletRequest)
+    {
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        return ResponseEntity.ok().body(this.otherCostService.findOtherCostExpenseCurrentMonth(userID));
+    }
+    @GetMapping("expense/monthly")
+    public ResponseEntity<?> findOtherCostExpenseGroupByMonth(HttpServletRequest httpServletRequest)
+    {
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        return ResponseEntity.ok().body(this.otherCostService.findOtherCostExpenseGroupByMonth(userID));
     }
 }

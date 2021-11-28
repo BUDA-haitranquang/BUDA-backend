@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import com.higroup.Buda.customDTO.ExpenseByTimeStatistics;
 import com.higroup.Buda.entities.FixedCost;
 import com.higroup.Buda.entities.FixedCostBill;
 import com.higroup.Buda.repositories.FixedCostBillRepository;
@@ -34,7 +35,7 @@ public class FixedCostBillService {
     public List<FixedCostBill> findAllByFixedCostID(Long userID, Long fixedCostID)
     {
         Optional<FixedCost> fixedCost = this.fixedCostRepository.findFixedCostByFixedCostID(fixedCostID);
-        if ((fixedCost.isPresent()) && (fixedCost.get().getUserID() == userID))
+        if ((fixedCost.isPresent()) && (fixedCost.get().getUserID().equals(userID)))
         {   
             return this.fixedCostBillRepository.findAllByFixedCost(fixedCost.get());
         }
@@ -59,9 +60,28 @@ public class FixedCostBillService {
     public FixedCostBill createNewFixedCostBill(Long userID, FixedCostBill fixedCostBill)
     {
         presentChecker.checkIdAndRepository(userID, userRepository);
-        fixedCostBill.setUserID(userID);
-        fixedCostBill.setCreationTime(ZonedDateTime.now());
-        this.fixedCostBillRepository.save(fixedCostBill);
-        return fixedCostBill;
+        //presentChecker.checkIdAndRepository(fixedCostBill.getFixedCost().getFixedCostID(), fixedCostRepository);
+        Optional<FixedCost> fixedCost = this.fixedCostRepository.findFixedCostByFixedCostID(fixedCostBill.getFixedCost().getFixedCostID());
+        if ((fixedCost.isPresent()) && (fixedCost.get().getUserID().equals(userID)))
+        {
+            fixedCostBill.setUserID(userID);
+            fixedCostBill.setFixedCost(fixedCost.get());
+            fixedCostBill.setCreationTime(ZonedDateTime.now());
+            this.fixedCostBillRepository.save(fixedCostBill);
+            return fixedCostBill;
+        }
+        else throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Fixed Cost not found");
+    }
+    public List<ExpenseByTimeStatistics> findFixedCostBillExpenseByWeek(Long userID)
+    {
+        return this.fixedCostBillRepository.findFixedCostBillExpenseByWeek(userID);
+    }
+    public List<ExpenseByTimeStatistics> findFixedCostBillExpenseCurrentMonth(Long userID)
+    {
+        return this.fixedCostBillRepository.findFixedCostBillExpenseCurrentMonth(userID);
+    }
+    public List<ExpenseByTimeStatistics> findFixedCostBillExpenseGroupByMonth(Long userID)
+    {
+        return this.fixedCostBillRepository.findFixedCostBillExpenseGroupByMonth(userID);
     }
 }

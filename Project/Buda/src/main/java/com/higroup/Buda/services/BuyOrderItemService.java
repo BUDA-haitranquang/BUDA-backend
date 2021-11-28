@@ -37,7 +37,7 @@ public class BuyOrderItemService {
     public List<BuyOrderItem> findAllByBuyOrderID(Long userID, Long buyOrderID)
     {
         Optional<BuyOrder> buyOrder = this.buyOrderRepository.findBuyOrderByBuyOrderID(buyOrderID);
-        if ((buyOrder.isPresent()) && (buyOrder.get().getUserID() == userID))
+        if ((buyOrder.isPresent()) && (buyOrder.get().getUserID().equals(userID)))
         {
             return this.buyOrderItemRepository.findAllBuyOrderItemByBuyOrder(buyOrder.get());
         }
@@ -60,7 +60,7 @@ public class BuyOrderItemService {
     public void deleteBuyOrderItem(Long userID, Long buyOrderItemID)
     {
         Optional<BuyOrderItem> buyOrderItem = this.buyOrderItemRepository.findBuyOrderItemByBuyOrderItemID(buyOrderItemID);
-        if ((buyOrderItem.isPresent()) && (buyOrderItem.get().getUserID() == userID))
+        if ((buyOrderItem.isPresent()) && (buyOrderItem.get().getUserID().equals(userID)))
         {
             this.buyOrderItemRepository.delete(buyOrderItem.get());
         }
@@ -72,7 +72,7 @@ public class BuyOrderItemService {
     public List<BuyOrderItem> findAllBuyOrderItemByIngredientID(Long userID, Long ingredientID)
     {
         Optional<Ingredient> ingredient = this.ingredientRepository.findIngredientByIngredientID(ingredientID);
-        if ((ingredient.isPresent()) && (ingredient.get().getUserID() == userID))
+        if ((ingredient.isPresent()) && (ingredient.get().getUserID().equals(userID)))
         {
             return this.buyOrderItemRepository.findAllBuyOrderItemByIngredientID(ingredientID);
         }

@@ -9,6 +9,7 @@ import java.util.Optional;
 
 
 import com.higroup.Buda.entities.Staff;
+import com.higroup.Buda.entities.StaffPosition;
 import com.higroup.Buda.jwt.JwtResponse;
 import com.higroup.Buda.repositories.RoleRepository;
 import com.higroup.Buda.repositories.StaffRepository;
@@ -41,13 +42,13 @@ public class StaffService implements UserDetailsService{
         this.roleRepository = roleRepository;
     }
 
-    public JwtResponse correctLogin(String uuid, String rawPassword)
+    public JwtResponse correctLogin(String account, String rawPassword)
     {
-        Optional<Staff> staff = this.staffRepository.findStaffByStaffUUID(uuid);
+        Optional<Staff> staff = this.staffRepository.findStaffByAccount(account);
         if ((staff.isPresent())&&(this.bCryptPasswordEncoder.matches(rawPassword, staff.get().getPassword())))
         {
             JwtTokenUtil jwtTokenUtil = new JwtTokenUtil();
-            UserDetails userDetails = loadUserByUsername(uuid);
+            UserDetails userDetails = loadUserByUsername(account);
 
             // return token 
             Map<String, Object> claims = new HashMap<String, Object>();
@@ -68,6 +69,12 @@ public class StaffService implements UserDetailsService{
         {
             return ResponseEntity.badRequest().body("Exists UUID, try again");
         }
+
+        staff = this.staffRepository.findStaffByAccount(newStaff.getAccount());
+        if(staff.isPresent()){
+            return ResponseEntity.badRequest().body("Exists Account, try again");
+        }
+
         String phoneNumber = newStaff.getPhoneNumber();
         if ((phoneNumber==null) || (!phoneNumber.matches("[0-9]+")))
         {
@@ -85,12 +92,12 @@ public class StaffService implements UserDetailsService{
     }
 
     @Override
-    public UserDetails loadUserByUsername(String staffUUID) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String account) throws UsernameNotFoundException {
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        Optional<Staff> staff = this.staffRepository.findStaffByStaffUUID(staffUUID);
+        Optional<Staff> staff = this.staffRepository.findStaffByAccount(account);
 
         if(!staff.isPresent()){
-            throw new UsernameNotFoundException("Not found staff with uuid: " + staffUUID);
+            throw new UsernameNotFoundException("Not found staff with uuid: " + account);
         }
         
         staff.get().getRoles().forEach(role -> 
@@ -98,7 +105,7 @@ public class StaffService implements UserDetailsService{
                 authorities.add(new SimpleGrantedAuthority(role.getName()));
             }
         );
-        return new org.springframework.security.core.userdetails.User(staff.get().getStaffUUID(), 
+        return new org.springframework.security.core.userdetails.User(staff.get().getAccount(), 
                                                                       staff.get().getPassword(), authorities);
     }
 
@@ -110,7 +117,9 @@ public class StaffService implements UserDetailsService{
     }
 
     @Transactional
-    public Staff updateStaffByID(Long id, String Name, String phoneNumber, String password, String address, Double salary, String staffUUID){
+    public Staff updateStaffByID(Long id, String Name, String phoneNumber, String password, String address, Double salary, 
+                                 String staffUUID, String account, StaffPosition staffPosition)
+    {
         Staff thisstaff = staffRepository.findStaffByStaffID(id).get();
         Optional<Staff> staff = staffRepository.findStaffByStaffUUID(staffUUID);
         if((staffUUID != null) && (staff.isPresent()) && !staff.get().getStaffID().equals(id)){
@@ -120,16 +129,20 @@ public class StaffService implements UserDetailsService{
         thisstaff.address(address);
         thisstaff.name(Name);
         thisstaff.phoneNumber(phoneNumber);
-        thisstaff.password(password);
+        thisstaff.password(bCryptPasswordEncoder.encode(password));
         thisstaff.salary(salary);
         thisstaff.loginID(staffUUID);
+        thisstaff.setAccount(account);
+        thisstaff.staffPosition(staffPosition);
 
         staffRepository.save(thisstaff);
         return thisstaff;
     }   
 
-    public Staff getStaffByID(Long id){
-        return staffRepository.findStaffByStaffID(id).get();
+    public Staff findStaffByID(Long id){
+        Optional<Staff> staff = staffRepository.findStaffByStaffID(id);
+        if(staff.isPresent()) return staff.get();
+        return null;
     }
 
 }

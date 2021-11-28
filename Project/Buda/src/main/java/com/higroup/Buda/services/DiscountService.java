@@ -97,7 +97,7 @@ public class DiscountService {
     {
         presentChecker.checkIdAndRepository(discountID, this.discountRepository);
         Discount discount = this.discountRepository.findDiscountByDiscountID(discountID);
-        if (discount.getUserID()!=userID)
+        if (!discount.getUserID().equals(userID))
         {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "UserID does not match");
         }

@@ -35,7 +35,8 @@ import org.hibernate.annotations.FetchMode;
 @Table(name = "Sell_order", indexes = {
     @Index(columnList = "user_id", name = "sell_order_user_id_index"),
     @Index(columnList = "customer_id", name = "sell_order_customer_id_index"),
-    @Index(columnList = "discount_id", name = "sell_order_discount_id_index")
+    @Index(columnList = "discount_id", name = "sell_order_discount_id_index"),
+    @Index(columnList = "creation_time", name = "sell_order_creation_time_index")
 })
 //@JsonIgnoreProperties("sellOrderItems")
 
@@ -52,6 +53,7 @@ public class SellOrder implements Serializable{
     @JoinColumn(name = "discount_ID", nullable = true)
     @JsonBackReference(value = "discount - sell_order")
     private Discount discount;
+    @Column(name = "creation_time")
     private ZonedDateTime creationTime;
     @Enumerated(EnumType.STRING)
     private AgeGroup ageGroup;
