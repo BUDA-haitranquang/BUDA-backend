@@ -44,7 +44,12 @@ public class SupplierController {
         return ResponseEntity.ok().body(this.supplierService.registerNewSupplier(userID, supplier));
         
     }
-
+    @GetMapping(path = "/{supplierID}")
+    public ResponseEntity<?> findSupplierBySupplierID(HttpServletRequest httpServletRequest, @PathVariable Long supplierID)
+    {
+        Long userID = requestUtil.getUserID(httpServletRequest);
+        return ResponseEntity.ok().body(this.supplierService.findSupplierBySupplierID(userID, supplierID));
+    }
     @GetMapping(path = "/all")
     public ResponseEntity<?> findAllByUserID(HttpServletRequest httpServletRequest)
     {
