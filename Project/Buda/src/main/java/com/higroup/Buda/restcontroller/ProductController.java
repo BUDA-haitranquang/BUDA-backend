@@ -1,5 +1,6 @@
 package com.higroup.Buda.restcontroller;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -87,5 +88,10 @@ public class ProductController {
     {
         Long userID = this.requestUtil.getUserID(httpServletRequest);
         return ResponseEntity.ok().body(this.productService.findAlertAmountProduct(userID));
+    }
+    @PostMapping(path = "/edit/{productID}")
+    public ResponseEntity<?> editProduct(HttpServletRequest httpServletRequest, @PathVariable Long productID, @RequestBody Product product) throws InvocationTargetException, IllegalAccessException {
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        return ResponseEntity.ok().body(this.productService.editProduct(userID, productID, product));
     }
 }

@@ -1,8 +1,10 @@
 package com.higroup.Buda.services;
 
+import java.lang.reflect.InvocationTargetException;
 import java.time.ZonedDateTime;
 import java.util.*;
 
+import com.higroup.Buda.BeanUtils.NullAwareBeanUtilsBean;
 import com.higroup.Buda.entities.*;
 import com.higroup.Buda.repositories.ProductGroupRepository;
 import com.higroup.Buda.repositories.ProductLeftLogRepository;
@@ -10,6 +12,7 @@ import com.higroup.Buda.repositories.ProductRepository;
 import com.higroup.Buda.repositories.UserRepository;
 import com.higroup.Buda.util.Checker.PresentChecker;
 
+import org.apache.commons.beanutils.BeanUtilsBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -97,14 +100,14 @@ public class ProductService {
         }
         return Collections.emptyList();
     }
-    public Product editProductQuantity(Long userID, Long ProductID, Integer amountLeftChange, String message)
+    public Product editProductQuantity(Long userID, Long productID, Integer amountLeftChange, String message)
     {
         Optional<User> user = this.userRepository.findUserByUserID(userID);
         if (user.isEmpty())
         {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
         }
-        Product product = this.productRepository.findProductByProductID(ProductID);
+        Product product = this.productRepository.findProductByProductID(productID);
         if (Objects.equals(product.getUserID(), userID))
         {
             Integer amountLeft = product.getAmountLeft();
@@ -132,5 +135,22 @@ public class ProductService {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
         }
         return this.productRepository.findAlertAmountProduct();
+    }
+    public Product editProduct(Long userID, Long productID, Product product) throws InvocationTargetException, IllegalAccessException {
+
+        Optional<User> user = this.userRepository.findUserByUserID(userID);
+        if (user.isEmpty())
+        {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
+        }
+        Product dest_product = this.productRepository.findProductByProductID(productID);
+        if (Objects.equals(dest_product.getUserID(), userID))
+        {
+            BeanUtilsBean notNull = new NullAwareBeanUtilsBean();
+            notNull.copyProperties(dest_product, product);
+            return dest_product;
+        }
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
+
     }
 }
