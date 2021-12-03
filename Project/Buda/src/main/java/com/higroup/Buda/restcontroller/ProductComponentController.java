@@ -34,10 +34,18 @@ public class ProductComponentController {
         Long userID = this.requestUtil.getUserID(httpServletRequest);
         return ResponseEntity.ok().body(this.productComponentService.findAllByProductID(userID, productID));
     }
-    @PostMapping(path = "/{productID}/{ingredientID}")
+    @PostMapping(path = "/{productID}/add/{ingredientID}")
     public ResponseEntity<?> addIngredientToProduct(HttpServletRequest httpServletRequest, @PathVariable Long productID, @PathVariable Long ingredientID)
     {
-        return ResponseEntity.ok().body("");
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        return this.productComponentService.addIngredientToProduct(userID, productID, ingredientID);
+    }
+    @PostMapping(path = "/{productID}/remove/{ingredientID}")
+    public ResponseEntity<?> removeIngredientFromProduct(HttpServletRequest httpServletRequest, @PathVariable Long productID, @PathVariable Long ingredientID)
+    {
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        this.productComponentService.removeIngredientFromProduct(userID, productID, ingredientID);
+        return ResponseEntity.ok("Remove successfully");
     }
 
     @GetMapping(path = "contains/ingredient/{ingredientID}")
