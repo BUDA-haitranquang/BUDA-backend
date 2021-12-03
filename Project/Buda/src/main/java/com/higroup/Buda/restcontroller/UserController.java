@@ -55,7 +55,7 @@ public class UserController {
 
     @GetMapping(path = "/id/{id}")
     public ResponseEntity<?> getUserByID(@PathVariable("id") Long id, HttpServletRequest request) {
-        Long userID = requestUtil.getUserID(request);
+        Long userID = requestUtil.getUserIDFromUserToken(request);
         if(userID != id){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No authorized");
         }
@@ -64,7 +64,7 @@ public class UserController {
     // get current user 
     @GetMapping(path = "/me")
     public ResponseEntity<?> getCurrentUser(HttpServletRequest request){
-        Long userID = requestUtil.getUserID(request);
+        Long userID = requestUtil.getUserIDFromUserToken(request);
         return ResponseEntity.ok().body(userService.getUserByID(userID));
     }
 
@@ -82,7 +82,7 @@ public class UserController {
 
     @DeleteMapping(path = "id/{userID}")
     public ResponseEntity<?> deleteUserByID(@PathVariable("userID") Long id, HttpServletRequest request) {
-        Long get_userid = requestUtil.getUserID(request);
+        Long get_userid = requestUtil.getUserIDFromUserToken(request);
         if(get_userid == id){
             userService.deleteUserByID(id);
             return ResponseEntity.ok().body("Delete Succesfully");

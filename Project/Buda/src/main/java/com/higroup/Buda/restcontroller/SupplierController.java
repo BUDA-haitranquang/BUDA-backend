@@ -40,39 +40,39 @@ public class SupplierController {
     @PostMapping(path = "new")
     public ResponseEntity<?> registerNewSupplier(HttpServletRequest httpServletRequest,  @RequestBody Supplier supplier)
     { 
-        Long userID = requestUtil.getUserID(httpServletRequest);
+        Long userID = requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.supplierService.registerNewSupplier(userID, supplier));
         
     }
     @GetMapping(path = "/{supplierID}")
     public ResponseEntity<?> findSupplierBySupplierID(HttpServletRequest httpServletRequest, @PathVariable Long supplierID)
     {
-        Long userID = requestUtil.getUserID(httpServletRequest);
+        Long userID = requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.supplierService.findSupplierBySupplierID(userID, supplierID));
     }
     @GetMapping(path = "/all")
     public ResponseEntity<?> findAllByUserID(HttpServletRequest httpServletRequest)
     {
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.supplierService.findAllByUserID(userID));
     }
     @GetMapping(path = "/byphone")
     public ResponseEntity<?> findSupplierByCurrentUserWithPhoneNumber(HttpServletRequest httpServletRequest, @RequestBody String phoneNumber)
     {
-        Long userID = requestUtil.getUserID(httpServletRequest);
+        Long userID = requestUtil.getUserIDFromUserToken(httpServletRequest);
         // System.out.println(phoneNumber);
         return ResponseEntity.ok().body(this.supplierService.findSupplierByUserIDAndPhoneNumber(userID, phoneNumber));
     }
     @PutMapping(path = "/update")
     public ResponseEntity<?> updateSupplier(HttpServletRequest httpServletRequest, @RequestBody Supplier supplier)
     {
-        Long userID = requestUtil.getUserID(httpServletRequest);
+        Long userID = requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.supplierService.updateSupplier(userID, supplier));        
     }
     @DeleteMapping(path = "/hide/{supplierID}")
     public ResponseEntity<?> hideSupplier(HttpServletRequest httpServletRequest, @PathVariable Long supplierID)
     {
-        Long userID = requestUtil.getUserID(httpServletRequest);
+        Long userID = requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.supplierService.hideSupplier(userID, supplierID));
     }
 }

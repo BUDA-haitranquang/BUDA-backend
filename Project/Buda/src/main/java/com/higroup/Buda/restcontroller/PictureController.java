@@ -35,25 +35,25 @@ public class PictureController
     @GetMapping(path = "{pictureID}")
     public Picture findPictureByPictureID(HttpServletRequest httpServletRequest, @PathVariable Long pictureID)
     {
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return this.pictureService.findPictureByPictureID(userID, pictureID);
     }
     @PostMapping
     public ResponseEntity<?> saveNewPicture(HttpServletRequest httpServletRequest, @RequestBody Picture picture)
     {
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.pictureService.saveNewPicture(userID, picture));
     }
     @PutMapping
     public ResponseEntity<?> updatePicture(HttpServletRequest httpServletRequest, @RequestBody Picture picture)
     {
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.pictureService.updatePicture(userID, picture));
     }
     @DeleteMapping(path = "{pictureID}")
     public ResponseEntity<?> deletePicture(HttpServletRequest httpServletRequest, @PathVariable Long pictureID)
     {
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         this.pictureService.deletePicture(userID, pictureID);
         return ResponseEntity.ok().body("Delete successfully");
     }

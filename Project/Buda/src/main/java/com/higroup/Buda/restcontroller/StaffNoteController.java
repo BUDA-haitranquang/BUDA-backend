@@ -46,7 +46,7 @@ public class StaffNoteController {
     @PostMapping(path = "/register")
     public ResponseEntity<?> registerNewStaffNote(HttpServletRequest request, @RequestBody StaffNote staffNote)
     {
-        Long jwtUserID = requestUtil.getUserID(request);
+        Long jwtUserID = requestUtil.getUserIDFromUserToken(request);
         staffNote.setNoteDate(ZonedDateTime.now());
         return ResponseEntity.ok().body(staffNoteService.registerNewStaffNote(jwtUserID, staffNote));
     }
@@ -54,7 +54,7 @@ public class StaffNoteController {
     @GetMapping(path = "userID/{userID}/all")
     public ResponseEntity<?> findAllByUserID(HttpServletRequest request, @PathVariable Long userID)
     {
-        Long jwtUserID = requestUtil.getUserID(request);
+        Long jwtUserID = requestUtil.getUserIDFromUserToken(request);
         if(jwtUserID != userID){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No authorized");
         }
@@ -64,7 +64,7 @@ public class StaffNoteController {
     @GetMapping(path = "staffID/{staffID}/all")
     public ResponseEntity<?> findAllByStaffID(HttpServletRequest request, @PathVariable Long staffID)
     {
-        Long jwtUserID = requestUtil.getUserID(request);
+        Long jwtUserID = requestUtil.getUserIDFromUserToken(request);
         Staff staff = staffService.findStaffByID(staffID);
         // check staff belong to user
         if(!staff.getUserID().equals(jwtUserID)){
@@ -76,7 +76,7 @@ public class StaffNoteController {
     @GetMapping(path = "staffID/{staffID}/all/unseen")
     public ResponseEntity<?> findAllUnseenByStaffID(HttpServletRequest request, @PathVariable Long staffID)
     {
-        Long jwtUserID = requestUtil.getUserID(request);
+        Long jwtUserID = requestUtil.getUserIDFromUserToken(request);
         Staff staff = staffService.findStaffByID(staffID);
         // check staff belong to user
         if(!staff.getUserID().equals(jwtUserID)){
@@ -87,7 +87,7 @@ public class StaffNoteController {
 
     @GetMapping(path = "noteID/{staffNoteID}")
     public ResponseEntity<?> findByStaffNoteID(HttpServletRequest request, @PathVariable Long staffNoteID){
-        Long jwtUserID = requestUtil.getUserID(request);
+        Long jwtUserID = requestUtil.getUserIDFromUserToken(request);
         StaffNote staffNote = this.staffNoteService.findStaffNotebyID(staffNoteID);
         if(staffNote == null){
             return ResponseEntity.badRequest().body("StaffNote id not exists: " + String.valueOf(staffNoteID));
@@ -100,7 +100,7 @@ public class StaffNoteController {
 
     @DeleteMapping(path = "noteID/{staffNoteID}")
     public ResponseEntity<?> deleteByStaffNoteID(HttpServletRequest request, @PathVariable Long staffNoteID){
-        Long jwtUserID = requestUtil.getUserID(request);
+        Long jwtUserID = requestUtil.getUserIDFromUserToken(request);
         StaffNote staffNote = this.staffNoteService.findStaffNotebyID(staffNoteID);
         if(staffNote == null){
             return ResponseEntity.badRequest().body("StaffNote id not exists: " + String.valueOf(staffNoteID));
@@ -120,7 +120,7 @@ public class StaffNoteController {
         String message = newstaffNote.getMessage();
         Long staffID = newstaffNote.getStaffID();
 
-        Long jwtUserID = requestUtil.getUserID(request);
+        Long jwtUserID = requestUtil.getUserIDFromUserToken(request);
         StaffNote staffNote = this.staffNoteService.findStaffNotebyID(staffNoteID);
         if(staffNote == null){
             return ResponseEntity.badRequest().body("StaffNote id not exists: " + String.valueOf(staffNoteID));

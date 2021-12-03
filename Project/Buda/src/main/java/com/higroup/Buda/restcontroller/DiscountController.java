@@ -36,13 +36,13 @@ public class DiscountController {
     @PostMapping(path = "/new")
     public ResponseEntity<?> registerNewDiscount(HttpServletRequest httpServletRequest, @RequestBody Discount discount)
     {
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.discountService.createNewDiscount(userID, discount));
     }
     @GetMapping(path = "/discountID/{discountID}")
     public ResponseEntity<?> findDiscountByDiscountID(HttpServletRequest httpServletRequest, @PathVariable Long discountID)
     {
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         Discount discount = this.discountService.findDiscountByDiscountID(discountID);
         if (discount.getUserID()!=userID)
         {
@@ -53,7 +53,7 @@ public class DiscountController {
     @GetMapping(path = "/all")
     public ResponseEntity<?> findAllDiscountByCurrentUser(HttpServletRequest httpServletRequest)
     {
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.discountService.findAllDiscountByUserID(userID));
     }
 }

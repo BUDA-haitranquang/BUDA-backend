@@ -48,7 +48,7 @@ public class StaffController {
     @PostMapping(path = "/register")
     public ResponseEntity<?> registerNewStaff(HttpServletRequest request, @RequestBody Staff newStaff)
     {
-        Long userID = requestUtil.getUserID(request);
+        Long userID = requestUtil.getUserIDFromUserToken(request);
         newStaff.setUserID(userID);
         return this.staffService.registerNewStaff(newStaff);
     }
@@ -56,13 +56,13 @@ public class StaffController {
     @GetMapping(path = "/userID/all")
     public List<Staff> findAllByUserID(HttpServletRequest request)
     {
-        Long userID = requestUtil.getUserID(request);
+        Long userID = requestUtil.getUserIDFromUserToken(request);
         return this.staffService.findAllByUserID(userID);
     }
 
     @DeleteMapping(path = "/id/{staffID}")
     public ResponseEntity<?> deleteStaffByStaffID(HttpServletRequest request, @PathVariable("staffID") Long id){
-        Long userID = requestUtil.getUserID(request);
+        Long userID = requestUtil.getUserIDFromUserToken(request);
         Staff staff = staffService.findStaffByID(id);
         if(staff.getUserID() == userID){
             staffService.deleteStaffByID(id);
@@ -80,7 +80,7 @@ public class StaffController {
             @RequestParam(required = false) String staffUUID, @RequestParam(required = false) String password, 
             @RequestParam(required = false) Double salary, @RequestParam(required = false) String account) 
     {
-        Long userID = requestUtil.getUserID(request);
+        Long userID = requestUtil.getUserIDFromUserToken(request);
         Staff staff = staffService.findStaffByID(id);
         if(staff == null){
             return ResponseEntity.badRequest().body("Staff ID not exist: " + String.valueOf(id));
