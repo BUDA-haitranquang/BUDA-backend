@@ -67,10 +67,22 @@ public class StaffNoteController {
         Long jwtUserID = requestUtil.getUserID(request);
         Staff staff = staffService.findStaffByID(staffID);
         // check staff belong to user
-        if(staff.getUserID() != jwtUserID){
+        if(!staff.getUserID().equals(jwtUserID)){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Staff not belong to userID: " + String.valueOf(staffID));
         }
         return ResponseEntity.ok(this.staffNoteService.findAllByStaffID(staffID));
+    }
+
+    @GetMapping(path = "staffID/{staffID}/all/unseen")
+    public ResponseEntity<?> findAllUnseenByStaffID(HttpServletRequest request, @PathVariable Long staffID)
+    {
+        Long jwtUserID = requestUtil.getUserID(request);
+        Staff staff = staffService.findStaffByID(staffID);
+        // check staff belong to user
+        if(!staff.getUserID().equals(jwtUserID)){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Staff not belong to userID: " + String.valueOf(staffID));
+        }
+        return ResponseEntity.ok(this.staffNoteService.findAllUnseenByStaffID(staffID));
     }
 
     @GetMapping(path = "noteID/{staffNoteID}")
