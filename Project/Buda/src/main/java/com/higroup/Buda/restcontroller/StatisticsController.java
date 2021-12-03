@@ -27,43 +27,43 @@ public class StatisticsController {
     @GetMapping(path = "/age-group/total")
     public ResponseEntity<?> findTotalSpendOfAgeGroupByCurrentUser(HttpServletRequest httpServletRequest)
     {
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.statisticsService.findTotalSpendOfAgeGroupByUserID(userID));
     }
     @GetMapping(path = "/gender/total")
     public ResponseEntity<?> findTotalSpendOfGenderByCurrentUser(HttpServletRequest httpServletRequest)
     {
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.statisticsService.findTotalSpendOfGenderByUserID(userID));
     }
     @GetMapping(path = "/product/all")
     public ResponseEntity<?> findTotalRevenueOfAllProductByCurrentUser(HttpServletRequest httpServletRequest)
     {
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.statisticsService.findTotalRevenueOfAllProductByUserID(userID));
     }
     @GetMapping(path = "revenue/monthly")
     public ResponseEntity<?> findRevenueGroupByMonth(HttpServletRequest httpServletRequest)
     {
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.statisticsService.findRevenueGroupByMonth(userID));
     }
     @GetMapping(path = "revenue/weekly")
     public ResponseEntity<?> findRevenueGroupByWeek(HttpServletRequest httpServletRequest)
     {
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.statisticsService.findRevenueGroupByWeek(userID));
     }
     @GetMapping(path = "revenue/weekday")
     public ResponseEntity<?> findRevenueGroupByWeekday(HttpServletRequest httpServletRequest)
     {
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.statisticsService.findRevenueGroupByWeekday(userID));
     }
     @GetMapping(path = "revenue/this-month/daily")
     public ResponseEntity<?> findRevenueAllDaysCurrentMonth(HttpServletRequest httpServletRequest)
     {
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.statisticsService.findRevenueAllDaysCurrentMonth(userID));
     }
 }

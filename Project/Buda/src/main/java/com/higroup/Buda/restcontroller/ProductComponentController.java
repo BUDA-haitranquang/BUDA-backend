@@ -31,19 +31,19 @@ public class ProductComponentController {
     @GetMapping(path = "/product/{productID}")
     public ResponseEntity<?> findAllComponentByProductID(HttpServletRequest httpServletRequest, @PathVariable Long productID)
     {
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.productComponentService.findAllByProductID(userID, productID));
     }
     @PostMapping(path = "/{productID}/add/{ingredientID}")
     public ResponseEntity<?> addIngredientToProduct(HttpServletRequest httpServletRequest, @PathVariable Long productID, @PathVariable Long ingredientID)
     {
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return this.productComponentService.addIngredientToProduct(userID, productID, ingredientID);
     }
     @PostMapping(path = "/{productID}/remove/{ingredientID}")
     public ResponseEntity<?> removeIngredientFromProduct(HttpServletRequest httpServletRequest, @PathVariable Long productID, @PathVariable Long ingredientID)
     {
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         this.productComponentService.removeIngredientFromProduct(userID, productID, ingredientID);
         return ResponseEntity.ok("Remove successfully");
     }
@@ -51,7 +51,7 @@ public class ProductComponentController {
     @GetMapping(path = "contains/ingredient/{ingredientID}")
     public ResponseEntity<?> findAllProductContainIngredient(HttpServletRequest httpServletRequest, @PathVariable Long ingredientID)
     {
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.productComponentService.findAllProductContainIngredient(userID, ingredientID));
     }
 }

@@ -40,62 +40,62 @@ public class BuyOrderController {
     @PostMapping(path = "/new")
     public ResponseEntity<?> createNewBuyOrder(HttpServletRequest httpServletRequest, @RequestBody BuyOrder buyOrder)
     {
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.buyOrderService.createNewBuyOrder(userID, buyOrder));
     }
     @GetMapping(path = "/all")
     public ResponseEntity<?> findAllBuyOrderByUserID(HttpServletRequest httpServletRequest)
     {
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.buyOrderService.findAllBuyOrderByUserID(userID));
     }
     @GetMapping(path = "supplier/{supplierID}/all")
     public ResponseEntity<?> findAllBuyOrderBySupplierID(HttpServletRequest httpServletRequest, @PathVariable Long supplierID)
     {
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.buyOrderService.findAllBuyOrderBySupplierID(userID, supplierID));
     }
     @DeleteMapping(path = "{buyOrderID}")
     public ResponseEntity<?> deleteBuyOrderByBuyOrderID(HttpServletRequest httpServletRequest, @PathVariable Long buyOrderID)
     {
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         this.buyOrderService.deleteBuyOrderByBuyOrderID(userID, buyOrderID);
         return ResponseEntity.ok().body("Delete successfully");
     }
     @GetMapping(path = "all/last-x-days/{X}")
     public ResponseEntity<?> findAllLastXDaysBuyOrderByCurrentUser(HttpServletRequest httpServletRequest, @PathVariable Long X)
     {
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.buyOrderService.findAllBuyOrderByUserIDLastXDays(userID, X));
     }
     @GetMapping(path = "all/incompleted")
     public ResponseEntity<?> findAllIncompletedBuyOrderByCurrentUser(HttpServletRequest httpServletRequest)
     {
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.buyOrderService.findAllIncompletedBuyOrderByUser(userID));
     }
     @GetMapping(path = "all/status/{status}")
     public ResponseEntity<?> findAllBuyOrderByCurrentUserAndStatus(HttpServletRequest httpServletRequest, @PathVariable Status status)
     {
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.buyOrderService.findAllBuyOrderByStatus(userID, status));
     }
     @GetMapping(path = "expense/monthly")
     public ResponseEntity<?> findBuyOrderExpenseGroupByMonth(HttpServletRequest httpServletRequest)
     {
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.buyOrderService.findBuyOrderExpenseGroupByMonth(userID));
     }
     @GetMapping(path = "expense/this-month")
     public ResponseEntity<?> findBuyOrderExpenseCurrentMonth(HttpServletRequest httpServletRequest)
     {
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.buyOrderService.findBuyOrderExpenseCurrentMonth(userID));
     }
     @GetMapping(path = "expense/weekly")
     public ResponseEntity<?> findBuyOrderExpenseByWeek(HttpServletRequest httpServletRequest)
     {
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.buyOrderService.findBuyOrderExpenseByWeek(userID));
     }
 }

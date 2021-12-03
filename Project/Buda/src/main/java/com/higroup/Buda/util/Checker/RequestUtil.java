@@ -23,7 +23,7 @@ public class RequestUtil {
         this.userRepository = userRepository;
         this.jwtTokenUtil = jwtTokenUtil;
     }
-    public Long getUserID(HttpServletRequest httpServletRequest)
+    public Long getUserIDFromUserToken(HttpServletRequest httpServletRequest)
     {
         final String token = httpServletRequest.getHeader("Authorization").substring(7);
         Long userID = this.jwtTokenUtil.getUserIDFromToken(token);

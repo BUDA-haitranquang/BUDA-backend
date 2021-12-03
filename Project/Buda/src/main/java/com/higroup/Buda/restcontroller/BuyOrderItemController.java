@@ -33,19 +33,19 @@ public class BuyOrderItemController {
     @GetMapping("/buy-order/{buyOrderID}")
     public ResponseEntity<?> findAllByBuyOrderID(HttpServletRequest httpServletRequest, @PathVariable Long buyOrderID)
     {
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.buyOrderItemService.findAllByBuyOrderID(userID, buyOrderID));
     }
     @GetMapping("all/ingredient/{ingredientID}")
     public ResponseEntity<?> findAllBuyOrderItemByIngredientID(HttpServletRequest httpServletRequest, @PathVariable Long ingredientID)
     {
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.buyOrderItemService.findAllBuyOrderItemByIngredientID(userID, ingredientID));
     }
     @DeleteMapping("{buyOrderItemID}")
     public ResponseEntity<?> deleteBuyOrderItemByID(HttpServletRequest httpServletRequest, @PathVariable Long buyOrderItemID)
     {
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         this.buyOrderItemService.deleteBuyOrderItem(userID, buyOrderItemID);
         return ResponseEntity.ok().body("Delete successfully");
     }

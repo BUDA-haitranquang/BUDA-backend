@@ -39,38 +39,38 @@ public class FixedCostController {
     @GetMapping(path = "/all")
     public ResponseEntity<?> findAllByCurrentUser(HttpServletRequest httpServletRequest)
     {
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.fixedCostService.findAllByUserID(userID));
     }
     @PostMapping(path = "/new")
     public ResponseEntity<?> createNewFixedCost(HttpServletRequest httpServletRequest, @RequestBody FixedCost fixedCost)
     {
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.fixedCostService.createNewFixedCost(userID, fixedCost));
     }
     @DeleteMapping(path = "{fixedCostID}")
     public ResponseEntity<?> deleteFixedCostByFixedCostID(HttpServletRequest httpServletRequest, @PathVariable Long fixedCostID)
     {
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         this.fixedCostService.deleteFixedCost(userID, fixedCostID);
         return ResponseEntity.ok().body("Delete successfully");
     }
     @PutMapping(path = "/update")
     public ResponseEntity<?> updateFixedCost(HttpServletRequest httpServletRequest, @RequestBody FixedCost fixedCost)
     {
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.fixedCostService.updateFixedCost(userID, fixedCost));
     }
     @GetMapping(path = "/hide/{fixedCostID}")
     public ResponseEntity<?> hideFixedCost(HttpServletRequest httpServletRequest, @PathVariable Long fixedCostID)
     {
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.fixedCostService.hideFixedCost(userID, fixedCostID));
     }
     @GetMapping(path = "/all/hidden")
     public ResponseEntity<?> findAllHiddenFixedCostByCurrentUser(HttpServletRequest httpServletRequest)
     {
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.fixedCostService.findAllHiddenFixedCostByUserID(userID));
     }
 }
