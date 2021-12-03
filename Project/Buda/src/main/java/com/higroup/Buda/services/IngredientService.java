@@ -1,18 +1,22 @@
 package com.higroup.Buda.services;
 
 
+import java.lang.reflect.InvocationTargetException;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import com.higroup.Buda.BeanUtils.NullAwareBeanUtilsBean;
 import com.higroup.Buda.entities.Ingredient;
 import com.higroup.Buda.entities.IngredientLeftLog;
+import com.higroup.Buda.entities.Ingredient;
 import com.higroup.Buda.entities.User;
 import com.higroup.Buda.repositories.IngredientLeftLogRepository;
 import com.higroup.Buda.repositories.IngredientRepository;
 
 import com.higroup.Buda.repositories.UserRepository;
+import org.apache.commons.beanutils.BeanUtilsBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -119,5 +123,24 @@ public class IngredientService {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
         }
         return this.ingredientRepository.findAlertAmountIngredient();
+    }
+
+    public Ingredient editIngredient(Long userID, Long ingredientID, Ingredient ingredient) throws InvocationTargetException, IllegalAccessException {
+
+        Optional<User> user = this.userRepository.findUserByUserID(userID);
+        if (user.isEmpty())
+        {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
+        }
+        Optional<Ingredient> dest_ingredient = this.ingredientRepository.findIngredientByIngredientID(ingredientID);
+        if (dest_ingredient.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Ingredient not found");
+        if (Objects.equals(dest_ingredient.get().getUserID(), userID))
+        {
+            BeanUtilsBean notNull = new NullAwareBeanUtilsBean();
+            notNull.copyProperties(dest_ingredient.get(), ingredient);
+            this.ingredientRepository.save(dest_ingredient.get());
+            return dest_ingredient.get();
+        }
+        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
     }
 }

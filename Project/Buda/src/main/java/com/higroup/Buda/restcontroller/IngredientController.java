@@ -1,7 +1,7 @@
 package com.higroup.Buda.restcontroller;
 
 import com.higroup.Buda.entities.Ingredient;
-import com.higroup.Buda.entities.Product;
+import com.higroup.Buda.entities.Ingredient;
 import com.higroup.Buda.services.IngredientService;
 import com.higroup.Buda.util.JwtTokenUtil;
 import com.higroup.Buda.util.Checker.RequestUtil;
@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 
 
 import javax.servlet.http.HttpServletRequest;
+
+import java.lang.reflect.InvocationTargetException;
 import java.util.Objects;
 
 @RestController
@@ -85,5 +87,10 @@ public class IngredientController {
     {
         Long userID = this.requestUtil.getUserID(httpServletRequest);
         return ResponseEntity.ok().body(this.ingredientService.findAlertAmountIngredient(userID));
+    }
+    @PostMapping(path = "/edit/{ingredientID}")
+    public ResponseEntity<?> editIngredient(HttpServletRequest httpServletRequest, @PathVariable Long ingredientID, @RequestBody Ingredient ingredient) throws InvocationTargetException, IllegalAccessException {
+        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        return ResponseEntity.ok().body(this.ingredientService.editIngredient(userID, ingredientID, ingredient));
     }
 }

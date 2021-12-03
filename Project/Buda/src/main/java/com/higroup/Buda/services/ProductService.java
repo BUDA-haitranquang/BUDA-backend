@@ -148,6 +148,7 @@ public class ProductService {
         {
             BeanUtilsBean notNull = new NullAwareBeanUtilsBean();
             notNull.copyProperties(dest_product, product);
+            this.productRepository.save(dest_product);
             return dest_product;
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
