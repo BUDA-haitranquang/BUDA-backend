@@ -18,5 +18,7 @@ public interface IngredientRepository extends JpaRepository<Ingredient, Long> {
     List<Ingredient> findAllHiddenIngredientByUserID(@Param("userID") Long userID);
     @Query(value = "select i from Ingredient i where i.user_id = :userID and i.name LIKE :name", nativeQuery = true)
     List<Ingredient> findIngredientByName(@Param("userID") Long userID, @Param("name") String name);
+    @Query(value = "select i from Ingredient i where i.amountLeft <= i.alertAmountLeft")
+    List<Ingredient> findAlertAmountIngredient();
 }
 
