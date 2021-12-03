@@ -14,6 +14,7 @@ import org.springframework.data.repository.query.Param;
 
 
 public interface ProductComponentRepository extends JpaRepository<ProductComponent, Long> {
+    @Query(value = "select * from product_component pc where pc.product_id = :productID and pc.ingredient_id = :ingredientID", nativeQuery = true)
     Optional<ProductComponent> findByProductAndIngredient(Long productID, Long ingredientID);
     @Query(value = "select * from product_component pc where pc.product_id = :productID", nativeQuery = true)
     List<ProductComponent> findAllByProductID(@Param("productID") Long productID);

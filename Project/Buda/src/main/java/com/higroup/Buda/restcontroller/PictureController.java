@@ -1,7 +1,10 @@
 package com.higroup.Buda.restcontroller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.higroup.Buda.entities.Picture;
 import com.higroup.Buda.services.PictureService;
+import com.higroup.Buda.util.Checker.RequestUtil;
 
 import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,30 +25,36 @@ import org.springframework.web.bind.annotation.RestController;
 public class PictureController 
 {
     private final PictureService pictureService;
+    private final RequestUtil requestUtil;
     
     @Autowired
-    public PictureController(PictureService pictureService) {
+    public PictureController(PictureService pictureService, RequestUtil requestUtil) {
+        this.requestUtil = requestUtil;
         this.pictureService = pictureService;
     }
     @GetMapping(path = "{pictureID}")
-    public Picture findPictureByPictureID(@PathVariable Long pictureID)
+    public Picture findPictureByPictureID(HttpServletRequest httpServletRequest, @PathVariable Long pictureID)
     {
-        return this.pictureService.findPictureByPictureID(pictureID);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
+        return this.pictureService.findPictureByPictureID(userID, pictureID);
     }
     @PostMapping
-    public ResponseEntity<?> saveNewPicture(@RequestBody Picture picture)
+    public ResponseEntity<?> saveNewPicture(HttpServletRequest httpServletRequest, @RequestBody Picture picture)
     {
-        return ResponseEntity.ok().body(this.pictureService.saveNewPicture(picture));
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
+        return ResponseEntity.ok().body(this.pictureService.saveNewPicture(userID, picture));
     }
     @PutMapping
-    public ResponseEntity<?> updatePicture(@RequestBody Picture picture)
+    public ResponseEntity<?> updatePicture(HttpServletRequest httpServletRequest, @RequestBody Picture picture)
     {
-        return ResponseEntity.ok().body(this.pictureService.updatePicture(picture));
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
+        return ResponseEntity.ok().body(this.pictureService.updatePicture(userID, picture));
     }
     @DeleteMapping(path = "{pictureID}")
-    public ResponseEntity<?> deletePicture(@PathVariable Long pictureID)
+    public ResponseEntity<?> deletePicture(HttpServletRequest httpServletRequest, @PathVariable Long pictureID)
     {
-        this.pictureService.deletePicture(pictureID);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
+        this.pictureService.deletePicture(userID, pictureID);
         return ResponseEntity.ok().body("Delete successfully");
     }
 }

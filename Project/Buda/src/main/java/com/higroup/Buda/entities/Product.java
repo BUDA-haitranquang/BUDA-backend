@@ -44,7 +44,7 @@ public class Product {
     private Long userID;
 
     @Column(name = "visible", columnDefinition = "boolean default true")
-    private Boolean visible;
+    private Boolean visible = Boolean.TRUE;
 
     @Column(name = "picture_id")
     private Long pictureID;
@@ -304,8 +304,8 @@ public class Product {
             ", amountLeft='" + getAmountLeft() + "'" +
             ", costPerUnit='" + getCostPerUnit() + "'" +
             ", sellOrderItems='" + getSellOrderItems() + "'" +
-            ", productLeftLogs='" + getProductLeftLogs() + "'" +
-            ", productGroup='" + getProductGroup() + "'" +
+            // ", productLeftLogs='" + getProductLeftLogs() + "'" +
+            // ", productGroup='" + getProductGroup() + "'" +
             "}";
     }
     

@@ -27,7 +27,7 @@ public class BuyOrder {
     private Supplier supplier;
     private ZonedDateTime creationTime;
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private Status status = Status.PREPARING;
     private Double totalCost;
     @Column(name = "user_id")
     private Long userID;

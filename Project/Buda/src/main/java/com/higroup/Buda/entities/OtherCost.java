@@ -32,7 +32,7 @@ public class OtherCost {
     @Column(length = 2000)
     private String description;
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private Status status = Status.PREPARING;
     @Column(name = "visible", columnDefinition = "boolean default true", nullable = false)
     private Boolean visible = Boolean.TRUE;
 

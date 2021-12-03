@@ -36,13 +36,13 @@ public class MembershipTypeController {
     @GetMapping("/all")
     public ResponseEntity<?> findAllByCurrentUser(HttpServletRequest httpServletRequest)
     {   
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.membershipTypeService.findAllByUserID(userID));
     }
     @GetMapping("membershipTypeID/{membershipTypeID}")
     public ResponseEntity<?> findMembershipTypeByMembershipTypeID(HttpServletRequest httpServletRequest, @PathVariable Long membershipTypeID)
     {
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         MembershipType membershipType = this.membershipTypeService.findMembershipTypeByMembershipTypeID(membershipTypeID);
         if (membershipType.getUserID()!=userID)
         {
@@ -53,7 +53,7 @@ public class MembershipTypeController {
     @PostMapping("/new")
     public ResponseEntity<?> createNewMembershipType(HttpServletRequest httpServletRequest, @RequestBody MembershipType membershipType)
     {
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.membershipTypeService.createNewMembershipType(userID, membershipType));
     }
 }

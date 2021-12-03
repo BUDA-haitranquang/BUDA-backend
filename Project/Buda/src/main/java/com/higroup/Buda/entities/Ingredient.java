@@ -26,7 +26,7 @@ public class Ingredient {
     @Column(columnDefinition = "double default 0.0", name = "price")
     private Double price;
     @Column(columnDefinition = "boolean default true", name = "visible")
-    private Boolean visible;
+    private Boolean visible = Boolean.TRUE;
     @Column(name = "user_id")
     private Long userID;
     @Column(name = "picture_id")

@@ -1,0 +1,11 @@
+version: '1'
+services:
+  mysql-buda:
+    image: mysql
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+      - MYSQL_DATABASE=bdsm
+    ports:
+      - 1404:3306
+    command: mysqld --lower_case_table_names=1 --character_set_server=utf8mb4 --explicit_defaults_for_timestamp --bind-address=0.0.0.0

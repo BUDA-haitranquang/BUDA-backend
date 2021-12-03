@@ -277,12 +277,12 @@ public class Discount {
             return false;
         }
         Discount discount = (Discount) o;
-        return Objects.equals(discountID, discount.discountID) && Objects.equals(name, discount.name) && Objects.equals(description, discount.description) && cash == discount.cash && percentage == discount.percentage && cashLimit == discount.cashLimit && orderCount == discount.orderCount && Objects.equals(expiryTime, discount.expiryTime) && Objects.equals(createdTime, discount.createdTime) && Objects.equals(userID, discount.userID) && Objects.equals(sellOrders, discount.sellOrders);
+        return Objects.equals(discountID, discount.discountID) && Objects.equals(name, discount.name) && Objects.equals(description, discount.description) && cash == discount.cash && percentage == discount.percentage && cashLimit == discount.cashLimit && orderCount == discount.orderCount && Objects.equals(expiryTime, discount.expiryTime) && Objects.equals(createdTime, discount.createdTime) && Objects.equals(userID, discount.userID);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(discountID, name, description, cash, percentage, cashLimit, orderCount, expiryTime, createdTime, userID, sellOrders);
+        return Objects.hash(discountID);
     }
 
     @Override
@@ -298,7 +298,7 @@ public class Discount {
             ", expiryTime='" + getExpiryTime() + "'" +
             ", createdTime='" + getCreatedTime() + "'" +
             ", userID='" + getUserID() + "'" +
-            ", sellOrders='" + getSellOrders() + "'" +
+            //", sellOrders='" + getSellOrders() + "'" +
             "}";
     }
 

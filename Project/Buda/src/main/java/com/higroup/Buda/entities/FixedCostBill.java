@@ -39,7 +39,7 @@ public class FixedCostBill {
     private ZonedDateTime creationTime;
     private ZonedDateTime dueTime;
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private Status status = Status.PREPARING;
 
 
     public FixedCostBill() {
