@@ -22,35 +22,40 @@ public class PictureService {
         this.pictureRepository = pictureRepository;
     }
 
-    public Picture findPictureByPictureID(Long pictureID)
+    public Picture findPictureByPictureID(Long userID, Long pictureID)
     {
         Optional<Picture> picture = this.pictureRepository.findPictureByPictureID(pictureID);
-        return picture.orElse(null);
+        if ((picture.isPresent()) && ((picture.get().getUserID().equals(userID)) || (picture.get().getUserID() == null)))
+        {
+            return picture.get();
+        }
+        else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Picture not found");
     }
     @Transactional
-    public void deletePicture(Long pictureID)
+    public void deletePicture(Long userID, Long pictureID)
     {
         Optional<Picture> picture = this.pictureRepository.findPictureByPictureID(pictureID);
-        if (picture.isPresent())
+        if ((picture.isPresent()) && (picture.get().getUserID().equals(userID)))
         {
             this.pictureRepository.delete(picture.get());
         }
         else throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Picture does not exist");
     }
     @Transactional
-    public Picture saveNewPicture(Picture picture)
+    public Picture saveNewPicture(Long userID, Picture picture)
     {
         if (picture.getPictureLink() != null)
         {
+            picture.setUserID(userID);
             this.pictureRepository.save(picture);
             return picture;
         }
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Link can not be null");
     }
     @Transactional
-    public Picture updatePicture(Picture picture)
+    public Picture updatePicture(Long userID, Picture picture)
     {
-        if ((picture.getPictureID()!=null) && (picture.getPictureLink()!=null))
+        if ((picture.getPictureID()!=null) && (picture.getPictureLink()!=null) && (picture.getUserID().equals(userID)))
         {
             this.pictureRepository.save(picture);
             return picture;

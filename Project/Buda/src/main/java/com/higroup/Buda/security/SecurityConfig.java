@@ -69,6 +69,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		this.StaffNoteConfig(http);
 		// salary log
 		this.SalaryLogConfig(http);
+		// product config
+		this.ProductConfig(http);
 		// all other requests need to be authenticated
 		http.authorizeRequests().anyRequest().authenticated();
 		// http.authorizeRequests().anyRequest().authen
@@ -108,5 +110,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private void SalaryLogConfig(HttpSecurity http) throws Exception{
 		http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/salary-log/userID/**", "/api/salary-log/staffID/**").hasAnyAuthority("USER");
+	}
+
+	private void ProductConfig(HttpSecurity http) throws Exception{
+		http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/product/productID/**", "/api/product/all", "/hidden/all", 
+															 "/api/product//hidden/all", "/api/product//group/**").hasAnyAuthority("USER", "STAFF");
+		http.authorizeRequests().antMatchers(HttpMethod.PUT, "/api/product/productID/**").hasAnyAuthority("USER");
+		http.authorizeRequests().antMatchers(HttpMethod.DELETE, "/api/product/productID/**").hasAnyAuthority("USER");
 	}
 }

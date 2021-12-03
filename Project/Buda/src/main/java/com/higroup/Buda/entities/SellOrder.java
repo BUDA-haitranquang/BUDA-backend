@@ -56,9 +56,9 @@ public class SellOrder implements Serializable{
     @Column(name = "creation_time")
     private ZonedDateTime creationTime;
     @Enumerated(EnumType.STRING)
-    private AgeGroup ageGroup;
+    private AgeGroup ageGroup = AgeGroup.UNKNOWN;
     @Enumerated(EnumType.STRING)
-    private Gender gender;
+    private Gender gender = Gender.UNKNOWN;
     @Column(columnDefinition = "Double default 0.0")
     private Double actualDiscountCash;
     @Column(columnDefinition = "Double default 0.0")
@@ -70,7 +70,7 @@ public class SellOrder implements Serializable{
     @Column(length = 1000)
     private String customerMessage;
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private Status status = Status.PREPARING;
     @OneToMany(mappedBy = "sellOrder", fetch = FetchType.LAZY)
     @JsonManagedReference(value = "sell_order - sell_order_item")
     @Fetch(FetchMode.SUBSELECT)

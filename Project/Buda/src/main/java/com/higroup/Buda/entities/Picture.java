@@ -17,8 +17,24 @@ public class Picture {
     private Long pictureID;
     @Column(length = 200)
     private String pictureLink;
+    @Column(name = "user_id")
+    private Long userID;
 
     public Picture() {
+    }
+
+    public Long getUserID() {
+        return userID;
+    }
+
+    public void setUserID(Long userID) {
+        this.userID = userID;
+    }
+
+    public Picture(Long pictureID, String pictureLink, Long userID) {
+        this.pictureID = pictureID;
+        this.pictureLink = pictureLink;
+        this.userID = userID;
     }
 
     public Picture(Long pictureID, String pictureLink) {
