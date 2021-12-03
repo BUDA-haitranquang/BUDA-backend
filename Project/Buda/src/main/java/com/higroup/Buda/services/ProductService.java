@@ -98,4 +98,38 @@ public class ProductService {
         }
         return Collections.emptyList();
     }
+    public Product updateProductbyProductID(Product product, Product newproduct){
+        if(newproduct == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "product not exists");
+        }
+        // check which features need update
+        if(newproduct.getName() != null){
+            product.setName(newproduct.getName());
+        }
+        if(newproduct.getAmountLeft() != null){
+            product.setAmountLeft(newproduct.getAmountLeft()); 
+        }
+        if(newproduct.getDescription() != null){
+            product.setDescription(newproduct.getDescription());
+        }
+        if(newproduct.getSellingPrice() != null){
+            product.setSellingPrice(newproduct.getSellingPrice());
+        }
+        if(newproduct.getVisible() != null){
+            product.setVisible(newproduct.getVisible());
+        }
+        if(newproduct.getPictureID() != null){
+            product.setPictureID(newproduct.getPictureID());
+        }
+        if(newproduct.getAlertAmount() != null){
+            product.setAlertAmount(newproduct.getAlertAmount());
+        }
+        if(newproduct.getCostPerUnit() != null){
+            product.setCostPerUnit(newproduct.getCostPerUnit());
+        }
+
+        productRepository.save(product);
+        return product;
+        
+    }
 }
