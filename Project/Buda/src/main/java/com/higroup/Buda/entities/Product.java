@@ -304,8 +304,8 @@ public class Product {
             ", amountLeft='" + getAmountLeft() + "'" +
             ", costPerUnit='" + getCostPerUnit() + "'" +
             ", sellOrderItems='" + getSellOrderItems() + "'" +
-            ", productLeftLogs='" + getProductLeftLogs() + "'" +
-            ", productGroup='" + getProductGroup() + "'" +
+            // ", productLeftLogs='" + getProductLeftLogs() + "'" +
+            // ", productGroup='" + getProductGroup() + "'" +
             "}";
     }
     

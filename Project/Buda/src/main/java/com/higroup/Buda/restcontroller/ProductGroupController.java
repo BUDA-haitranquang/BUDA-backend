@@ -29,19 +29,19 @@ public class ProductGroupController {
     @GetMapping(path = "/all")
     public List<ProductGroup> findAllByUserID(HttpServletRequest httpServletRequest)
     {
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return this.productGroupService.findAllByUserID(userID);
     }
     @PostMapping(path = "/add")
     public ResponseEntity<?> createProductGroup(HttpServletRequest httpServletRequest)
     {
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return this.productGroupService.createProductGroup(userID);
     }
     @PostMapping(path = "/remove")
     public ResponseEntity<?> deleteProductGroup(HttpServletRequest httpServletRequest, Long productGroupID)
     {
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         this.productGroupService.deleteProductGroup(userID, productGroupID);
         return ResponseEntity.ok().body("Delete successfully");
     }

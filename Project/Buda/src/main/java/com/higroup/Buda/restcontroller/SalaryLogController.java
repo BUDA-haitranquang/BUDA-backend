@@ -40,7 +40,7 @@ public class SalaryLogController {
     @PostMapping("userID/{userID}")
     public ResponseEntity<?> registerNewSalaryLog(HttpServletRequest request, @PathVariable Long userID, @RequestBody SalaryLog salaryLog)
     {
-        Long jwtuserID = requestUtil.getUserID(request);
+        Long jwtuserID = requestUtil.getUserIDFromUserToken(request);
         if(jwtuserID != userID){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No authorized");
         }
@@ -49,7 +49,7 @@ public class SalaryLogController {
     @GetMapping("userID/{userID}/all")
     public ResponseEntity<?> findAllByUserID(HttpServletRequest request, @PathVariable Long userID)
     {
-        Long jwtuserID = requestUtil.getUserID(request);
+        Long jwtuserID = requestUtil.getUserIDFromUserToken(request);
         if(jwtuserID != userID){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No authorized");
         }
@@ -59,7 +59,7 @@ public class SalaryLogController {
     @GetMapping("staffID/{staffID}/all")
     public ResponseEntity<?> findAllByStaffID(HttpServletRequest request, @PathVariable Long staffID)
     {
-        Long jwtuserID = requestUtil.getUserID(request);
+        Long jwtuserID = requestUtil.getUserIDFromUserToken(request);
         Staff staff = staffService.findStaffByID(staffID);
         if(staff == null){
             return ResponseEntity.badRequest().body("Staff not exists");
@@ -72,7 +72,7 @@ public class SalaryLogController {
 
     @DeleteMapping("salary-logID/{salary_logID}")
     public ResponseEntity<?> deleteSalaryLogbyID(HttpServletRequest request, @PathVariable Long salary_logID){
-        Long jwtuserID = requestUtil.getUserID(request);
+        Long jwtuserID = requestUtil.getUserIDFromUserToken(request);
         SalaryLog salaryLog = salaryLogService.findByID(salary_logID);
         if(salaryLog.getUserID() != jwtuserID){
             return ResponseEntity.badRequest().body("SalaryLog not belong to user ID");

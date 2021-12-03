@@ -40,50 +40,50 @@ public class SellOrderController {
     @PostMapping(path = "/new")
     public ResponseEntity<?> registerNewSellOrder(HttpServletRequest httpServletRequest, @RequestBody SellOrder sellOrder)
     {
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.sellOrderService.registerNewSellOrder(userID, sellOrder));
     }
     @GetMapping(path = "/all")
     public ResponseEntity<?> findAllSellOrderByCurrentUser(HttpServletRequest httpServletRequest)
     {
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.sellOrderService.findAllSellOrderByUserID(userID));
     }
     @GetMapping(path = "customer/{customerID}/all")
     public ResponseEntity<?> findAllSellOrderByCustomerID(HttpServletRequest httpServletRequest, @PathVariable Long customerID)
     {
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.sellOrderService.findAllSellOrderByCustomerID(userID, customerID));
     }
     @DeleteMapping(path = "/{sellOrderID}")
     public ResponseEntity<?> deleteSellOrderBySellOrderID(HttpServletRequest httpServletRequest, @PathVariable Long sellOrderID)
     {
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         this.sellOrderService.deleteSellOrderBySellOrderID(userID, sellOrderID);
         return ResponseEntity.ok().body("Delete succesfully");
     }
     @PutMapping(path = "/update")
     public ResponseEntity<?> updateSellOrder(HttpServletRequest httpServletRequest, @RequestBody SellOrder sellOrder)
     {
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.sellOrderService.updateSellOrder(userID, sellOrder));
     }
     @GetMapping(path = "all/last-x-days/{X}")
     public ResponseEntity<?> findAllLastXDaysSellOrderByCurrentUser(HttpServletRequest httpServletRequest, @PathVariable Long X)
     {
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.sellOrderService.findAllSellOrderByUserIDLastXDays(userID, X));
     }
     @GetMapping(path = "all/incompleted")
     public ResponseEntity<?> findAllIncompletedSellOrderByCurrentUser(HttpServletRequest httpServletRequest)
     {
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.sellOrderService.findAllIIncompletedSellOrderByUserID(userID));
     }
     @GetMapping(path = "all/status/{status}")
     public ResponseEntity<?> findAllSellOrderByCurrentUserAndStatus(HttpServletRequest httpServletRequest, @PathVariable Status status)
     {
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.sellOrderService.findAllSellOrderByUserAndStatus(userID, status));
     }
 }

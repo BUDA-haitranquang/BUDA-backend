@@ -34,49 +34,49 @@ public class FixedCostBillController {
     @GetMapping("/all")
     public ResponseEntity<?> findAllByCurrentUser(HttpServletRequest httpServletRequest)
     {
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.fixedCostBillService.findAllByUserID(userID));
     }
     @GetMapping("fixedCostID/{fixedCostID}/all")
     public ResponseEntity<?> findAllByFixedCostID(HttpServletRequest httpServletRequest, @PathVariable Long fixedCostID)
     {
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(fixedCostBillService.findAllByFixedCostID(userID, fixedCostID));
     }
     @GetMapping("all/last-x-days/{X}")
     public ResponseEntity<?> findAllFixedCostBillByCurrentUserLastXDays(HttpServletRequest httpServletRequest, @PathVariable Long X)
     {
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.fixedCostBillService.findAllFixedCostBillByUserIDLastXDays(userID, X));
     }
     @GetMapping("/all/incompleted")
     public ResponseEntity<?> findAllIncompletedFixedCostBillByCurrentUser(HttpServletRequest httpServletRequest)
     {
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.fixedCostBillService.findAllIncompletedFixedCostBillByUserID(userID));
     }
     @PostMapping("/new")
     public ResponseEntity<?> createNewFixedCostBill(HttpServletRequest httpServletRequest, @RequestBody FixedCostBill fixedCostBill)
     {
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.fixedCostBillService.createNewFixedCostBill(userID, fixedCostBill));
     }
     @GetMapping("/expense/weekly")
     public ResponseEntity<?> findFixedCostExpenseByWeek(HttpServletRequest httpServletRequest)
     {
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.fixedCostBillService.findFixedCostBillExpenseByWeek(userID));
     }
     @GetMapping("/expense/this-month")
     public ResponseEntity<?> findFixedCostBillExpenseCurrentMonth(HttpServletRequest httpServletRequest)
     {
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.fixedCostBillService.findFixedCostBillExpenseCurrentMonth(userID));
     }
     @GetMapping("/expense/monthly")
     public ResponseEntity<?> findFixedCostBillExpenseGroupByMonth(HttpServletRequest httpServletRequest)
     {
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.fixedCostBillService.findFixedCostBillExpenseGroupByMonth(userID));
     }
 }

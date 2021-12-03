@@ -63,6 +63,11 @@ public class StaffNoteService {
         return this.staffNoteRepository.findAllByUserID(userID);
     }
 
+    public List<StaffNote> findAllUnseenByStaffID(Long staffID)
+    {
+        return this.staffNoteRepository.findAllUnseenByStaffID(staffID);
+    }
+
     public void deleteStaffNotebyID(Long id){
         if(id == null){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid staff note id");

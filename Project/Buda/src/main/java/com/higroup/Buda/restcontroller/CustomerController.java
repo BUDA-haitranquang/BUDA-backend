@@ -38,33 +38,33 @@ public class CustomerController {
     @GetMapping(path = "/all")
     public ResponseEntity<?> findAllByCurrentUser(HttpServletRequest httpServletRequest)
     {   
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.customerService.findAllByUserID(userID));
     }
 
     @PostMapping(path = "/new")
     public ResponseEntity<?> registerNewCustomer(HttpServletRequest httpServletRequest, @RequestBody Customer customer)
     {
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.customerService.registerNewCustomer(userID, customer));   
     }
     
     @GetMapping(path = "/byphone")
     public ResponseEntity<?> findCustomerByCurrentUserWithPhoneNumber(HttpServletRequest httpServletRequest, @RequestBody String phoneNumber)
     {
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.customerService.findCustomerByUserIDAndPhoneNumber(userID, phoneNumber));
     }
     @PutMapping(path = "/update")
     public ResponseEntity<?> updateCustomer(HttpServletRequest httpServletRequest, @RequestBody Customer customer)
     {
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.customerService.updateCustomer(userID, customer));
     }
     @DeleteMapping(path = "hide/{customerID}")
     public ResponseEntity<?> hideProduct(HttpServletRequest httpServletRequest, @PathVariable Long customerID)
     {
-        Long userID = this.requestUtil.getUserID(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.customerService.hideCustomer(userID, customerID));
     }
 }
