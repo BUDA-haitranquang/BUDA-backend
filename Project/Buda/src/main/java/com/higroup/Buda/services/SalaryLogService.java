@@ -3,6 +3,7 @@ package com.higroup.Buda.services;
 import java.util.List;
 import java.util.Optional;
 
+import com.higroup.Buda.customDTO.ExpenseByTimeStatistics;
 import com.higroup.Buda.entities.SalaryLog;
 import com.higroup.Buda.entities.Staff;
 import com.higroup.Buda.entities.User;
@@ -62,5 +63,13 @@ public class SalaryLogService {
             this.salaryLogRepository.delete(salaryLog.get());
         }
         else throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Salary log not found");
+    }
+    public List<ExpenseByTimeStatistics> findSalaryLogExpenseCurrentMonth(Long userID)
+    {
+        return this.salaryLogRepository.findSalaryLogExpenseCurrentMonth(userID);
+    }
+    public List<ExpenseByTimeStatistics> findSalaryLogExpenseGroupByMonth(Long userID)
+    {
+        return this.salaryLogRepository.findSalaryLogExpenseGroupByMonth(userID);
     }
 }

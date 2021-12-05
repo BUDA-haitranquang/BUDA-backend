@@ -34,10 +34,20 @@ public interface SellOrderRepository extends JpaRepository<SellOrder, Long> {
     + " from SellOrder s WHERE s.userID = :userID"
     + " GROUP BY s.ageGroup")
     List<AgeGroupStatistics> findTotalSpendOfAgeGroupByUserID(Long userID);
+    @Query(value = "select new com.higroup.Buda.customDTO.AgeGroupStatistics(s.ageGroup, SUM(s.realCost))"
+    + " from SellOrder s WHERE s.userID = :userID"
+    + " and month(s.creationTime) >= (month(current_date) - 1) and year(s.creationTime) = year(current_date)"
+    + " GROUP BY s.ageGroup")
+    List<AgeGroupStatistics> findCurrentMonthSpendOfAgeGroupByUserID(Long userID);
     @Query(value = "select new com.higroup.Buda.customDTO.GenderStatistics(s.gender, SUM(s.realCost))"
     + " from SellOrder s where s.userID = :userID"
     + " GROUP BY s.gender")
     List<GenderStatistics> findTotalSpendOfGenderByUserID(Long userID);
+    @Query(value = "select new com.higroup.Buda.customDTO.GenderStatistics(s.gender, SUM(s.realCost))"
+    + " from SellOrder s where s.userID = :userID"
+    + " and month(s.creationTime) >= (month(current_date) - 1) and year(s.creationTime) = year(current_date)"
+    + " GROUP BY s.gender")
+    List<GenderStatistics> findCurrentMonthSpendOfGenderByUserID(Long userID);
     @Query(value = "select new com.higroup.Buda.customDTO.RevenueByTimeStatistics(DATE_FORMAT(s.creationTime, '%m-%Y'), SUM(s.realCost))"
     + " from SellOrder s where s.userID = :userID and year(s.creationTime) >= (year(current_date) - 1)"
     + " GROUP BY DATE_FORMAT(s.creationTime, '%m-%Y')"
@@ -54,7 +64,7 @@ public interface SellOrderRepository extends JpaRepository<SellOrder, Long> {
     + " ORDER BY DATE_FORMAT(s.creationTime, '%W-%Y')")
     List<RevenueByTimeStatistics> findRevenueGroupByWeekday(Long userID);
     @Query(value = "select new com.higroup.Buda.customDTO.RevenueByTimeStatistics(DATE_FORMAT(s.creationTime, '%d-%m-%Y'), SUM(s.realCost))"
-    + " from SellOrder s where s.userID = :userID and month(s.creationTime) = month(current_date)"
+    + " from SellOrder s where s.userID = :userID and month(s.creationTime) = month(current_date) and year(s.creationTime) = year(current_date)"
     + " GROUP BY DATE_FORMAT(s.creationTime, '%d-%m-%Y')"
     + " ORDER BY DATE_FORMAT(s.creationTime, '%d-%m-%Y')")
     List<RevenueByTimeStatistics> findRevenueAllDaysCurrentMonth(Long userID);

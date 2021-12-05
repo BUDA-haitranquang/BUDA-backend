@@ -30,9 +30,17 @@ public class StatisticsService {
     {
         return this.sellOrderRepository.findTotalSpendOfAgeGroupByUserID(userID);
     }
+    public List<AgeGroupStatistics> findCurrentMonthSpendOfAgeGroupByUserID(Long userID)
+    {
+        return this.sellOrderRepository.findCurrentMonthSpendOfAgeGroupByUserID(userID);
+    }
     public List<GenderStatistics> findTotalSpendOfGenderByUserID(Long userID)
     {
         return this.sellOrderRepository.findTotalSpendOfGenderByUserID(userID);
+    }
+    public List<GenderStatistics> findCurrentMonthSpendOfGenderByUserID(Long userID)
+    {
+        return this.sellOrderRepository.findCurrentMonthSpendOfGenderByUserID(userID);
     }
     public List<ProductStatistics> findTotalRevenueOfAllProductByUserID(Long userID)
     {

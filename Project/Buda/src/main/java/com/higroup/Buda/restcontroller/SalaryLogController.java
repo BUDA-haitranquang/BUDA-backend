@@ -80,5 +80,18 @@ public class SalaryLogController {
         this.salaryLogService.deleteSalaryLogbyID(salary_logID);
         return ResponseEntity.ok("delete successfully");
     }
+
+    @GetMapping("expense/this-month")
+    public ResponseEntity<?> findSalaryLogExpenseCurrentMonth(HttpServletRequest httpServletRequest)
+    {
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
+        return ResponseEntity.ok().body(this.salaryLogService.findSalaryLogExpenseCurrentMonth(userID));
+    }
     
+    @GetMapping("expense/monthly")
+    public ResponseEntity<?> findSalaryLogExpenseGroupByMonth(HttpServletRequest httpServletRequest)
+    {
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
+        return ResponseEntity.ok().body(this.salaryLogService.findSalaryLogExpenseGroupByMonth(userID));
+    }
 }
