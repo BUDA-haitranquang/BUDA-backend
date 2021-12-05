@@ -56,9 +56,11 @@ public class SalaryLogService {
         return this.salaryLogRepository.findById(salaryLogID).get();
     }
     public void deleteSalaryLogbyID(Long id){
-        if(id == null){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid id");
+        Optional<SalaryLog> salaryLog = this.salaryLogRepository.findSalaryLogBySalaryLogID(id);
+        if (salaryLog.isPresent())
+        {
+            this.salaryLogRepository.delete(salaryLog.get());
         }
-        this.salaryLogRepository.deleteById(id);
+        else throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Salary log not found");
     }
 }

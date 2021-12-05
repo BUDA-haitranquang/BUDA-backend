@@ -55,7 +55,7 @@ public class StaffNoteController {
     public ResponseEntity<?> findAllByUserID(HttpServletRequest request, @PathVariable Long userID)
     {
         Long jwtUserID = requestUtil.getUserIDFromUserToken(request);
-        if(jwtUserID != userID){
+        if(!jwtUserID.equals(userID)){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No authorized");
         }
         return ResponseEntity.ok(this.staffNoteService.findAllByUserID(userID));
@@ -92,7 +92,7 @@ public class StaffNoteController {
         if(staffNote == null){
             return ResponseEntity.badRequest().body("StaffNote id not exists: " + String.valueOf(staffNoteID));
         }
-        if(staffNote.getUserID() != jwtUserID){
+        if(!staffNote.getUserID().equals(jwtUserID)){
             return ResponseEntity.badRequest().body("StaffNote not belong to user: " + String.valueOf(jwtUserID));
         }
         return ResponseEntity.ok().body(staffNoteService.findStaffNotebyID(staffNoteID));
@@ -105,7 +105,7 @@ public class StaffNoteController {
         if(staffNote == null){
             return ResponseEntity.badRequest().body("StaffNote id not exists: " + String.valueOf(staffNoteID));
         }
-        if(staffNote.getUserID() != jwtUserID){
+        if(!staffNote.getUserID().equals(jwtUserID)){
             return ResponseEntity.badRequest().body("StaffNote not belong to user: " + String.valueOf(jwtUserID));
         }
         staffNoteService.deleteStaffNotebyID(staffNoteID);
@@ -125,7 +125,7 @@ public class StaffNoteController {
         if(staffNote == null){
             return ResponseEntity.badRequest().body("StaffNote id not exists: " + String.valueOf(staffNoteID));
         }
-        if(staffNote.getUserID() != jwtUserID){
+        if(!staffNote.getUserID().equals(jwtUserID)){
             return ResponseEntity.badRequest().body("StaffNote not belong to user: " + String.valueOf(jwtUserID));
         }
         if(is_seen == null){
