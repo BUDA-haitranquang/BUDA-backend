@@ -45,4 +45,18 @@ public class ProductGroupController {
         this.productGroupService.deleteProductGroup(userID, productGroupID);
         return ResponseEntity.ok().body("Delete successfully");
     }
+    @PostMapping(path = "/{productGroupID}/add/{productID}")
+    public ResponseEntity<?> addProductToProductGroup(HttpServletRequest httpServletRequest, @PathVariable Long productGroupID, @PathVariable Long productID)
+    {
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
+        this.productGroupService.addProductToProductGroup(userID, productGroupID, productID);
+        return ResponseEntity.ok().body("Add Product to Product Group successfully");
+    }
+    @PostMapping(path = "/{productGroupID}/remove/{productID}")
+    public ResponseEntity<?> removeProductFromProductGroup(HttpServletRequest httpServletRequest, @PathVariable Long productGroupID, @PathVariable Long productID)
+    {
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
+        this.productGroupService.removeProductFromProductGroup(userID, productGroupID, productID);
+        return ResponseEntity.ok().body("Remove Product from Product Group successfully");
+    }
 }

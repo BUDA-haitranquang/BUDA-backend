@@ -52,7 +52,7 @@ public class ProductComponentService {
     public List<ProductComponent> findAllByProductID(Long userID, Long productID)
     {
         Product product = this.productRepository.findProductByProductID(productID);
-        if ((product!=null) && (product.getUserID() == userID))
+        if ((product!=null) && (Objects.equals(product.getUserID(), userID)))
         {
             return this.productComponentRepository.findAllByProductID(productID);
         }
@@ -62,13 +62,13 @@ public class ProductComponentService {
     public List<Product> findAllProductContainIngredient(Long userID, Long ingredientID)
     {
         Optional<Ingredient> ingredient = this.ingredientRepository.findIngredientByIngredientID(ingredientID);
-        if ((ingredient.isPresent()) && (ingredient.get().getUserID() == userID))
+        if ((ingredient.isPresent()) && (Objects.equals(ingredient.get().getUserID(), userID)))
         {
             return this.productRepository.findAllProductContainIngredient(ingredientID);
         }
         else return Collections.emptyList();
     }
-    public ResponseEntity<?> addIngredientToProduct(Long userID, Long productID, Long ingredientID)
+    public ProductComponent addIngredientToProduct(Long userID, Long productID, Long ingredientID)
     {
         Optional<Ingredient> ingredient = this.ingredientRepository.findIngredientByIngredientID(ingredientID);
         Product product = this.productRepository.findProductByProductID(productID);
@@ -79,7 +79,7 @@ public class ProductComponentService {
             productComponent.setIngredient(ingredient.get());
             productComponent.setUserID(userID);
             this.productComponentRepository.save(productComponent);
-            return ResponseEntity.ok().body(productComponent);
+            return productComponent;
         }
         else{
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Ingredient not found");
