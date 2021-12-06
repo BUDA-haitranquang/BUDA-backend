@@ -69,10 +69,12 @@ public class StaffNoteService {
     }
 
     public void deleteStaffNotebyID(Long id){
-        if(id == null){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid staff note id");
+        Optional<StaffNote> staffNote = this.staffNoteRepository.findStaffNoteByStaffNoteID(id);
+        if (staffNote.isPresent())
+        {
+            this.staffNoteRepository.delete(staffNote.get());
         }
-        this.staffNoteRepository.deleteById(id);
+        else throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "StaffNote not found");
     }
 
     public StaffNote updateStaffNotebyID(Long id, ZonedDateTime noteDate, String message, Boolean seen, Long userID, Long staffID){
@@ -87,11 +89,11 @@ public class StaffNoteService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "staff not exists");
         }
         // cannot change userid in staffnote
-        if(staffNote.getUserID() != userID){
+        if(!staffNote.getUserID().equals(userID)){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "staffNote not belong to userID: " + String.valueOf(userID));
         }
         // check if staff exitst and belong to user
-        if(staff != null && staff.getUserID() != userID){
+        if(staff != null && (!staff.getUserID().equals(userID))){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Staff not belong to userID: " + String.valueOf(userID));
         }
         staffNote.setStaffID(staffID);
