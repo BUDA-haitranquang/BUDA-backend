@@ -4,6 +4,8 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import com.higroup.Buda.entities.Staff;
 import com.higroup.Buda.entities.StaffNote;
 import com.higroup.Buda.entities.User;
@@ -30,6 +32,7 @@ public class StaffNoteService {
         this.userRepository = userRepository;
         this.staffNoteRepository = staffNoteRepository;
     }
+    @Transactional
     public StaffNote registerNewStaffNote(Long userID, StaffNote staffNote)
     {
         Optional<User> user = this.userRepository.findUserByUserID(userID);
@@ -67,7 +70,7 @@ public class StaffNoteService {
     {
         return this.staffNoteRepository.findAllUnseenByStaffID(staffID);
     }
-
+    @Transactional
     public void deleteStaffNotebyID(Long id){
         Optional<StaffNote> staffNote = this.staffNoteRepository.findStaffNoteByStaffNoteID(id);
         if (staffNote.isPresent())
@@ -76,7 +79,7 @@ public class StaffNoteService {
         }
         else throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "StaffNote not found");
     }
-
+    @Transactional
     public StaffNote updateStaffNotebyID(Long id, ZonedDateTime noteDate, String message, Boolean seen, Long userID, Long staffID){
         StaffNote staffNote = this.staffNoteRepository.findById(id).get();
         Staff staff = this.staffRepository.findById(staffID).get();

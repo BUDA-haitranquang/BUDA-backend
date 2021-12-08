@@ -3,6 +3,7 @@ package com.higroup.Buda.restcontroller;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import com.higroup.Buda.entities.Staff;
 import com.higroup.Buda.entities.StaffLogin;
@@ -38,7 +39,7 @@ public class StaffController {
         this.requestUtil = requestUtil;
     }
     @PostMapping(path = "/login")
-    public ResponseEntity<?> correctLogin(@RequestBody StaffLogin staffLogin)
+    public ResponseEntity<?> correctLogin(@RequestBody @Valid StaffLogin staffLogin)
     {
         String account = staffLogin.getAccount();
         String password = staffLogin.getPassword();

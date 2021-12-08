@@ -42,7 +42,7 @@ public class Staff {
     @Column(name = "user_id")
     private Long userID;  
     @Enumerated(EnumType.STRING)
-    private StaffPosition staffPosition;
+    private StaffPosition staffPosition = StaffPosition.BASIC;
     @Column(columnDefinition = "varchar(36) default (uuid())", name = "staff_uuid")
     private String staffUUID;
     @Column(columnDefinition = "Double default 0.0")
