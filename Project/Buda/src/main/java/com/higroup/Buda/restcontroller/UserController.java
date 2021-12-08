@@ -91,7 +91,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> correctLogin(@RequestBody UserLogin userLogin) {
+    public ResponseEntity<?> correctLogin(@RequestBody @Valid UserLogin userLogin) {
         String email = userLogin.getEmail();
         String password = userLogin.getPassword();
         return ResponseEntity.ok(userService.correctLogin(email, password));
