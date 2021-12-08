@@ -3,6 +3,8 @@ package com.higroup.Buda.services;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import com.higroup.Buda.customDTO.ExpenseByTimeStatistics;
 import com.higroup.Buda.entities.SalaryLog;
 import com.higroup.Buda.entities.Staff;
@@ -29,6 +31,7 @@ public class SalaryLogService {
         this.staffRepository = staffRepository;
         this.salaryLogRepository = salaryLogRepository;
     }
+    @Transactional
     public SalaryLog registerNewSalaryLog(Long userID, SalaryLog salaryLog)
     {
         Optional<User> user = userRepository.findUserByUserID(userID);
