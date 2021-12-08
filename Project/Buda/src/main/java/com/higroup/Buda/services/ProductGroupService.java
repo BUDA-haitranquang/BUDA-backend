@@ -33,17 +33,16 @@ public class ProductGroupService {
     {
         return this.productGroupRepository.findAllByUserID(userID);
     }
-    public ResponseEntity<?> createProductGroup(Long userID)
+    public ProductGroup createProductGroup(Long userID, ProductGroup productGroup)
     {
         Optional<User> user = this.userRepository.findUserByUserID(userID);
         if (user.isEmpty())
         {
-            return ResponseEntity.badRequest().body("User not found");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
         }
-        ProductGroup productGroup = new ProductGroup();
         productGroup.setUserID(userID);
         this.productGroupRepository.save(productGroup);
-        return ResponseEntity.ok().body(productGroup);
+        return productGroup;
     }
     public void deleteProductGroup(Long userID, Long productGroupID)
     {
