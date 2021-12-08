@@ -12,8 +12,10 @@ import com.higroup.Buda.repositories.UserRepository;
 
 import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class IngredientLeftLogService {
@@ -27,21 +29,22 @@ public class IngredientLeftLogService {
         this.ingredientLeftLogRepository = ingredientLeftLogRepository;
         this.ingredientRepository = ingredientRepository;
     }
-    public ResponseEntity<?> findIngredientLeftLogByIngredientLeftLogID(Long ingredientLeftLogID)
+    public IngredientLeftLog findIngredientLeftLogByIngredientLeftLogID(Long ingredientLeftLogID)
     {
         Optional<IngredientLeftLog> ingredientLeftLog = this.ingredientLeftLogRepository.findIngredientLeftLogByIngredientLeftLogID(ingredientLeftLogID);
-        return ingredientLeftLog.<ResponseEntity<?>>map(leftLog -> ResponseEntity.ok().body(leftLog)).orElseGet(() -> ResponseEntity.badRequest().body("Not found"));
+        if (ingredientLeftLog.isPresent()) return ingredientLeftLog.get();
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Log not found");
     }
-    public ResponseEntity<?> registerNewIngredientLeftLog(Long userID, IngredientLeftLog ingredientLeftLog)
+    public IngredientLeftLog registerNewIngredientLeftLog(Long userID, IngredientLeftLog ingredientLeftLog)
     {
         Optional<User> user = this.userRepository.findUserByUserID(userID);
         if (user.isEmpty())
         {
-            return ResponseEntity.badRequest().body("User not found");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
         }
         ingredientLeftLog.setUserID(userID);
         this.ingredientLeftLogRepository.save(ingredientLeftLog);
-        return ResponseEntity.ok().body(ingredientLeftLog);
+        return ingredientLeftLog;
     }
     public List<IngredientLeftLog> findAllIngredientLeftLogByIngredient(Long ingredientID)
     {
