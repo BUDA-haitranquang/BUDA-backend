@@ -61,7 +61,7 @@ public class StaffService implements UserDetailsService{
         }
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "false");
     }
-
+    @Transactional
     public ResponseEntity<?> registerNewStaff(Staff newStaff)
     {
         Optional<Staff> staff = this.staffRepository.findStaffByStaffUUID(newStaff.getLoginID());
@@ -109,6 +109,7 @@ public class StaffService implements UserDetailsService{
                                                                       staff.get().getPassword(), authorities);
     }
 
+    @Transactional
     public void deleteStaffByID(Long id){
         if(id == null){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid id");

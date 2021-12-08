@@ -28,12 +28,12 @@ public class IngredientLeftLogController {
     @PostMapping(path = "/userID/{userID}")
     public ResponseEntity<?> registerNewIngredientLeftLog(@PathVariable Long userID, @RequestBody IngredientLeftLog IngredientLeftLog)
     {
-        return this.IngredientLeftLogService.registerNewIngredientLeftLog(userID, IngredientLeftLog);
+        return ResponseEntity.ok().body(this.IngredientLeftLogService.registerNewIngredientLeftLog(userID, IngredientLeftLog));
     }
     @GetMapping(path = "/id/{IngredientLeftLogID}")
     public ResponseEntity<?> findIngredientLeftLogByIngredientLeftLogID(@PathVariable Long IngredientLeftLogID)
     {
-        return this.IngredientLeftLogService.findIngredientLeftLogByIngredientLeftLogID(IngredientLeftLogID);
+        return ResponseEntity.ok().body(this.IngredientLeftLogService.findIngredientLeftLogByIngredientLeftLogID(IngredientLeftLogID));
     }
     @GetMapping(path = "Ingredient/{IngredientID}/all")
     public List<IngredientLeftLog> findAllIngredientLeftLogByIngredient(@PathVariable Long IngredientID)
@@ -48,6 +48,6 @@ public class IngredientLeftLogController {
     @GetMapping(path = "staff/{staffID}/all")
     public List<IngredientLeftLog> findAllIngredientLeftLogByStaffID(@PathVariable Long staffID)
     {
-        return this.findAllIngredientLeftLogByStaffID(staffID);
+        return this.IngredientLeftLogService.findAllIngredientLeftLogByStaffID(staffID);
     }
 }

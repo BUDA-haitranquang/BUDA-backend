@@ -2,8 +2,12 @@ package com.higroup.Buda.entities;
 
 import java.util.Objects;
 
+import javax.validation.constraints.NotNull;
+
 public class StaffLogin {
+    @NotNull
     private String account;
+    @NotNull
     private String password;
 
     public StaffLogin() {

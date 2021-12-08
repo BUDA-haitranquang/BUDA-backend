@@ -41,7 +41,7 @@ public class SalaryLogController {
     public ResponseEntity<?> registerNewSalaryLog(HttpServletRequest request, @PathVariable Long userID, @RequestBody SalaryLog salaryLog)
     {
         Long jwtuserID = requestUtil.getUserIDFromUserToken(request);
-        if(jwtuserID != userID){
+        if(!jwtuserID.equals(userID)){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No authorized");
         }
         return ResponseEntity.ok(this.salaryLogService.registerNewSalaryLog(userID, salaryLog));
@@ -50,7 +50,7 @@ public class SalaryLogController {
     public ResponseEntity<?> findAllByUserID(HttpServletRequest request, @PathVariable Long userID)
     {
         Long jwtuserID = requestUtil.getUserIDFromUserToken(request);
-        if(jwtuserID != userID){
+        if(!jwtuserID.equals(userID)){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No authorized");
         }
         return ResponseEntity.ok(this.salaryLogService.findAllByUserID(userID));
@@ -64,7 +64,7 @@ public class SalaryLogController {
         if(staff == null){
             return ResponseEntity.badRequest().body("Staff not exists");
         }
-        if(staff.getUserID() == jwtuserID){
+        if(!staff.getUserID().equals(jwtuserID)){
             return ResponseEntity.badRequest().body("Staff not belong to user ID");
         }
         return ResponseEntity.ok(this.salaryLogService.findAllByStaffID(staffID));
@@ -74,11 +74,24 @@ public class SalaryLogController {
     public ResponseEntity<?> deleteSalaryLogbyID(HttpServletRequest request, @PathVariable Long salary_logID){
         Long jwtuserID = requestUtil.getUserIDFromUserToken(request);
         SalaryLog salaryLog = salaryLogService.findByID(salary_logID);
-        if(salaryLog.getUserID() != jwtuserID){
+        if(!salaryLog.getUserID().equals(jwtuserID)){
             return ResponseEntity.badRequest().body("SalaryLog not belong to user ID");
         }
         this.salaryLogService.deleteSalaryLogbyID(salary_logID);
         return ResponseEntity.ok("delete successfully");
     }
+
+    @GetMapping("expense/this-month")
+    public ResponseEntity<?> findSalaryLogExpenseCurrentMonth(HttpServletRequest httpServletRequest)
+    {
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
+        return ResponseEntity.ok().body(this.salaryLogService.findSalaryLogExpenseCurrentMonth(userID));
+    }
     
+    @GetMapping("expense/monthly")
+    public ResponseEntity<?> findSalaryLogExpenseGroupByMonth(HttpServletRequest httpServletRequest)
+    {
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
+        return ResponseEntity.ok().body(this.salaryLogService.findSalaryLogExpenseGroupByMonth(userID));
+    }
 }

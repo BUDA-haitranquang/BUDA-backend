@@ -1,9 +1,6 @@
 package com.higroup.Buda.services;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import com.higroup.Buda.entities.Product;
 import com.higroup.Buda.entities.ProductGroup;
@@ -36,17 +33,16 @@ public class ProductGroupService {
     {
         return this.productGroupRepository.findAllByUserID(userID);
     }
-    public ResponseEntity<?> createProductGroup(Long userID)
+    public ProductGroup createProductGroup(Long userID, ProductGroup productGroup)
     {
         Optional<User> user = this.userRepository.findUserByUserID(userID);
         if (user.isEmpty())
         {
-            return ResponseEntity.badRequest().body("User not found");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
         }
-        ProductGroup productGroup = new ProductGroup();
         productGroup.setUserID(userID);
         this.productGroupRepository.save(productGroup);
-        return ResponseEntity.ok().body(productGroup);
+        return productGroup;
     }
     public void deleteProductGroup(Long userID, Long productGroupID)
     {
@@ -62,36 +58,47 @@ public class ProductGroupService {
         }
         this.productGroupRepository.delete(productGroup.get());
     }
-//    public ResponseEntity<?> addProductToProductGroup(Long userID, Long productGroupID, Long productID)
-//    {
-//        Optional<User> user = this.userRepository.findUserByUserID(userID);
-//        if (user.isEmpty())
-//        {
-//            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
-//        }
-//        Optional<ProductGroup> productGroup = this.productGroupRepository.findProductGroupByProductGroupID(productGroupID);
-//        if (productGroup.isPresent() && Objects.equals(productGroup.get().getUserID(), userID))
-//        {
-//            Product product = this.productRepository.findProductByProductID(productID);
-//            Set<Product> products = productGroup.get().getProducts();
-//            products.add(product);
-//            productGroup.get().setProducts(products);
-//            this.productGroupRepository.save(productGroup.get());
-//        }
-//        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
-//    }
-//    public void removeProductFromProductGroup(Long userID, Long productGroupID, Long productID)
-//    {
-//        Optional<User> user = this.userRepository.findUserByUserID(userID);
-//        if (user.isEmpty())
-//        {
-//            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
-//        }
-//        Optional<ProductGroup> productGroup = this.productGroupRepository.findProductGroupByProductGroupID(productGroupID);
-//        if (productGroup.isPresent() && Objects.equals(productGroup.get().getUserID(), userID))
-//        {
-//            Product product = this.productGroupRepository
-//        }
-//        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
-//    }
+    public ProductGroup addProductToProductGroup(Long userID, Long productGroupID, Long productID)
+    {
+        Optional<User> user = this.userRepository.findUserByUserID(userID);
+        if (user.isEmpty())
+        {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
+        }
+        Optional<ProductGroup> productGroup = this.productGroupRepository.findProductGroupByProductGroupID(productGroupID);
+        if (productGroup.isPresent() && Objects.equals(productGroup.get().getUserID(), userID))
+        {
+            Product product = this.productRepository.findProductByProductID(productID);
+            Set<Product> products = productGroup.get().getProducts();
+            products.add(product);
+            productGroup.get().setProducts(products);
+            this.productGroupRepository.save(productGroup.get());
+            return productGroup.get();
+        }
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
+    }
+
+    public void removeProductFromProductGroup(Long userID, Long productGroupID, Long productID)
+    {
+        Optional<User> user = this.userRepository.findUserByUserID(userID);
+        if (user.isEmpty())
+        {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
+        }
+        Optional<ProductGroup> productGroup = this.productGroupRepository.findProductGroupByProductGroupID(productGroupID);
+        if (productGroup.isPresent() && Objects.equals(productGroup.get().getUserID(), userID))
+        {
+            List<Product> products = this.productRepository.findAllProductByProductGroup(productGroup.get());
+            for (Iterator<Product> iter = products.listIterator(); iter.hasNext(); )
+            {
+                Product product = iter.next();
+                if (product.getProductID().equals(productID))
+                {
+                    iter.remove();
+                    return;
+                }
+            }
+        }
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
+    }
 }
