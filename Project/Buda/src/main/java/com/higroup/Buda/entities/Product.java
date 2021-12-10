@@ -277,10 +277,10 @@ public class Product {
                 && Objects.equals(description, product.description)
                 && Objects.equals(userID, product.userID)
                 && Objects.equals(pictureID, product.pictureID)
-                && sellingPrice == product.sellingPrice
-                && alertAmount == product.alertAmount
-                && amountLeft == product.amountLeft
-                && costPerUnit == product.costPerUnit
+                && Objects.equals(sellingPrice, product.sellingPrice)
+                && Objects.equals(alertAmount, product.alertAmount)
+                && Objects.equals(amountLeft, product.amountLeft)
+                && Objects.equals(costPerUnit, product.costPerUnit)
                 && Objects.equals(sellOrderItems, product.sellOrderItems)
                 && Objects.equals(productLeftLogs, product.productLeftLogs)
                 && Objects.equals(productGroup, product.productGroup);
@@ -288,7 +288,9 @@ public class Product {
 
     @Override
     public int hashCode() {
-        return Objects.hash(productID, name, description, userID, pictureID, sellingPrice, alertAmount, amountLeft, costPerUnit, sellOrderItems, productLeftLogs, productGroup);
+//        return Objects.hash(productID, name, description, userID, pictureID, sellingPrice, alertAmount, amountLeft, costPerUnit, sellOrderItems, productLeftLogs, productGroup);
+        return Objects.hash(productID, name, description, userID, pictureID, sellingPrice, alertAmount, amountLeft, costPerUnit, sellOrderItems);
+
     }
 
     @Override

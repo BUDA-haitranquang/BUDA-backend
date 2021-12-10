@@ -68,14 +68,20 @@ public class ProductGroupService {
         Optional<ProductGroup> productGroup = this.productGroupRepository.findProductGroupByProductGroupID(productGroupID);
         if (productGroup.isPresent() && Objects.equals(productGroup.get().getUserID(), userID))
         {
-            Product product = this.productRepository.findProductByProductID(productID);
             Set<Product> products = productGroup.get().getProducts();
+            for (Product product : products) {
+                if (product.getProductID().equals(productID)) {
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Product's already in the group.");
+                }
+            }
+            Product product = this.productRepository.findProductByProductID(productID);
+            product.setProductGroup(productGroup.get());
             products.add(product);
             productGroup.get().setProducts(products);
             this.productGroupRepository.save(productGroup.get());
             return productGroup.get();
         }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product group not found");
     }
 
     public void removeProductFromProductGroup(Long userID, Long productGroupID, Long productID)
@@ -88,8 +94,8 @@ public class ProductGroupService {
         Optional<ProductGroup> productGroup = this.productGroupRepository.findProductGroupByProductGroupID(productGroupID);
         if (productGroup.isPresent() && Objects.equals(productGroup.get().getUserID(), userID))
         {
-            List<Product> products = this.productRepository.findAllProductByProductGroup(productGroup.get());
-            for (Iterator<Product> iter = products.listIterator(); iter.hasNext(); )
+            Set<Product> products = productGroup.get().getProducts();
+            for (Iterator<Product> iter = products.iterator(); iter.hasNext(); )
             {
                 Product product = iter.next();
                 if (product.getProductID().equals(productID))

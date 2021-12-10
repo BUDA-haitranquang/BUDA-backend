@@ -1,32 +1,16 @@
 package com.higroup.Buda.restcontroller;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.List;
-import java.util.Optional;
+import com.higroup.Buda.customDTO.QuantityLog;
+import com.higroup.Buda.entities.Product;
+import com.higroup.Buda.services.ProductService;
+import com.higroup.Buda.util.Checker.RequestUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-
-import com.higroup.Buda.entities.Product;
-import com.higroup.Buda.services.ProductService;
-import com.higroup.Buda.util.JwtTokenUtil;
-import com.higroup.Buda.util.Checker.RequestUtil;
-
-import org.apache.catalina.connector.Response;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
-import org.springframework.web.bind.annotation.*;
+import java.lang.reflect.InvocationTargetException;
 
 @RestController
 @RequestMapping("api/product")
@@ -90,8 +74,10 @@ public class ProductController {
         return ResponseEntity.ok().body("Delete successfully, this action can not be reversed");
     }
     @PostMapping(path = "/edit/quantity/{productID}")
-    public ResponseEntity<?> editProductQuantity(HttpServletRequest httpServletRequest, @PathVariable Long productID, @RequestBody Integer amountLeftChange, @RequestBody String message)
+    public ResponseEntity<?> editProductQuantity(HttpServletRequest httpServletRequest, @PathVariable Long productID, @RequestBody QuantityLog quantityLog)
     {
+        Integer amountLeftChange = quantityLog.getAmountLeftChange();
+        String message = quantityLog.getMessage();
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.productService.editProductQuantity(userID, productID, amountLeftChange, message));
     }
