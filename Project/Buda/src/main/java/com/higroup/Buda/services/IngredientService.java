@@ -122,7 +122,7 @@ public class IngredientService {
         {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
         }
-        return this.ingredientRepository.findAlertAmountIngredient();
+        return this.ingredientRepository.findAlertAmountIngredient(userID);
     }
 
     public Ingredient editIngredient(Long userID, Long ingredientID, Ingredient ingredient) throws InvocationTargetException, IllegalAccessException {

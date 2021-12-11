@@ -5,6 +5,8 @@ import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,21 +18,24 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import org.checkerframework.checker.units.qual.C;
+
 @Entity
 @Table(name = "Purchase", indexes = {
-    @Index(columnList = "user_id", name = "purchase_user_id_index")
+    @Index(columnList = "user_id", name = "purchase_user_id_index"),
+    @Index(columnList = "plan_id", name = "purchase_plan_id_index")
 })
 public class Purchase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "purchase_ID")
+    @Column(name = "purchase_id")
     private Long purchaseID;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_ID", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     @JsonBackReference
     private User user;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "plan_ID", nullable = false)
+    @JoinColumn(name = "plan_id", nullable = false)
     @JsonBackReference
     private Plan plan;
     private ZonedDateTime creationTime;
@@ -39,7 +44,30 @@ public class Purchase {
     private String message;
     @Column(columnDefinition = "Double default 0.0")
     private Double totalCost;
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    private Status status = Status.PREPARING;
+    
 
+    public Purchase(Long purchaseID, User user, Plan plan, ZonedDateTime creationTime, ZonedDateTime expiryDate,
+            String message, Double totalCost, Status status) {
+        this.purchaseID = purchaseID;
+        this.user = user;
+        this.plan = plan;
+        this.creationTime = creationTime;
+        this.expiryDate = expiryDate;
+        this.message = message;
+        this.totalCost = totalCost;
+        this.status = status;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
 
     public Purchase() {
     }

@@ -33,16 +33,29 @@ public class ProductGroupController {
         return this.productGroupService.findAllByUserID(userID);
     }
     @PostMapping(path = "/add")
-    public ResponseEntity<?> createProductGroup(HttpServletRequest httpServletRequest)
+    public ResponseEntity<?> createProductGroup(HttpServletRequest httpServletRequest, @RequestBody ProductGroup productGroup)
     {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
-        return this.productGroupService.createProductGroup(userID);
+        return ResponseEntity.ok().body(this.productGroupService.createProductGroup(userID, productGroup));
     }
-    @PostMapping(path = "/remove")
-    public ResponseEntity<?> deleteProductGroup(HttpServletRequest httpServletRequest, Long productGroupID)
+    @PostMapping(path = "/remove/{productGroupID}")
+    public ResponseEntity<?> deleteProductGroup(HttpServletRequest httpServletRequest, @PathVariable Long productGroupID)
     {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         this.productGroupService.deleteProductGroup(userID, productGroupID);
         return ResponseEntity.ok().body("Delete successfully");
+    }
+    @PostMapping(path = "/{productGroupID}/add/{productID}")
+    public ResponseEntity<?> addProductToProductGroup(HttpServletRequest httpServletRequest, @PathVariable Long productGroupID, @PathVariable Long productID)
+    {
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
+        return ResponseEntity.ok().body(this.productGroupService.addProductToProductGroup(userID, productGroupID, productID));
+    }
+    @PostMapping(path = "/{productGroupID}/remove/{productID}")
+    public ResponseEntity<?> removeProductFromProductGroup(HttpServletRequest httpServletRequest, @PathVariable Long productGroupID, @PathVariable Long productID)
+    {
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
+        this.productGroupService.removeProductFromProductGroup(userID, productGroupID, productID);
+        return ResponseEntity.ok().body("Remove Product from Product Group successfully");
     }
 }

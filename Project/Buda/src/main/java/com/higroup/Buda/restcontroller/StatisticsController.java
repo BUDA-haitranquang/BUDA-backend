@@ -30,11 +30,23 @@ public class StatisticsController {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.statisticsService.findTotalSpendOfAgeGroupByUserID(userID));
     }
+    @GetMapping(path = "/age-group/this-month")
+    public ResponseEntity<?> findCurrentMonthSpendOfAgeGroupByCurrentUser(HttpServletRequest httpServletRequest)
+    {
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
+        return ResponseEntity.ok().body(this.statisticsService.findCurrentMonthSpendOfAgeGroupByUserID(userID));
+    }
     @GetMapping(path = "/gender/total")
     public ResponseEntity<?> findTotalSpendOfGenderByCurrentUser(HttpServletRequest httpServletRequest)
     {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.statisticsService.findTotalSpendOfGenderByUserID(userID));
+    }
+    @GetMapping(path = "/gender/this-month")
+    public ResponseEntity<?> findCurrentMonthSpendOfGenderByCurrentUser(HttpServletRequest httpServletRequest)
+    {
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
+        return ResponseEntity.ok().body(this.statisticsService.findCurrentMonthSpendOfGenderByUserID(userID));
     }
     @GetMapping(path = "/product/all")
     public ResponseEntity<?> findTotalRevenueOfAllProductByCurrentUser(HttpServletRequest httpServletRequest)

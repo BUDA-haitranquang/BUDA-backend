@@ -31,7 +31,7 @@ public class StaffNote {
     private ZonedDateTime noteDate;
     @Column(length = 1000)
     private String message;
-    private Boolean seen;
+    private Boolean seen = Boolean.FALSE;
 
 
     public StaffNote() {

@@ -17,9 +17,8 @@ public interface ProductRepository extends JpaRepository<Product, Long>{
     List<Product> findAllProductByUserID(@Param("userID") Long userID);
     @Query("select p from Product p where p.userID = :userID and p.visible = false")
     List<Product> findAllHiddenProductByUserID(@Param("userID") Long userID);
-    List<Product> findAllProductByProductGroup(ProductGroup productGroup);
     @Query(value = "select * from product p where p.product_id in (select pc.product_id from product_component pc where pc.ingredient_id = :ingredientID)", nativeQuery = true)
     List<Product> findAllProductContainIngredient(@Param("ingredientID") Long ingredientID);
-    @Query(value = "select p from Product p where p.amountLeft <= p.alertAmount")
-    List<Ingredient> findAlertAmountProduct();
+    @Query(value = "select p from Product p where p.userID = :userID and p.amountLeft <= p.alertAmount")
+    List<Ingredient> findAlertAmountProduct(@Param("userID") Long userID);
 }

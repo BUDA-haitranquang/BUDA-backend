@@ -4,6 +4,8 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import com.higroup.Buda.entities.Discount;
 import com.higroup.Buda.entities.DiscountType;
 import com.higroup.Buda.entities.User;
@@ -31,6 +33,7 @@ public class DiscountService {
     }
     @Autowired
     private PresentChecker presentChecker;
+    @Transactional
     public Discount createNewDiscount(Long userID, Discount discount)
     {
         Optional<User> user = this.userRepository.findUserByUserID(userID);
@@ -94,6 +97,7 @@ public class DiscountService {
         presentChecker.checkId(userID);
         return this.discountRepository.findAllDiscountByUserID(userID);
     }
+    @Transactional
     public void deleteDiscount(Long userID, Long discountID)
     {
         presentChecker.checkIdAndRepository(discountID, this.discountRepository);
