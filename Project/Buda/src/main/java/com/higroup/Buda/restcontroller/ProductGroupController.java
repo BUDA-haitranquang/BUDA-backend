@@ -49,8 +49,7 @@ public class ProductGroupController {
     public ResponseEntity<?> addProductToProductGroup(HttpServletRequest httpServletRequest, @PathVariable Long productGroupID, @PathVariable Long productID)
     {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
-        this.productGroupService.addProductToProductGroup(userID, productGroupID, productID);
-        return ResponseEntity.ok().body("Add Product to Product Group successfully");
+        return ResponseEntity.ok().body(this.productGroupService.addProductToProductGroup(userID, productGroupID, productID));
     }
     @PostMapping(path = "/{productGroupID}/remove/{productID}")
     public ResponseEntity<?> removeProductFromProductGroup(HttpServletRequest httpServletRequest, @PathVariable Long productGroupID, @PathVariable Long productID)

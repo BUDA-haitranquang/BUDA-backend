@@ -91,14 +91,14 @@ public class ProductService {
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product does not exists");
     }
-    public List<Product> findAllProductByProductGroupID(Long userID, Long productGroupID)
+    public Set<Product> findAllProductByProductGroupID(Long userID, Long productGroupID)
     {
         Optional<ProductGroup> productGroup = this.productGroupRepository.findProductGroupByProductGroupID(productGroupID);
         if ((productGroup.isPresent()) && (Objects.equals(productGroup.get().getUserID(), userID)))
         {
-            return this.productRepository.findAllProductByProductGroup(productGroup.get());
+            return productGroup.get().getProducts();
         }
-        return Collections.emptyList();
+        return Collections.emptySet();
     }
     public Product updateProductbyProductID(Product product, Product newproduct){
         if(newproduct == null){
@@ -167,7 +167,7 @@ public class ProductService {
         {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
         }
-        return this.productRepository.findAlertAmountProduct();
+        return this.productRepository.findAlertAmountProduct(userID);
     }
     public Product editProduct(Long userID, Long productID, Product product) throws InvocationTargetException, IllegalAccessException {
 
