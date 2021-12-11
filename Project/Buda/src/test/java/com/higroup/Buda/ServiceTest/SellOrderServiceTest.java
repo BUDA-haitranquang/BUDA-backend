@@ -68,7 +68,7 @@ public class SellOrderServiceTest {
 
     @BeforeEach
     public void Setup(){
-        sellOrderService = new SellOrderService(sellOrderRepository, customerRepository, userRepository, sellOrderItemRepository);
+        // sellOrderService = new SellOrderService(sellOrderRepository, customerRepository, userRepository, sellOrderItemRepository);
     }
 
     @BeforeAll

@@ -39,6 +39,8 @@ public class Discount {
     private Double percentage;
     @Column(columnDefinition = "Double default 0.0")
     private Double cashLimit;
+    @Column(columnDefinition = "Double default 0.0", name="minimum_sell_order_cost")
+    private Double minimumSellOrderCost;
     @Column(columnDefinition = "int default 0")
     private Integer orderCount;
     private ZonedDateTime expiryTime;
@@ -54,13 +56,18 @@ public class Discount {
     @Enumerated(EnumType.STRING)
     private DiscountType discountType;
 
-    public Discount(Long discountID, String name, String description, Double cash, Double percentage, Double cashLimit, Integer orderCount, ZonedDateTime expiryTime, ZonedDateTime createdTime, Long userID, Set<SellOrder> sellOrders, Set<MembershipType> membershipTypes, DiscountType discountType) {
+    
+
+    public Discount(Long discountID, String name, String description, Double cash, Double percentage, Double cashLimit,
+            Double minimumSellOrderCost, Integer orderCount, ZonedDateTime expiryTime, ZonedDateTime createdTime,
+            Long userID, Set<SellOrder> sellOrders, Set<MembershipType> membershipTypes, DiscountType discountType) {
         this.discountID = discountID;
         this.name = name;
         this.description = description;
         this.cash = cash;
         this.percentage = percentage;
         this.cashLimit = cashLimit;
+        this.minimumSellOrderCost = minimumSellOrderCost;
         this.orderCount = orderCount;
         this.expiryTime = expiryTime;
         this.createdTime = createdTime;
@@ -82,20 +89,7 @@ public class Discount {
         setDiscountType(discountType);
         return this;
     }
-    public Discount(Long discountID, String name, String description, Double cash, Double percentage, Double cashLimit, Integer orderCount, ZonedDateTime expiryTime, ZonedDateTime createdTime, Long userID, Set<SellOrder> sellOrders, Set<MembershipType> membershipTypes) {
-        this.discountID = discountID;
-        this.name = name;
-        this.description = description;
-        this.cash = cash;
-        this.percentage = percentage;
-        this.cashLimit = cashLimit;
-        this.orderCount = orderCount;
-        this.expiryTime = expiryTime;
-        this.createdTime = createdTime;
-        this.userID = userID;
-        this.sellOrders = sellOrders;
-        this.membershipTypes = membershipTypes;
-    }
+    
 
     public Set<MembershipType> getMembershipTypes() {
         return this.membershipTypes;
@@ -111,21 +105,7 @@ public class Discount {
     }
     public Discount() {
     }
-
-    public Discount(Long discountID, String name, String description, Double cash, Double percentage, Double cashLimit, Integer orderCount, ZonedDateTime expiryTime, ZonedDateTime createdTime, Long userID, Set<SellOrder> sellOrders) {
-        this.discountID = discountID;
-        this.name = name;
-        this.description = description;
-        this.cash = cash;
-        this.percentage = percentage;
-        this.cashLimit = cashLimit;
-        this.orderCount = orderCount;
-        this.expiryTime = expiryTime;
-        this.createdTime = createdTime;
-        this.userID = userID;
-        this.sellOrders = sellOrders;
-    }
-
+    
     public Long getDiscountID() {
         return this.discountID;
     }
@@ -247,6 +227,14 @@ public class Discount {
     public Discount orderCount(Integer orderCount) {
         setOrderCount(orderCount);
         return this;
+    }
+
+    public Double getMinimumSellOrderCost() {
+        return minimumSellOrderCost;
+    }
+
+    public void setMinimumSellOrderCost(Double minimumSellOrderCost) {
+        this.minimumSellOrderCost = minimumSellOrderCost;
     }
 
     public Discount expiryTime(ZonedDateTime expiryTime) {

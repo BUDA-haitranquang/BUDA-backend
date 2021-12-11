@@ -1,20 +1,32 @@
 package com.higroup.Buda.services;
 
+import java.text.DecimalFormat;
 import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
 
 import com.higroup.Buda.customDTO.AgeGroupStatistics;
+import com.higroup.Buda.customDTO.RegisterSellOrder;
+import com.higroup.Buda.customDTO.RegisterSellOrderItem;
+import com.higroup.Buda.entities.AgeGroup;
 import com.higroup.Buda.entities.Customer;
+import com.higroup.Buda.entities.Discount;
+import com.higroup.Buda.entities.DiscountType;
+import com.higroup.Buda.entities.Gender;
+import com.higroup.Buda.entities.MembershipType;
+import com.higroup.Buda.entities.Product;
 import com.higroup.Buda.entities.SellOrder;
 import com.higroup.Buda.entities.SellOrderItem;
 import com.higroup.Buda.entities.Status;
 import com.higroup.Buda.entities.User;
 import com.higroup.Buda.repositories.CustomerRepository;
+import com.higroup.Buda.repositories.DiscountRepository;
+import com.higroup.Buda.repositories.MembershipTypeRepository;
 import com.higroup.Buda.repositories.SellOrderItemRepository;
 import com.higroup.Buda.repositories.SellOrderRepository;
 import com.higroup.Buda.repositories.UserRepository;
@@ -29,63 +41,154 @@ import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class SellOrderService {
+    private final SellOrderItemService sellOrderItemService;
     private final SellOrderRepository sellOrderRepository;
     private final CustomerRepository customerRepository;
     private final UserRepository userRepository;
+    private final MembershipTypeRepository membershipTypeRepository;
+    private final DiscountRepository discountRepository;
     private final SellOrderItemRepository sellOrderItemRepository;
+
+    private DecimalFormat df = new DecimalFormat("###.##");
 
     @Autowired
     public SellOrderService(SellOrderRepository sellOrderRepository, CustomerRepository customerRepository,
-            UserRepository userRepository, SellOrderItemRepository sellOrderItemRepository) {
-        this.sellOrderItemRepository = sellOrderItemRepository;
+            UserRepository userRepository, SellOrderItemService sellOrderItemService, MembershipTypeRepository membershipTypeRepository, SellOrderItemRepository sellOrderItemRepository,
+            DiscountRepository discountRepository) {
+        this.sellOrderItemService = sellOrderItemService;
         this.userRepository = userRepository;
         this.customerRepository = customerRepository;
         this.sellOrderRepository = sellOrderRepository;
+        this.membershipTypeRepository = membershipTypeRepository;
+        this.discountRepository = discountRepository;
+        this.sellOrderItemRepository = sellOrderItemRepository;
     }
     @Autowired
     private PresentChecker presentChecker;
-    @Transactional
-    public SellOrder registerNewSellOrder(Long userID, SellOrder sellOrder) {
-        Optional<User> user = this.userRepository.findUserByUserID(userID);
-        if (user.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
-        }
+
+    @Transactional 
+    public SellOrder registerSellOrder(Long userID, RegisterSellOrder registerSellOrder){
+        SellOrder sellOrder = new SellOrder();
+        // Optional<User> user = this.userRepository.findUserByUserID(userID);
+        // if (user.isEmpty()) {
+        //     throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+        // }
         sellOrder.setUserID(userID);
         sellOrder.setCreationTime(ZonedDateTime.now());
-        try {
-            Optional<Customer> customer = this.customerRepository.findCustomerByUserIDAndPhoneNumber(userID,
-                    sellOrder.getCustomer().getPhoneNumber());
-            if (customer.isPresent()) {
-                sellOrder.setCustomer(customer.get());
-            } else {
-                sellOrder.getCustomer().setUserID(userID);
+        // customer solving
+        Customer customer;
+        if(registerSellOrder.getCustomer() == null){
+            customer = this.customerRepository.findById(1l).get();
+        }
+        else{
+            String phoneNumber = registerSellOrder.getCustomer().getPhoneNumber();
+            if(phoneNumber == null){
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Phonenumber invalid");
+            }
+            customer = this.customerRepository.findCustomerByUserIDAndPhoneNumber(userID, phoneNumber).get();
+            if(customer == null){
+                customer = registerSellOrder.getCustomer();
                 this.customerRepository.save(sellOrder.getCustomer());
             }
-        } catch (Exception e) {
-
         }
+        sellOrder.setCustomer(customer);
+        sellOrder.setGender(customer.getGender());
+        sellOrder.setAgeGroup(customer.getAgeGroup());
+        sellOrder.setCustomerMessage(registerSellOrder.getCustomer_message());
+        sellOrder.setStatus(registerSellOrder.getStatus());
+        sellOrder.setAddress(registerSellOrder.getAddress());
         this.sellOrderRepository.save(sellOrder);
-        try {
-            for (SellOrderItem sellOrderItem : sellOrder.getSellOrderItems()) {
-                sellOrderItem.setSellOrder(sellOrder);
-                sellOrderItem.setCreationTime(sellOrder.getCreationTime());
-                sellOrderItem.setUserID(userID);
-                // System.out.println("An item: " + sellOrderItem);
-                this.sellOrderItemRepository.save(sellOrderItem);
-            }
-        } catch (Exception e) {
+
+        double realCost = 0;
+        // add sellorderitem by product id
+        for(Long productID : registerSellOrder.getProducts().keySet()){
+            Integer quantity = registerSellOrder.getProducts().get(productID);
+            SellOrderItem sellOrderItem = sellOrderItemService.registerNewSellOrderItem(userID, new RegisterSellOrderItem(productID, sellOrder.getSellOrderID(), quantity));
+            realCost += sellOrderItem.getActualTotalSale(); 
         }
-        // Optional<Customer> customer =
-        // this.customerRepository.findCustomerByCustomerID(sellOrder.getCustomer().getCustomerID());
-        // if (customer.isPresent())
-        // {
-        // double totalSpend = customer.get().getTotalSpend() +
-        // sellOrder.getFinalCost();
-        // customer.get().setTotalSpend(totalSpend);
-        // this.customerRepository.save(customer.get());
-        // }
+        double actual_discount_cash = 0;
+        // discount solving 
+        if(registerSellOrder.getDiscountID() != null){
+            Discount discount = this.discountRepository.findDiscountByDiscountID(registerSellOrder.getDiscountID());
+            if(discount != null){
+                if(discount.getExpiryTime().isBefore(ZonedDateTime.now())){
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "discount expired time !!!");
+                }
+                else {
+                    // check if real cost equal or bigger than sale order price limit in discount
+                    if(discount.getMinimumSellOrderCost() > realCost){
+                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "sale order cost not meet requirement");
+                    }
+                    else{
+                        if(discount.getDiscountType() == DiscountType.CASH_ONLY){
+                            actual_discount_cash = discount.getCash();
+                        }
+                        else if(discount.getDiscountType() == DiscountType.PERCENTAGE_ONLY){
+                            actual_discount_cash = (long)(discount.getPercentage() / 100.0 * realCost);
+                            if(actual_discount_cash > discount.getCashLimit()){
+                                actual_discount_cash = discount.getCashLimit();
+                            }
+                        }
+                    }
+                }
+            }
+            else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "not found discount");
+        }
+        // set precistion == 2
+        double actualDiscountPercentage = Double.valueOf(df.format(actual_discount_cash / realCost));
+        double finalCost = Double.valueOf(df.format(realCost - actual_discount_cash));
+        sellOrder.setActualDiscountCash(Double.valueOf(df.format(actual_discount_cash)));
+        sellOrder.setActualDiscountPercentage(actualDiscountPercentage);
+        sellOrder.setFinalCost(finalCost);
+        sellOrder.setRealCost(Double.valueOf(df.format(realCost)));
+        // 
+        this.sellOrderRepository.save(sellOrder);
         return sellOrder;
-    }
+        
+    }    
+
+    // @Transactional
+    // public SellOrder registerNewSellOrder(Long userID, SellOrder sellOrder) {
+    //     Optional<User> user = this.userRepository.findUserByUserID(userID);
+    //     if (user.isEmpty()) {
+    //         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+    //     }
+    //     sellOrder.setUserID(userID);
+    //     sellOrder.setCreationTime(ZonedDateTime.now());
+    //     try {
+    //         Optional<Customer> customer = this.customerRepository.findCustomerByUserIDAndPhoneNumber(userID,
+    //                 sellOrder.getCustomer().getPhoneNumber());
+    //         if (customer.isPresent()) {
+    //             sellOrder.setCustomer(customer.get());
+    //         } else {
+    //             sellOrder.getCustomer().setUserID(userID);
+    //             this.customerRepository.save(sellOrder.getCustomer());
+    //         }
+    //     } catch (Exception e) {
+
+    //     }
+    //     this.sellOrderRepository.save(sellOrder);
+    //     try {
+    //         for (SellOrderItem sellOrderItem : sellOrder.getSellOrderItems()) {
+    //             sellOrderItem.setSellOrder(sellOrder);
+    //             sellOrderItem.setCreationTime(sellOrder.getCreationTime());
+    //             sellOrderItem.setUserID(userID);
+    //             // System.out.println("An item: " + sellOrderItem);
+    //             this.sellOrderItemRepository.save(sellOrderItem);
+    //         }
+    //     } catch (Exception e) {
+    //     }
+    //     // Optional<Customer> customer =
+    //     // this.customerRepository.findCustomerByCustomerID(sellOrder.getCustomer().getCustomerID());
+    //     // if (customer.isPresent())
+    //     // {
+    //     // double totalSpend = customer.get().getTotalSpend() +
+    //     // sellOrder.getFinalCost();
+    //     // customer.get().setTotalSpend(totalSpend);
+    //     // this.customerRepository.save(customer.get());
+    //     // }
+    //     return sellOrder;
+    // }
 
     public List<SellOrder> findAllSellOrderByCustomerID(Long userID, Long customerID) {
         Optional<User> user = this.userRepository.findUserByUserID(userID);
@@ -120,7 +223,8 @@ public class SellOrderService {
             }
             for (SellOrderItem sellOrderItem: sellOrder.get().getSellOrderItems())
             {
-                this.sellOrderItemRepository.delete(sellOrderItem);
+                // this.sellOrderItemRepository.delete(sellOrderItem);
+                this.sellOrderItemService.deleteSellOrderItem(userID, sellOrderItem.getSellOrderItemID());
             }
             this.sellOrderRepository.deleteById(sellOrderID);
         }

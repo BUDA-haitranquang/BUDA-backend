@@ -69,18 +69,27 @@ public class SellOrder implements Serializable{
     private Long userID;
     @Column(length = 1000)
     private String customerMessage;
+    @Column(length = 200)
+    private String address;
     @Enumerated(EnumType.STRING)
     private Status status = Status.PREPARING;
     @OneToMany(mappedBy = "sellOrder", fetch = FetchType.LAZY)
     @JsonManagedReference(value = "sell_order - sell_order_item")
     @Fetch(FetchMode.SUBSELECT)
-    private Set<SellOrderItem> sellOrderItems;
-
+    private Set<SellOrderItem> sellOrderItems = new HashSet<SellOrderItem>();
 
 
     public SellOrder() {
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
     public Long getSellOrderID() {
         return this.sellOrderID;
@@ -192,6 +201,11 @@ public class SellOrder implements Serializable{
 
     public void setSellOrderItems(Set<SellOrderItem> sellOrderItems) {
         this.sellOrderItems = sellOrderItems;
+    }
+    
+    public SellOrder address(String address){
+        setAddress(address);
+        return this;
     }
 
     public SellOrder sellOrderID(Long sellOrderID) {
@@ -324,6 +338,17 @@ public class SellOrder implements Serializable{
         } else if (!userID.equals(other.userID))
             return false;
         return true;
+    }
+
+    public boolean checkProductExistInItems(Product product)
+    {
+        for(SellOrderItem sellOrderItem: sellOrderItems){
+            if (product.equals(sellOrderItem.getProduct()))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
