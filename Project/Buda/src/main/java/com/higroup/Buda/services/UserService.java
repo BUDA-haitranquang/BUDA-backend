@@ -238,7 +238,6 @@ public class UserService implements UserDetailsService{
     public JwtResponse correctLogin(String email, String rawPassword)
     {
         Optional<User> mailUser = userRepository.findUserByEmail(email);
-        System.out.println(mailUser.get().toString());
         if (mailUser.isEmpty())
         {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found");
@@ -251,7 +250,7 @@ public class UserService implements UserDetailsService{
         //System.out.println(bCryptPasswordEncoder.encode(rawPassword));
         //System.out.println(this.bCryptPasswordEncoder.matches(rawPassword, mailUser.get().getPassword()));
         //System.out.println(rawPassword);
-        if (bCryptPasswordEncoder.matches(rawPassword, mailUser.get().getPassword()))
+        if (bCryptPasswordEncoder.matches(rawPassword, mailUser.get().getPassword()) && mailUser.get().isEnabled())
         {
             JwtTokenUtil jwtTokenUtil = new JwtTokenUtil();
             UserDetails userDetails = loadUserByUsername(mailUser.get().getEmail());
