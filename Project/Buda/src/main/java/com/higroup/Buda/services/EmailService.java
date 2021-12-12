@@ -20,10 +20,10 @@ public class EmailService {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, "utf-8");
 
-            helper.setText(content);
+            helper.setText(content, true);
             helper.setTo(to);
             helper.setSubject(subject);
-            helper.setFrom("rokclone201@gmail.com");
+            helper.setFrom("${spring.mail.username}");
 
             mailSender.send(message);
         } catch (MessagingException e) {
