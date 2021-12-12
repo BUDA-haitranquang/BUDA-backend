@@ -53,7 +53,7 @@ public class MailConfirmationTokenService {
     public MailConfirmationToken getToken(String token) {
         return mailConfirmationTokenRepository
             .findByToken(token)
-            .orElseThrow(() -> new IllegalStateException("Confirmation token not found"));
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Confirmation token not found"));
     }
 
     @Transactional

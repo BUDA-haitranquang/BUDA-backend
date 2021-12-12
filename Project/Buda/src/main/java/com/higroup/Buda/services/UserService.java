@@ -152,13 +152,13 @@ public class UserService implements UserDetailsService{
         MailConfirmationToken confirmationToken = mailConfirmationTokenService.getToken(token);
 
         if (confirmationToken.getConfirmedAt() != null) {
-            throw new IllegalStateException("email already confirmed");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email already confirmed");
         }
 
         LocalDateTime expiredAt = confirmationToken.getExpiredAt();
 
         if (expiredAt.isBefore(LocalDateTime.now())) {
-            throw new IllegalStateException("token expired");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Confirmation token expired");
         }
 
         mailConfirmationTokenService.setConfirmedAt(token);
