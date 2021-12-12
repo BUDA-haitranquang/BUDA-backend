@@ -56,6 +56,7 @@ public class User{
     private String lastName;
     @Column(length = 20)
     private String firstName;
+    private Boolean enabled = false;
     @Column(name = "picture_id")
     private Long pictureID;
     @OneToMany(mappedBy = "user",
@@ -238,6 +239,14 @@ public class User{
             return;
         }
         this.firstName = firstName;
+    }
+
+    public Boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
     }
 
     public Long getPictureID() {
