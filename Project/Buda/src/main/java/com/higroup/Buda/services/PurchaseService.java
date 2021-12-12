@@ -7,8 +7,10 @@ import com.higroup.Buda.repositories.UserRepository;
 
 import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Instant;
 import java.time.ZoneId;
@@ -28,16 +30,17 @@ public class PurchaseService {
         this.purchaseRepository = purchaseRepository;
         this.userRepository = userRepository;
     }
-    public ResponseEntity<?> createNewPurchase(Long userID, Purchase purchase)
+    public Purchase createNewPurchase(Long userID, Purchase purchase)
     {
         Optional<User> user = this.userRepository.findUserByUserID(userID);
         if (user.isEmpty())
         {
-            return ResponseEntity.badRequest().body("User not found");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found");
         }
+        purchase.setCreationTime(ZonedDateTime.now());
         purchase.setUser(userRepository.findUserByUserID(userID).get());
         this.purchaseRepository.save(purchase);
-        return ResponseEntity.ok().body(purchase);
+        return purchase;
     }
     public List<Purchase> findAllByUserID(Long userID) {
         User user = userRepository.getById(userID);

@@ -3,6 +3,8 @@ package com.higroup.Buda.services;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import com.higroup.Buda.entities.Discount;
 import com.higroup.Buda.entities.MembershipType;
 import com.higroup.Buda.entities.User;
@@ -42,6 +44,7 @@ public class MembershipTypeService {
         presentChecker.checkIdAndRepository(membershipTypeID, this.membershipTypeRepository);
         return this.membershipTypeRepository.findMembershipTypeByMembershipTypeID(membershipTypeID);
     }
+    @Transactional
     public MembershipType createNewMembershipType(Long userID, MembershipType membershipType)
     {
         Optional<User> user = this.userRepository.findUserByUserID(userID);

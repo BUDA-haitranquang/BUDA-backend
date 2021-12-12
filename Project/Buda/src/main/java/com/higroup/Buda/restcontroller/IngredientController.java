@@ -1,20 +1,15 @@
 package com.higroup.Buda.restcontroller;
 
-import com.higroup.Buda.entities.Ingredient;
+import com.higroup.Buda.customDTO.QuantityLog;
 import com.higroup.Buda.entities.Ingredient;
 import com.higroup.Buda.services.IngredientService;
-import com.higroup.Buda.util.JwtTokenUtil;
 import com.higroup.Buda.util.Checker.RequestUtil;
-
-import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-
 import javax.servlet.http.HttpServletRequest;
-
 import java.lang.reflect.InvocationTargetException;
 import java.util.Objects;
 
@@ -77,8 +72,10 @@ public class IngredientController {
         return ResponseEntity.ok().body(this.ingredientService.hideIngredientByIngredientID(userID, ingredientID));
     }
     @PostMapping(path = "/edit/quantity/{ingredientID}")
-    public ResponseEntity<?> editIngredientQuantity(HttpServletRequest httpServletRequest, @PathVariable Long ingredientID, @RequestBody Integer amountLeftChange, @RequestBody String message)
+    public ResponseEntity<?> editIngredientQuantity(HttpServletRequest httpServletRequest, @PathVariable Long ingredientID, @RequestBody QuantityLog quantityLog)
     {
+        Integer amountLeftChange = quantityLog.getAmountLeftChange();
+        String message = quantityLog.getMessage();
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.ingredientService.editIngredientQuantity(userID, ingredientID, amountLeftChange, message));
     }

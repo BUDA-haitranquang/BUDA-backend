@@ -3,8 +3,11 @@ package com.higroup.Buda.restcontroller;
 import java.time.*;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.higroup.Buda.entities.Purchase;
 import com.higroup.Buda.services.PurchaseService;
+import com.higroup.Buda.util.Checker.RequestUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,29 +18,23 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/purchase")
 public class PurchaseController {
     private final PurchaseService purchaseService;
+    private final RequestUtil requestUtil;
     @Autowired
-    public PurchaseController(PurchaseService purchaseService)
+    public PurchaseController(PurchaseService purchaseService, RequestUtil requestUtil)
     {
+        this.requestUtil = requestUtil;
         this.purchaseService = purchaseService;
     }
-    @PostMapping("/userID/{userID}")
-    public ResponseEntity<?> createNewPurchase(@PathVariable Long userID, Purchase purchase)
+    @PostMapping("/new")
+    public ResponseEntity<?> createNewPurchase(HttpServletRequest httpServletRequest, @RequestBody Purchase purchase)
     {
-        return this.purchaseService.createNewPurchase(userID, purchase);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
+        return ResponseEntity.ok().body(this.purchaseService.createNewPurchase(userID, purchase));
     }
-    @GetMapping("/userID/{userID}/all")
-    public List<Purchase> findPurchasesByUserID(@PathVariable("userID") Long userID)
+    @GetMapping("/all")
+    public ResponseEntity<?> findPurchasesByUserID(HttpServletRequest httpServletRequest)
     {
-        return this.purchaseService.findAllByUserID(userID);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
+        return ResponseEntity.ok().body(this.purchaseService.findAllByUserID(userID));
     }
-    @GetMapping("/userID/{userID}/")
-    public List<Purchase> findPurchasesByUserIDFromTo(
-            @PathVariable("userID") Long userID,
-            @RequestParam(required = false) String from,
-            @RequestParam(required = false) String to
-    )
-    {
-        return this.purchaseService.findAllByUserIdFromTo(userID, from, to);
-    }
-
 }
