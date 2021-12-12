@@ -20,14 +20,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.higroup.Buda.util.SHA_256_Encode;
-
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 
 @Entity
@@ -58,6 +52,7 @@ public class User{
     private String firstName;
     @Column(name = "picture_id")
     private Long pictureID;
+    private Boolean enabled = false;
     @OneToMany(mappedBy = "user",
     fetch = FetchType.LAZY)
     @JsonManagedReference
@@ -246,6 +241,14 @@ public class User{
 
     public void setPictureID(Long pictureID) {
         this.pictureID = pictureID;
+    }
+
+    public Boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
     }
 
     @Override
