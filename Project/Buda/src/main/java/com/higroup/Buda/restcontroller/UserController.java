@@ -86,7 +86,7 @@ public class UserController {
     @DeleteMapping(path = "id/{userID}")
     public ResponseEntity<?> deleteUserByID(@PathVariable("userID") Long id, HttpServletRequest request) {
         Long get_userid = requestUtil.getUserIDFromUserToken(request);
-        if(get_userid == id){
+        if(get_userid.equals(id)){
             userService.deleteUserByID(id);
             return ResponseEntity.ok().body("Delete Succesfully");
         }
