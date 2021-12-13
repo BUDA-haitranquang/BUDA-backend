@@ -1,16 +1,6 @@
 package com.higroup.Buda.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
@@ -71,10 +61,13 @@ public class Product {
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     @JsonManagedReference
     private Set<ProductLeftLog> productLeftLogs;
-    @ManyToOne(fetch = FetchType.LAZY, optional = true)
-    @JoinColumn(name = "product_Group_ID", nullable = true)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @JoinTable(
+            name = "product_group_component",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_group_id"))
     @JsonBackReference
-    private ProductGroup productGroup;
+    private Set<ProductGroup> productGroups;
 
     public Product() {
     }
@@ -92,7 +85,7 @@ public class Product {
     }
 
 
-    public Product(Long productID, String name, String description, Long userID, Boolean visible, Long pictureID, Double sellingPrice, Integer alertAmount, Integer amountLeft, Double costPerUnit, Set<SellOrderItem> sellOrderItems, Set<ProductLeftLog> productLeftLogs, ProductGroup productGroup) {
+    public Product(Long productID, String name, String description, Long userID, Boolean visible, Long pictureID, Double sellingPrice, Integer alertAmount, Integer amountLeft, Double costPerUnit, Set<SellOrderItem> sellOrderItems, Set<ProductLeftLog> productLeftLogs, Set<ProductGroup> productGroups) {
         this.productID = productID;
         this.name = name;
         this.description = description;
@@ -105,7 +98,7 @@ public class Product {
         this.costPerUnit = costPerUnit;
         this.sellOrderItems = sellOrderItems;
         this.productLeftLogs = productLeftLogs;
-        this.productGroup = productGroup;
+        this.productGroups = productGroups;
     }
     
     public Long getProductID() {
@@ -196,12 +189,12 @@ public class Product {
         this.productLeftLogs = productLeftLogs;
     }
 
-    public ProductGroup getProductGroup() {
-        return this.productGroup;
+    public Set<ProductGroup> getProductGroups() {
+        return this.productGroups;
     }
 
-    public void setProductGroup(ProductGroup productGroup) {
-        this.productGroup = productGroup;
+    public void setProductGroup(Set<ProductGroup> productGroups) {
+        this.productGroups = productGroups;
     }
 
     public Product productID(Long productID) {
@@ -259,7 +252,7 @@ public class Product {
         return this;
     }
 
-    public Product productGroup(ProductGroup productGroup) {
+    public Product productGroup(Set<ProductGroup> productGroup) {
         setProductGroup(productGroup);
         return this;
     }
@@ -283,7 +276,7 @@ public class Product {
                 && Objects.equals(costPerUnit, product.costPerUnit)
                 && Objects.equals(sellOrderItems, product.sellOrderItems)
                 && Objects.equals(productLeftLogs, product.productLeftLogs)
-                && Objects.equals(productGroup, product.productGroup);
+                && Objects.equals(productGroups, product.productGroups);
     }
 
     @Override

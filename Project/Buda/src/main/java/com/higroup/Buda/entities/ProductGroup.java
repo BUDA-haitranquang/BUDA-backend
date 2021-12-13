@@ -3,15 +3,7 @@ package com.higroup.Buda.entities;
 import java.util.Objects;
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -31,7 +23,7 @@ public class ProductGroup {
     private String name;
     @Column(name = "user_id")
     private Long userID;
-    @OneToMany(mappedBy = "productGroup", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "productGroups", fetch = FetchType.LAZY)
     @JsonManagedReference
     private Set<Product> products;
 

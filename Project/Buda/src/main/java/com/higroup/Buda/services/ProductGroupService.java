@@ -65,22 +65,22 @@ public class ProductGroupService {
         {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
         }
-        Optional<ProductGroup> productGroup = this.productGroupRepository.findProductGroupByProductGroupID(productGroupID);
-        if (productGroup.isPresent() && Objects.equals(productGroup.get().getUserID(), userID))
-        {
-            Set<Product> products = productGroup.get().getProducts();
-            for (Product product : products) {
-                if (product.getProductID().equals(productID)) {
-                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Product's already in the group.");
-                }
-            }
-            Product product = this.productRepository.findProductByProductID(productID);
-            product.setProductGroup(productGroup.get());
-            products.add(product);
-            productGroup.get().setProducts(products);
-            this.productGroupRepository.save(productGroup.get());
-            return productGroup.get();
-        }
+//        Optional<ProductGroup> productGroup = this.productGroupRepository.findProductGroupByProductGroupID(productGroupID);
+//        if (productGroup.isPresent() && Objects.equals(productGroup.get().getUserID(), userID))
+//        {
+//            Set<Product> products = productGroup.get().getProducts();
+//            for (Product product : products) {
+//                if (product.getProductID().equals(productID)) {
+//                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Product's already in the group.");
+//                }
+//            }
+//            Product product = this.productRepository.findProductByProductID(productID);
+////            product.setProductGroup(productGroup.get());
+//            products.add(product);
+//            productGroup.get().setProducts(products);
+//            this.productGroupRepository.save(productGroup.get());
+//            return productGroup.get();
+//        }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product group not found");
     }
 
