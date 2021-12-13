@@ -6,7 +6,7 @@ BEGIN
 		IF ((SELECT COUNT(*) FROM product where user_id = i and visible = 1 and amount_left < alert_amount) > 0)
         THEN
 		INSERT INTO notification(creation_time, message, seen, user_id)
-        VALUES (now(), concat('There are ', (SELECT COUNT(*) FROM product where user_id = i and visible = 1 and amount_left < alert_amount), ' products that are nearly out of stock'), false, i);
+        VALUES (now(), concat('There are ', (SELECT COUNT(*) FROM product where user_id = i and visible = 1 and amount_left < alert_amount), ' product(s) that are nearly out of stock'), false, i);
         END IF;
 		SET i = i + 1;
     END while;
