@@ -1,5 +1,6 @@
 package com.higroup.Buda.services;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -7,22 +8,21 @@ import java.util.Optional;
 import java.util.UUID;
 
 import com.higroup.Buda.customDTO.GoogleUserPayload;
+import com.higroup.Buda.entities.MailConfirmationToken;
 import com.higroup.Buda.entities.Picture;
 import com.higroup.Buda.entities.User;
 
 
-import com.higroup.Buda.exception.APIBadRequestException;
+import com.higroup.Buda.entities.UserRegister;
 import com.higroup.Buda.jwt.JwtResponse;
 import com.higroup.Buda.repositories.PictureRepository;
 import com.higroup.Buda.repositories.RoleRepository;
 import com.higroup.Buda.repositories.UserRepository;
 import com.higroup.Buda.util.JwtTokenUtil;
-import com.higroup.Buda.util.SHA_256_Encode;
 
 import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -38,6 +38,9 @@ public class UserService implements UserDetailsService{
     private final UserRepository userRepository;
     private final PictureRepository pictureRepository;
 
+    @Autowired
+    private MailConfirmationTokenService mailConfirmationTokenService;
+
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
@@ -49,6 +52,52 @@ public class UserService implements UserDetailsService{
 
     @Autowired
     private RoleRepository roleRepository;
+
+    public void registerNewUser(UserRegister userRegister) {
+        String email = userRegister.getEmail();
+        String phoneNumber = userRegister.getPhoneNumber();
+        String username = userRegister.getUsername();
+
+        Optional<User> mailUser = userRepository.findUserByEmail(email);
+        if ((email!=null) && (mailUser.isPresent()))
+        {
+            //BAD REQUEST da ton tai email
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Already exists email");
+        }
+        if (!EmailValidator.getInstance().isValid(email) || email.length() > 60)
+        {
+            //khong phai email
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid email");
+        }
+        Optional<User> phoneUser = userRepository.findUserByPhoneNumber(phoneNumber);
+        if ((phoneNumber!=null) && (phoneUser.isPresent()))
+        {
+            //BAD REQUEST da ton tai phone
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Already exists phoneNumber");
+        }
+        if (!phoneNumber.matches("[0-9]+"))
+        {
+            //khong phai phone
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid phone");
+        }
+        Optional<User> userNameUser = userRepository.findUserByUserName(username);
+        if ((username!=null) && (userNameUser.isPresent()))
+        {
+            //BAD REQUEST da ton tai username
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Already exists userName");
+        }
+        if (userRegister.getPassword().length() < 8)
+        {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Weak password");
+        }
+
+        User newUser = new User(userRegister);
+        newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
+        newUser.addRole(roleRepository.findRoleByName("USER").get());
+        userRepository.save(newUser);
+
+        mailConfirmationTokenService.sendMailConfirmationTo(email);
+    }
 
     // dang ky user moi
     public JwtResponse registerNewUser(User newUser) {
@@ -96,6 +145,37 @@ public class UserService implements UserDetailsService{
         String jwtAccessToken = jwtTokenUtil.generateAccessToken(userDetails, newUser.getUserID());
         String jwtRefreshToken = jwtTokenUtil.generateRefreshToken(userDetails, newUser.getUserID());
         return new JwtResponse(jwtAccessToken, jwtRefreshToken);
+    }
+
+    @Transactional
+    public JwtResponse confirmAccountActivation(String token) {
+        MailConfirmationToken confirmationToken = mailConfirmationTokenService.getToken(token);
+
+        if (confirmationToken.getConfirmedAt() != null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email already confirmed");
+        }
+
+        LocalDateTime expiredAt = confirmationToken.getExpiredAt();
+
+        if (expiredAt.isBefore(LocalDateTime.now())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Confirmation token expired");
+        }
+
+        mailConfirmationTokenService.setConfirmedAt(token);
+
+        User user = confirmationToken.getUser();
+        this.enableUser(confirmationToken.getUser().getEmail());
+
+        JwtTokenUtil jwtTokenUtil = new JwtTokenUtil();
+        UserDetails userDetails = loadUserByUsername(user.getEmail());
+        String jwtAccessToken = jwtTokenUtil.generateAccessToken(userDetails, user.getUserID());
+        String jwtRefreshToken = jwtTokenUtil.generateRefreshToken(userDetails, user.getUserID());
+        return new JwtResponse(jwtAccessToken, jwtRefreshToken);
+    }
+
+    private void enableUser(String email) {
+        System.out.println(email);
+        userRepository.enableUserByEmail(email);
     }
 
     public JwtResponse processGoogleUserPostLogin(GoogleUserPayload googleUserPayload)
@@ -158,16 +238,19 @@ public class UserService implements UserDetailsService{
     public JwtResponse correctLogin(String email, String rawPassword)
     {
         Optional<User> mailUser = userRepository.findUserByEmail(email);
-        System.out.println(mailUser.get().toString());
         if (mailUser.isEmpty())
         {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found");
+        }
+
+        if(!mailUser.get().isEnabled()) {
+            mailConfirmationTokenService.sendMailConfirmationTo(email);
         }
         //System.out.println(mailUser.get().getPassword());
         //System.out.println(bCryptPasswordEncoder.encode(rawPassword));
         //System.out.println(this.bCryptPasswordEncoder.matches(rawPassword, mailUser.get().getPassword()));
         //System.out.println(rawPassword);
-        if (bCryptPasswordEncoder.matches(rawPassword, mailUser.get().getPassword()))
+        if (bCryptPasswordEncoder.matches(rawPassword, mailUser.get().getPassword()) && mailUser.get().isEnabled())
         {
             JwtTokenUtil jwtTokenUtil = new JwtTokenUtil();
             UserDetails userDetails = loadUserByUsername(mailUser.get().getEmail());
