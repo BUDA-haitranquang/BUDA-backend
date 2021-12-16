@@ -15,7 +15,7 @@ import java.util.Set;
 @Entity
 @Table(name = "Product", indexes = {
     @Index(columnList = "user_id", name = "product_user_id_index"),
-    @Index(columnList = "product_group_id", name = "product_product_group_id_index")
+//    @Index(columnList = "product_group_id", name = "product_product_group_id_index")
 })
 @JsonIgnoreProperties({"sellOrderItems", "productLeftLogs"})
 public class Product {
