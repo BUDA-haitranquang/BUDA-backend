@@ -19,10 +19,19 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Entity
 @Table(name = "Discount", indexes = {
     @Index(columnList = "user_id", name = "discount_user_id_index")
 })
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @JsonIgnoreProperties({"sellOrders", "membershipTypes"})
 public class Discount {
     @Id
@@ -53,221 +62,6 @@ public class Discount {
     private Set<MembershipType> membershipTypes;
     @Enumerated(EnumType.STRING)
     private DiscountType discountType;
-
-    public Discount(Long discountID, String name, String description, Double cash, Double percentage, Double cashLimit, Integer orderCount, ZonedDateTime expiryTime, ZonedDateTime createdTime, Long userID, Set<SellOrder> sellOrders, Set<MembershipType> membershipTypes, DiscountType discountType) {
-        this.discountID = discountID;
-        this.name = name;
-        this.description = description;
-        this.cash = cash;
-        this.percentage = percentage;
-        this.cashLimit = cashLimit;
-        this.orderCount = orderCount;
-        this.expiryTime = expiryTime;
-        this.createdTime = createdTime;
-        this.userID = userID;
-        this.sellOrders = sellOrders;
-        this.membershipTypes = membershipTypes;
-        this.discountType = discountType;
-    }
-
-    public DiscountType getDiscountType() {
-        return this.discountType;
-    }
-
-    public void setDiscountType(DiscountType discountType) {
-        this.discountType = discountType;
-    }
-
-    public Discount discountType(DiscountType discountType) {
-        setDiscountType(discountType);
-        return this;
-    }
-    public Discount(Long discountID, String name, String description, Double cash, Double percentage, Double cashLimit, Integer orderCount, ZonedDateTime expiryTime, ZonedDateTime createdTime, Long userID, Set<SellOrder> sellOrders, Set<MembershipType> membershipTypes) {
-        this.discountID = discountID;
-        this.name = name;
-        this.description = description;
-        this.cash = cash;
-        this.percentage = percentage;
-        this.cashLimit = cashLimit;
-        this.orderCount = orderCount;
-        this.expiryTime = expiryTime;
-        this.createdTime = createdTime;
-        this.userID = userID;
-        this.sellOrders = sellOrders;
-        this.membershipTypes = membershipTypes;
-    }
-
-    public Set<MembershipType> getMembershipTypes() {
-        return this.membershipTypes;
-    }
-
-    public void setMembershipTypes(Set<MembershipType> membershipTypes) {
-        this.membershipTypes = membershipTypes;
-    }
-
-    public Discount membershipTypes(Set<MembershipType> membershipTypes) {
-        setMembershipTypes(membershipTypes);
-        return this;
-    }
-    public Discount() {
-    }
-
-    public Discount(Long discountID, String name, String description, Double cash, Double percentage, Double cashLimit, Integer orderCount, ZonedDateTime expiryTime, ZonedDateTime createdTime, Long userID, Set<SellOrder> sellOrders) {
-        this.discountID = discountID;
-        this.name = name;
-        this.description = description;
-        this.cash = cash;
-        this.percentage = percentage;
-        this.cashLimit = cashLimit;
-        this.orderCount = orderCount;
-        this.expiryTime = expiryTime;
-        this.createdTime = createdTime;
-        this.userID = userID;
-        this.sellOrders = sellOrders;
-    }
-
-    public Long getDiscountID() {
-        return this.discountID;
-    }
-
-    public void setDiscountID(Long discountID) {
-        this.discountID = discountID;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return this.description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Double getCash() {
-        return this.cash;
-    }
-
-    public void setCash(Double cash) {
-        this.cash = cash;
-    }
-
-    public Double getPercentage() {
-        return this.percentage;
-    }
-
-    public void setPercentage(Double percentage) {
-        this.percentage = percentage;
-    }
-
-    public Double getCashLimit() {
-        return this.cashLimit;
-    }
-
-    public void setCashLimit(Double cashLimit) {
-        this.cashLimit = cashLimit;
-    }
-
-    public Integer getOrderCount() {
-        return this.orderCount;
-    }
-
-    public void setOrderCount(Integer orderCount) {
-        this.orderCount = orderCount;
-    }
-
-    public ZonedDateTime getExpiryTime() {
-        return this.expiryTime;
-    }
-
-    public void setExpiryTime(ZonedDateTime expiryTime) {
-        this.expiryTime = expiryTime;
-    }
-
-    public ZonedDateTime getCreatedTime() {
-        return this.createdTime;
-    }
-
-    public void setCreatedTime(ZonedDateTime createdTime) {
-        this.createdTime = createdTime;
-    }
-
-    public Long getUserID() {
-        return this.userID;
-    }
-
-    public void setUserID(Long userID) {
-        this.userID = userID;
-    }
-
-    public Set<SellOrder> getSellOrders() {
-        return this.sellOrders;
-    }
-
-    public void setSellOrders(Set<SellOrder> sellOrders) {
-        this.sellOrders = sellOrders;
-    }
-
-    public Discount discountID(Long discountID) {
-        setDiscountID(discountID);
-        return this;
-    }
-
-    public Discount name(String name) {
-        setName(name);
-        return this;
-    }
-
-    public Discount description(String description) {
-        setDescription(description);
-        return this;
-    }
-
-    public Discount cash(Double cash) {
-        setCash(cash);
-        return this;
-    }
-
-    public Discount percentage(Double percentage) {
-        setPercentage(percentage);
-        return this;
-    }
-
-    public Discount cashLimit(Double cashLimit) {
-        setCashLimit(cashLimit);
-        return this;
-    }
-
-    public Discount orderCount(Integer orderCount) {
-        setOrderCount(orderCount);
-        return this;
-    }
-
-    public Discount expiryTime(ZonedDateTime expiryTime) {
-        setExpiryTime(expiryTime);
-        return this;
-    }
-
-    public Discount createdTime(ZonedDateTime createdTime) {
-        setCreatedTime(createdTime);
-        return this;
-    }
-
-    public Discount userID(Long userID) {
-        setUserID(userID);
-        return this;
-    }
-
-    public Discount sellOrders(Set<SellOrder> sellOrders) {
-        setSellOrders(sellOrders);
-        return this;
-    }
 
     @Override
     public boolean equals(Object o) {

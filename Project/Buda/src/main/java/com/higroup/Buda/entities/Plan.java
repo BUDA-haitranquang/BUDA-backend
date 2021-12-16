@@ -6,6 +6,8 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,9 +17,19 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.higroup.Buda.entities.enumeration.PlanType;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "Plan")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @JsonIgnoreProperties({"purchases"})
 public class Plan {
     @Id
@@ -37,118 +49,10 @@ public class Plan {
     private Long pictureID;
     @Column(length = 200)
     private String description;
+    @Column(name = "plan_type")
+    @Enumerated(EnumType.STRING)
+    private PlanType planType;
 
-    public Plan(Long planID, Set<Purchase> purchases, String name, double Price, Integer duration, Long pictureID, String description) {
-        this.planID = planID;
-        this.purchases = purchases;
-        this.name = name;
-        this.price = Price;
-        this.duration = duration;
-        this.pictureID = pictureID;
-        this.description = description;
-    }
-
-    public Plan planID(Long planID) {
-        setPlanID(planID);
-        return this;
-    }
-
-    public Plan purchases(Set<Purchase> purchases) {
-        setPurchases(purchases);
-        return this;
-    }
-
-    public Plan name(String name) {
-        setName(name);
-        return this;
-    }
-
-    public Plan Price(double Price) {
-        setPrice(Price);
-        return this;
-    }
-
-    public Plan duration(Integer duration) {
-        setDuration(duration);
-        return this;
-    }
-
-    public Plan pictureID(Long pictureID) {
-        setPictureID(pictureID);
-        return this;
-    }
-
-    public Plan description(String description) {
-        setDescription(description);
-        return this;
-    }
-
-    public String getDescription() {
-        return this.description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-    public Plan() {
-    }
-
-    public Plan(Long planID, Set<Purchase> purchases, String name, double Price, Integer duration, Long pictureID) {
-        this.planID = planID;
-        this.purchases = purchases;
-        this.name = name;
-        this.price = Price;
-        this.duration = duration;
-        this.pictureID = pictureID;
-    }
-
-    public Long getPlanID() {
-        return this.planID;
-    }
-
-    public void setPlanID(Long planID) {
-        this.planID = planID;
-    }
-
-    public Set<Purchase> getPurchases() {
-        return this.purchases;
-    }
-
-    public void setPurchases(Set<Purchase> purchases) {
-        this.purchases = purchases;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public double getPrice() {
-        return this.price;
-    }
-
-    public void setPrice(double Price) {
-        this.price = Price;
-    }
-
-    public Integer getDuration() {
-        return this.duration;
-    }
-
-    public void setDuration(Integer duration) {
-        this.duration = duration;
-    }
-
-    public Long getPictureID() {
-        return this.pictureID;
-    }
-
-    public void setPictureID(Long pictureID) {
-        this.pictureID = pictureID;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -170,12 +74,12 @@ public class Plan {
     @Override
     public String toString() {
         return "{" +
-            " planID='" + getPlanID() + "'" +
-            ", purchases='" + getPurchases() + "'" +
-            ", name='" + getName() + "'" +
-            ", Price='" + getPrice() + "'" +
-            ", duration='" + getDuration() + "'" +
-            ", pictureID='" + getPictureID() + "'" +
+            " planID='" + planID + "'" +
+            ", purchases='" + purchases + "'" +
+            ", name='" + name + "'" +
+            ", Price='" + price + "'" +
+            ", duration='" + duration + "'" +
+            ", pictureID='" + pictureID + "'" +
             "}";
     }
     
