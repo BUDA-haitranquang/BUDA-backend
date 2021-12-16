@@ -64,7 +64,7 @@ public class StaffService implements UserDetailsService{
     @Transactional
     public ResponseEntity<?> registerNewStaff(Staff newStaff)
     {
-        Optional<Staff> staff = this.staffRepository.findStaffByStaffUUID(newStaff.getLoginID());
+        Optional<Staff> staff = this.staffRepository.findStaffByStaffUUID(newStaff.getStaffUUID());
         if (staff.isPresent())
         {
             return ResponseEntity.badRequest().body("Exists UUID, try again");
@@ -127,14 +127,14 @@ public class StaffService implements UserDetailsService{
             //BAD REQUEST da ton tai email
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "UUID Already used by another staff");
         }
-        thisstaff.address(address);
-        thisstaff.name(Name);
-        thisstaff.phoneNumber(phoneNumber);
-        thisstaff.password(bCryptPasswordEncoder.encode(password));
-        thisstaff.salary(salary);
-        thisstaff.loginID(staffUUID);
+        thisstaff.setAddress(address);
+        thisstaff.setName(Name);
+        thisstaff.setPhoneNumber(phoneNumber);
+        thisstaff.setPassword(bCryptPasswordEncoder.encode(password));
+        thisstaff.setSalary(salary);
+        thisstaff.setStaffUUID(staffUUID);
         thisstaff.setAccount(account);
-        thisstaff.staffPosition(staffPosition);
+        thisstaff.setStaffPosition(staffPosition);
 
         staffRepository.save(thisstaff);
         return thisstaff;
