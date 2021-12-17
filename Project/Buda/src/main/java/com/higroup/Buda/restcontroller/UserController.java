@@ -74,16 +74,19 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerNewUser(@Valid @RequestBody UserRegister userRegister) {
+    public void registerNewUser(@Valid @RequestBody UserRegister userRegister) {
+        userService.registerNewUser(userRegister);
+    }
 
-        User user = new User(userRegister);
-        return ResponseEntity.ok().body(userService.registerNewUser(user));
+    @GetMapping("/register/confirm")
+    public ResponseEntity<?> confirmAccountActivationEmail(@RequestParam(name = "token") String token) {
+        return ResponseEntity.ok(userService.confirmAccountActivation(token));
     }
 
     @DeleteMapping(path = "id/{userID}")
     public ResponseEntity<?> deleteUserByID(@PathVariable("userID") Long id, HttpServletRequest request) {
         Long get_userid = requestUtil.getUserIDFromUserToken(request);
-        if(get_userid == id){
+        if(get_userid.equals(id)){
             userService.deleteUserByID(id);
             return ResponseEntity.ok().body("Delete Succesfully");
         }

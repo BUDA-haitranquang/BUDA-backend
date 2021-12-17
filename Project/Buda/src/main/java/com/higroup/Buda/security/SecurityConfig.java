@@ -54,7 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override // defines which URL paths should be secured and which should not
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable(); 
+        http.csrf().disable();
 		// make sure we use stateless session; session won't be used to
 		// store user's state.
 		http.exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
@@ -80,7 +80,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private void UserConfig(HttpSecurity http) throws Exception{
 		// dont authenticate this particular request
-		http.authorizeRequests().antMatchers("/api/user/login", "/api/user/register").permitAll();
+		http.authorizeRequests().antMatchers("/api/user/login", "/api/user/register/**").permitAll();
 		http.authorizeRequests().antMatchers("/api/user/login/google").permitAll();
 		// require ROLE USER to make get request for user 
 		http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/user/**").hasAnyAuthority("USER");
