@@ -12,11 +12,20 @@ import javax.persistence.Index;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Entity
 @Table(name = "Staff_note", indexes = {
     @Index(columnList = "user_id", name = "staff_note_user_id_index"),
     @Index(columnList = "staff_id", name = "staff_note_staff_id_index")
 })
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class StaffNote {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,101 +41,6 @@ public class StaffNote {
     @Column(length = 1000)
     private String message;
     private Boolean seen = Boolean.FALSE;
-
-
-    public StaffNote() {
-    }
-
-    public StaffNote(Long staffNoteID, Long userID, Long staffID, ZonedDateTime noteDate, String message, Boolean seen) {
-        this.staffNoteID = staffNoteID;
-        this.userID = userID;
-        this.staffID = staffID;
-        this.noteDate = noteDate;
-        this.message = message;
-        this.seen = seen;
-    }
-
-    public Long getStaffNoteID() {
-        return this.staffNoteID;
-    }
-
-    public void setStaffNoteID(Long staffNoteID) {
-        this.staffNoteID = staffNoteID;
-    }
-
-    public Long getUserID() {
-        return this.userID;
-    }
-
-    public void setUserID(Long userID) {
-        this.userID = userID;
-    }
-
-    public Long getStaffID() {
-        return this.staffID;
-    }
-
-    public void setStaffID(Long staffID) {
-        this.staffID = staffID;
-    }
-
-    public ZonedDateTime getNoteDate() {
-        return this.noteDate;
-    }
-
-    public void setNoteDate(ZonedDateTime noteDate) {
-        this.noteDate = noteDate;
-    }
-
-    public String getMessage() {
-        return this.message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public Boolean isSeen() {
-        return this.seen;
-    }
-
-    public Boolean getSeen() {
-        return this.seen;
-    }
-
-    public void setSeen(Boolean seen) {
-        this.seen = seen;
-    }
-
-    public StaffNote staffNoteID(Long staffNoteID) {
-        setStaffNoteID(staffNoteID);
-        return this;
-    }
-
-    public StaffNote userID(Long userID) {
-        setUserID(userID);
-        return this;
-    }
-
-    public StaffNote staffID(Long staffID) {
-        setStaffID(staffID);
-        return this;
-    }
-
-    public StaffNote noteDate(ZonedDateTime noteDate) {
-        setNoteDate(noteDate);
-        return this;
-    }
-
-    public StaffNote message(String message) {
-        setMessage(message);
-        return this;
-    }
-
-    public StaffNote seen(Boolean seen) {
-        setSeen(seen);
-        return this;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -152,7 +66,7 @@ public class StaffNote {
             ", staffID='" + getStaffID() + "'" +
             ", noteDate='" + getNoteDate() + "'" +
             ", message='" + getMessage() + "'" +
-            ", seen='" + isSeen() + "'" +
+            ", seen='" + getSeen() + "'" +
             "}";
     }
     

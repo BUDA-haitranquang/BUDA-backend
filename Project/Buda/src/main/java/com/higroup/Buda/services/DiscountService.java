@@ -83,6 +83,7 @@ public class DiscountService {
                 }
                 break;
         }
+        discount.setOrderCount(0);
         this.discountRepository.save(discount);
         return discount;
     }

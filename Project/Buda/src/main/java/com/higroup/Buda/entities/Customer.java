@@ -43,8 +43,8 @@ public class Customer{
     private Long membershipID;
     @Column(length = 50)
     private String name;
-    @Column(length = 200)
-    private String address;
+    // @Column(length = 200)
+    // private String address;
     @Column(length = 15)
     private String phoneNumber;
     @Column(name = "user_id")
@@ -66,28 +66,28 @@ public class Customer{
     }
 
     public Customer(Long customerID, AgeGroup ageGroup, Gender gender, double totalSpend, Long membershipID,
-            String name, String address, String phoneNumber, Long userID, Boolean visible, Set<SellOrder> sellOrders) {
+            String name,/**  String address,*/ String phoneNumber, Long userID, Boolean visible, Set<SellOrder> sellOrders) {
         this.customerID = customerID;
         this.ageGroup = ageGroup;
         this.gender = gender;
         this.totalSpend = totalSpend;
         this.membershipID = membershipID;
         this.name = name;
-        this.address = address;
+        // this.address = address;
         this.phoneNumber = phoneNumber;
         this.userID = userID;
         this.visible = visible;
         this.sellOrders = sellOrders;
     }
 
-    public Customer(Long customerID, AgeGroup ageGroup, Gender gender, double totalSpend, Long membershipID, String name, String address, String phoneNumber, Long userID, Set<SellOrder> sellOrders) {
+    public Customer(Long customerID, AgeGroup ageGroup, Gender gender, double totalSpend, Long membershipID, String name, /**  String address,*/ String phoneNumber, Long userID, Set<SellOrder> sellOrders) {
         this.customerID = customerID;
         this.ageGroup = ageGroup;
         this.gender = gender;
         this.totalSpend = totalSpend;
         this.membershipID = membershipID;
         this.name = name;
-        this.address = address;
+        // this.address = address;
         this.phoneNumber = phoneNumber;
         this.userID = userID;
         this.sellOrders = sellOrders;
@@ -106,14 +106,14 @@ public class Customer{
         return this;
     }
 
-    public Customer(Long customerID, AgeGroup ageGroup, Gender gender, double totalSpend, Long membershipID, String name, String address, String phoneNumber, Long userID) {
+    public Customer(Long customerID, AgeGroup ageGroup, Gender gender, double totalSpend, Long membershipID, String name, /**  String address,*/ String phoneNumber, Long userID) {
         this.customerID = customerID;
         this.ageGroup = ageGroup;
         this.gender = gender;
         this.totalSpend = totalSpend;
         this.membershipID = membershipID;
         this.name = name;
-        this.address = address;
+        // this.address = address;
         this.phoneNumber = phoneNumber;
         this.userID = userID;
     }
@@ -148,10 +148,10 @@ public class Customer{
         return this;
     }
 
-    public Customer address(String address) {
-        setAddress(address);
-        return this;
-    }
+    // public Customer address(String address) {
+    //     setAddress(address);
+    //     return this;
+    // }
 
     public Customer phoneNumber(String phoneNumber) {
         setPhoneNumber(phoneNumber);
@@ -220,13 +220,13 @@ public class Customer{
         this.name = name;
     }
 
-    public String getAddress() {
-        return this.address;
-    }
+    // public String getAddress() {
+    //     return this.address;
+    // }
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
+    // public void setAddress(String address) {
+    //     this.address = address;
+    // }
 
     public String getPhoneNumber() {
         return this.phoneNumber;
@@ -252,7 +252,7 @@ public class Customer{
             return false;
         }
         Customer customer = (Customer) o;
-        return Objects.equals(customerID, customer.customerID) && Objects.equals(ageGroup, customer.ageGroup) && Objects.equals(gender, customer.gender) && totalSpend == customer.totalSpend && Objects.equals(membershipID, customer.membershipID) && Objects.equals(name, customer.name) && Objects.equals(address, customer.address) && Objects.equals(phoneNumber, customer.phoneNumber) && Objects.equals(userID, customer.userID);
+        return Objects.equals(customerID, customer.customerID) && Objects.equals(ageGroup, customer.ageGroup) && Objects.equals(gender, customer.gender) && totalSpend == customer.totalSpend && Objects.equals(membershipID, customer.membershipID) && Objects.equals(name, customer.name) /**&& Objects.equals(address, customer.address)*/ && Objects.equals(phoneNumber, customer.phoneNumber) && Objects.equals(userID, customer.userID);
     }
 
     @Override
@@ -269,7 +269,7 @@ public class Customer{
             ", totalSpend='" + getTotalSpend() + "'" +
             ", membershipID='" + getMembershipID() + "'" +
             ", name='" + getName() + "'" +
-            ", address='" + getAddress() + "'" +
+            // ", address='" + getAddress() + "'" +
             ", phoneNumber='" + getPhoneNumber() + "'" +
             ", userID='" + getUserID() + "'" +
             "}";

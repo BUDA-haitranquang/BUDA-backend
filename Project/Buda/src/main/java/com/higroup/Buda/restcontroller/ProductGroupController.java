@@ -32,7 +32,7 @@ public class ProductGroupController {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return this.productGroupService.findAllByUserID(userID);
     }
-    @PostMapping(path = "/add")
+    @PostMapping(path = "/new")
     public ResponseEntity<?> createProductGroup(HttpServletRequest httpServletRequest, @RequestBody ProductGroup productGroup)
     {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);

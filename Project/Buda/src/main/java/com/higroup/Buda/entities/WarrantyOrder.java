@@ -13,11 +13,20 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Entity
 @Table(name = "warranty_order", indexes = {
     @Index(columnList = "user_id", name = "warranty_order_user_id_index"),
     @Index(columnList = "product_id", name = "warranty_order_product_id_index")
 })
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class WarrantyOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,56 +46,7 @@ public class WarrantyOrder {
     private String customerMessage;
     private ZonedDateTime creationTime;
     private Status status = Status.RECEIVING;
-    public Long getWarrantyOrderID() {
-        return warrantyOrderID;
-    }
-    public void setWarrantyOrderID(Long warrantyOrderID) {
-        this.warrantyOrderID = warrantyOrderID;
-    }
-    public Long getUserID() {
-        return userID;
-    }
-    public void setUserID(Long userID) {
-        this.userID = userID;
-    }
-    public Product getProduct() {
-        return product;
-    }
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-    public SellOrder getSellOrder() {
-        return sellOrder;
-    }
-    public void setSellOrder(SellOrder sellOrder) {
-        this.sellOrder = sellOrder;
-    }
-    public Customer getCustomer() {
-        return customer;
-    }
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
-    public String getCustomerMessage() {
-        return customerMessage;
-    }
-    public void setCustomerMessage(String customerMessage) {
-        this.customerMessage = customerMessage;
-    }
-    public ZonedDateTime getCreationTime() {
-        return creationTime;
-    }
-    public void setCreationTime(ZonedDateTime creationTime) {
-        this.creationTime = creationTime;
-    }
-    public Status getStatus() {
-        return status;
-    }
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-    public WarrantyOrder() {
-    }
+   
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -136,17 +96,7 @@ public class WarrantyOrder {
         return "WarrantyOrder [creationTime=" + creationTime + ", customerMessage=" + customerMessage + ", status="
                 + status + ", userID=" + userID + ", warrantyOrderID=" + warrantyOrderID + "]";
     }
-    public WarrantyOrder(Long warrantyOrderID, Long userID, Product product, SellOrder sellOrder, Customer customer,
-            String customerMessage, ZonedDateTime creationTime, Status status) {
-        this.warrantyOrderID = warrantyOrderID;
-        this.userID = userID;
-        this.product = product;
-        this.sellOrder = sellOrder;
-        this.customer = customer;
-        this.customerMessage = customerMessage;
-        this.creationTime = creationTime;
-        this.status = status;
-    }
+    
     
     
 }

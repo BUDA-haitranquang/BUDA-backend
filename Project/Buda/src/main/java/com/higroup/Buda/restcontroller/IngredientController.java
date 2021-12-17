@@ -5,13 +5,11 @@ import com.higroup.Buda.entities.Ingredient;
 import com.higroup.Buda.services.IngredientService;
 import com.higroup.Buda.util.Checker.RequestUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Objects;
 
 @RestController
 @RequestMapping("api/ingredient")
@@ -30,15 +28,7 @@ public class IngredientController {
     {   
 
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
-        Ingredient ingredient = this.ingredientService.findIngredientByIngredientID(ingredientID);
-        // if userid match ingredientID
-        if(Objects.equals(userID, ingredient.getUserID())){
-            return ResponseEntity.ok().body(ingredient);
-        }
-        // if not return unauthorized
-        else{
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
-        }
+        return ResponseEntity.ok().body(this.ingredientService.findIngredientByIngredientID(userID, ingredientID));
     }
     
     // @GetMapping(path = "/{ingredientName}")

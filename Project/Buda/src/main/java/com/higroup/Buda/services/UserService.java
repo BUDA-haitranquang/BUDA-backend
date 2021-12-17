@@ -37,6 +37,7 @@ import org.springframework.web.server.ResponseStatusException;
 public class UserService implements UserDetailsService{
     private final UserRepository userRepository;
     private final PictureRepository pictureRepository;
+    private final JwtTokenUtil jwtTokenUtil;
 
     @Autowired
     private MailConfirmationTokenService mailConfirmationTokenService;
@@ -44,8 +45,9 @@ public class UserService implements UserDetailsService{
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public UserService(UserRepository userRepository, PictureRepository pictureRepository) {
+    public UserService(UserRepository userRepository, PictureRepository pictureRepository, JwtTokenUtil jwtTokenUtil) {
         this.userRepository = userRepository;
+        this.jwtTokenUtil = jwtTokenUtil;
         this.pictureRepository = pictureRepository;
         this.bCryptPasswordEncoder = new BCryptPasswordEncoder();
     }
@@ -140,7 +142,6 @@ public class UserService implements UserDetailsService{
         newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
         newUser.addRole(roleRepository.findRoleByName("USER").get());
         userRepository.save(newUser);
-        JwtTokenUtil jwtTokenUtil = new JwtTokenUtil();
         UserDetails userDetails = loadUserByUsername(newUser.getEmail());
         String jwtAccessToken = jwtTokenUtil.generateAccessToken(userDetails, newUser.getUserID());
         String jwtRefreshToken = jwtTokenUtil.generateRefreshToken(userDetails, newUser.getUserID());
@@ -165,8 +166,6 @@ public class UserService implements UserDetailsService{
 
         User user = confirmationToken.getUser();
         this.enableUser(confirmationToken.getUser().getEmail());
-
-        JwtTokenUtil jwtTokenUtil = new JwtTokenUtil();
         UserDetails userDetails = loadUserByUsername(user.getEmail());
         String jwtAccessToken = jwtTokenUtil.generateAccessToken(userDetails, user.getUserID());
         String jwtRefreshToken = jwtTokenUtil.generateRefreshToken(userDetails, user.getUserID());
@@ -182,7 +181,6 @@ public class UserService implements UserDetailsService{
     {
         String email = googleUserPayload.getEmail();
         Optional<User> mailUser = this.userRepository.findUserByEmail(email);
-        JwtTokenUtil jwtTokenUtil = new JwtTokenUtil();
         //Da tung dang nhap bang email giong voi gmail dang dung de dang nhap
         if (mailUser.isPresent())
         {
@@ -212,6 +210,7 @@ public class UserService implements UserDetailsService{
             return new JwtResponse(jwtAccessToken, jwtRefreshToken);
         }
     }
+
 
     public List<User> getUsers() {
         return userRepository.findAll();
@@ -252,7 +251,6 @@ public class UserService implements UserDetailsService{
         //System.out.println(rawPassword);
         if (bCryptPasswordEncoder.matches(rawPassword, mailUser.get().getPassword()) && mailUser.get().isEnabled())
         {
-            JwtTokenUtil jwtTokenUtil = new JwtTokenUtil();
             UserDetails userDetails = loadUserByUsername(mailUser.get().getEmail());
             //System.out.println(userDetails);
             String jwtaccessToken = jwtTokenUtil.generateAccessToken(userDetails, mailUser.get().getUserID());
@@ -261,6 +259,23 @@ public class UserService implements UserDetailsService{
             return new JwtResponse(jwtaccessToken, jwtrefreshToken);
         }
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "false");
+    }
+
+    public JwtResponse generateNewToken(String token)
+    {
+        if ((jwtTokenUtil.isValid(token)) && (jwtTokenUtil.getTokenTypeFromToken(token).equals("Refresh")))
+        {
+            Optional<User> mailUser = this.userRepository.findUserByUserID(jwtTokenUtil.getUserIDFromToken(token));
+            if (mailUser.isPresent())
+            {
+                UserDetails userDetails = loadUserByUsername(mailUser.get().getEmail());
+                String jwtaccessToken = jwtTokenUtil.generateAccessToken(userDetails, mailUser.get().getUserID());
+                String jwtrefreshToken = jwtTokenUtil.generateRefreshToken(userDetails, mailUser.get().getUserID());
+                return new JwtResponse(jwtaccessToken, jwtrefreshToken);
+            }
+            else throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
+        }
+        else throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid refresh token");
     }
 
     @Transactional

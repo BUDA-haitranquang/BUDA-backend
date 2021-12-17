@@ -19,10 +19,19 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Entity
 @Table(name = "Staff", indexes = {
     @Index(columnList = "user_id", name = "staff_user_id_index")
 })
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Staff {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -55,165 +64,6 @@ public class Staff {
     )
     private Collection<Role> roles = new ArrayList<Role>();
 
-    public String getStaffUUID() {
-        return this.staffUUID;
-    }
-
-    public void setStaffUUID(String staffUUID) {
-        this.staffUUID = staffUUID;
-    }
-
-    public Staff() {
-    }
-
-    public Staff(Long staffID, String name, String phoneNumber, String password, String address, Long userID, 
-                 StaffPosition staffPosition, String loginID, Double salary, String account, String email) 
-    {
-        this.staffID = staffID;
-        this.name = name;
-        this.phoneNumber = phoneNumber;
-        this.password = password;
-        this.address = address;
-        this.userID = userID;
-        this.staffPosition = staffPosition;
-        this.staffUUID = loginID;
-        this.salary = salary;
-        this.account = account;
-        this.email = email;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getAccount() {
-        return account;
-    }
-
-    public void setAccount(String account) {
-        this.account = account;
-    }
-
-    public Long getStaffID() {
-        return this.staffID;
-    }
-
-    public void setStaffID(Long staffID) {
-        this.staffID = staffID;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPhoneNumber() {
-        return this.phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public String getPassword() {
-        return this.password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getAddress() {
-        return this.address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public Long getUserID() {
-        return this.userID;
-    }
-
-    public void setUserID(Long userID) {
-        this.userID = userID;
-    }
-
-    public StaffPosition getStaffPosition() {
-        return this.staffPosition;
-    }
-
-    public void setStaffPosition(StaffPosition staffPosition) {
-        this.staffPosition = staffPosition;
-    }
-
-    public String getLoginID() {
-        return this.staffUUID;
-    }
-
-    public void setLoginID(String loginID) {
-        this.staffUUID = loginID;
-    }
-
-    public Double getSalary() {
-        return this.salary;
-    }
-
-    public void setSalary(Double salary) {
-        this.salary = salary;
-    }
-
-    public Staff staffID(Long staffID) {
-        setStaffID(staffID);
-        return this;
-    }
-
-    public Staff name(String name) {
-        setName(name);
-        return this;
-    }
-
-    public Staff phoneNumber(String phoneNumber) {
-        setPhoneNumber(phoneNumber);
-        return this;
-    }
-
-    public Staff password(String password) {
-        setPassword(password);
-        return this;
-    }
-
-    public Staff address(String address) {
-        setAddress(address);
-        return this;
-    }
-
-    public Staff userID(Long userID) {
-        setUserID(userID);
-        return this;
-    }
-
-    public Staff staffPosition(StaffPosition staffPosition) {
-        setStaffPosition(staffPosition);
-        return this;
-    }
-
-    public Staff loginID(String loginID) {
-        setLoginID(loginID);
-        return this;
-    }
-
-    public Staff salary(Double salary) {
-        setSalary(salary);
-        return this;
-    }
 
     @Override
     public boolean equals(Object o) {

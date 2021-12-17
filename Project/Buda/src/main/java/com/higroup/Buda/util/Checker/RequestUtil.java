@@ -29,9 +29,15 @@ public class RequestUtil {
         Long userID = this.jwtTokenUtil.getUserIDFromToken(token);
         String email = this.jwtTokenUtil.getUsernameFromToken(token);
         Optional<User> user = this.userRepository.findUserByUserID(userID);
-        if ((userID!=null) && (user.isPresent()) && (user.get().getEmail().equals(email)) && (jwtTokenUtil.isValid(token)))
+        if ((userID!=null) && (user.isPresent()) 
+        && (user.get().getEmail().equals(email)) 
+        && (jwtTokenUtil.isValid(token)))
         {
-            return userID;
+            if (jwtTokenUtil.getTokenTypeFromToken(token).equals("Access"))
+            {
+                return userID;
+            }
+            else throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid access token");
         }
         throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized");
     }
