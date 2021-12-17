@@ -48,6 +48,8 @@ public class Discount {
     private Double percentage;
     @Column(columnDefinition = "Double default 0.0")
     private Double cashLimit;
+    @Column(columnDefinition = "Double default 0.0", name="minimum_sell_order_cost")
+    private Double minimumSellOrderCost;
     @Column(columnDefinition = "int default 0")
     private Integer orderCount;
     private ZonedDateTime expiryTime;
