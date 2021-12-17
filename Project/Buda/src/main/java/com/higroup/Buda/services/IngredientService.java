@@ -36,10 +36,18 @@ public class IngredientService {
         this.ingredientLeftLogRepository = ingredientLeftLogRepository;
     }
 
-    public Ingredient findIngredientByIngredientID(Long ingredientID){
+    public Ingredient findIngredientByIngredientID(Long userID, Long ingredientID){
+        Optional<User> user = this.userRepository.findUserByUserID(userID);
+        if (user.isEmpty())
+        {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
+        }
         Optional<Ingredient> ingredient = this.ingredientRepository.findIngredientByIngredientID(ingredientID);
-
-        return ingredient.orElse(null);
+        if (ingredient.isPresent() && Objects.equals(ingredient.get().getUserID(), userID))
+        {
+            return ingredient.get();
+        }
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Ingredient not found");
     }
 
     public Ingredient createNewIngredient(Long userID, Ingredient newIngredient){
@@ -77,8 +85,7 @@ public class IngredientService {
     public Ingredient hideIngredientByIngredientID(Long userID, Long ingredientID)
     {
         Optional<Ingredient> ingredient = this.ingredientRepository.findIngredientByIngredientID(ingredientID);
-        System.out.println(ingredient.get());
-        if (Objects.equals(ingredient.get().getUserID(), userID))
+        if (ingredient.isPresent() && Objects.equals(ingredient.get().getUserID(), userID))
         {
             ingredient.get().setVisible(false);
             this.ingredientRepository.save(ingredient.get());
