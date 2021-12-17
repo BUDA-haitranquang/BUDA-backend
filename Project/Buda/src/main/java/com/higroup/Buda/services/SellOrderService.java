@@ -48,13 +48,14 @@ public class SellOrderService {
     private final MembershipTypeRepository membershipTypeRepository;
     private final DiscountRepository discountRepository;
     private final SellOrderItemRepository sellOrderItemRepository;
+    private final ProductService productService;
 
     private DecimalFormat df = new DecimalFormat("###.##");
 
     @Autowired
     public SellOrderService(SellOrderRepository sellOrderRepository, CustomerRepository customerRepository,
             UserRepository userRepository, SellOrderItemService sellOrderItemService, MembershipTypeRepository membershipTypeRepository, SellOrderItemRepository sellOrderItemRepository,
-            DiscountRepository discountRepository) {
+            DiscountRepository discountRepository, ProductService productService) {
         this.sellOrderItemService = sellOrderItemService;
         this.userRepository = userRepository;
         this.customerRepository = customerRepository;
@@ -62,6 +63,7 @@ public class SellOrderService {
         this.membershipTypeRepository = membershipTypeRepository;
         this.discountRepository = discountRepository;
         this.sellOrderItemRepository = sellOrderItemRepository;
+        this.productService = productService;
     }
     @Autowired
     private PresentChecker presentChecker;
@@ -78,7 +80,16 @@ public class SellOrderService {
         // customer solving
         Customer customer;
         if(registerSellOrder.getCustomer() == null){
-            customer = this.customerRepository.findById(1l).get();
+            String default_phoneNumber = "000000000";
+            customer = this.customerRepository.findCustomerByUserIDAndPhoneNumber(userID, default_phoneNumber).get();
+            if(customer == null){
+                customer = new Customer();
+                customer.setAgeGroup(AgeGroup.UNKNOWN);
+                customer.setGender(Gender.UNKNOWN);
+                customer.setPhoneNumber(default_phoneNumber);
+                customer.setUserID(userID);
+                this.customerRepository.save(customer);
+            }
         }
         else{
             String phoneNumber = registerSellOrder.getCustomer().getPhoneNumber();
@@ -105,6 +116,7 @@ public class SellOrderService {
             Integer quantity = registerSellOrder.getProducts().get(productID);
             SellOrderItem sellOrderItem = sellOrderItemService.registerNewSellOrderItem(userID, new RegisterSellOrderItem(productID, sellOrder.getSellOrderID(), quantity));
             realCost += sellOrderItem.getActualTotalSale(); 
+            productService.editProductQuantity(userID, productID, -quantity, String.format("buy %d products with id: %d", quantity, productID));
         }
         double actual_discount_cash = 0;
         // discount solving 
