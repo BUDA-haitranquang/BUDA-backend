@@ -54,6 +54,14 @@ public class JwtTokenUtil implements Serializable {
         return staffUUID;
     }
 
+    // get tokentype from jwttoken
+    public String getTokenTypeFromToken(String token)
+    {
+        Claims claims = getAllClaimsFromToken(token);
+        String tokenType = claims.get("tokenType", String.class);
+        return tokenType;
+    }
+
     // get roles from jwttoken
     public Collection<?> getRolesFromToken(String token){
         Claims claims = getAllClaimsFromToken(token);
@@ -94,6 +102,7 @@ public class JwtTokenUtil implements Serializable {
     public String generateAccessToken(UserDetails userDetails){
         Map<String, Object> claims = new HashMap<String, Object>();
         claims.put("roles", userDetails.getAuthorities());
+        claims.put("tokenType", "Access");
         return doGenerateToken(claims, userDetails.getUsername(), Config.HoursAccessToken);
     }
 
@@ -101,6 +110,7 @@ public class JwtTokenUtil implements Serializable {
         Map<String, Object> claims = new HashMap<String, Object>();
         claims.put("roles", userDetails.getAuthorities());
         claims.put("userID", userID);
+        claims.put("tokenType", "Access");
         return doGenerateToken(claims, userDetails.getUsername(), Config.HoursAccessToken);
     }
 
@@ -108,6 +118,7 @@ public class JwtTokenUtil implements Serializable {
     public String generateRefreshToken(UserDetails userDetails){
         Map<String, Object> claims = new HashMap<String, Object>();
         claims.put("roles", userDetails.getAuthorities());
+        claims.put("tokenType", "Refresh");
         return doGenerateToken(claims, userDetails.getUsername(), Config.HoursRefreshToken);
     }
 
@@ -115,7 +126,7 @@ public class JwtTokenUtil implements Serializable {
         Map<String, Object> claims = new HashMap<String, Object>();
         claims.put("roles", userDetails.getAuthorities());
         claims.put("userID", userID);
-
+        claims.put("tokenType", "Refresh");
         return doGenerateToken(claims, userDetails.getUsername(), Config.HoursRefreshToken);
     }
 
