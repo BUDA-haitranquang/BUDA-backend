@@ -71,6 +71,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		this.SalaryLogConfig(http);
 		// product config
 		this.ProductConfig(http);
+		// plan config
+		this.PlanConfig(http);
 		// all other requests need to be authenticated
 		http.authorizeRequests().anyRequest().authenticated();
 		// http.authorizeRequests().anyRequest().authen
@@ -90,6 +92,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		
 	}
     
+	private void PlanConfig(HttpSecurity http) throws Exception{
+		http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/plan/**").permitAll();
+	}
 
 	private void StaffConfig(HttpSecurity http) throws Exception{
 		// dont authenticate this particular request
