@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,10 +26,16 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.higroup.Buda.entities.enumeration.PlanType;
 import com.higroup.Buda.util.SHA_256_Encode;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
 @Entity
@@ -36,6 +44,10 @@ import org.springframework.security.core.userdetails.UserDetails;
     @Index(columnList = "phoneNumber", name = "user_phone_number_index"),
     @Index(columnList = "userName", name = "user_user_name_index")
 })
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @JsonIgnoreProperties("purchases")
 public class User{
     @Id
@@ -56,16 +68,17 @@ public class User{
     private String lastName;
     @Column(length = 20)
     private String firstName;
+    @Column(name = "enabled")
     private Boolean enabled = false;
+    @Column(name = "plan_type", columnDefinition = "varchar(255) default 'BASIC'")
+    @Enumerated(EnumType.STRING)
+    private PlanType planType = PlanType.BASIC;
     @Column(name = "picture_id")
     private Long pictureID;
     @OneToMany(mappedBy = "user",
     fetch = FetchType.LAZY)
     @JsonManagedReference
     private Set<Purchase> purchases; 
-    public Set<Purchase> getPurchases() {
-        return this.purchases;
-    }
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinTable(name = "user_role",
@@ -74,18 +87,6 @@ public class User{
     )
     private Collection<Role> roles = new ArrayList<Role>();
 
-    public User(Long userID, String userUUID, String userName, String password, String email, String phoneNumber, String lastName, String firstName, Long pictureID, Set<Purchase> purchases) {
-        this.userID = userID;
-        this.userUUID = userUUID;
-        this.userName = userName;
-        this.password = password;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
-        this.lastName = lastName;
-        this.firstName = firstName;
-        this.pictureID = pictureID;
-        this.purchases = purchases;
-    }
 
     public User(UserRegister userRegister)
     {
@@ -96,166 +97,11 @@ public class User{
         this.firstName = userRegister.getFirstName();
         this.lastName = userRegister.getLastName();
     }
-    public User userID(Long userID) {
-        setUserID(userID);
-        return this;
-    }
-
-    public User userUUID(String userUUID) {
-        setUserUUID(userUUID);
-        return this;
-    }
-
-    public User userName(String userName) {
-        setUserName(userName);
-        return this;
-    }
-
-    public User password(String password) {
-        setPassword(password);
-        return this;
-    }
-
-    public User email(String email) {
-        setEmail(email);
-        return this;
-    }
-
-    public User phoneNumber(String phoneNumber) {
-        setPhoneNumber(phoneNumber);
-        return this;
-    }
-
-    public User lastName(String lastName) {
-        setLastName(lastName);
-        return this;
-    }
-
-    public User firstName(String firstName) {
-        setFirstName(firstName);
-        return this;
-    }
-
-    public User pictureID(Long pictureID) {
-        setPictureID(pictureID);
-        return this;
-    }
-
-    public User purchases(Set<Purchase> purchases) {
-        setPurchases(purchases);
-        return this;
-    }
-
-    public void setPurchases(Set<Purchase> purchases) {
-        this.purchases = purchases;
-    }
     
-    public User() {
-    }
-
-    public String getUserUUID() {
-        return this.userUUID;
-    }
-
-    public void setUserUUID(String userUUID) {
-        this.userUUID = userUUID;
-    }
-
-    public Long getUserID() {
-        return this.userID;
-    }
-
-    public void setUserID(Long id) {
-        this.userID = id;
-    }
-
-    public String getUserName() {
-        return this.userName;
-    }
-
-    public void setUserName(String userName) {
-        if (userName == null)
-        {
-            return;
-        }
-        this.userName = userName;
-    }
-
-    public String getPassword() {
-        return this.password;
-    }
-
-    public void setPassword(String password) {
-        if (password == null)
-        {
-            return;
-        }
-        this.password = password;
-    }
-
-    public String getEmail() {
-        return this.email;
-    }
-
-    public void setEmail(String email) {
-        if (email == null)
-        {
-            return;
-        }
-        this.email = email;
-    }
-
-    public String getPhoneNumber() {
-        return this.phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        if (phoneNumber == null)
-        {
-            return;
-        }
-        this.phoneNumber = phoneNumber;
-    }
-
-    public String getLastName() {
-        return this.lastName;
-    }
-
-    public void setLastName(String lastName) {
-        if (lastName == null)
-        {
-            return;
-        }
-        this.lastName = lastName;
-    }
-
-    public String getFirstName() {
-        return this.firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        if (firstName == null)
-        {
-            return;
-        }
-        this.firstName = firstName;
-    }
-
     public Boolean isEnabled() {
         return enabled;
     }
 
-    public void setEnabled(Boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    public Long getPictureID() {
-        return this.pictureID;
-    }
-
-    public void setPictureID(Long pictureID) {
-        this.pictureID = pictureID;
-    }
 
     @Override
     public String toString() {
@@ -297,14 +143,6 @@ public class User{
                 this.roles.remove(role);
             }
         }
-    }
-
-    public Collection<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Collection<Role> roles) {
-        this.roles = roles;
     }
 
 }
