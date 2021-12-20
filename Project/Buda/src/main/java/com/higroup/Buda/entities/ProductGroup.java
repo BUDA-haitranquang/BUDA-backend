@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -24,7 +25,7 @@ public class ProductGroup {
     @Column(name = "user_id")
     private Long userID;
     @ManyToMany(mappedBy = "productGroups", fetch = FetchType.LAZY)
-    @JsonManagedReference
+    @JsonBackReference
     private Set<Product> products;
 
     public ProductGroup() {
