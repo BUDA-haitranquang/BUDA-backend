@@ -17,7 +17,7 @@ import java.util.Set;
     @Index(columnList = "user_id", name = "product_user_id_index"),
 //    @Index(columnList = "product_group_id", name = "product_product_group_id_index")
 })
-@JsonIgnoreProperties({"sellOrderItems", "productLeftLogs"})
+@JsonIgnoreProperties({"sellOrderItems", "productLeftLogs", "productGroups"})
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -61,7 +61,7 @@ public class Product {
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     @JsonManagedReference
     private Set<ProductLeftLog> productLeftLogs;
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "product_group_component",
             joinColumns = @JoinColumn(name = "product_id"),
