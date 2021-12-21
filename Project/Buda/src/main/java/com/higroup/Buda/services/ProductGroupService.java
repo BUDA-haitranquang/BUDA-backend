@@ -77,7 +77,7 @@ public class ProductGroupService {
             Product product = this.productRepository.findProductByProductID(productID);
             if (!product.getUserID().equals(userID))
             {
-                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
             }
             Set<ProductGroup> productGroups = product.getProductGroups();
             productGroups.add(productGroup.get());
@@ -101,7 +101,7 @@ public class ProductGroupService {
         Product product = this.productRepository.findProductByProductID(productID);
         if (!product.getUserID().equals(userID))
         {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
         }
         Optional<ProductGroup> productGroup = this.productGroupRepository.findProductGroupByProductGroupID(productGroupID);
         if (productGroup.isPresent() && Objects.equals(productGroup.get().getUserID(), userID))

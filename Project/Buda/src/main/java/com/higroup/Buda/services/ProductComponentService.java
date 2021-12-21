@@ -72,6 +72,10 @@ public class ProductComponentService {
     {
         Optional<Ingredient> ingredient = this.ingredientRepository.findIngredientByIngredientID(ingredientID);
         Product product = this.productRepository.findProductByProductID(productID);
+        if (!product.getUserID().equals(userID))
+        {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
+        }
         if ((ingredient.isPresent()) && (Objects.equals(ingredient.get().getUserID(), userID)))
         {
             ProductComponent productComponent = new ProductComponent();
