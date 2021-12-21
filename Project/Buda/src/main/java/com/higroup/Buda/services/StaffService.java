@@ -62,8 +62,9 @@ public class StaffService implements UserDetailsService{
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "false");
     }
     @Transactional
-    public ResponseEntity<?> registerNewStaff(Staff newStaff)
+    public ResponseEntity<?> registerNewStaff(Staff newStaff, Long userID)
     {
+        newStaff.setUserID(userID);
         Optional<Staff> staff = this.staffRepository.findStaffByStaffUUID(newStaff.getStaffUUID());
         if (staff.isPresent())
         {
@@ -110,40 +111,69 @@ public class StaffService implements UserDetailsService{
     }
 
     @Transactional
-    public void deleteStaffByID(Long id){
-        if(id == null){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid id");
-        }
-        staffRepository.deleteById(id);
+    public void deleteStaffByID(Long staffID, Long userID){
+        // check valid staffid, userid
+        this.findStaffByID(staffID, userID);
+        staffRepository.deleteById(staffID);
     }
 
     @Transactional
-    public Staff updateStaffByID(Long id, String Name, String phoneNumber, String password, String address, Double salary, 
+    public Staff updateStaffByID(Long staffID, Long userID, String name, String phoneNumber, String password, String address, Double salary, 
                                  String staffUUID, String account, StaffPosition staffPosition)
     {
-        Staff thisstaff = staffRepository.findStaffByStaffID(id).get();
-        Optional<Staff> staff = staffRepository.findStaffByStaffUUID(staffUUID);
-        if((staffUUID != null) && (staff.isPresent()) && !staff.get().getStaffID().equals(id)){
-            //BAD REQUEST da ton tai email
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "UUID Already used by another staff");
+        if(staffID == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid id");
         }
-        thisstaff.setAddress(address);
-        thisstaff.setName(Name);
-        thisstaff.setPhoneNumber(phoneNumber);
-        thisstaff.setPassword(bCryptPasswordEncoder.encode(password));
-        thisstaff.setSalary(salary);
-        thisstaff.setStaffUUID(staffUUID);
-        thisstaff.setAccount(account);
-        thisstaff.setStaffPosition(staffPosition);
+        Staff thisstaff = this.findStaffByID(staffID, userID);
+        
+        if(staffUUID != null){
+            Optional<Staff> staff = staffRepository.findStaffByStaffUUID(staffUUID);
+            if(staff.isPresent() && !staff.get().getStaffID().equals(staffID)){
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "UUID Already used by another staff");
+            }
+        }
 
+        if(name != null){
+            thisstaff.setName(name);
+        }
+        if(address != null){
+            thisstaff.setAddress(address);
+        }
+        if(phoneNumber != null){
+            thisstaff.setPhoneNumber(phoneNumber);
+        }
+        if(staffPosition != null){
+            thisstaff.setStaffPosition(staffPosition);
+        }
+        if(staffUUID != null){
+            thisstaff.setStaffUUID(staffUUID);
+        }
+        if(password != null){
+            thisstaff.setPassword(bCryptPasswordEncoder.encode(password));
+        }
+        if(account != null){
+            thisstaff.setAccount(account);
+        }
+        if(salary != null){
+            thisstaff.setSalary(salary);
+        }
+        
         staffRepository.save(thisstaff);
         return thisstaff;
     }   
 
-    public Staff findStaffByID(Long id){
-        Optional<Staff> staff = staffRepository.findStaffByStaffID(id);
-        if(staff.isPresent()) return staff.get();
-        return null;
+    public Staff findStaffByID(Long staffID, Long userID){
+        if(staffID == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid id");
+        }
+        Staff staff = this.staffRepository.findById(staffID).get();
+        if(staff == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "staff not exists");
+        }
+        if(!staff.getUserID().equals(userID)){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "user have no staff");
+        }
+        return staff;
     }
 
 }
