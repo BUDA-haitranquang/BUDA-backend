@@ -7,8 +7,17 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Entity
 @Table(name = "Role")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,21 +26,8 @@ public class Role {
     @Column(length = 10, unique = true)
     private String name;
     
-    public Role(){};
-
-    public Role(String name){
-        this.name = name;
-    }
-
-    public long getRoleID() {
-        return roleID;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
+    public Role(String name)
+    {
         this.name = name;
     }
 
