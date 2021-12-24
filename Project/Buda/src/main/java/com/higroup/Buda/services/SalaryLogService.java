@@ -52,18 +52,34 @@ public class SalaryLogService {
     {
         return this.salaryLogRepository.findAllByUserID(userID);
     }
-    public List<SalaryLog> findAllByStaffID(Long staffID)
+    public List<SalaryLog> findAllByStaffID(Long staffID, Long userID)
     {
+        if(staffID == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "staff id invalid");
+        }
+        Staff staff = this.staffRepository.findById(staffID).get();
+        if(staff == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "staff not exists");
+        }
+        if(!staff.getUserID().equals(userID)){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "staff not belong to user");
+        }
         return this.salaryLogRepository.findAllByStaffID(staffID);
     }
     public SalaryLog findByID(Long salaryLogID){
         return this.salaryLogRepository.findById(salaryLogID).get();
     }
-    public void deleteSalaryLogbyID(Long id){
-        Optional<SalaryLog> salaryLog = this.salaryLogRepository.findSalaryLogBySalaryLogID(id);
+    public void deleteSalaryLogbyID(Long salaryLogID, Long userID){
+        if(salaryLogID == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "salary log id invalid");
+        }
+        Optional<SalaryLog> salaryLog = this.salaryLogRepository.findSalaryLogBySalaryLogID(salaryLogID);
         if (salaryLog.isPresent())
         {
-            this.salaryLogRepository.delete(salaryLog.get());
+            if(salaryLog.get().getUserID().equals(userID)){
+                this.salaryLogRepository.delete(salaryLog.get());
+            }
+            else throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "salary log not belong to user");
         }
         else throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Salary log not found");
     }

@@ -59,9 +59,9 @@ public class SellOrder implements Serializable{
     private AgeGroup ageGroup = AgeGroup.UNKNOWN;
     @Enumerated(EnumType.STRING)
     private Gender gender = Gender.UNKNOWN;
-    @Column(columnDefinition = "Double default 0.0")
+    @Column /*(columnDefinition = "Double default 0.0")**/
     private Double actualDiscountCash;
-    @Column(columnDefinition = "Double default 0.0")
+    @Column /*(columnDefinition = "Double default 0.0")**/
     private Double actualDiscountPercentage;
     private Double realCost;
     private Double finalCost;
