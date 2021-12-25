@@ -46,7 +46,7 @@ public class CustomerService {
     public Customer updateCustomer(Long userID, Customer customer)
     {
         Optional<Customer> oldCustomer = this.customerRepository.findCustomerByCustomerID(customer.getCustomerID());
-        if ((oldCustomer.isPresent())&&(oldCustomer.get().getUserID()==userID))
+        if ((oldCustomer.isPresent())&&(oldCustomer.get().getUserID().equals(userID)))
         {
             presentChecker.checkIdAndRepository(customer.getCustomerID(), customerRepository);
             this.customerRepository.save(customer);
