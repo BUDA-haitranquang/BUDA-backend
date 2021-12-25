@@ -5,16 +5,26 @@ import java.util.Set;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import org.junit.experimental.categories.Categories.IncludeCategory;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "Product_group", indexes = {
     @Index(columnList = "user_id", name = "product_group_user_id_index")
 })
 @JsonIgnoreProperties({"properties"})
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProductGroup {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,70 +34,8 @@ public class ProductGroup {
     @Column(name = "user_id")
     private Long userID;
     @ManyToMany(mappedBy = "productGroups", fetch = FetchType.LAZY)
-    @JsonManagedReference
+    @JsonBackReference
     private Set<Product> products;
-
-    public ProductGroup() {
-    }
-
-    public ProductGroup(Long productGroupID, String name, Long userID, Set<Product> products) {
-        this.productGroupID = productGroupID;
-        this.name = name;
-        this.userID = userID;
-        this.products = products;
-    }
-
-    public Long getProductGroupID() {
-        return this.productGroupID;
-    }
-
-    public void setProductGroupID(Long productGroupID) {
-        this.productGroupID = productGroupID;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Long getUserID() {
-        return this.userID;
-    }
-
-    public void setUserID(Long userID) {
-        this.userID = userID;
-    }
-
-    public Set<Product> getProducts() {
-        return this.products;
-    }
-
-    public void setProducts(Set<Product> products) {
-        this.products = products;
-    }
-
-    public ProductGroup productGroupID(Long productGroupID) {
-        setProductGroupID(productGroupID);
-        return this;
-    }
-
-    public ProductGroup name(String name) {
-        setName(name);
-        return this;
-    }
-
-    public ProductGroup userID(Long userID) {
-        setUserID(userID);
-        return this;
-    }
-
-    public ProductGroup products(Set<Product> products) {
-        setProducts(products);
-        return this;
-    }
 
     @Override
     public boolean equals(Object o) {

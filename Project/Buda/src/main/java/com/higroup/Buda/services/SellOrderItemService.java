@@ -120,7 +120,7 @@ public class SellOrderItemService {
     public SellOrderItem registerNewSellOrderItem(Long userID, RegisterSellOrderItem registerSellOrderItem){
         Product product = (Product) this.presentChecker.checkIdAndRepository(registerSellOrderItem.getProductID(), this.productRepository);
         SellOrder sellOrder = (SellOrder) this.presentChecker.checkIdAndRepository(registerSellOrderItem.getSellOrderID(), this.sellOrderRepository);
-        if(!product.isVisible())
+        if(!product.getVisible())
         {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "product isnot visible");
         }

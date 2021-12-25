@@ -77,11 +77,11 @@ public class ProductGroupService {
             Product product = this.productRepository.findProductByProductID(productID);
             if (!product.getUserID().equals(userID))
             {
-                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
             }
             Set<ProductGroup> productGroups = product.getProductGroups();
             productGroups.add(productGroup.get());
-            product.setProductGroup(productGroups);
+            product.setProductGroups(productGroups);
             products.add(product);
             productGroup.get().setProducts(products);
             this.productRepository.save(product);
@@ -101,7 +101,7 @@ public class ProductGroupService {
         Product product = this.productRepository.findProductByProductID(productID);
         if (!product.getUserID().equals(userID))
         {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
         }
         Optional<ProductGroup> productGroup = this.productGroupRepository.findProductGroupByProductGroupID(productGroupID);
         if (productGroup.isPresent() && Objects.equals(productGroup.get().getUserID(), userID))
@@ -109,7 +109,7 @@ public class ProductGroupService {
             Set<ProductGroup> productGroups = product.getProductGroups();
             if (productGroups.removeIf(productGroup1 -> productGroup1.getProductGroupID().equals(productGroupID)))
             {
-                product.setProductGroup(productGroups);
+                product.setProductGroups(productGroups);
                 this.productRepository.save(product);
                 Set<Product> products = productGroup.get().getProducts();
                 products.removeIf(product1 -> product1.getProductID().equals(productID));
