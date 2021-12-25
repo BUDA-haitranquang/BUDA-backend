@@ -25,7 +25,7 @@ public class EmailService {
             helper.setText(content, true);
             helper.setTo(to);
             helper.setSubject(subject);
-            helper.setFrom("${spring.mail.username}");
+            helper.setFrom("${spring.mail.properties.mail.smtp.from}");
 
             mailSender.send(message);
         } catch (MessagingException e) {
