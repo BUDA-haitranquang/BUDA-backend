@@ -31,8 +31,7 @@ public class Picture {
         this.userID = userID;
     }
 
-    public Picture(Long pictureID, String pictureLink, Long userID) {
-        this.pictureID = pictureID;
+    public Picture(String pictureLink, Long userID) {
         this.pictureLink = pictureLink;
         this.userID = userID;
     }

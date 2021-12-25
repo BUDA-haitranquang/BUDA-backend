@@ -55,6 +55,7 @@ public class UserService implements UserDetailsService{
     @Autowired
     private RoleRepository roleRepository;
 
+    @Transactional
     public void registerNewUser(UserRegister userRegister) {
         String email = userRegister.getEmail();
         String phoneNumber = userRegister.getPhoneNumber();
