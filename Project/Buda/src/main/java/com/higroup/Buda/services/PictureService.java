@@ -11,11 +11,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class PictureService {
     private final PictureRepository pictureRepository;
+
+    @Autowired
+    private S3StorageService s3StorageService;
     
     @Autowired
     public PictureService(PictureRepository pictureRepository) {
@@ -42,15 +46,12 @@ public class PictureService {
         else throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Picture does not exist");
     }
     @Transactional
-    public Picture saveNewPicture(Long userID, Picture picture)
+    public Picture saveNewPicture(Long userID, MultipartFile file)
     {
-        if (picture.getPictureLink() != null)
-        {
-            picture.setUserID(userID);
-            this.pictureRepository.save(picture);
-            return picture;
-        }
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Link can not be null");
+        String filePath = s3StorageService.uploadFile(file);
+        System.out.println(filePath);
+        Picture picture = new Picture(filePath, userID);
+        return pictureRepository.save(picture);
     }
     @Transactional
     public Picture updatePicture(Long userID, Picture picture)
