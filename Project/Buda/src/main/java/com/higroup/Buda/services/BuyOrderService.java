@@ -95,7 +95,7 @@ public class BuyOrderService {
     {
         Optional<BuyOrder> buyOrder = this.buyOrderRepository.findBuyOrderByBuyOrderID(buyOrderID);
         
-        if ((buyOrder.isPresent()) && (userID == buyOrder.get().getUserID()))
+        if ((buyOrder.isPresent()) && (userID.equals(buyOrder.get().getUserID())))
         {
             for (BuyOrderItem buyOrderItem: buyOrder.get().getBuyOrderItems())
             {

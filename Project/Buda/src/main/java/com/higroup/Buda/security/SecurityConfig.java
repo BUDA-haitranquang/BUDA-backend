@@ -71,6 +71,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		this.SalaryLogConfig(http);
 		// product config
 		this.ProductConfig(http);
+		// plan config
+		this.PlanConfig(http);
 		// all other requests need to be authenticated
 		http.authorizeRequests().anyRequest().authenticated();
 		// http.authorizeRequests().anyRequest().authen
@@ -82,6 +84,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		// dont authenticate this particular request
 		http.authorizeRequests().antMatchers("/api/user/login", "/api/user/register/**").permitAll();
 		http.authorizeRequests().antMatchers("/api/user/login/google").permitAll();
+		http.authorizeRequests().antMatchers("/api/user/refresh-token").permitAll();
 		// require ROLE USER to make get request for user 
 		http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/user/**").hasAnyAuthority("USER");
 		// Admin can do something
@@ -89,6 +92,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		
 	}
     
+	private void PlanConfig(HttpSecurity http) throws Exception{
+		http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/plan/**").permitAll();
+	}
 
 	private void StaffConfig(HttpSecurity http) throws Exception{
 		// dont authenticate this particular request

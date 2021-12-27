@@ -47,7 +47,7 @@ public class BuyOrderItemService {
     public BuyOrderItem updateBuyOrderItem(Long userID, BuyOrderItem buyOrderItem)
     {
         this.presentChecker.checkIdAndRepository(buyOrderItem.getBuyOrderItemID(), this.buyOrderItemRepository);
-        if (buyOrderItem.getUserID()==userID)
+        if (buyOrderItem.getUserID().equals(userID))
         {
             this.buyOrderItemRepository.save(buyOrderItem);
         }

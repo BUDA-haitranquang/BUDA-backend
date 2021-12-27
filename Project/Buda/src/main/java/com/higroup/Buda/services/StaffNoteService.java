@@ -1,11 +1,13 @@
 package com.higroup.Buda.services;
 
+import java.lang.reflect.InvocationTargetException;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import com.higroup.Buda.BeanUtils.NullAwareBeanUtilsBean;
 import com.higroup.Buda.entities.Staff;
 import com.higroup.Buda.entities.StaffNote;
 import com.higroup.Buda.entities.User;
@@ -13,11 +15,10 @@ import com.higroup.Buda.repositories.StaffNoteRepository;
 import com.higroup.Buda.repositories.StaffRepository;
 import com.higroup.Buda.repositories.UserRepository;
 
+import org.apache.commons.beanutils.BeanUtilsBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
@@ -46,19 +47,38 @@ public class StaffNoteService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Staff Not Found !!");
         }
         staffNote.setUserID(userID);
+        staffNote.setNoteDate(ZonedDateTime.now());
         this.staffNoteRepository.save(staffNote);
         return staffNote;
     }
-    public StaffNote findStaffNotebyID(Long id){
-        Optional<StaffNote> staffNote = staffNoteRepository.findById(id);
-        if(staffNote.isPresent()){
-            return staffNote.get();
+    public StaffNote findStaffNotebyID(Long staffNoteID, Long userID){
+        if(staffNoteID == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "staff note id invalid");
         }
-        return null;
+        Optional<StaffNote> staffNote = staffNoteRepository.findById(staffNoteID);
+        if(staffNote.isPresent()){
+            if(staffNote.get().getUserID().equals(userID)) return staffNote.get();
+            else throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "staff note not belong to user");
+        }
+        else{
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "staff note not exists");
+        }
     }
 
-    public List<StaffNote> findAllByStaffID(Long staffID)
+    public List<StaffNote> findAllByStaffID(Long staffID, Long userID)
     {
+        if(staffID == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "staff id invalid");
+        }
+        Staff staff = this.staffRepository.findById(staffID).get();
+        if(staff == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "staff not exists");
+        }
+        else{
+            if(!staff.getUserID().equals(userID)){
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "staff not belong user");
+            }
+        }
         return this.staffNoteRepository.findAllByStaffID(staffID);
     }
     public List<StaffNote> findAllByUserID(Long userID)
@@ -66,45 +86,35 @@ public class StaffNoteService {
         return this.staffNoteRepository.findAllByUserID(userID);
     }
 
-    public List<StaffNote> findAllUnseenByStaffID(Long staffID)
+    public List<StaffNote> findAllUnseenByStaffID(Long staffID, Long userID)
     {
+        if(staffID == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "staff id invalid");
+        }
+        Staff staff = this.staffRepository.findById(staffID).get();
+        if(staff == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "staff not exists");
+        }
+        else{
+            if(!staff.getUserID().equals(userID)){
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "staff not belong user");
+            }
+        }
         return this.staffNoteRepository.findAllUnseenByStaffID(staffID);
     }
     @Transactional
-    public void deleteStaffNotebyID(Long id){
-        Optional<StaffNote> staffNote = this.staffNoteRepository.findStaffNoteByStaffNoteID(id);
-        if (staffNote.isPresent())
-        {
-            this.staffNoteRepository.delete(staffNote.get());
-        }
-        else throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "StaffNote not found");
+    public void deleteStaffNotebyID(Long staffNoteID, Long userID){
+        // check valid staffnote
+        this.findStaffNotebyID(staffNoteID, userID);
+        this.staffNoteRepository.deleteById(staffNoteID);
     }
     @Transactional
-    public StaffNote updateStaffNotebyID(Long id, ZonedDateTime noteDate, String message, Boolean seen, Long userID, Long staffID){
-        StaffNote staffNote = this.staffNoteRepository.findById(id).get();
-        Staff staff = this.staffRepository.findById(staffID).get();
-        // not found staffnote
-        if(staffNote == null){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "staffnote not exists");
-        }
-        // staff id cannot be null
-        if(staffID != null && staff == null){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "staff not exists");
-        }
-        // cannot change userid in staffnote
-        if(!staffNote.getUserID().equals(userID)){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "staffNote not belong to userID: " + String.valueOf(userID));
-        }
-        // check if staff exitst and belong to user
-        if(staff != null && (!staff.getUserID().equals(userID))){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Staff not belong to userID: " + String.valueOf(userID));
-        }
-        staffNote.setStaffID(staffID);
-        staffNote.setNoteDate(noteDate);
-        staffNote.setMessage(message);
-        staffNote.setSeen(seen);
+    public StaffNote updateStaffNotebyID(Long staffNoteID, StaffNote newStaffNote , Long userID) throws IllegalAccessException, InvocationTargetException{
+        StaffNote staffNote = this.findStaffNotebyID(staffNoteID, userID);
+        newStaffNote.setNoteDate(ZonedDateTime.now());
+        BeanUtilsBean notNull = new NullAwareBeanUtilsBean();
+        notNull.copyProperties(staffNote, newStaffNote);
         this.staffNoteRepository.save(staffNote);
         return staffNote;
-
     }
 }

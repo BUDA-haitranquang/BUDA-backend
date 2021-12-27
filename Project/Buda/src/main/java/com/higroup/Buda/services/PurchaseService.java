@@ -39,6 +39,9 @@ public class PurchaseService {
         }
         purchase.setCreationTime(ZonedDateTime.now());
         purchase.setUser(userRepository.findUserByUserID(userID).get());
+        // THANH TOAN XONG
+        user.get().setPlanType(purchase.getPlan().getPlanType());
+        this.userRepository.save(user.get());
         this.purchaseRepository.save(purchase);
         return purchase;
     }
