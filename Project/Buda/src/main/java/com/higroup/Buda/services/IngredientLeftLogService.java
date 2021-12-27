@@ -3,6 +3,8 @@ package com.higroup.Buda.services;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import com.higroup.Buda.entities.Ingredient;
 import com.higroup.Buda.entities.IngredientLeftLog;
 import com.higroup.Buda.entities.User;
@@ -35,6 +37,7 @@ public class IngredientLeftLogService {
         if (ingredientLeftLog.isPresent()) return ingredientLeftLog.get();
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Log not found");
     }
+    @Transactional
     public IngredientLeftLog registerNewIngredientLeftLog(Long userID, IngredientLeftLog ingredientLeftLog)
     {
         Optional<User> user = this.userRepository.findUserByUserID(userID);

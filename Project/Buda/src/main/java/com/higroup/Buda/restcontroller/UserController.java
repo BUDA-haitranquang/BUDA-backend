@@ -1,6 +1,7 @@
 package com.higroup.Buda.restcontroller;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.security.GeneralSecurityException;
 import java.util.List;
 
@@ -113,14 +114,12 @@ public class UserController {
         return ResponseEntity.ok().body(this.userService.processGoogleUserPostLogin(googleUserPayload));
     }
 
-    @PutMapping(path = "/id/{userID}")
-    public ResponseEntity<?> updateUserByID(@PathVariable("userID") Long id,
-            @RequestParam(required = false) String userName, @RequestParam(required = false) String email,
-            @RequestParam(required = false) String phoneNumber, @RequestParam(required = false) String firstName,
-            @RequestParam(required = false) String lastName, @RequestParam(required = false) String password) {
-        
+    @PutMapping(path = "/update")
+    public ResponseEntity<?> updateUserByID(HttpServletRequest httpServletRequest,
+            @RequestBody User user) throws IllegalAccessException, InvocationTargetException {
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok(
-            userService.updateUserByID(id, userName, email, phoneNumber, firstName, lastName, password)
+            userService.updateUser(userID, user)
         );
     }
 
