@@ -36,16 +36,16 @@ public class ProductService {
     @Autowired
     private PresentChecker presentChecker;
 
-    public ResponseEntity<?> registerNewProduct(Long userID, Product product)
+    public Product registerNewProduct(Long userID, Product product)
     {
         Optional<User> user = this.userRepository.findUserByUserID(userID);
         if (user.isEmpty())
         {
-            return ResponseEntity.badRequest().body("User not found");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
         }
         product.setUserID(userID);
         this.productRepository.save(product);
-        return ResponseEntity.ok().body(product);
+        return product;
     }
     public List<Product> findAllProductByUserID(Long userID)
     {

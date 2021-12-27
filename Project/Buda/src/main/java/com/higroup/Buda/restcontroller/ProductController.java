@@ -28,7 +28,7 @@ public class ProductController {
     public ResponseEntity<?> registerNewProduct(HttpServletRequest httpServletRequest, @Valid @RequestBody Product product)
     {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
-        return this.productService.registerNewProduct(userID, product);
+        return ResponseEntity.ok().body(this.productService.registerNewProduct(userID, product));
     }
 
     @GetMapping(path = "/productID/{productID}")
