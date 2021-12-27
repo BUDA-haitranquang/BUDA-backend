@@ -49,7 +49,6 @@ public class PictureService {
     public Picture saveNewPicture(Long userID, MultipartFile file)
     {
         String filePath = s3StorageService.uploadFile(file);
-        System.out.println(filePath);
         Picture picture = new Picture(filePath, userID);
         return pictureRepository.save(picture);
     }
