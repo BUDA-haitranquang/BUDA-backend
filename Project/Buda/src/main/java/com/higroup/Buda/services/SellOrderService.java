@@ -2,11 +2,7 @@ package com.higroup.Buda.services;
 
 import java.text.DecimalFormat;
 import java.time.ZonedDateTime;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import javax.transaction.Transactional;
 
@@ -49,13 +45,14 @@ public class SellOrderService {
     private final DiscountRepository discountRepository;
     private final SellOrderItemRepository sellOrderItemRepository;
     private final ProductService productService;
+    private final WarrantyOrderService warrantyOrderService;
 
     private DecimalFormat df = new DecimalFormat("###.##");
 
     @Autowired
     public SellOrderService(SellOrderRepository sellOrderRepository, CustomerRepository customerRepository,
             UserRepository userRepository, SellOrderItemService sellOrderItemService, MembershipTypeRepository membershipTypeRepository, SellOrderItemRepository sellOrderItemRepository,
-            DiscountRepository discountRepository, ProductService productService) {
+            DiscountRepository discountRepository, ProductService productService, WarrantyOrderService warrantyOrderService) {
         this.sellOrderItemService = sellOrderItemService;
         this.userRepository = userRepository;
         this.customerRepository = customerRepository;
@@ -64,6 +61,7 @@ public class SellOrderService {
         this.discountRepository = discountRepository;
         this.sellOrderItemRepository = sellOrderItemRepository;
         this.productService = productService;
+        this.warrantyOrderService = warrantyOrderService;
     }
     @Autowired
     private PresentChecker presentChecker;
@@ -94,7 +92,7 @@ public class SellOrderService {
         else{
             String phoneNumber = registerSellOrder.getCustomer().getPhoneNumber();
             if(phoneNumber == null){
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Phonenumber invalid");
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Phone number invalid");
             }
             customer = this.customerRepository.findCustomerByUserIDAndPhoneNumber(userID, phoneNumber).get();
             if(customer == null){
@@ -115,6 +113,7 @@ public class SellOrderService {
         for(Long productID : registerSellOrder.getProducts().keySet()){
             Integer quantity = registerSellOrder.getProducts().get(productID);
             SellOrderItem sellOrderItem = sellOrderItemService.registerNewSellOrderItem(userID, new RegisterSellOrderItem(productID, sellOrder.getSellOrderID(), quantity));
+            warrantyOrderService.registerNewWarrantyOrder(userID, userID, sellOrder.getSellOrderID(), customer.getCustomerID());
             realCost += sellOrderItem.getActualTotalSale(); 
             productService.editProductQuantity(userID, productID, -quantity, String.format("buy %d products with id: %d", quantity, productID));
         }
@@ -147,8 +146,8 @@ public class SellOrderService {
             else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "not found discount");
         }
         // set precistion == 2
-        double actualDiscountPercentage = Double.valueOf(df.format(actual_discount_cash / realCost));
-        double finalCost = Double.valueOf(df.format(realCost - actual_discount_cash));
+        double actualDiscountPercentage = Double.parseDouble(df.format(actual_discount_cash / realCost));
+        double finalCost = Double.parseDouble(df.format(realCost - actual_discount_cash));
         sellOrder.setActualDiscountCash(Double.valueOf(df.format(actual_discount_cash)));
         sellOrder.setActualDiscountPercentage(actualDiscountPercentage);
         sellOrder.setFinalCost(finalCost);
@@ -229,7 +228,7 @@ public class SellOrderService {
         Optional<SellOrder> sellOrder = this.sellOrderRepository.findById(sellOrderID);
         
         try{
-            if (sellOrder.get().getUserID()!=userID)
+            if (!Objects.equals(sellOrder.get().getUserID(), userID))
             {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "UserID does not match");
             }

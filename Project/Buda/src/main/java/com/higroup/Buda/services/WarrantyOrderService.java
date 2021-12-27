@@ -1,10 +1,12 @@
 package com.higroup.Buda.services;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
 import com.higroup.Buda.entities.Customer;
 import com.higroup.Buda.entities.Product;
+import com.higroup.Buda.entities.SellOrder;
 import com.higroup.Buda.entities.WarrantyOrder;
 import com.higroup.Buda.repositories.CustomerRepository;
 import com.higroup.Buda.repositories.ProductRepository;
@@ -16,6 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
+import javax.swing.text.html.Option;
 
 @Service
 public class WarrantyOrderService {
@@ -55,5 +59,23 @@ public class WarrantyOrderService {
             return this.warrantyOrderRepository.findAllByCustomerID(customerID);
         }
         else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Customer not found");
+    }
+    public WarrantyOrder registerNewWarrantyOrder(Long userID, Long productID, Long sellOrderID, Long customerID)
+    {
+        Product product = this.productRepository.findProductByProductID(productID);
+        if (!product.getUserID().equals(userID))
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
+        Optional<SellOrder> sellOrder = this.sellOrderRepository.findSellOrderBySellOrderID(sellOrderID);
+        if (!((sellOrder.isPresent()) && (sellOrder.get().getUserID().equals(userID))))
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Sell order not found");
+        Optional<Customer> customer = this.customerRepository.findCustomerByCustomerID(customerID);
+        if (!((customer.isPresent()) && (customer.get().getUserID().equals(userID))))
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Customer not found");
+        WarrantyOrder warrantyOrder = new WarrantyOrder();
+        warrantyOrder.setProduct(product);
+        warrantyOrder.setSellOrder(sellOrder.get());
+        warrantyOrder.setCustomer(customer.get());
+        warrantyOrder.setCreationTime(ZonedDateTime.now());
+        return warrantyOrder;
     }
 }

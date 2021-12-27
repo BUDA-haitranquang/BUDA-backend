@@ -106,13 +106,16 @@ public class SellOrderItemService {
         return Collections.emptyList();
     }
 
-    public SellOrderItem findSellOrderItembyID(Long userID, Long sellOrderItemID){
-        SellOrderItem sellOrderItem = this.sellOrderItemRepository.findById(sellOrderItemID).get();
-        if(sellOrderItem != null && sellOrderItem.getUserID().equals(userID)){
-            return sellOrderItem;
-        }
-        if(!sellOrderItem.getUserID().equals(userID)){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "UserID does not have sellorderItem");
+    public SellOrderItem findSellOrderItemByID(Long userID, Long sellOrderItemID){
+        if (this.sellOrderItemRepository.findById(sellOrderItemID).isPresent())
+        {
+            SellOrderItem sellOrderItem = this.sellOrderItemRepository.findById(sellOrderItemID).get();
+            if(sellOrderItem.getUserID().equals(userID)){
+                return sellOrderItem;
+            }
+            if(!sellOrderItem.getUserID().equals(userID)){
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "UserID does not have sellorderItem");
+            }
         }
         return null; 
     }
@@ -122,7 +125,7 @@ public class SellOrderItemService {
         SellOrder sellOrder = (SellOrder) this.presentChecker.checkIdAndRepository(registerSellOrderItem.getSellOrderID(), this.sellOrderRepository);
         if(!product.getVisible())
         {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "product isnot visible");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "product is not visible");
         }
         if(sellOrder.checkProductExistInItems(product))
         {
