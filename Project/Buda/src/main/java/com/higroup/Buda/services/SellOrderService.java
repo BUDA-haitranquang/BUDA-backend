@@ -86,6 +86,7 @@ public class SellOrderService {
                 customer.setGender(Gender.UNKNOWN);
                 customer.setPhoneNumber(default_phoneNumber);
                 customer.setUserID(userID);
+                customer.setName("UNKNOWN");
                 this.customerRepository.save(customer);
             }
         }
