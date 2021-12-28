@@ -10,12 +10,10 @@ import java.util.UUID;
 
 import com.higroup.Buda.BeanUtils.NullAwareBeanUtilsBean;
 import com.higroup.Buda.customDTO.GoogleUserPayload;
+import com.higroup.Buda.customDTO.UserRegister;
 import com.higroup.Buda.entities.MailConfirmationToken;
 import com.higroup.Buda.entities.Picture;
 import com.higroup.Buda.entities.User;
-
-
-import com.higroup.Buda.entities.UserRegister;
 import com.higroup.Buda.entities.enumeration.PlanType;
 import com.higroup.Buda.jwt.JwtResponse;
 import com.higroup.Buda.repositories.PictureRepository;
@@ -339,8 +337,14 @@ public class UserService implements UserDetailsService{
         if (oldUserOptional.isPresent())
         {
             User oldUser = oldUserOptional.get();
+            //These information can't be changed by update info request
+            user.setUserID(userID);
             user.setEnabled(oldUser.getEnabled());
             user.setPlanType(oldUser.getPlanType());
+            user.setEmail(oldUser.getEmail());
+            user.setUserName(oldUser.getUserName());
+            user.setPhoneNumber(oldUser.getPhoneNumber());
+            user.setPassword(oldUser.getPassword());
             BeanUtilsBean notNull = new NullAwareBeanUtilsBean();
             notNull.copyProperties(oldUser, user);
             oldUser.setEnabled(Boolean.TRUE);

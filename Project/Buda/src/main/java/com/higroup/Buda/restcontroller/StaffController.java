@@ -1,12 +1,13 @@
 package com.higroup.Buda.restcontroller;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import com.higroup.Buda.customDTO.StaffLogin;
 import com.higroup.Buda.entities.Staff;
-import com.higroup.Buda.entities.StaffLogin;
 import com.higroup.Buda.entities.enumeration.StaffPosition;
 import com.higroup.Buda.services.StaffService;
 import com.higroup.Buda.util.Checker.RequestUtil;
@@ -78,5 +79,12 @@ public class StaffController {
         return ResponseEntity.ok(
             staffService.updateStaffByID(staffID, userID, name, phoneNumber, password, address, salary, staffUUID, account, staffPosition)
         );
+    }
+
+    @PutMapping(path = "/update/{staffID}")
+    public ResponseEntity<?> updateStaff(HttpServletRequest httpServletRequest, @RequestBody Staff staff, @PathVariable("staffID") Long staffID) throws IllegalAccessException, InvocationTargetException
+    {
+        Long userID = requestUtil.getUserIDFromUserToken(httpServletRequest);
+        return ResponseEntity.ok().body(this.staffService.updateStaff(userID, staffID, staff));
     }
 }

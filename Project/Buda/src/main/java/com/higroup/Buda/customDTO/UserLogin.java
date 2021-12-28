@@ -1,29 +1,29 @@
-package com.higroup.Buda.entities;
+package com.higroup.Buda.customDTO;
 
 import java.util.Objects;
 
 import javax.validation.constraints.NotNull;
 
-public class StaffLogin {
+public class UserLogin {
     @NotNull
-    private String account;
+    private String email;
     @NotNull
     private String password;
 
-    public StaffLogin() {
+    public UserLogin() {
     }
 
-    public StaffLogin(String account, String password) {
-        this.account = account;
+    public UserLogin(String email, String password) {
+        this.email = email;
         this.password = password;
     }
 
-    public String getAccount() {
-        return this.account;
+    public String getEmail() {
+        return this.email;
     }
 
-    public void setAccount(String account) {
-        this.account = account;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
@@ -34,12 +34,12 @@ public class StaffLogin {
         this.password = password;
     }
 
-    public StaffLogin account(String acouunt) {
-        setAccount(acouunt);
+    public UserLogin email(String email) {
+        setEmail(email);
         return this;
     }
 
-    public StaffLogin password(String password) {
+    public UserLogin password(String password) {
         setPassword(password);
         return this;
     }
@@ -48,22 +48,22 @@ public class StaffLogin {
     public boolean equals(Object o) {
         if (o == this)
             return true;
-        if (!(o instanceof StaffLogin)) {
+        if (!(o instanceof UserLogin)) {
             return false;
         }
-        StaffLogin staffLogin = (StaffLogin) o;
-        return Objects.equals(account, staffLogin.account) && Objects.equals(password, staffLogin.password);
+        UserLogin userLogin = (UserLogin) o;
+        return Objects.equals(email, userLogin.email) && Objects.equals(password, userLogin.password);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(account, password);
+        return Objects.hash(email, password);
     }
 
     @Override
     public String toString() {
         return "{" +
-            " uuid='" + getAccount() + "'" +
+            " email='" + getEmail() + "'" +
             ", password='" + getPassword() + "'" +
             "}";
     }

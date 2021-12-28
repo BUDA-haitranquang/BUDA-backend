@@ -9,9 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import com.higroup.Buda.customDTO.GoogleUserPayload;
+import com.higroup.Buda.customDTO.UserLogin;
+import com.higroup.Buda.customDTO.UserRegister;
 import com.higroup.Buda.entities.User;
-import com.higroup.Buda.entities.UserLogin;
-import com.higroup.Buda.entities.UserRegister;
 import com.higroup.Buda.jwt.JwtSimple;
 import com.higroup.Buda.security.BudaGoogleTokenVerifier;
 import com.higroup.Buda.services.UserService;
