@@ -7,7 +7,7 @@ import javax.validation.Valid;
 
 import com.higroup.Buda.entities.Staff;
 import com.higroup.Buda.entities.StaffLogin;
-import com.higroup.Buda.entities.StaffPosition;
+import com.higroup.Buda.entities.enumeration.StaffPosition;
 import com.higroup.Buda.services.StaffService;
 import com.higroup.Buda.util.Checker.RequestUtil;
 

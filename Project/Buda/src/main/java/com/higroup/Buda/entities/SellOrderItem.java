@@ -19,6 +19,8 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.higroup.Buda.entities.enumeration.AgeGroup;
+import com.higroup.Buda.entities.enumeration.Gender;
 
 @Entity
 @Table(name = "Sell_order_item", indexes = {

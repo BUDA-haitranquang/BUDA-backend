@@ -27,6 +27,9 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.higroup.Buda.entities.enumeration.AgeGroup;
+import com.higroup.Buda.entities.enumeration.Gender;
+import com.higroup.Buda.entities.enumeration.Status;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;

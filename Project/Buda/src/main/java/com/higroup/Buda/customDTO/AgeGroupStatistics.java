@@ -1,6 +1,6 @@
 package com.higroup.Buda.customDTO;
 
-import com.higroup.Buda.entities.AgeGroup;
+import com.higroup.Buda.entities.enumeration.AgeGroup;
 
 public class AgeGroupStatistics {
     private AgeGroup ageGroup;

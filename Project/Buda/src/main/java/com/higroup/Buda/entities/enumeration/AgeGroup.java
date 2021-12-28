@@ -1,4 +1,4 @@
-package com.higroup.Buda.entities;
+package com.higroup.Buda.entities.enumeration;
 
 public enum AgeGroup {
     FROM_0_TO_12, 

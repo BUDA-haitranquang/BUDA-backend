@@ -9,7 +9,7 @@ import java.util.Optional;
 
 
 import com.higroup.Buda.entities.Staff;
-import com.higroup.Buda.entities.StaffPosition;
+import com.higroup.Buda.entities.enumeration.StaffPosition;
 import com.higroup.Buda.jwt.JwtResponse;
 import com.higroup.Buda.repositories.RoleRepository;
 import com.higroup.Buda.repositories.StaffRepository;

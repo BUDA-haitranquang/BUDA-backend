@@ -7,8 +7,8 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 
 import com.higroup.Buda.entities.Discount;
-import com.higroup.Buda.entities.DiscountType;
 import com.higroup.Buda.entities.User;
+import com.higroup.Buda.entities.enumeration.DiscountType;
 import com.higroup.Buda.repositories.DiscountRepository;
 import com.higroup.Buda.repositories.UserRepository;
 import com.higroup.Buda.util.Checker.PresentChecker;

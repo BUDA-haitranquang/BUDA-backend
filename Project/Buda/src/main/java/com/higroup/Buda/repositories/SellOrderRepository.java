@@ -6,10 +6,10 @@ import java.util.Optional;
 import com.higroup.Buda.customDTO.AgeGroupStatistics;
 import com.higroup.Buda.customDTO.GenderStatistics;
 import com.higroup.Buda.customDTO.RevenueByTimeStatistics;
-import com.higroup.Buda.entities.AgeGroup;
 import com.higroup.Buda.entities.Customer;
 import com.higroup.Buda.entities.SellOrder;
-import com.higroup.Buda.entities.Status;
+import com.higroup.Buda.entities.enumeration.AgeGroup;
+import com.higroup.Buda.entities.enumeration.Status;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

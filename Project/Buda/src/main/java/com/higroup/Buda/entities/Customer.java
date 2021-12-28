@@ -18,6 +18,8 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.higroup.Buda.entities.enumeration.AgeGroup;
+import com.higroup.Buda.entities.enumeration.Gender;
 
 @Entity
 //column nao dinh dang lai ten thi dung ten trong @Column, column nao khong dinh dang lai ten thi dung ten bien

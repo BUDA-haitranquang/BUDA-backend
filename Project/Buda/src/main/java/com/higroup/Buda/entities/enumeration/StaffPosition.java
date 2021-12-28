@@ -1,4 +1,4 @@
-package com.higroup.Buda.entities;
+package com.higroup.Buda.entities.enumeration;
 
 public enum StaffPosition {
     MANAGER, BASIC

@@ -2,6 +2,7 @@ package com.higroup.Buda.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.higroup.Buda.entities.enumeration.Status;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;

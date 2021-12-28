@@ -17,6 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.higroup.Buda.entities.enumeration.Status;
 
 import org.checkerframework.checker.units.qual.C;
 

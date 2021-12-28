@@ -7,10 +7,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import com.higroup.Buda.entities.AgeGroup;
 import com.higroup.Buda.entities.Customer;
-import com.higroup.Buda.entities.Gender;
 import com.higroup.Buda.entities.User;
+import com.higroup.Buda.entities.enumeration.AgeGroup;
+import com.higroup.Buda.entities.enumeration.Gender;
 import com.higroup.Buda.repositories.CustomerRepository;
 import com.higroup.Buda.repositories.UserRepository;
 
