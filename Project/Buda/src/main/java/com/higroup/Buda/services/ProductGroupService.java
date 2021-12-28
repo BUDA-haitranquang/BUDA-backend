@@ -125,4 +125,9 @@ public class ProductGroupService {
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
     }
+
+    public List<Product> findAllProductByProductGroup(Long userID, Long productGroupID)
+    {
+        return this.productRepository.findAllProductByProductGroup(productGroupID, userID);
+    }
 }

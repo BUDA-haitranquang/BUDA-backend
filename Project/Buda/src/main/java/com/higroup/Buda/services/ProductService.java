@@ -166,7 +166,7 @@ public class ProductService {
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
     }
-    public List<Ingredient> findAlertAmountProduct(Long userID){
+    public List<Product> findAlertAmountProduct(Long userID){
         Optional<User> user = this.userRepository.findUserByUserID(userID);
         if (user.isEmpty())
         {
