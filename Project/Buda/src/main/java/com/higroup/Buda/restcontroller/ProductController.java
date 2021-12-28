@@ -92,4 +92,10 @@ public class ProductController {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.productService.editProduct(userID, productID, product));
     }
+    @GetMapping(path = "{productID}/groups")
+    public ResponseEntity<?> findAllProductGroupByProductID(HttpServletRequest httpServletRequest, @PathVariable Long productID)
+    {
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
+        return ResponseEntity.ok().body(this.productService.findAllProductGroupByProduct(userID, productID));
+    }
 }
