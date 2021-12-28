@@ -74,7 +74,11 @@ public class Product {
     @JoinTable(
             name = "product_group_component",
             joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_group_id"))
+            inverseJoinColumns = @JoinColumn(name = "product_group_id"),
+            indexes = {
+                @Index(name = "product_group_component_product_id", columnList = "product_id"),
+                @Index(name = "product_group_component_product_group_id", columnList = "product_group_id")
+            })
     @JsonBackReference
     private Set<ProductGroup> productGroups;
 
