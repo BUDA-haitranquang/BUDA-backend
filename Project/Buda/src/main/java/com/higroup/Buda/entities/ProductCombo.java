@@ -12,9 +12,12 @@ import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,7 +32,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-
+@JsonIgnoreProperties({"productProductCombos"})
 public class ProductCombo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,18 +42,9 @@ public class ProductCombo {
     private String description;
     @Column(name = "user_id")
     private Long userID;
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-        name = "product_product_combo",
-        joinColumns = @JoinColumn(name = "product_combo_id"),
-        inverseJoinColumns = @JoinColumn(name = "product_id"),
-        indexes = {
-            @Index(name = "product_product_combo_product_combo_id", columnList = "product_combo_id"),
-            @Index(name = "product_product_combo_product_id", columnList = "product_id")
-        }
-    )
-    @JsonBackReference
-    private Set<Product> products;
+    @OneToMany(mappedBy = "productCombo", fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private Set<ProductProductCombo> productProductCombos;
 
     
     @Override

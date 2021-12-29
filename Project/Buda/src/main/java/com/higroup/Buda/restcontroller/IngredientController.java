@@ -61,7 +61,7 @@ public class IngredientController {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.ingredientService.hideIngredientByIngredientID(userID, ingredientID));
     }
-    @PostMapping(path = "/edit/quantity/{ingredientID}")
+    @PutMapping(path = "/edit/quantity/{ingredientID}")
     public ResponseEntity<?> editIngredientQuantity(HttpServletRequest httpServletRequest, @PathVariable Long ingredientID, @RequestBody QuantityLog quantityLog)
     {
         Integer amountLeftChange = quantityLog.getAmountLeftChange();
@@ -75,7 +75,7 @@ public class IngredientController {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.ingredientService.findAlertAmountIngredient(userID));
     }
-    @PostMapping(path = "/edit/{ingredientID}")
+    @PutMapping(path = "/edit/{ingredientID}")
     public ResponseEntity<?> editIngredient(HttpServletRequest httpServletRequest, @PathVariable Long ingredientID, @RequestBody Ingredient ingredient) throws InvocationTargetException, IllegalAccessException {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.ingredientService.editIngredient(userID, ingredientID, ingredient));

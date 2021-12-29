@@ -73,7 +73,7 @@ public class ProductController {
         this.productService.deleteProductByProductID(userID, productID);
         return ResponseEntity.ok().body("Delete successfully, this action can not be reversed");
     }
-    @PostMapping(path = "/edit/quantity/{productID}")
+    @PutMapping(path = "/edit/quantity/{productID}")
     public ResponseEntity<?> editProductQuantity(HttpServletRequest httpServletRequest, @PathVariable Long productID, @RequestBody QuantityLog quantityLog)
     {
         Integer amountLeftChange = quantityLog.getAmountLeftChange();

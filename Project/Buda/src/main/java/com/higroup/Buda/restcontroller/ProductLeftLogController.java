@@ -2,8 +2,11 @@ package com.higroup.Buda.restcontroller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.higroup.Buda.entities.ProductLeftLog;
 import com.higroup.Buda.services.ProductLeftLogService;
+import com.higroup.Buda.util.Checker.RequestUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,34 +23,40 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin("*")
 public class ProductLeftLogController {
     private final ProductLeftLogService productLeftLogService;
+    private final RequestUtil requestUtil;
     @Autowired
-    public ProductLeftLogController(ProductLeftLogService productLeftLogService)
+    public ProductLeftLogController(ProductLeftLogService productLeftLogService, RequestUtil requestUtil)
     {
+        this.requestUtil = requestUtil;
         this.productLeftLogService = productLeftLogService;
     }
-    @PostMapping(path = "/userID/{userID}")
-    public ResponseEntity<?> registerNewProductLeftLog(@PathVariable Long userID, @RequestBody ProductLeftLog productLeftLog)
-    {
-        return this.productLeftLogService.registerNewProductLeftLog(userID, productLeftLog);
-    }
+    // @PostMapping(path = "/userID/{userID}")
+    // public ResponseEntity<?> registerNewProductLeftLog(@PathVariable Long userID, @RequestBody ProductLeftLog productLeftLog)
+    // {
+    //     return this.productLeftLogService.registerNewProductLeftLog(userID, productLeftLog);
+    // }
     @GetMapping(path = "/id/{productLeftLogID}")
-    public ResponseEntity<?> findProductLeftLogByProductLeftLogID(@PathVariable Long productLeftLogID)
+    public ResponseEntity<?> findProductLeftLogByProductLeftLogID(HttpServletRequest httpServletRequest, @PathVariable Long productLeftLogID)
     {
-        return this.productLeftLogService.findProductLeftLogByProductLeftLogID(productLeftLogID);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
+        return ResponseEntity.ok().body(this.productLeftLogService.findProductLeftLogByProductLeftLogID(userID, productLeftLogID));
     }
     @GetMapping(path = "product/{productID}/all")
-    public List<ProductLeftLog> findAllProductLeftLogByProduct(@PathVariable Long productID)
+    public ResponseEntity<?> findAllProductLeftLogByProduct(HttpServletRequest httpServletRequest, @PathVariable Long productID)
     {
-        return this.productLeftLogService.findAllProductLeftLogByProduct(productID);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
+        return ResponseEntity.ok().body(this.productLeftLogService.findAllProductLeftLogByProduct(userID, productID));
     }
-    @GetMapping(path = "user/{userID}/all")
-    public List<ProductLeftLog> findAllProductLeftLogByUserID(@PathVariable Long userID)
+    @GetMapping(path = "/all")
+    public ResponseEntity<?> findAllProductLeftLogByUserID(HttpServletRequest httpServletRequest)
     {
-        return this.productLeftLogService.findAllProductLeftLogByUserID(userID);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
+        return ResponseEntity.ok().body(this.productLeftLogService.findAllProductLeftLogByUserID(userID));
     }
     @GetMapping(path = "staff/{staffID}/all")
-    public List<ProductLeftLog> findAllProductLeftLogByStaffID(@PathVariable Long staffID)
+    public ResponseEntity<?> findAllProductLeftLogByStaffID(HttpServletRequest httpServletRequest, @PathVariable Long staffID)
     {
-        return this.findAllProductLeftLogByStaffID(staffID);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
+        return ResponseEntity.ok().body(this.productLeftLogService.findAllProductLeftLogByStaffID(userID, staffID));
     }
 }

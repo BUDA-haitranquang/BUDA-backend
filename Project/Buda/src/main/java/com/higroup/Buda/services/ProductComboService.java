@@ -1,5 +1,8 @@
 package com.higroup.Buda.services;
 
+import java.util.List;
+
+import com.higroup.Buda.entities.ProductCombo;
 import com.higroup.Buda.repositories.ProductComboRepository;
 import com.higroup.Buda.repositories.ProductRepository;
 
@@ -15,5 +18,13 @@ public class ProductComboService {
     {
         this.productComboRepository = productComboRepository;
         this.productRepository = productRepository;
+    }
+    public List<ProductCombo> findAllByUserID(Long userID)
+    {
+        return this.productComboRepository.findAllByUserID(userID);
+    }
+    public List<ProductCombo> findAllProductComboIncludeProduct(Long userID, Long productID)
+    {
+        return this.productComboRepository.findAllProductComboIncludeProduct(userID, productID);
     }
 }

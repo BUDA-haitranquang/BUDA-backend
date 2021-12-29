@@ -22,7 +22,7 @@ import java.util.Set;
     @Index(columnList = "user_id", name = "product_user_id_index"),
 //    @Index(columnList = "product_group_id", name = "product_product_group_id_index")
 })
-@JsonIgnoreProperties({"sellOrderItems", "productLeftLogs", "productGroups", "productCombos"})
+@JsonIgnoreProperties({"sellOrderItems", "productLeftLogs", "productGroups", "productProductCombos"})
 @Getter
 @Setter
 @AllArgsConstructor
@@ -82,9 +82,9 @@ public class Product {
     @JsonBackReference
     private Set<ProductGroup> productGroups;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "products")
-    @JsonBackReference
-    private Set<ProductCombo> productCombos;
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private Set<ProductProductCombo> productProductCombos;
 
     @Override
     public boolean equals(Object o) {
