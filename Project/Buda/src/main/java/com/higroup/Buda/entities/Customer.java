@@ -21,6 +21,11 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.higroup.Buda.entities.enumeration.AgeGroup;
 import com.higroup.Buda.entities.enumeration.Gender;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Entity
 //column nao dinh dang lai ten thi dung ten trong @Column, column nao khong dinh dang lai ten thi dung ten bien
 @Table(name = "Customer", indexes = {
@@ -28,6 +33,10 @@ import com.higroup.Buda.entities.enumeration.Gender;
     @Index(columnList = "phoneNumber", name = "customer_phone_number_index")
 })
 @JsonIgnoreProperties({"sellOrders"})
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Customer{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -56,195 +65,6 @@ public class Customer{
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
     @JsonManagedReference(value = "customer - sell_order")
     private Set<SellOrder> sellOrders;
-    public Customer() {
-    }
-
-    public Boolean getVisible() {
-        return visible;
-    }
-
-    public void setVisible(Boolean visible) {
-        this.visible = visible;
-    }
-
-    public Customer(Long customerID, AgeGroup ageGroup, Gender gender, double totalSpend, Long membershipID,
-            String name,/**  String address,*/ String phoneNumber, Long userID, Boolean visible, Set<SellOrder> sellOrders) {
-        this.customerID = customerID;
-        this.ageGroup = ageGroup;
-        this.gender = gender;
-        this.totalSpend = totalSpend;
-        this.membershipID = membershipID;
-        this.name = name;
-        // this.address = address;
-        this.phoneNumber = phoneNumber;
-        this.userID = userID;
-        this.visible = visible;
-        this.sellOrders = sellOrders;
-    }
-
-    public Customer(Long customerID, AgeGroup ageGroup, Gender gender, double totalSpend, Long membershipID, String name, /**  String address,*/ String phoneNumber, Long userID, Set<SellOrder> sellOrders) {
-        this.customerID = customerID;
-        this.ageGroup = ageGroup;
-        this.gender = gender;
-        this.totalSpend = totalSpend;
-        this.membershipID = membershipID;
-        this.name = name;
-        // this.address = address;
-        this.phoneNumber = phoneNumber;
-        this.userID = userID;
-        this.sellOrders = sellOrders;
-    }
-
-    public Set<SellOrder> getSellOrders() {
-        return this.sellOrders;
-    }
-
-    public void setSellOrders(Set<SellOrder> sellOrders) {
-        this.sellOrders = sellOrders;
-    }
-
-    public Customer sellOrders(Set<SellOrder> sellOrders) {
-        setSellOrders(sellOrders);
-        return this;
-    }
-
-    public Customer(Long customerID, AgeGroup ageGroup, Gender gender, double totalSpend, Long membershipID, String name, /**  String address,*/ String phoneNumber, Long userID) {
-        this.customerID = customerID;
-        this.ageGroup = ageGroup;
-        this.gender = gender;
-        this.totalSpend = totalSpend;
-        this.membershipID = membershipID;
-        this.name = name;
-        // this.address = address;
-        this.phoneNumber = phoneNumber;
-        this.userID = userID;
-    }
-
-    public Customer customerID(Long customerID) {
-        setCustomerID(customerID);
-        return this;
-    }
-
-    public Customer ageGroup(AgeGroup ageGroup) {
-        setAgeGroup(ageGroup);
-        return this;
-    }
-
-    public Customer gender(Gender gender) {
-        setGender(gender);
-        return this;
-    }
-
-    public Customer totalSpend(double totalSpend) {
-        setTotalSpend(totalSpend);
-        return this;
-    }
-
-    public Customer membershipID(Long membershipID) {
-        setMembershipID(membershipID);
-        return this;
-    }
-
-    public Customer name(String name) {
-        setName(name);
-        return this;
-    }
-
-    // public Customer address(String address) {
-    //     setAddress(address);
-    //     return this;
-    // }
-
-    public Customer phoneNumber(String phoneNumber) {
-        setPhoneNumber(phoneNumber);
-        return this;
-    }
-
-    public Customer userID(Long userID) {
-        setUserID(userID);
-        return this;
-    }
-
-    public Customer(Long customerID, AgeGroup ageGroup, Gender gender, double totalSpend, Long membershipID) {
-        super();
-        this.customerID = customerID;
-        this.ageGroup = ageGroup;
-        this.gender = gender;
-        this.totalSpend = totalSpend;
-        this.membershipID = membershipID;
-    }
-
-    public Long getCustomerID() {
-        return this.customerID;
-    }
-
-    public void setCustomerID(Long customerID) {
-        this.customerID = customerID;
-    }
-
-    public AgeGroup getAgeGroup() {
-        return this.ageGroup;
-    }
-
-    public void setAgeGroup(AgeGroup ageGroup) {
-        this.ageGroup = ageGroup;
-    }
-
-    public Gender getGender() {
-        return this.gender;
-    }
-
-    public void setGender(Gender gender) {
-        this.gender = gender;
-    }
-
-    public double getTotalSpend() {
-        return this.totalSpend;
-    }
-
-    public void setTotalSpend(double totalSpend) {
-        this.totalSpend = totalSpend;
-    }
-
-    public Long getMembershipID() {
-        return this.membershipID;
-    }
-
-    public void setMembershipID(Long membershipID) {
-        this.membershipID = membershipID;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    // public String getAddress() {
-    //     return this.address;
-    // }
-
-    // public void setAddress(String address) {
-    //     this.address = address;
-    // }
-
-    public String getPhoneNumber() {
-        return this.phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public Long getUserID() {
-        return this.userID;
-    }
-
-    public void setUserID(Long userID) {
-        this.userID = userID;
-    }
 
     @Override
     public boolean equals(Object o) {

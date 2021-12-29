@@ -7,6 +7,11 @@ import com.higroup.Buda.entities.enumeration.Status;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.time.ZonedDateTime;
 import java.util.Objects;
@@ -17,6 +22,10 @@ import java.util.Set;
     @Index(columnList = "user_id", name = "buy_order_user_id_index"),
     @Index(columnList = "supplier_id", name = "buy_order_supplier_id_index")
 })
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class BuyOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,111 +45,6 @@ public class BuyOrder {
     @JsonManagedReference(value = "buy_order - buy_order_item")
     @Fetch(FetchMode.SUBSELECT)
     private Set<BuyOrderItem> buyOrderItems;
-
-
-    public BuyOrder() {
-    }
-
-    public BuyOrder(Long buyOrderID, Supplier supplier, ZonedDateTime creationTime, Status status, Double TotalCost, Long userID, Set<BuyOrderItem> buyOrderItems) {
-        this.buyOrderID = buyOrderID;
-        this.supplier = supplier;
-        this.creationTime = creationTime;
-        this.status = status;
-        this.totalCost = TotalCost;
-        this.userID = userID;
-        this.buyOrderItems = buyOrderItems;
-    }
-
-    public Long getBuyOrderID() {
-        return this.buyOrderID;
-    }
-
-    public void setBuyOrderID(Long buyOrderID) {
-        this.buyOrderID = buyOrderID;
-    }
-
-    public Supplier getSupplier() {
-        return this.supplier;
-    }
-
-    public void setSupplier(Supplier supplier) {
-        this.supplier = supplier;
-    }
-
-    public ZonedDateTime getCreationTime() {
-        return this.creationTime;
-    }
-
-    public void setCreationTime(ZonedDateTime creationTime) {
-        this.creationTime = creationTime;
-    }
-
-    public Status getStatus() {
-        return this.status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-
-    public Double getTotalCost() {
-        return this.totalCost;
-    }
-
-    public void setTotalCost(Double TotalCost) {
-        this.totalCost = TotalCost;
-    }
-
-    public Long getUserID() {
-        return this.userID;
-    }
-
-    public void setUserID(Long userID) {
-        this.userID = userID;
-    }
-
-    public Set<BuyOrderItem> getBuyOrderItems() {
-        return this.buyOrderItems;
-    }
-
-    public void setBuyOrderItems(Set<BuyOrderItem> buyOrderItems) {
-        this.buyOrderItems = buyOrderItems;
-    }
-
-    public BuyOrder buyOrderID(Long buyOrderID) {
-        setBuyOrderID(buyOrderID);
-        return this;
-    }
-
-    public BuyOrder supplier(Supplier supplier) {
-        setSupplier(supplier);
-        return this;
-    }
-
-    public BuyOrder creationTime(ZonedDateTime creationTime) {
-        setCreationTime(creationTime);
-        return this;
-    }
-
-    public BuyOrder status(Status status) {
-        setStatus(status);
-        return this;
-    }
-
-    public BuyOrder TotalCost(Double TotalCost) {
-        setTotalCost(TotalCost);
-        return this;
-    }
-
-    public BuyOrder userID(Long userID) {
-        setUserID(userID);
-        return this;
-    }
-
-    public BuyOrder buyOrderItems(Set<BuyOrderItem> buyOrderItems) {
-        setBuyOrderItems(buyOrderItems);
-        return this;
-    }
 
     @Override
     public boolean equals(Object o) {

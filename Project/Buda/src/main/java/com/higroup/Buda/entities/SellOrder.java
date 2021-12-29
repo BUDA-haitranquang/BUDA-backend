@@ -34,6 +34,11 @@ import com.higroup.Buda.entities.enumeration.Status;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Entity
 @Table(name = "Sell_order", indexes = {
     @Index(columnList = "user_id", name = "sell_order_user_id_index"),
@@ -42,6 +47,10 @@ import org.hibernate.annotations.FetchMode;
     @Index(columnList = "creation_time", name = "sell_order_creation_time_index")
 })
 //@JsonIgnoreProperties("sellOrderItems")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 
 public class SellOrder implements Serializable{
     @Id
@@ -80,206 +89,6 @@ public class SellOrder implements Serializable{
     @JsonManagedReference(value = "sell_order - sell_order_item")
     @Fetch(FetchMode.SUBSELECT)
     private Set<SellOrderItem> sellOrderItems = new HashSet<SellOrderItem>();
-
-
-    public SellOrder() {
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public Long getSellOrderID() {
-        return this.sellOrderID;
-    }
-
-    public void setSellOrderID(Long sellOrderID) {
-        this.sellOrderID = sellOrderID;
-    }
-
-    public Customer getCustomer() {
-        return this.customer;
-    }
-
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
-
-    public Discount getDiscount() {
-        return this.discount;
-    }
-
-    public void setDiscount(Discount discount) {
-        this.discount = discount;
-    }
-
-    public ZonedDateTime getCreationTime() {
-        return this.creationTime;
-    }
-
-    public void setCreationTime(ZonedDateTime creationTime) {
-        this.creationTime = creationTime;
-    }
-
-    public AgeGroup getAgeGroup() {
-        return this.ageGroup;
-    }
-
-    public void setAgeGroup(AgeGroup ageGroup) {
-        this.ageGroup = ageGroup;
-    }
-
-    public Gender getGender() {
-        return this.gender;
-    }
-
-    public void setGender(Gender gender) {
-        this.gender = gender;
-    }
-
-    public Double getActualDiscountCash() {
-        return this.actualDiscountCash;
-    }
-
-    public void setActualDiscountCash(Double actualDiscountCash) {
-        this.actualDiscountCash = actualDiscountCash;
-    }
-
-    public Double getActualDiscountPercentage() {
-        return this.actualDiscountPercentage;
-    }
-
-    public void setActualDiscountPercentage(Double actualDiscountPercentage) {
-        this.actualDiscountPercentage = actualDiscountPercentage;
-    }
-
-    public Double getRealCost() {
-        return this.realCost;
-    }
-
-    public void setRealCost(Double realCost) {
-        this.realCost = realCost;
-    }
-
-    public Double getFinalCost() {
-        return this.finalCost;
-    }
-
-    public void setFinalCost(Double finalCost) {
-        this.finalCost = finalCost;
-    }
-
-    public Long getUserID() {
-        return this.userID;
-    }
-
-    public void setUserID(Long userID) {
-        this.userID = userID;
-    }
-
-    public String getCustomerMessage() {
-        return this.customerMessage;
-    }
-
-    public void setCustomerMessage(String customerMessage) {
-        this.customerMessage = customerMessage;
-    }
-
-    public Status getStatus() {
-        return this.status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-
-    public Set<SellOrderItem> getSellOrderItems() {
-        return this.sellOrderItems;
-    }
-
-    public void setSellOrderItems(Set<SellOrderItem> sellOrderItems) {
-        this.sellOrderItems = sellOrderItems;
-    }
-    
-    public SellOrder address(String address){
-        setAddress(address);
-        return this;
-    }
-
-    public SellOrder sellOrderID(Long sellOrderID) {
-        setSellOrderID(sellOrderID);
-        return this;
-    }
-
-    public SellOrder customer(Customer customer) {
-        setCustomer(customer);
-        return this;
-    }
-
-    public SellOrder discount(Discount discount) {
-        setDiscount(discount);
-        return this;
-    }
-
-    public SellOrder creationTime(ZonedDateTime creationTime) {
-        setCreationTime(creationTime);
-        return this;
-    }
-
-    public SellOrder ageGroup(AgeGroup ageGroup) {
-        setAgeGroup(ageGroup);
-        return this;
-    }
-
-    public SellOrder gender(Gender gender) {
-        setGender(gender);
-        return this;
-    }
-
-    public SellOrder actualDiscountCash(Double actualDiscountCash) {
-        setActualDiscountCash(actualDiscountCash);
-        return this;
-    }
-
-    public SellOrder actualDiscountPercentage(Double actualDiscountPercentage) {
-        setActualDiscountPercentage(actualDiscountPercentage);
-        return this;
-    }
-
-    public SellOrder realCost(Double realCost) {
-        setRealCost(realCost);
-        return this;
-    }
-
-    public SellOrder finalCost(Double finalCost) {
-        setFinalCost(finalCost);
-        return this;
-    }
-
-    public SellOrder userID(Long userID) {
-        setUserID(userID);
-        return this;
-    }
-
-    public SellOrder customerMessage(String customerMessage) {
-        setCustomerMessage(customerMessage);
-        return this;
-    }
-
-    public SellOrder status(Status status) {
-        setStatus(status);
-        return this;
-    }
-
-    public SellOrder sellOrderItems(Set<SellOrderItem> sellOrderItems) {
-        setSellOrderItems(sellOrderItems);
-        return this;
-    }
 
     @Override
     public boolean equals(Object obj) {
