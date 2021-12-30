@@ -1,6 +1,7 @@
 package com.higroup.Buda.services;
 
 import java.text.DecimalFormat;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.*;
 
@@ -34,6 +35,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
+import net.bytebuddy.asm.Advice.Local;
 
 @Service
 public class SellOrderService {
@@ -281,7 +284,9 @@ public class SellOrderService {
     public List<SellOrder> findAllSellOrderByUserIDLastXDays(Long userID, Long X)
     {
         presentChecker.checkIdAndRepository(userID, this.userRepository);
-        return this.sellOrderRepository.findAllSellOrderByUserIDLastXDays(userID, X);
+        ZonedDateTime xDaysAgo = ZonedDateTime.now().minusDays(X);
+        xDaysAgo.withSecond(0).withHour(0).withMinute(0);
+        return this.sellOrderRepository.findAllSellOrderByUserIDLastXDays(userID, xDaysAgo);
     }
 
     public List<SellOrder> findAllIIncompletedSellOrderByUserID(Long userID)

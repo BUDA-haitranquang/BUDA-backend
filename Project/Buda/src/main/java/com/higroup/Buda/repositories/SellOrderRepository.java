@@ -1,5 +1,7 @@
 package com.higroup.Buda.repositories;
 
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,9 +25,11 @@ public interface SellOrderRepository extends JpaRepository<SellOrder, Long> {
     List<SellOrder> findAllSellOrderByDiscountID(@Param("discountID") Long discountID);
     @Query(value = "select * from sell_order s where s.status LIKE :status and s.user_id = :userID", nativeQuery = true)
     List<SellOrder> findAllSellOrderByStatusAndUserID(@Param("userID") Long userID, @Param("status") String status);
-    @Query(value = "select * from sell_order s where (s.creation_time BETWEEN NOW() - INTERVAL :X DAY and NOW()) and s.user_id = :userID", nativeQuery = true)
-    List<SellOrder> findAllSellOrderByUserIDLastXDays(@Param("userID") Long userID, @Param("X") Long X);
-    @Query(value = "select * from sell_order s where s.status NOT LIKE 'FINISHED' and s.status NOT LIKE 'CANCELLED' and s.user_id = :userID", nativeQuery = true)
+    //@Query(value = "select * from sell_order s where (s.creation_time BETWEEN NOW() - INTERVAL :X DAY and NOW()) and s.user_id = :userID", nativeQuery = true)
+    @Query(value = "select s from SellOrder s where (s.creationTime > :X) and s.userID = :userID")
+    List<SellOrder> findAllSellOrderByUserIDLastXDays(@Param("userID") Long userID, @Param("X") ZonedDateTime X);
+    //@Query(value = "select * from sell_order s where s.status NOT LIKE 'FINISHED' and s.status NOT LIKE 'CANCELLED' and s.user_id = :userID", nativeQuery = true)
+    @Query(value = "select s from SellOrder s where s.status NOT LIKE 'FINISHED' and s.status NOT LIKE 'CANCELLED' and s.userID = :userID")
     List<SellOrder> findAllIncompletedSellOrderByUser(@Param("userID") Long userID);
     @Query(value = "select * from sell_order s where s.status LIKE 'FINISHED' and s.user_id = :userID", nativeQuery = true)
     List<SellOrder> findAllCompletedSellOrderByUser(@Param("userID") Long userID);
