@@ -23,4 +23,7 @@ public interface ProductRepository extends JpaRepository<Product, Long>{
     List<Product> findAlertAmountProduct(@Param("userID") Long userID);
     @Query(value = "select * from product p where p.product_id in (select pc.product_id from product_group_component pc where pc.product_group_id = :productGroupID) and p.user_id = :userID", nativeQuery = true)
     List<Product> findAllProductByProductGroup(@Param("productGroupID") Long productGroupID, @Param("userID") Long userID);
+    @Query(value = "select * from product p where p.product_id in "
+    + "(select pci.product_id from product_combo_item pci where pci.product_combo_id = :productComboID) and p.user_id = :userID", nativeQuery = true)
+    List<Product> findAllProductByProductCombo(@Param("userID") Long userID, @Param("productComboID") Long productComboID);
 }

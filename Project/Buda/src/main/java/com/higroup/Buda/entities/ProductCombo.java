@@ -19,6 +19,9 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,7 +35,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIgnoreProperties({"productProductCombos"})
+//@JsonIgnoreProperties({"productComboItems"})
 public class ProductCombo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,9 +45,10 @@ public class ProductCombo {
     private String description;
     @Column(name = "user_id")
     private Long userID;
-    @OneToMany(mappedBy = "productCombo", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "productCombo", fetch = FetchType.EAGER)
     @JsonManagedReference
-    private Set<ProductProductCombo> productProductCombos;
+    @Fetch(FetchMode.SUBSELECT)
+    private Set<ProductComboItem> productComboItems;
 
     
     @Override
