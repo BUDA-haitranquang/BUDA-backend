@@ -61,7 +61,7 @@ public class CustomerController {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.customerService.updateCustomer(userID, customer));
     }
-    @DeleteMapping(path = "hide/{customerID}")
+    @GetMapping(path = "hide/{customerID}")
     public ResponseEntity<?> hideProduct(HttpServletRequest httpServletRequest, @PathVariable Long customerID)
     {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);

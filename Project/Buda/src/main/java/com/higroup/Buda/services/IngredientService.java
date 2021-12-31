@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import com.higroup.Buda.BeanUtils.NullAwareBeanUtilsBean;
 import com.higroup.Buda.entities.Ingredient;
 import com.higroup.Buda.entities.IngredientLeftLog;
@@ -49,7 +51,7 @@ public class IngredientService {
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Ingredient not found");
     }
-
+    @Transactional
     public Ingredient createNewIngredient(Long userID, Ingredient newIngredient){
         Optional<User> user = this.userRepository.findUserByUserID(userID);
         if (user.isEmpty())
@@ -93,7 +95,7 @@ public class IngredientService {
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Ingredient not found");
     }
-
+    @Transactional
     public Ingredient editIngredientQuantity(Long userID, Long ingredientID, Integer amountLeftChange, String message)
     {
         Optional<User> user = this.userRepository.findUserByUserID(userID);
@@ -131,7 +133,7 @@ public class IngredientService {
         }
         return this.ingredientRepository.findAlertAmountIngredient(userID);
     }
-
+    @Transactional
     public Ingredient editIngredient(Long userID, Long ingredientID, Ingredient ingredient) throws InvocationTargetException, IllegalAccessException {
 
         Optional<User> user = this.userRepository.findUserByUserID(userID);

@@ -6,8 +6,8 @@ import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 
 import com.higroup.Buda.entities.BuyOrder;
-import com.higroup.Buda.entities.Status;
 import com.higroup.Buda.entities.Supplier;
+import com.higroup.Buda.entities.enumeration.Status;
 import com.higroup.Buda.services.BuyOrderService;
 import com.higroup.Buda.util.JwtTokenUtil;
 import com.higroup.Buda.util.Checker.RequestUtil;

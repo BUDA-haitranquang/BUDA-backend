@@ -1,6 +1,7 @@
 package com.higroup.Buda.services;
 
 import java.text.DecimalFormat;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.*;
 
@@ -9,17 +10,17 @@ import javax.transaction.Transactional;
 import com.higroup.Buda.customDTO.AgeGroupStatistics;
 import com.higroup.Buda.customDTO.RegisterSellOrder;
 import com.higroup.Buda.customDTO.RegisterSellOrderItem;
-import com.higroup.Buda.entities.AgeGroup;
 import com.higroup.Buda.entities.Customer;
 import com.higroup.Buda.entities.Discount;
-import com.higroup.Buda.entities.DiscountType;
-import com.higroup.Buda.entities.Gender;
 import com.higroup.Buda.entities.MembershipType;
 import com.higroup.Buda.entities.Product;
 import com.higroup.Buda.entities.SellOrder;
 import com.higroup.Buda.entities.SellOrderItem;
-import com.higroup.Buda.entities.Status;
 import com.higroup.Buda.entities.User;
+import com.higroup.Buda.entities.enumeration.AgeGroup;
+import com.higroup.Buda.entities.enumeration.DiscountType;
+import com.higroup.Buda.entities.enumeration.Gender;
+import com.higroup.Buda.entities.enumeration.Status;
 import com.higroup.Buda.repositories.CustomerRepository;
 import com.higroup.Buda.repositories.DiscountRepository;
 import com.higroup.Buda.repositories.MembershipTypeRepository;
@@ -34,6 +35,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
+import net.bytebuddy.asm.Advice.Local;
 
 @Service
 public class SellOrderService {
@@ -86,6 +89,7 @@ public class SellOrderService {
                 customer.setGender(Gender.UNKNOWN);
                 customer.setPhoneNumber(default_phoneNumber);
                 customer.setUserID(userID);
+                customer.setName("UNKNOWN");
                 this.customerRepository.save(customer);
             }
         }
@@ -279,7 +283,9 @@ public class SellOrderService {
     public List<SellOrder> findAllSellOrderByUserIDLastXDays(Long userID, Long X)
     {
         presentChecker.checkIdAndRepository(userID, this.userRepository);
-        return this.sellOrderRepository.findAllSellOrderByUserIDLastXDays(userID, X);
+        ZonedDateTime xDaysAgo = ZonedDateTime.now().minusDays(X);
+        xDaysAgo.withSecond(0).withHour(0).withMinute(0);
+        return this.sellOrderRepository.findAllSellOrderByUserIDLastXDays(userID, xDaysAgo);
     }
 
     public List<SellOrder> findAllIIncompletedSellOrderByUserID(Long userID)

@@ -16,10 +16,19 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Entity
 @Table(name = "Membership_type", indexes = {
     @Index(columnList = "user_id", name = "membership_type_user_id_index")
 })
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class MembershipType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,96 +44,6 @@ public class MembershipType {
     @JsonBackReference
     private Discount discount;
     private Double minimumSpend;
-
-    public MembershipType() {
-    }
-
-    public MembershipType(Long membershipTypeID, String membershipName, String description, Long userID, Discount discount, Double minimumSpend) {
-        this.membershipTypeID = membershipTypeID;
-        this.membershipName = membershipName;
-        this.description = description;
-        this.userID = userID;
-        this.discount = discount;
-        this.minimumSpend = minimumSpend;
-    }
-
-    public Long getMembershipTypeID() {
-        return this.membershipTypeID;
-    }
-
-    public void setMembershipTypeID(Long membershipTypeID) {
-        this.membershipTypeID = membershipTypeID;
-    }
-
-    public String getMembershipName() {
-        return this.membershipName;
-    }
-
-    public void setMembershipName(String membershipName) {
-        this.membershipName = membershipName;
-    }
-
-    public String getDescription() {
-        return this.description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Long getUserID() {
-        return this.userID;
-    }
-
-    public void setUserID(Long userID) {
-        this.userID = userID;
-    }
-
-    public Discount getDiscount() {
-        return this.discount;
-    }
-
-    public void setDiscount(Discount discount) {
-        this.discount = discount;
-    }
-
-    public Double getMinimumSpend() {
-        return this.minimumSpend;
-    }
-
-    public void setMinimumSpend(Double minimumSpend) {
-        this.minimumSpend = minimumSpend;
-    }
-
-    public MembershipType membershipTypeID(Long membershipTypeID) {
-        setMembershipTypeID(membershipTypeID);
-        return this;
-    }
-
-    public MembershipType membershipName(String membershipName) {
-        setMembershipName(membershipName);
-        return this;
-    }
-
-    public MembershipType description(String description) {
-        setDescription(description);
-        return this;
-    }
-
-    public MembershipType userID(Long userID) {
-        setUserID(userID);
-        return this;
-    }
-
-    public MembershipType discount(Discount discount) {
-        setDiscount(discount);
-        return this;
-    }
-
-    public MembershipType minimumSpend(Double minimumSpend) {
-        setMinimumSpend(minimumSpend);
-        return this;
-    }
 
     @Override
     public boolean equals(Object o) {

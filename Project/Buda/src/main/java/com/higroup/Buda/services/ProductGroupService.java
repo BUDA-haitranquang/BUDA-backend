@@ -2,6 +2,8 @@ package com.higroup.Buda.services;
 
 import java.util.*;
 
+import javax.transaction.Transactional;
+
 import com.higroup.Buda.entities.Product;
 import com.higroup.Buda.entities.ProductGroup;
 import com.higroup.Buda.entities.ProductLeftLog;
@@ -33,6 +35,7 @@ public class ProductGroupService {
     {
         return this.productGroupRepository.findAllByUserID(userID);
     }
+    @Transactional
     public ProductGroup createProductGroup(Long userID, ProductGroup productGroup)
     {
         Optional<User> user = this.userRepository.findUserByUserID(userID);
@@ -44,6 +47,7 @@ public class ProductGroupService {
         this.productGroupRepository.save(productGroup);
         return productGroup;
     }
+    @Transactional
     public void deleteProductGroup(Long userID, Long productGroupID)
     {
         Optional<User> user = this.userRepository.findUserByUserID(userID);
@@ -58,6 +62,7 @@ public class ProductGroupService {
         }
         this.productGroupRepository.delete(productGroup.get());
     }
+    @Transactional
     public ProductGroup addProductToProductGroup(Long userID, Long productGroupID, Long productID)
     {
         Optional<User> user = this.userRepository.findUserByUserID(userID);
@@ -90,7 +95,7 @@ public class ProductGroupService {
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product group not found");
     }
-
+    @Transactional
     public void removeProductFromProductGroup(Long userID, Long productGroupID, Long productID)
     {
         Optional<User> user = this.userRepository.findUserByUserID(userID);
@@ -119,5 +124,10 @@ public class ProductGroupService {
             }
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
+    }
+
+    public List<Product> findAllProductByProductGroup(Long userID, Long productGroupID)
+    {
+        return this.productRepository.findAllProductByProductGroup(productGroupID, userID);
     }
 }

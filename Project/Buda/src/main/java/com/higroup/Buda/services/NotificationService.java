@@ -2,6 +2,8 @@ package com.higroup.Buda.services;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import com.higroup.Buda.entities.Notification;
 import com.higroup.Buda.entities.User;
 import com.higroup.Buda.repositories.NotificationRepository;
@@ -20,8 +22,10 @@ public class NotificationService {
         this.notificationRepository = notificationRepository;
         this.userRepository = userRepository;
     }
+    @Transactional
     public List<Notification> findAllPendingNotificationByUserID(Long userID)
     {
+        this.notificationRepository.seenAllNotification(userID);
         return this.notificationRepository.findPendingNotificationByUserID(userID);
     }
     public List<Notification> findAllNotificationByUserID(Long userID)

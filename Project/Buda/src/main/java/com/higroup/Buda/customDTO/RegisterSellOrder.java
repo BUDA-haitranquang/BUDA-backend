@@ -7,7 +7,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import com.higroup.Buda.entities.Customer;
-import com.higroup.Buda.entities.Status;
+import com.higroup.Buda.entities.enumeration.Status;
 
 public class RegisterSellOrder {
     private Customer customer;

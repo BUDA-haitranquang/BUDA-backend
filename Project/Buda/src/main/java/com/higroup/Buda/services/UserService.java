@@ -1,5 +1,6 @@
 package com.higroup.Buda.services;
 
+import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -7,19 +8,20 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.higroup.Buda.BeanUtils.NullAwareBeanUtilsBean;
 import com.higroup.Buda.customDTO.GoogleUserPayload;
+import com.higroup.Buda.customDTO.UserRegister;
 import com.higroup.Buda.entities.MailConfirmationToken;
 import com.higroup.Buda.entities.Picture;
 import com.higroup.Buda.entities.User;
-
-
-import com.higroup.Buda.entities.UserRegister;
+import com.higroup.Buda.entities.enumeration.PlanType;
 import com.higroup.Buda.jwt.JwtResponse;
 import com.higroup.Buda.repositories.PictureRepository;
 import com.higroup.Buda.repositories.RoleRepository;
 import com.higroup.Buda.repositories.UserRepository;
 import com.higroup.Buda.util.JwtTokenUtil;
 
+import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -55,6 +57,7 @@ public class UserService implements UserDetailsService{
     @Autowired
     private RoleRepository roleRepository;
 
+    @Transactional
     public void registerNewUser(UserRegister userRegister) {
         String email = userRegister.getEmail();
         String phoneNumber = userRegister.getPhoneNumber();
@@ -96,12 +99,14 @@ public class UserService implements UserDetailsService{
         User newUser = new User(userRegister);
         newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
         newUser.addRole(roleRepository.findRoleByName("USER").get());
+        newUser.setPlanType(PlanType.BASIC);
         userRepository.save(newUser);
 
         mailConfirmationTokenService.sendMailConfirmationTo(email);
     }
 
     // dang ky user moi
+    @Transactional
     public JwtResponse registerNewUser(User newUser) {
         String email = newUser.getEmail();
         String phoneNumber = newUser.getPhoneNumber();
@@ -141,6 +146,7 @@ public class UserService implements UserDetailsService{
         // System.out.println(newUser.getPassword());
         newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
         newUser.addRole(roleRepository.findRoleByName("USER").get());
+        newUser.setPlanType(PlanType.BASIC);
         userRepository.save(newUser);
         UserDetails userDetails = loadUserByUsername(newUser.getEmail());
         String jwtAccessToken = jwtTokenUtil.generateAccessToken(userDetails, newUser.getUserID());
@@ -177,6 +183,7 @@ public class UserService implements UserDetailsService{
         userRepository.enableUserByEmail(email);
     }
 
+    @Transactional
     public JwtResponse processGoogleUserPostLogin(GoogleUserPayload googleUserPayload)
     {
         String email = googleUserPayload.getEmail();
@@ -203,6 +210,7 @@ public class UserService implements UserDetailsService{
             newUser.addRole(roleRepository.findRoleByName("USER").get());
             UUID uuid = UUID.randomUUID();
             newUser.setPassword(bCryptPasswordEncoder.encode(uuid.toString()));
+            newUser.setPlanType(PlanType.BASIC);
             userRepository.save(newUser);
             UserDetails userDetails = loadUserByUsername(email);
             String jwtAccessToken = jwtTokenUtil.generateAccessToken(userDetails, newUser.getUserID());
@@ -324,8 +332,28 @@ public class UserService implements UserDetailsService{
     }
 
     @Transactional
-    public void updateUser(User user) {
-
+    public User updateUser(Long userID, User user) throws IllegalAccessException, InvocationTargetException {
+        Optional<User> oldUserOptional = this.userRepository.findUserByUserID(userID);
+        if (oldUserOptional.isPresent())
+        {
+            User oldUser = oldUserOptional.get();
+            //These information can't be changed by update info request
+            user.setUserID(userID);
+            user.setEnabled(oldUser.getEnabled());
+            user.setPlanType(oldUser.getPlanType());
+            user.setEmail(oldUser.getEmail());
+            user.setUserName(oldUser.getUserName());
+            user.setPhoneNumber(oldUser.getPhoneNumber());
+            user.setPassword(oldUser.getPassword());
+            BeanUtilsBean notNull = new NullAwareBeanUtilsBean();
+            notNull.copyProperties(oldUser, user);
+            oldUser.setEnabled(Boolean.TRUE);
+            this.userRepository.save(oldUser);
+            return oldUser;
+        }
+        else {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found");
+        }
     }
 
     @Override

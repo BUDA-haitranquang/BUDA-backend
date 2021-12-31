@@ -1,5 +1,6 @@
 package com.higroup.Buda.services;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -7,15 +8,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-
+import com.higroup.Buda.BeanUtils.NullAwareBeanUtilsBean;
 import com.higroup.Buda.entities.Staff;
-import com.higroup.Buda.entities.StaffPosition;
+import com.higroup.Buda.entities.enumeration.StaffPosition;
 import com.higroup.Buda.jwt.JwtResponse;
 import com.higroup.Buda.repositories.RoleRepository;
 import com.higroup.Buda.repositories.StaffRepository;
 import com.higroup.Buda.util.Config;
 import com.higroup.Buda.util.JwtTokenUtil;
 
+import org.apache.commons.beanutils.BeanUtilsBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -161,6 +163,25 @@ public class StaffService implements UserDetailsService{
         staffRepository.save(thisstaff);
         return thisstaff;
     }   
+
+    @Transactional
+    public Staff updateStaff(Long userID, Long staffID, Staff staff) throws IllegalAccessException, InvocationTargetException
+    {
+        Optional<Staff> oldStaffOptional = this.staffRepository.findStaffByStaffID(staffID);
+        if ((oldStaffOptional.isPresent()) && (oldStaffOptional.get().getUserID().equals(userID)))
+        {
+            Staff oldStaff = oldStaffOptional.get();
+            //These information can't be changed by update info request
+            staff.setUserID(userID);
+            staff.setAccount(oldStaff.getAccount());
+            staff.setStaffUUID(oldStaff.getStaffUUID());
+            BeanUtilsBean notNull = new NullAwareBeanUtilsBean();
+            notNull.copyProperties(oldStaff, staff);
+            this.staffRepository.save(oldStaff);
+            return oldStaff;
+        }
+        else throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Staff not found");
+    }
 
     public Staff findStaffByID(Long staffID, Long userID){
         if(staffID == null){

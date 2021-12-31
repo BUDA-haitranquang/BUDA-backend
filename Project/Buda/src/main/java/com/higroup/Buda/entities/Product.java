@@ -9,6 +9,9 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,7 +25,7 @@ import java.util.Set;
     @Index(columnList = "user_id", name = "product_user_id_index"),
 //    @Index(columnList = "product_group_id", name = "product_product_group_id_index")
 })
-@JsonIgnoreProperties({"sellOrderItems", "productLeftLogs", "productGroups"})
+@JsonIgnoreProperties({"sellOrderItems", "productLeftLogs", "productGroups", "productComboItems"})
 @Getter
 @Setter
 @AllArgsConstructor
@@ -74,9 +77,17 @@ public class Product {
     @JoinTable(
             name = "product_group_component",
             joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_group_id"))
+            inverseJoinColumns = @JoinColumn(name = "product_group_id"),
+            indexes = {
+                @Index(name = "product_group_component_product_id", columnList = "product_id"),
+                @Index(name = "product_group_component_product_group_id", columnList = "product_group_id")
+            })
     @JsonBackReference
     private Set<ProductGroup> productGroups;
+
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private Set<ProductComboItem> productComboItems;
 
     @Override
     public boolean equals(Object o) {

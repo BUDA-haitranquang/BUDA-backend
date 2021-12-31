@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.higroup.Buda.customDTO.RegisterSellOrder;
 import com.higroup.Buda.entities.SellOrder;
-import com.higroup.Buda.entities.Status;
+import com.higroup.Buda.entities.enumeration.Status;
 import com.higroup.Buda.services.SellOrderService;
 import com.higroup.Buda.util.JwtTokenUtil;
 import com.higroup.Buda.util.Checker.RequestUtil;

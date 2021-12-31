@@ -38,7 +38,7 @@ public class ProductGroupController {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.productGroupService.createProductGroup(userID, productGroup));
     }
-    @PostMapping(path = "/remove/{productGroupID}")
+    @DeleteMapping(path = "/remove/{productGroupID}")
     public ResponseEntity<?> deleteProductGroup(HttpServletRequest httpServletRequest, @PathVariable Long productGroupID)
     {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
@@ -57,5 +57,11 @@ public class ProductGroupController {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         this.productGroupService.removeProductFromProductGroup(userID, productGroupID, productID);
         return ResponseEntity.ok().body("Remove Product from Product Group successfully");
+    }
+    @GetMapping(path = "/{productGroupID}/products")
+    public ResponseEntity<?> findAllProductByProductGroup(HttpServletRequest httpServletRequest, @PathVariable Long productGroupID)
+    {
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
+        return ResponseEntity.ok().body(this.productGroupService.findAllProductByProductGroup(userID, productGroupID));
     }
 }

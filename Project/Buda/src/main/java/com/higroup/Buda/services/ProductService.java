@@ -4,6 +4,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.time.ZonedDateTime;
 import java.util.*;
 
+import javax.transaction.Transactional;
+
 import com.higroup.Buda.BeanUtils.NullAwareBeanUtilsBean;
 import com.higroup.Buda.entities.*;
 import com.higroup.Buda.repositories.ProductGroupRepository;
@@ -35,7 +37,7 @@ public class ProductService {
     }
     @Autowired
     private PresentChecker presentChecker;
-
+    @Transactional
     public Product registerNewProduct(Long userID, Product product)
     {
         Optional<User> user = this.userRepository.findUserByUserID(userID);
@@ -55,6 +57,7 @@ public class ProductService {
     {
         return this.productRepository.findAllHiddenProductByUserID(userID);
     }
+    @Transactional
     public Product hideProductByProductID(Long userID, Long productID)
     {
         Product product = this.productRepository.findProductByProductID(productID);
@@ -100,6 +103,7 @@ public class ProductService {
         }
         return Collections.emptySet();
     }
+    @Transactional
     public Product updateProductbyProductID(Product product, Product newproduct){
         if(newproduct == null){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "product not exists");
@@ -133,6 +137,7 @@ public class ProductService {
         productRepository.save(product);
         return product;
     }
+    @Transactional
     public Product editProductQuantity(Long userID, Long productID, Integer amountLeftChange, String message)
     {
         Optional<User> user = this.userRepository.findUserByUserID(userID);
@@ -161,7 +166,7 @@ public class ProductService {
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
     }
-    public List<Ingredient> findAlertAmountProduct(Long userID){
+    public List<Product> findAlertAmountProduct(Long userID){
         Optional<User> user = this.userRepository.findUserByUserID(userID);
         if (user.isEmpty())
         {
@@ -169,6 +174,7 @@ public class ProductService {
         }
         return this.productRepository.findAlertAmountProduct(userID);
     }
+    @Transactional
     public Product editProduct(Long userID, Long productID, Product product) throws InvocationTargetException, IllegalAccessException {
 
         Optional<User> user = this.userRepository.findUserByUserID(userID);
@@ -186,5 +192,10 @@ public class ProductService {
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
 
+    }
+
+    public List<ProductGroup> findAllProductGroupByProduct(Long userID, Long productID)
+    {
+        return this.productGroupRepository.findAllByProduct(userID, productID);
     }
 }

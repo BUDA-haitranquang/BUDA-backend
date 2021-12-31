@@ -72,8 +72,8 @@ public class StaffNoteController {
         return ResponseEntity.ok("delete successfully!!");
     }
 
-    @PutMapping(path = "noteID/{staffNoteID}")
-    public ResponseEntity<?> updateStaffByID(HttpServletRequest request, @RequestBody StaffNote newstaffNote, @PathVariable Long staffNoteID) throws IllegalAccessException, InvocationTargetException
+    @PutMapping(path = "update/{staffNoteID}")
+    public ResponseEntity<?> updateStaffNoteByID(HttpServletRequest request, @RequestBody StaffNote newstaffNote, @PathVariable Long staffNoteID) throws IllegalAccessException, InvocationTargetException
     {
         Long jwtUserID = requestUtil.getUserIDFromUserToken(request);  
         return ResponseEntity.ok(staffNoteService.updateStaffNotebyID(staffNoteID, newstaffNote, jwtUserID));

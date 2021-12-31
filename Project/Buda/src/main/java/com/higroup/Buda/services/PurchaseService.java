@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 @Service
 public class PurchaseService {
     private final PurchaseRepository purchaseRepository;
@@ -30,6 +32,7 @@ public class PurchaseService {
         this.purchaseRepository = purchaseRepository;
         this.userRepository = userRepository;
     }
+    @Transactional
     public Purchase createNewPurchase(Long userID, Purchase purchase)
     {
         Optional<User> user = this.userRepository.findUserByUserID(userID);

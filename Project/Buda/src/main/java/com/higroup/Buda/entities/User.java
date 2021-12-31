@@ -26,6 +26,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.higroup.Buda.customDTO.UserRegister;
 import com.higroup.Buda.entities.enumeration.PlanType;
 import com.higroup.Buda.util.SHA_256_Encode;
 
@@ -83,7 +84,10 @@ public class User{
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinTable(name = "user_role",
                joinColumns = @JoinColumn(name = "user_id"), 
-               inverseJoinColumns = @JoinColumn(name = "role_id")
+               inverseJoinColumns = @JoinColumn(name = "role_id"),
+               indexes = {
+                   @Index(name = "user_role_user_id", columnList = "user_id")
+               }
     )
     private Collection<Role> roles = new ArrayList<Role>();
 

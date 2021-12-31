@@ -2,6 +2,11 @@ package com.higroup.Buda.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.time.ZonedDateTime;
 import java.util.Objects;
@@ -11,6 +16,10 @@ import java.util.Objects;
     @Index(columnList = "buy_order_id", name = "buy_order_item_buy_order_id_index"),
     @Index(columnList = "user_id", name = "buy_order_item_user_id_index")
 })
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class BuyOrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,124 +40,6 @@ public class BuyOrderItem {
     private Long userID;
     @Column(name = "supplier_id")
     private Long supplierID;
-
-    public BuyOrderItem() {
-    }
-
-    public BuyOrderItem(Long buyOrderItemID, BuyOrder buyOrder, Ingredient ingredient, Integer quantity, Double pricePerUnit, ZonedDateTime creationTime, Long userID, Long supplierID) {
-        this.buyOrderItemID = buyOrderItemID;
-        this.buyOrder = buyOrder;
-        this.ingredient = ingredient;
-        this.quantity = quantity;
-        this.pricePerUnit = pricePerUnit;
-        this.creationTime = creationTime;
-        this.userID = userID;
-        this.supplierID = supplierID;
-    }
-
-    public Long getBuyOrderItemID() {
-        return this.buyOrderItemID;
-    }
-
-    public void setBuyOrderItemID(Long buyOrderItemID) {
-        this.buyOrderItemID = buyOrderItemID;
-    }
-
-    public BuyOrder getBuyOrder() {
-        return this.buyOrder;
-    }
-
-    public void setBuyOrder(BuyOrder buyOrder) {
-        this.buyOrder = buyOrder;
-    }
-
-    public Ingredient getIngredient() {
-        return this.ingredient;
-    }
-
-    public void setIngredient(Ingredient ingredient) {
-        this.ingredient = ingredient;
-    }
-
-    public Integer getQuantity() {
-        return this.quantity;
-    }
-
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
-    }
-
-    public Double getPricePerUnit() {
-        return this.pricePerUnit;
-    }
-
-    public void setPricePerUnit(Double pricePerUnit) {
-        this.pricePerUnit = pricePerUnit;
-    }
-
-    public ZonedDateTime getCreationTime() {
-        return this.creationTime;
-    }
-
-    public void setCreationTime(ZonedDateTime creationTime) {
-        this.creationTime = creationTime;
-    }
-
-    public Long getUserID() {
-        return this.userID;
-    }
-
-    public void setUserID(Long userID) {
-        this.userID = userID;
-    }
-
-    public Long getSupplierID() {
-        return this.supplierID;
-    }
-
-    public void setSupplierID(Long supplierID) {
-        this.supplierID = supplierID;
-    }
-
-    public BuyOrderItem buyOrderItemID(Long buyOrderItemID) {
-        setBuyOrderItemID(buyOrderItemID);
-        return this;
-    }
-
-    public BuyOrderItem buyOrder(BuyOrder buyOrder) {
-        setBuyOrder(buyOrder);
-        return this;
-    }
-
-    public BuyOrderItem ingredient(Ingredient ingredient) {
-        setIngredient(ingredient);
-        return this;
-    }
-
-    public BuyOrderItem quantity(Integer quantity) {
-        setQuantity(quantity);
-        return this;
-    }
-
-    public BuyOrderItem pricePerUnit(Double pricePerUnit) {
-        setPricePerUnit(pricePerUnit);
-        return this;
-    }
-
-    public BuyOrderItem creationTime(ZonedDateTime creationTime) {
-        setCreationTime(creationTime);
-        return this;
-    }
-
-    public BuyOrderItem userID(Long userID) {
-        setUserID(userID);
-        return this;
-    }
-
-    public BuyOrderItem supplierID(Long supplierID) {
-        setSupplierID(supplierID);
-        return this;
-    }
 
     @Override
     public boolean equals(Object o) {

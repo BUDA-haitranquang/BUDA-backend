@@ -73,7 +73,7 @@ public class ProductController {
         this.productService.deleteProductByProductID(userID, productID);
         return ResponseEntity.ok().body("Delete successfully, this action can not be reversed");
     }
-    @PostMapping(path = "/edit/quantity/{productID}")
+    @PutMapping(path = "/edit/quantity/{productID}")
     public ResponseEntity<?> editProductQuantity(HttpServletRequest httpServletRequest, @PathVariable Long productID, @RequestBody QuantityLog quantityLog)
     {
         Integer amountLeftChange = quantityLog.getAmountLeftChange();
@@ -91,5 +91,11 @@ public class ProductController {
     public ResponseEntity<?> editProduct(HttpServletRequest httpServletRequest, @PathVariable Long productID, @RequestBody Product product) throws InvocationTargetException, IllegalAccessException {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.productService.editProduct(userID, productID, product));
+    }
+    @GetMapping(path = "{productID}/groups")
+    public ResponseEntity<?> findAllProductGroupByProductID(HttpServletRequest httpServletRequest, @PathVariable Long productID)
+    {
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
+        return ResponseEntity.ok().body(this.productService.findAllProductGroupByProduct(userID, productID));
     }
 }

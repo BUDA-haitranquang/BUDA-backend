@@ -19,6 +19,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.higroup.Buda.entities.enumeration.StaffPosition;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -60,7 +62,10 @@ public class Staff {
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinTable(name = "staff_role",
                joinColumns = @JoinColumn(name = "staff_id"), 
-               inverseJoinColumns = @JoinColumn(name = "role_id")
+               inverseJoinColumns = @JoinColumn(name = "role_id"),
+               indexes = {
+                   @Index(name = "staff_role_staff_id", columnList = "staff_id")
+               }
     )
     private Collection<Role> roles = new ArrayList<Role>();
 
