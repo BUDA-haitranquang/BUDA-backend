@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -42,6 +43,7 @@ public class WarrantyOrder {
     private SellOrder sellOrder;
     @ManyToOne(optional = true)
     @JoinColumn(name = "customer_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Customer customer;
     private String customerMessage;
     private ZonedDateTime creationTime;
@@ -85,11 +87,8 @@ public class WarrantyOrder {
         } else if (!userID.equals(other.userID))
             return false;
         if (warrantyOrderID == null) {
-            if (other.warrantyOrderID != null)
-                return false;
-        } else if (!warrantyOrderID.equals(other.warrantyOrderID))
-            return false;
-        return true;
+            return other.warrantyOrderID == null;
+        } else return warrantyOrderID.equals(other.warrantyOrderID);
     }
     @Override
     public String toString() {

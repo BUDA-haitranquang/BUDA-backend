@@ -1,6 +1,7 @@
 package com.higroup.Buda.customDTO;
-
+import javax.validation.constraints.NotNull;
 public class QuantityLog {
+    @NotNull
     private Integer amountLeftChange;
     private String message;
 

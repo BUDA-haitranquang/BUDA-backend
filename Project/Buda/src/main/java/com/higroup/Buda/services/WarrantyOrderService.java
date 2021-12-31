@@ -4,6 +4,7 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import com.higroup.Buda.customDTO.RegisterWarrantyOrder;
 import com.higroup.Buda.entities.Customer;
 import com.higroup.Buda.entities.Product;
 import com.higroup.Buda.entities.SellOrder;
@@ -60,22 +61,31 @@ public class WarrantyOrderService {
         }
         else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Customer not found");
     }
-    public WarrantyOrder registerNewWarrantyOrder(Long userID, Long productID, Long sellOrderID, Long customerID)
+    public WarrantyOrder registerNewWarrantyOrder(Long userID, RegisterWarrantyOrder registerWarrantyOrder)
     {
+        Long productID = registerWarrantyOrder.getProductID();
+        Long sellOrderID = registerWarrantyOrder.getSellOrderID();
+        Long customerID = registerWarrantyOrder.getCustomerID();
         Product product = this.productRepository.findProductByProductID(productID);
         if (!product.getUserID().equals(userID))
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
+
         Optional<SellOrder> sellOrder = this.sellOrderRepository.findSellOrderBySellOrderID(sellOrderID);
         if (!((sellOrder.isPresent()) && (sellOrder.get().getUserID().equals(userID))))
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Sell order not found");
+
         Optional<Customer> customer = this.customerRepository.findCustomerByCustomerID(customerID);
         if (!((customer.isPresent()) && (customer.get().getUserID().equals(userID))))
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Customer not found");
         WarrantyOrder warrantyOrder = new WarrantyOrder();
+        warrantyOrder.setUserID(userID);
         warrantyOrder.setProduct(product);
         warrantyOrder.setSellOrder(sellOrder.get());
         warrantyOrder.setCustomer(customer.get());
         warrantyOrder.setCreationTime(ZonedDateTime.now());
+        if (registerWarrantyOrder.getCustomerID() != null)
+            warrantyOrder.setCustomerMessage(registerWarrantyOrder.getCustomerMessage());
+        this.warrantyOrderRepository.save(warrantyOrder);
         return warrantyOrder;
     }
 }

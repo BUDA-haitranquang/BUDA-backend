@@ -29,15 +29,16 @@ public class SellOrderItemService {
     private final SellOrderItemRepository sellOrderItemRepository;
     private final SellOrderRepository sellOrderRepository;
     private final ProductRepository productRepository;
+    private final PresentChecker presentChecker;
     @Autowired
-    public SellOrderItemService(SellOrderItemRepository sellOrderItemRepository, SellOrderRepository sellOrderRepository, ProductRepository productRepository)
+    public SellOrderItemService(SellOrderItemRepository sellOrderItemRepository, SellOrderRepository sellOrderRepository, ProductRepository productRepository, PresentChecker presentChecker)
     {
         this.productRepository = productRepository;
         this.sellOrderRepository = sellOrderRepository;
         this.sellOrderItemRepository = sellOrderItemRepository;
+        this.presentChecker = presentChecker;
     }
-    @Autowired
-    private PresentChecker presentChecker;
+
     public List<SellOrderItem> findAllBySellOrderID(Long userID, Long sellOrderID)
     {
         Optional<SellOrder> sellOrder = this.sellOrderRepository.findSellOrderBySellOrderID(sellOrderID);
@@ -66,7 +67,7 @@ public class SellOrderItemService {
 
     @Transactional
     public SellOrderItem updateSellOrderItem(Long userID, Long sellOrderItemID,  SellOrderItem sellOrderItem) throws IllegalAccessException, InvocationTargetException{
-        presentChecker.checkIdAndRepository(sellOrderItem.getSellOrderItemID(), this.sellOrderItemRepository);
+//        presentChecker.checkIdAndRepository(sellOrderItem.getSellOrderItemID(), this.sellOrderItemRepository);
         
         SellOrderItem exist_sellOrderItem = this.sellOrderItemRepository.findById(sellOrderItemID).get();
         if(exist_sellOrderItem == null)
