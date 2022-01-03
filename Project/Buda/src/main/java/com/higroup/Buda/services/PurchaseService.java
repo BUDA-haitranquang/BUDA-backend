@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 @Service
 public class PurchaseService {
     private final PurchaseRepository purchaseRepository;
@@ -30,6 +32,7 @@ public class PurchaseService {
         this.purchaseRepository = purchaseRepository;
         this.userRepository = userRepository;
     }
+    @Transactional
     public Purchase createNewPurchase(Long userID, Purchase purchase)
     {
         Optional<User> user = this.userRepository.findUserByUserID(userID);
@@ -39,6 +42,9 @@ public class PurchaseService {
         }
         purchase.setCreationTime(ZonedDateTime.now());
         purchase.setUser(userRepository.findUserByUserID(userID).get());
+        // THANH TOAN XONG
+        user.get().setPlanType(purchase.getPlan().getPlanType());
+        this.userRepository.save(user.get());
         this.purchaseRepository.save(purchase);
         return purchase;
     }

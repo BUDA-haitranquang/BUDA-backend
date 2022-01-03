@@ -4,6 +4,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.time.ZonedDateTime;
 import java.util.*;
 
+import javax.transaction.Transactional;
+
 import com.higroup.Buda.BeanUtils.NullAwareBeanUtilsBean;
 import com.higroup.Buda.entities.*;
 import com.higroup.Buda.repositories.ProductGroupRepository;
@@ -35,17 +37,17 @@ public class ProductService {
     }
     @Autowired
     private PresentChecker presentChecker;
-
-    public ResponseEntity<?> registerNewProduct(Long userID, Product product)
+    @Transactional
+    public Product registerNewProduct(Long userID, Product product)
     {
         Optional<User> user = this.userRepository.findUserByUserID(userID);
         if (user.isEmpty())
         {
-            return ResponseEntity.badRequest().body("User not found");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
         }
         product.setUserID(userID);
         this.productRepository.save(product);
-        return ResponseEntity.ok().body(product);
+        return product;
     }
     public List<Product> findAllProductByUserID(Long userID)
     {
@@ -55,6 +57,7 @@ public class ProductService {
     {
         return this.productRepository.findAllHiddenProductByUserID(userID);
     }
+    @Transactional
     public Product hideProductByProductID(Long userID, Long productID)
     {
         Product product = this.productRepository.findProductByProductID(productID);
@@ -91,15 +94,16 @@ public class ProductService {
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product does not exists");
     }
-    public List<Product> findAllProductByProductGroupID(Long userID, Long productGroupID)
+    public Set<Product> findAllProductByProductGroupID(Long userID, Long productGroupID)
     {
         Optional<ProductGroup> productGroup = this.productGroupRepository.findProductGroupByProductGroupID(productGroupID);
         if ((productGroup.isPresent()) && (Objects.equals(productGroup.get().getUserID(), userID)))
         {
-            return this.productRepository.findAllProductByProductGroup(productGroup.get());
+            return productGroup.get().getProducts();
         }
-        return Collections.emptyList();
+        return Collections.emptySet();
     }
+    @Transactional
     public Product updateProductbyProductID(Product product, Product newproduct){
         if(newproduct == null){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "product not exists");
@@ -133,6 +137,7 @@ public class ProductService {
         productRepository.save(product);
         return product;
     }
+    @Transactional
     public Product editProductQuantity(Long userID, Long productID, Integer amountLeftChange, String message)
     {
         Optional<User> user = this.userRepository.findUserByUserID(userID);
@@ -161,14 +166,15 @@ public class ProductService {
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
     }
-    public List<Ingredient> findAlertAmountProduct(Long userID){
+    public List<Product> findAlertAmountProduct(Long userID){
         Optional<User> user = this.userRepository.findUserByUserID(userID);
         if (user.isEmpty())
         {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
         }
-        return this.productRepository.findAlertAmountProduct();
+        return this.productRepository.findAlertAmountProduct(userID);
     }
+    @Transactional
     public Product editProduct(Long userID, Long productID, Product product) throws InvocationTargetException, IllegalAccessException {
 
         Optional<User> user = this.userRepository.findUserByUserID(userID);
@@ -177,7 +183,7 @@ public class ProductService {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
         }
         Product dest_product = this.productRepository.findProductByProductID(productID);
-        if (Objects.equals(dest_product.getUserID(), userID))
+        if (dest_product.getUserID().equals(userID))
         {
             BeanUtilsBean notNull = new NullAwareBeanUtilsBean();
             notNull.copyProperties(dest_product, product);
@@ -186,5 +192,10 @@ public class ProductService {
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
 
+    }
+
+    public List<ProductGroup> findAllProductGroupByProduct(Long userID, Long productID)
+    {
+        return this.productGroupRepository.findAllByProduct(userID, productID);
     }
 }

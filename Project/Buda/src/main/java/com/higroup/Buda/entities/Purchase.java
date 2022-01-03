@@ -17,14 +17,24 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.higroup.Buda.entities.enumeration.Status;
 
 import org.checkerframework.checker.units.qual.C;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "Purchase", indexes = {
     @Index(columnList = "user_id", name = "purchase_user_id_index"),
     @Index(columnList = "plan_id", name = "purchase_plan_id_index")
 })
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Purchase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,130 +58,6 @@ public class Purchase {
     @Enumerated(EnumType.STRING)
     private Status status = Status.PREPARING;
     
-
-    public Purchase(Long purchaseID, User user, Plan plan, ZonedDateTime creationTime, ZonedDateTime expiryDate,
-            String message, Double totalCost, Status status) {
-        this.purchaseID = purchaseID;
-        this.user = user;
-        this.plan = plan;
-        this.creationTime = creationTime;
-        this.expiryDate = expiryDate;
-        this.message = message;
-        this.totalCost = totalCost;
-        this.status = status;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-
-    public Purchase() {
-    }
-
-    public Purchase(Long purchaseID, User user, Plan plan, ZonedDateTime creationTime, ZonedDateTime expiryDate, String message, Double totalCost) {
-        this.purchaseID = purchaseID;
-        this.user = user;
-        this.plan = plan;
-        this.creationTime = creationTime;
-        this.expiryDate = expiryDate;
-        this.message = message;
-        this.totalCost = totalCost;
-    }
-
-    public Long getPurchaseID() {
-        return this.purchaseID;
-    }
-
-    public void setPurchaseID(Long purchaseID) {
-        this.purchaseID = purchaseID;
-    }
-
-    public User getUser() {
-        return this.user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Plan getPlan() {
-        return this.plan;
-    }
-
-    public void setPlan(Plan plan) {
-        this.plan = plan;
-    }
-
-    public ZonedDateTime getCreationTime() {
-        return this.creationTime;
-    }
-
-    public void setCreationTime(ZonedDateTime creationTime) {
-        this.creationTime = creationTime;
-    }
-
-    public ZonedDateTime getExpiryDate() {
-        return this.expiryDate;
-    }
-
-    public void setExpiryDate(ZonedDateTime expiryDate) {
-        this.expiryDate = expiryDate;
-    }
-
-    public String getMessage() {
-        return this.message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public Double getTotalCost() {
-        return this.totalCost;
-    }
-
-    public void setTotalCost(Double totalCost) {
-        this.totalCost = totalCost;
-    }
-
-    public Purchase purchaseID(Long purchaseID) {
-        setPurchaseID(purchaseID);
-        return this;
-    }
-
-    public Purchase user(User user) {
-        setUser(user);
-        return this;
-    }
-
-    public Purchase plan(Plan plan) {
-        setPlan(plan);
-        return this;
-    }
-
-    public Purchase creationTime(ZonedDateTime creationTime) {
-        setCreationTime(creationTime);
-        return this;
-    }
-
-    public Purchase expiryDate(ZonedDateTime expiryDate) {
-        setExpiryDate(expiryDate);
-        return this;
-    }
-
-    public Purchase message(String message) {
-        setMessage(message);
-        return this;
-    }
-
-    public Purchase totalCost(Double totalCost) {
-        setTotalCost(totalCost);
-        return this;
-    }
 
     @Override
     public boolean equals(Object o) {

@@ -4,7 +4,9 @@ import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.higroup.Buda.entities.Plan;
 import com.higroup.Buda.entities.User;
+import com.higroup.Buda.entities.enumeration.PlanType;
 import com.higroup.Buda.repositories.UserRepository;
 import com.higroup.Buda.util.JwtTokenUtil;
 
@@ -29,12 +31,57 @@ public class RequestUtil {
         Long userID = this.jwtTokenUtil.getUserIDFromToken(token);
         String email = this.jwtTokenUtil.getUsernameFromToken(token);
         Optional<User> user = this.userRepository.findUserByUserID(userID);
-        if ((userID!=null) && (user.isPresent()) && (user.get().getEmail().equals(email)) && (jwtTokenUtil.isValid(token)))
+        if ((userID!=null) && (user.isPresent()) 
+        && (user.get().getEmail().equals(email)) 
+        && (jwtTokenUtil.isValid(token)))
         {
-            return userID;
+            if (jwtTokenUtil.getTokenTypeFromToken(token).equals("Access"))
+            {
+                return userID;
+            }
+            else throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid access token");
         }
         throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized");
     }
+    public Long getProUserIDFromUserToken(HttpServletRequest httpServletRequest)
+    {
+        final String token = httpServletRequest.getHeader("Authorization").substring(7);
+        Long userID = this.jwtTokenUtil.getUserIDFromToken(token);
+        String email = this.jwtTokenUtil.getUsernameFromToken(token);
+        Optional<User> user = this.userRepository.findUserByUserID(userID);
+        if ((userID!=null) && (user.isPresent()) 
+        && (user.get().getEmail().equals(email))
+        && ((user.get().getPlanType().equals(PlanType.PRO)) || (user.get().getPlanType().equals(PlanType.PREMIUM))) 
+        && (jwtTokenUtil.isValid(token)))
+        {
+            if (jwtTokenUtil.getTokenTypeFromToken(token).equals("Access"))
+            {
+                return userID;
+            }
+            else throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid access token");
+        }
+        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized");
+    }
+    public Long getPremiumUserIDFromUserToken(HttpServletRequest httpServletRequest)
+    {
+        final String token = httpServletRequest.getHeader("Authorization").substring(7);
+        Long userID = this.jwtTokenUtil.getUserIDFromToken(token);
+        String email = this.jwtTokenUtil.getUsernameFromToken(token);
+        Optional<User> user = this.userRepository.findUserByUserID(userID);
+        if ((userID!=null) && (user.isPresent()) 
+        && (user.get().getEmail().equals(email)) 
+        && (user.get().getPlanType().equals(PlanType.PREMIUM))
+        && (jwtTokenUtil.isValid(token)))
+        {
+            if (jwtTokenUtil.getTokenTypeFromToken(token).equals("Access"))
+            {
+                return userID;
+            }
+            else throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid access token");
+        }
+        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized");
+    }
+    
     // public Long getStaffID(HttpServletRequest httpServletRequest)
     // {
     //     final String token = httpServletRequest.getHeader("Authorization").substring(7);

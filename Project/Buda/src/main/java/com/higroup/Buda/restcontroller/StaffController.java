@@ -1,13 +1,14 @@
 package com.higroup.Buda.restcontroller;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import com.higroup.Buda.customDTO.StaffLogin;
 import com.higroup.Buda.entities.Staff;
-import com.higroup.Buda.entities.StaffLogin;
-import com.higroup.Buda.entities.StaffPosition;
+import com.higroup.Buda.entities.enumeration.StaffPosition;
 import com.higroup.Buda.services.StaffService;
 import com.higroup.Buda.util.Checker.RequestUtil;
 
@@ -50,8 +51,7 @@ public class StaffController {
     public ResponseEntity<?> registerNewStaff(HttpServletRequest request, @RequestBody Staff newStaff)
     {
         Long userID = requestUtil.getUserIDFromUserToken(request);
-        newStaff.setUserID(userID);
-        return this.staffService.registerNewStaff(newStaff);
+        return this.staffService.registerNewStaff(newStaff, userID);
     }
 
     @GetMapping(path = "/userID/all")
@@ -62,68 +62,29 @@ public class StaffController {
     }
 
     @DeleteMapping(path = "/id/{staffID}")
-    public ResponseEntity<?> deleteStaffByStaffID(HttpServletRequest request, @PathVariable("staffID") Long id){
+    public ResponseEntity<?> deleteStaffByStaffID(HttpServletRequest request, @PathVariable("staffID") Long staffID){
         Long userID = requestUtil.getUserIDFromUserToken(request);
-        Staff staff = staffService.findStaffByID(id);
-        if(staff.getUserID() == userID){
-            staffService.deleteStaffByID(id);
-            return ResponseEntity.ok().body("Delete Succesfully");
-        }
-        else{
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No authorized");
-        }
+        staffService.deleteStaffByID(staffID, userID);
+        return ResponseEntity.ok().body("Delete Succesfully");
     }
 
     @PutMapping(path = "id/{staffID}")
-    public ResponseEntity<?> updateStaffByID(HttpServletRequest request, @PathVariable("staffID") Long id,
+    public ResponseEntity<?> updateStaffByID(HttpServletRequest request, @PathVariable("staffID") Long staffID,
             @RequestParam(required = false) String name, @RequestParam(required = false) String address,
             @RequestParam(required = false) String phoneNumber, @RequestParam(required = false) StaffPosition staffPosition,
             @RequestParam(required = false) String staffUUID, @RequestParam(required = false) String password, 
             @RequestParam(required = false) Double salary, @RequestParam(required = false) String account) 
     {
         Long userID = requestUtil.getUserIDFromUserToken(request);
-        Staff staff = staffService.findStaffByID(id);
-        if(staff == null){
-            return ResponseEntity.badRequest().body("Staff ID not exist: " + String.valueOf(id));
-        }
-        if(staff.getUserID() != userID){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No authorized");
-        }
-
-        if(name == null){
-            System.out.println("Name null");
-            name = staff.getName();
-        }
-        if(address == null){
-            System.out.println("Address null");
-            address = staff.getAddress();
-        }
-        if(phoneNumber == null){
-            System.out.println("Phone null");
-            phoneNumber = staff.getPhoneNumber();
-        }
-        if(staffPosition == null){
-            System.out.println("staff position null");
-            staffPosition = staff.getStaffPosition();
-        }
-        if(staffUUID == null){
-            System.out.println("staffUUID null");
-            staffUUID = staff.getStaffUUID();
-        }
-        if(password == null){
-            System.out.println("password null");
-            password = staff.getPassword();
-        }
-        if(account == null){
-            System.out.println("account null");
-            account = staff.getAccount();
-        }
-        if(salary == null){
-            System.out.println("salary null");
-            salary = staff.getSalary();
-        }
         return ResponseEntity.ok(
-            staffService.updateStaffByID(id, name, phoneNumber, password, address, salary, staffUUID, account, staffPosition)
+            staffService.updateStaffByID(staffID, userID, name, phoneNumber, password, address, salary, staffUUID, account, staffPosition)
         );
+    }
+
+    @PutMapping(path = "/update/{staffID}")
+    public ResponseEntity<?> updateStaff(HttpServletRequest httpServletRequest, @RequestBody Staff staff, @PathVariable("staffID") Long staffID) throws IllegalAccessException, InvocationTargetException
+    {
+        Long userID = requestUtil.getUserIDFromUserToken(httpServletRequest);
+        return ResponseEntity.ok().body(this.staffService.updateStaff(userID, staffID, staff));
     }
 }

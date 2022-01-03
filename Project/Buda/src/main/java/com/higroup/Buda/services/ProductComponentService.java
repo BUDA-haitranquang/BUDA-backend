@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 @Service
 public class ProductComponentService {
     private final ProductComponentRepository productComponentRepository;
@@ -68,10 +70,15 @@ public class ProductComponentService {
         }
         else return Collections.emptyList();
     }
+    @Transactional
     public ProductComponent addIngredientToProduct(Long userID, Long productID, Long ingredientID)
     {
         Optional<Ingredient> ingredient = this.ingredientRepository.findIngredientByIngredientID(ingredientID);
         Product product = this.productRepository.findProductByProductID(productID);
+        if (!product.getUserID().equals(userID))
+        {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
+        }
         if ((ingredient.isPresent()) && (Objects.equals(ingredient.get().getUserID(), userID)))
         {
             ProductComponent productComponent = new ProductComponent();
@@ -85,6 +92,7 @@ public class ProductComponentService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Ingredient not found");
         }
     }
+    @Transactional
     public void removeIngredientFromProduct(Long userID, Long productID, Long ingredientID)
     {
         Optional<ProductComponent> productComponent = this.productComponentRepository.findByProductAndIngredient(productID, ingredientID);

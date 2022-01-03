@@ -1,5 +1,7 @@
 package com.higroup.Buda.util.Checker;
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -13,9 +15,11 @@ public class PresentChecker {
     }
 
 
-    public void checkIdAndRepository(Long id, JpaRepository repository) {
+    public Object checkIdAndRepository(Long id, JpaRepository<?,Long> repository) {
         checkId(id);
-        if (!repository.findById(id).isPresent())
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found");
+        Optional<?> object = repository.findById(id);
+        if (!object.isPresent())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, repository.getClass().getName() + " Not found");
+        return object.get();
     }
 }

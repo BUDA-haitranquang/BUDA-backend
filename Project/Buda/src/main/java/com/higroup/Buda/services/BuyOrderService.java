@@ -4,8 +4,8 @@ import com.higroup.Buda.entities.Supplier;
 import com.higroup.Buda.customDTO.ExpenseByTimeStatistics;
 import com.higroup.Buda.entities.BuyOrder;
 import com.higroup.Buda.entities.User;
+import com.higroup.Buda.entities.enumeration.Status;
 import com.higroup.Buda.entities.BuyOrderItem;
-import com.higroup.Buda.entities.Status;
 import com.higroup.Buda.repositories.SupplierRepository;
 import com.higroup.Buda.repositories.BuyOrderItemRepository;
 import com.higroup.Buda.repositories.BuyOrderRepository;
@@ -95,7 +95,7 @@ public class BuyOrderService {
     {
         Optional<BuyOrder> buyOrder = this.buyOrderRepository.findBuyOrderByBuyOrderID(buyOrderID);
         
-        if ((buyOrder.isPresent()) && (userID == buyOrder.get().getUserID()))
+        if ((buyOrder.isPresent()) && (userID.equals(buyOrder.get().getUserID())))
         {
             for (BuyOrderItem buyOrderItem: buyOrder.get().getBuyOrderItems())
             {

@@ -11,11 +11,20 @@ import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Entity
 @Table(name = "Salary_log", indexes = {
     @Index(columnList = "user_id", name = "salary_log_user_id_index"),
     @Index(columnList = "staff_id", name = "salary_log_staff_id_index")
 })
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class SalaryLog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,83 +36,6 @@ public class SalaryLog {
     private ZonedDateTime creationTime;
     @Column(name = "user_id")
     private Long userID;
-
-
-    public SalaryLog() {
-    }
-
-    public SalaryLog(Long salaryLogID, Long staffID, Double salary, ZonedDateTime creationTime, Long userID) {
-        this.salaryLogID = salaryLogID;
-        this.staffID = staffID;
-        this.salary = salary;
-        this.creationTime = creationTime;
-        this.userID = userID;
-    }
-
-    public Long getSalaryLogID() {
-        return this.salaryLogID;
-    }
-
-    public void setSalaryLogID(Long salaryLogID) {
-        this.salaryLogID = salaryLogID;
-    }
-
-    public Long getStaffID() {
-        return this.staffID;
-    }
-
-    public void setStaffID(Long staffID) {
-        this.staffID = staffID;
-    }
-
-    public Double getSalary() {
-        return this.salary;
-    }
-
-    public void setSalary(Double salary) {
-        this.salary = salary;
-    }
-
-    public ZonedDateTime getCreationTime() {
-        return this.creationTime;
-    }
-
-    public void setCreationTime(ZonedDateTime creationTime) {
-        this.creationTime = creationTime;
-    }
-
-    public Long getUserID() {
-        return this.userID;
-    }
-
-    public void setUserID(Long userID) {
-        this.userID = userID;
-    }
-
-    public SalaryLog salaryLogID(Long salaryLogID) {
-        setSalaryLogID(salaryLogID);
-        return this;
-    }
-
-    public SalaryLog staffID(Long staffID) {
-        setStaffID(staffID);
-        return this;
-    }
-
-    public SalaryLog salary(Double salary) {
-        setSalary(salary);
-        return this;
-    }
-
-    public SalaryLog creationTime(ZonedDateTime creationTime) {
-        setCreationTime(creationTime);
-        return this;
-    }
-
-    public SalaryLog userID(Long userID) {
-        setUserID(userID);
-        return this;
-    }
 
     @Override
     public boolean equals(Object o) {

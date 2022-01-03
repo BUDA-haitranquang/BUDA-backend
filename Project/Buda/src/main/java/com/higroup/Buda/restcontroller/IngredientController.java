@@ -1,22 +1,15 @@
 package com.higroup.Buda.restcontroller;
 
-import com.higroup.Buda.entities.Ingredient;
+import com.higroup.Buda.customDTO.QuantityLog;
 import com.higroup.Buda.entities.Ingredient;
 import com.higroup.Buda.services.IngredientService;
-import com.higroup.Buda.util.JwtTokenUtil;
 import com.higroup.Buda.util.Checker.RequestUtil;
-
-import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-
 import javax.servlet.http.HttpServletRequest;
-
 import java.lang.reflect.InvocationTargetException;
-import java.util.Objects;
 
 @RestController
 @RequestMapping("api/ingredient")
@@ -35,15 +28,7 @@ public class IngredientController {
     {   
 
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
-        Ingredient ingredient = this.ingredientService.findIngredientByIngredientID(ingredientID);
-        // if userid match ingredientID
-        if(Objects.equals(userID, ingredient.getUserID())){
-            return ResponseEntity.ok().body(ingredient);
-        }
-        // if not return unauthorized
-        else{
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
-        }
+        return ResponseEntity.ok().body(this.ingredientService.findIngredientByIngredientID(userID, ingredientID));
     }
     
     // @GetMapping(path = "/{ingredientName}")
@@ -76,9 +61,11 @@ public class IngredientController {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.ingredientService.hideIngredientByIngredientID(userID, ingredientID));
     }
-    @PostMapping(path = "/edit/quantity/{ingredientID}")
-    public ResponseEntity<?> editIngredientQuantity(HttpServletRequest httpServletRequest, @PathVariable Long ingredientID, @RequestBody Integer amountLeftChange, @RequestBody String message)
+    @PutMapping(path = "/edit/quantity/{ingredientID}")
+    public ResponseEntity<?> editIngredientQuantity(HttpServletRequest httpServletRequest, @PathVariable Long ingredientID, @RequestBody QuantityLog quantityLog)
     {
+        Integer amountLeftChange = quantityLog.getAmountLeftChange();
+        String message = quantityLog.getMessage();
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.ingredientService.editIngredientQuantity(userID, ingredientID, amountLeftChange, message));
     }
@@ -88,7 +75,7 @@ public class IngredientController {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.ingredientService.findAlertAmountIngredient(userID));
     }
-    @PostMapping(path = "/edit/{ingredientID}")
+    @PutMapping(path = "/edit/{ingredientID}")
     public ResponseEntity<?> editIngredient(HttpServletRequest httpServletRequest, @PathVariable Long ingredientID, @RequestBody Ingredient ingredient) throws InvocationTargetException, IllegalAccessException {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.ingredientService.editIngredient(userID, ingredientID, ingredient));

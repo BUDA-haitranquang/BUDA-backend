@@ -18,12 +18,21 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import org.checkerframework.checker.units.qual.C;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Entity
 @Table(name = "Product_left_log", indexes = {
     @Index(columnList = "user_id", name = "product_left_log_user_id_index"),
     @Index(columnList = "product_id", name = "product_left_log_product_id_index"),
     @Index(columnList = "staff_id", name = "product_left_log_staff_id_index")
 })
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProductLeftLog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,110 +50,6 @@ public class ProductLeftLog {
     private String message;
     @Column(name = "user_id")
     private Long userID;
-
-    public ProductLeftLog() {
-    }
-
-    public ProductLeftLog(Long productLeftLogID, Product product, Integer amountLeftChange, ZonedDateTime creationTime, Long staffID, String message, Long userID) {
-        this.productLeftLogID = productLeftLogID;
-        this.product = product;
-        this.amountLeftChange = amountLeftChange;
-        this.creationTime = creationTime;
-        this.staffID = staffID;
-        this.message = message;
-        this.userID = userID;
-    }
-
-    public Long getProductLeftLogID() {
-        return this.productLeftLogID;
-    }
-
-    public void setProductLeftLogID(Long productLeftLogID) {
-        this.productLeftLogID = productLeftLogID;
-    }
-
-    public Product getProduct() {
-        return this.product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-
-    public Integer getAmountLeftChange() {
-        return this.amountLeftChange;
-    }
-
-    public void setAmountLeftChange(Integer amountLeftChange) {
-        this.amountLeftChange = amountLeftChange;
-    }
-
-    public ZonedDateTime getCreationTime() {
-        return this.creationTime;
-    }
-
-    public void setCreationTime(ZonedDateTime creationTime) {
-        this.creationTime = creationTime;
-    }
-
-    public Long getStaffID() {
-        return this.staffID;
-    }
-
-    public void setStaffID(Long staffID) {
-        this.staffID = staffID;
-    }
-
-    public String getMessage() {
-        return this.message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public Long getUserID() {
-        return this.userID;
-    }
-
-    public void setUserID(Long userID) {
-        this.userID = userID;
-    }
-
-    public ProductLeftLog productLeftLogID(Long productLeftLogID) {
-        setProductLeftLogID(productLeftLogID);
-        return this;
-    }
-
-    public ProductLeftLog product(Product product) {
-        setProduct(product);
-        return this;
-    }
-
-    public ProductLeftLog amountLeftChange(Integer amountLeftChange) {
-        setAmountLeftChange(amountLeftChange);
-        return this;
-    }
-
-    public ProductLeftLog creationTime(ZonedDateTime creationTime) {
-        setCreationTime(creationTime);
-        return this;
-    }
-
-    public ProductLeftLog staffID(Long staffID) {
-        setStaffID(staffID);
-        return this;
-    }
-
-    public ProductLeftLog message(String message) {
-        setMessage(message);
-        return this;
-    }
-
-    public ProductLeftLog userID(Long userID) {
-        setUserID(userID);
-        return this;
-    }
 
     @Override
     public boolean equals(Object o) {

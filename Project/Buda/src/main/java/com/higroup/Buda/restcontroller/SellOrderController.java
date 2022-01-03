@@ -4,8 +4,9 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.higroup.Buda.customDTO.RegisterSellOrder;
 import com.higroup.Buda.entities.SellOrder;
-import com.higroup.Buda.entities.Status;
+import com.higroup.Buda.entities.enumeration.Status;
 import com.higroup.Buda.services.SellOrderService;
 import com.higroup.Buda.util.JwtTokenUtil;
 import com.higroup.Buda.util.Checker.RequestUtil;
@@ -38,10 +39,10 @@ public class SellOrderController {
         this.sellOrderService = sellOrderService;
     }
     @PostMapping(path = "/new")
-    public ResponseEntity<?> registerNewSellOrder(HttpServletRequest httpServletRequest, @RequestBody SellOrder sellOrder)
+    public ResponseEntity<?> registerNewSellOrder(HttpServletRequest httpServletRequest, @RequestBody RegisterSellOrder registerSellOrder)
     {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
-        return ResponseEntity.ok().body(this.sellOrderService.registerNewSellOrder(userID, sellOrder));
+        return ResponseEntity.ok().body(this.sellOrderService.registerSellOrder(userID, registerSellOrder));
     }
     @GetMapping(path = "/all")
     public ResponseEntity<?> findAllSellOrderByCurrentUser(HttpServletRequest httpServletRequest)

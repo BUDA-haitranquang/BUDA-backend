@@ -32,13 +32,13 @@ public class ProductGroupController {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return this.productGroupService.findAllByUserID(userID);
     }
-    @PostMapping(path = "/add")
+    @PostMapping(path = "/new")
     public ResponseEntity<?> createProductGroup(HttpServletRequest httpServletRequest, @RequestBody ProductGroup productGroup)
     {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.productGroupService.createProductGroup(userID, productGroup));
     }
-    @PostMapping(path = "/remove/{productGroupID}")
+    @DeleteMapping(path = "/remove/{productGroupID}")
     public ResponseEntity<?> deleteProductGroup(HttpServletRequest httpServletRequest, @PathVariable Long productGroupID)
     {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
@@ -49,8 +49,7 @@ public class ProductGroupController {
     public ResponseEntity<?> addProductToProductGroup(HttpServletRequest httpServletRequest, @PathVariable Long productGroupID, @PathVariable Long productID)
     {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
-        this.productGroupService.addProductToProductGroup(userID, productGroupID, productID);
-        return ResponseEntity.ok().body("Add Product to Product Group successfully");
+        return ResponseEntity.ok().body(this.productGroupService.addProductToProductGroup(userID, productGroupID, productID));
     }
     @PostMapping(path = "/{productGroupID}/remove/{productID}")
     public ResponseEntity<?> removeProductFromProductGroup(HttpServletRequest httpServletRequest, @PathVariable Long productGroupID, @PathVariable Long productID)
@@ -58,5 +57,11 @@ public class ProductGroupController {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         this.productGroupService.removeProductFromProductGroup(userID, productGroupID, productID);
         return ResponseEntity.ok().body("Remove Product from Product Group successfully");
+    }
+    @GetMapping(path = "/{productGroupID}/products")
+    public ResponseEntity<?> findAllProductByProductGroup(HttpServletRequest httpServletRequest, @PathVariable Long productGroupID)
+    {
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
+        return ResponseEntity.ok().body(this.productGroupService.findAllProductByProductGroup(userID, productGroupID));
     }
 }

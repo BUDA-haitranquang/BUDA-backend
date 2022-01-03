@@ -1,5 +1,6 @@
 package com.higroup.Buda.services;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -7,15 +8,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-
+import com.higroup.Buda.BeanUtils.NullAwareBeanUtilsBean;
 import com.higroup.Buda.entities.Staff;
-import com.higroup.Buda.entities.StaffPosition;
+import com.higroup.Buda.entities.enumeration.StaffPosition;
 import com.higroup.Buda.jwt.JwtResponse;
 import com.higroup.Buda.repositories.RoleRepository;
 import com.higroup.Buda.repositories.StaffRepository;
 import com.higroup.Buda.util.Config;
 import com.higroup.Buda.util.JwtTokenUtil;
 
+import org.apache.commons.beanutils.BeanUtilsBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -62,9 +64,10 @@ public class StaffService implements UserDetailsService{
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "false");
     }
     @Transactional
-    public ResponseEntity<?> registerNewStaff(Staff newStaff)
+    public ResponseEntity<?> registerNewStaff(Staff newStaff, Long userID)
     {
-        Optional<Staff> staff = this.staffRepository.findStaffByStaffUUID(newStaff.getLoginID());
+        newStaff.setUserID(userID);
+        Optional<Staff> staff = this.staffRepository.findStaffByStaffUUID(newStaff.getStaffUUID());
         if (staff.isPresent())
         {
             return ResponseEntity.badRequest().body("Exists UUID, try again");
@@ -110,40 +113,88 @@ public class StaffService implements UserDetailsService{
     }
 
     @Transactional
-    public void deleteStaffByID(Long id){
-        if(id == null){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid id");
-        }
-        staffRepository.deleteById(id);
+    public void deleteStaffByID(Long staffID, Long userID){
+        // check valid staffid, userid
+        this.findStaffByID(staffID, userID);
+        staffRepository.deleteById(staffID);
     }
 
     @Transactional
-    public Staff updateStaffByID(Long id, String Name, String phoneNumber, String password, String address, Double salary, 
+    public Staff updateStaffByID(Long staffID, Long userID, String name, String phoneNumber, String password, String address, Double salary, 
                                  String staffUUID, String account, StaffPosition staffPosition)
     {
-        Staff thisstaff = staffRepository.findStaffByStaffID(id).get();
-        Optional<Staff> staff = staffRepository.findStaffByStaffUUID(staffUUID);
-        if((staffUUID != null) && (staff.isPresent()) && !staff.get().getStaffID().equals(id)){
-            //BAD REQUEST da ton tai email
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "UUID Already used by another staff");
+        if(staffID == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid id");
         }
-        thisstaff.address(address);
-        thisstaff.name(Name);
-        thisstaff.phoneNumber(phoneNumber);
-        thisstaff.password(bCryptPasswordEncoder.encode(password));
-        thisstaff.salary(salary);
-        thisstaff.loginID(staffUUID);
-        thisstaff.setAccount(account);
-        thisstaff.staffPosition(staffPosition);
+        Staff thisstaff = this.findStaffByID(staffID, userID);
+        
+        if(staffUUID != null){
+            Optional<Staff> staff = staffRepository.findStaffByStaffUUID(staffUUID);
+            if(staff.isPresent() && !staff.get().getStaffID().equals(staffID)){
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "UUID Already used by another staff");
+            }
+        }
 
+        if(name != null){
+            thisstaff.setName(name);
+        }
+        if(address != null){
+            thisstaff.setAddress(address);
+        }
+        if(phoneNumber != null){
+            thisstaff.setPhoneNumber(phoneNumber);
+        }
+        if(staffPosition != null){
+            thisstaff.setStaffPosition(staffPosition);
+        }
+        if(staffUUID != null){
+            thisstaff.setStaffUUID(staffUUID);
+        }
+        if(password != null){
+            thisstaff.setPassword(bCryptPasswordEncoder.encode(password));
+        }
+        if(account != null){
+            thisstaff.setAccount(account);
+        }
+        if(salary != null){
+            thisstaff.setSalary(salary);
+        }
+        
         staffRepository.save(thisstaff);
         return thisstaff;
     }   
 
-    public Staff findStaffByID(Long id){
-        Optional<Staff> staff = staffRepository.findStaffByStaffID(id);
-        if(staff.isPresent()) return staff.get();
-        return null;
+    @Transactional
+    public Staff updateStaff(Long userID, Long staffID, Staff staff) throws IllegalAccessException, InvocationTargetException
+    {
+        Optional<Staff> oldStaffOptional = this.staffRepository.findStaffByStaffID(staffID);
+        if ((oldStaffOptional.isPresent()) && (oldStaffOptional.get().getUserID().equals(userID)))
+        {
+            Staff oldStaff = oldStaffOptional.get();
+            //These information can't be changed by update info request
+            staff.setUserID(userID);
+            staff.setAccount(oldStaff.getAccount());
+            staff.setStaffUUID(oldStaff.getStaffUUID());
+            BeanUtilsBean notNull = new NullAwareBeanUtilsBean();
+            notNull.copyProperties(oldStaff, staff);
+            this.staffRepository.save(oldStaff);
+            return oldStaff;
+        }
+        else throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Staff not found");
+    }
+
+    public Staff findStaffByID(Long staffID, Long userID){
+        if(staffID == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid id");
+        }
+        Staff staff = this.staffRepository.findById(staffID).get();
+        if(staff == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "staff not exists");
+        }
+        if(!staff.getUserID().equals(userID)){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "user have no staff");
+        }
+        return staff;
     }
 
 }

@@ -1,6 +1,7 @@
 package com.higroup.Buda.restcontroller;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.security.GeneralSecurityException;
 import java.util.List;
 
@@ -8,9 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import com.higroup.Buda.customDTO.GoogleUserPayload;
+import com.higroup.Buda.customDTO.UserLogin;
+import com.higroup.Buda.customDTO.UserRegister;
 import com.higroup.Buda.entities.User;
-import com.higroup.Buda.entities.UserLogin;
-import com.higroup.Buda.entities.UserRegister;
 import com.higroup.Buda.jwt.JwtSimple;
 import com.higroup.Buda.security.BudaGoogleTokenVerifier;
 import com.higroup.Buda.services.UserService;
@@ -74,16 +75,19 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerNewUser(@Valid @RequestBody UserRegister userRegister) {
+    public void registerNewUser(@Valid @RequestBody UserRegister userRegister) {
+        userService.registerNewUser(userRegister);
+    }
 
-        User user = new User(userRegister);
-        return ResponseEntity.ok().body(userService.registerNewUser(user));
+    @GetMapping("/register/confirm")
+    public ResponseEntity<?> confirmAccountActivationEmail(@RequestParam(name = "token") String token) {
+        return ResponseEntity.ok(userService.confirmAccountActivation(token));
     }
 
     @DeleteMapping(path = "id/{userID}")
     public ResponseEntity<?> deleteUserByID(@PathVariable("userID") Long id, HttpServletRequest request) {
         Long get_userid = requestUtil.getUserIDFromUserToken(request);
-        if(get_userid == id){
+        if(get_userid.equals(id)){
             userService.deleteUserByID(id);
             return ResponseEntity.ok().body("Delete Succesfully");
         }
@@ -97,20 +101,25 @@ public class UserController {
         return ResponseEntity.ok(userService.correctLogin(email, password));
     }
 
+    @PostMapping("/refresh-token")
+    public ResponseEntity<?> generateNewAccessToken(@RequestBody JwtSimple jwtSimple)
+    {
+        String token = jwtSimple.getToken();
+        return ResponseEntity.ok().body(userService.generateNewToken(token));
+    }
+
     @PostMapping("/login/google")
     public ResponseEntity<?> loginWithGoogle(@RequestBody JwtSimple jwtSimple) throws GeneralSecurityException, IOException{
         GoogleUserPayload googleUserPayload = BudaGoogleTokenVerifier.userCustomPayload(jwtSimple.getToken());
         return ResponseEntity.ok().body(this.userService.processGoogleUserPostLogin(googleUserPayload));
     }
 
-    @PutMapping(path = "/id/{userID}")
-    public ResponseEntity<?> updateUserByID(@PathVariable("userID") Long id,
-            @RequestParam(required = false) String userName, @RequestParam(required = false) String email,
-            @RequestParam(required = false) String phoneNumber, @RequestParam(required = false) String firstName,
-            @RequestParam(required = false) String lastName, @RequestParam(required = false) String password) {
-        
+    @PutMapping(path = "/update")
+    public ResponseEntity<?> updateUserByID(HttpServletRequest httpServletRequest,
+            @RequestBody User user) throws IllegalAccessException, InvocationTargetException {
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok(
-            userService.updateUserByID(id, userName, email, phoneNumber, firstName, lastName, password)
+            userService.updateUser(userID, user)
         );
     }
 

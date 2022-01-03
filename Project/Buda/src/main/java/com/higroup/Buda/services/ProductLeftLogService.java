@@ -13,8 +13,10 @@ import com.higroup.Buda.util.Checker.PresentChecker;
 
 import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class ProductLeftLogService {
@@ -32,10 +34,14 @@ public class ProductLeftLogService {
     @Autowired
     private PresentChecker presentChecker;
 
-    public ResponseEntity<?> findProductLeftLogByProductLeftLogID(Long productLeftLogID)
+    public ProductLeftLog findProductLeftLogByProductLeftLogID(Long userID, Long productLeftLogID)
     {
         Optional<ProductLeftLog> productLeftLog = this.productLeftLogRepository.findProductLeftLogByProductLeftLogID(productLeftLogID);
-        return productLeftLog.<ResponseEntity<?>>map(leftLog -> ResponseEntity.ok().body(leftLog)).orElseGet(() -> ResponseEntity.badRequest().body("Not found"));
+        if ((productLeftLog.isPresent()) && (productLeftLog.get().getUserID().equals(userID)))
+        {
+            return productLeftLog.get();
+        }
+        else throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Log not found");
     }
     public ResponseEntity<?> registerNewProductLeftLog(Long userID, ProductLeftLog productLeftLog)
     {
@@ -48,15 +54,13 @@ public class ProductLeftLogService {
         this.productLeftLogRepository.save(productLeftLog);
         return ResponseEntity.ok().body(productLeftLog);
     }
-    public List<ProductLeftLog> findAllProductLeftLogByProduct(Long productID)
+    public List<ProductLeftLog> findAllProductLeftLogByProduct(Long userID, Long productID)
     {
-        presentChecker.checkIdAndRepository(productID, productRepository);
-        Product product = this.productRepository.findProductByProductID(productID);
-        return this.productLeftLogRepository.findAllProductLeftLogByProduct(product);
+        return this.productLeftLogRepository.findAllProductLeftLogByProduct(userID, productID);
     }
-    public List<ProductLeftLog> findAllProductLeftLogByStaffID(Long staffID)
+    public List<ProductLeftLog> findAllProductLeftLogByStaffID(Long userID, Long staffID)
     {
-        return this.productLeftLogRepository.findAllProductLeftLogByStaffID(staffID);
+        return this.productLeftLogRepository.findAllProductLeftLogByStaffID(userID, staffID);
     }
     public List<ProductLeftLog> findAllProductLeftLogByUserID(Long userID)
     {

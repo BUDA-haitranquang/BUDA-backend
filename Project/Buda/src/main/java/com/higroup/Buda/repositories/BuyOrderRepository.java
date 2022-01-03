@@ -5,8 +5,9 @@ import java.util.Optional;
 
 import com.higroup.Buda.customDTO.ExpenseByTimeStatistics;
 import com.higroup.Buda.entities.BuyOrder;
-import com.higroup.Buda.entities.Status;
 import com.higroup.Buda.entities.Supplier;
+import com.higroup.Buda.entities.enumeration.Status;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

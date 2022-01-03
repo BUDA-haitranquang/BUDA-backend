@@ -2,6 +2,8 @@ package com.higroup.Buda.services;
 
 import java.util.*;
 
+import javax.transaction.Transactional;
+
 import com.higroup.Buda.entities.Product;
 import com.higroup.Buda.entities.ProductGroup;
 import com.higroup.Buda.entities.ProductLeftLog;
@@ -33,6 +35,7 @@ public class ProductGroupService {
     {
         return this.productGroupRepository.findAllByUserID(userID);
     }
+    @Transactional
     public ProductGroup createProductGroup(Long userID, ProductGroup productGroup)
     {
         Optional<User> user = this.userRepository.findUserByUserID(userID);
@@ -44,6 +47,7 @@ public class ProductGroupService {
         this.productGroupRepository.save(productGroup);
         return productGroup;
     }
+    @Transactional
     public void deleteProductGroup(Long userID, Long productGroupID)
     {
         Optional<User> user = this.userRepository.findUserByUserID(userID);
@@ -58,6 +62,7 @@ public class ProductGroupService {
         }
         this.productGroupRepository.delete(productGroup.get());
     }
+    @Transactional
     public ProductGroup addProductToProductGroup(Long userID, Long productGroupID, Long productID)
     {
         Optional<User> user = this.userRepository.findUserByUserID(userID);
@@ -68,16 +73,29 @@ public class ProductGroupService {
         Optional<ProductGroup> productGroup = this.productGroupRepository.findProductGroupByProductGroupID(productGroupID);
         if (productGroup.isPresent() && Objects.equals(productGroup.get().getUserID(), userID))
         {
-            Product product = this.productRepository.findProductByProductID(productID);
             Set<Product> products = productGroup.get().getProducts();
+            for (Product product : products) {
+                if (product.getProductID().equals(productID)) {
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Product's already in the group.");
+                }
+            }
+            Product product = this.productRepository.findProductByProductID(productID);
+            if (!product.getUserID().equals(userID))
+            {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
+            }
+            Set<ProductGroup> productGroups = product.getProductGroups();
+            productGroups.add(productGroup.get());
+            product.setProductGroups(productGroups);
             products.add(product);
             productGroup.get().setProducts(products);
+            this.productRepository.save(product);
             this.productGroupRepository.save(productGroup.get());
             return productGroup.get();
         }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product group not found");
     }
-
+    @Transactional
     public void removeProductFromProductGroup(Long userID, Long productGroupID, Long productID)
     {
         Optional<User> user = this.userRepository.findUserByUserID(userID);
@@ -85,20 +103,31 @@ public class ProductGroupService {
         {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
         }
+        Product product = this.productRepository.findProductByProductID(productID);
+        if (!product.getUserID().equals(userID))
+        {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
+        }
         Optional<ProductGroup> productGroup = this.productGroupRepository.findProductGroupByProductGroupID(productGroupID);
         if (productGroup.isPresent() && Objects.equals(productGroup.get().getUserID(), userID))
         {
-            List<Product> products = this.productRepository.findAllProductByProductGroup(productGroup.get());
-            for (Iterator<Product> iter = products.listIterator(); iter.hasNext(); )
+            Set<ProductGroup> productGroups = product.getProductGroups();
+            if (productGroups.removeIf(productGroup1 -> productGroup1.getProductGroupID().equals(productGroupID)))
             {
-                Product product = iter.next();
-                if (product.getProductID().equals(productID))
-                {
-                    iter.remove();
-                    return;
-                }
+                product.setProductGroups(productGroups);
+                this.productRepository.save(product);
+                Set<Product> products = productGroup.get().getProducts();
+                products.removeIf(product1 -> product1.getProductID().equals(productID));
+                productGroup.get().setProducts(products);
+                this.productGroupRepository.save(productGroup.get());
+                return;
             }
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
+    }
+
+    public List<Product> findAllProductByProductGroup(Long userID, Long productGroupID)
+    {
+        return this.productRepository.findAllProductByProductGroup(productGroupID, userID);
     }
 }

@@ -7,10 +7,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import com.higroup.Buda.entities.AgeGroup;
 import com.higroup.Buda.entities.Customer;
-import com.higroup.Buda.entities.Gender;
 import com.higroup.Buda.entities.User;
+import com.higroup.Buda.entities.enumeration.AgeGroup;
+import com.higroup.Buda.entities.enumeration.Gender;
 import com.higroup.Buda.repositories.CustomerRepository;
 import com.higroup.Buda.repositories.UserRepository;
 
@@ -60,7 +60,7 @@ public class CustomerRepositoryTest {
         customer.setGender(Gender.MALE);
         customer.setAgeGroup(AgeGroup.FROM_18_TO_24);
         customer.setName("NguyenHoangVu");
-        customer.setAddress("address");
+        // customer.setAddress("address");
         customer.setPhoneNumber("03671238712");
         customer.setTotalSpend(5612.0);
         customer.setUserID(newUser.getUserID());
@@ -76,7 +76,7 @@ public class CustomerRepositoryTest {
 
     @Test
     public void canFindAllbyCustomerID(){
-        String cusName = customer.getName(), address = customer.getAddress(), phoneNumber = customer.getPhoneNumber();
+        String cusName = customer.getName()/** , address = customer.getAddress()*/, phoneNumber = customer.getPhoneNumber();
         Double totalspend = customer.getTotalSpend();
         Gender gen = customer.getGender();
         AgeGroup age = customer.getAgeGroup();
@@ -88,7 +88,7 @@ public class CustomerRepositoryTest {
         
         if(findCustomer.isPresent()){
             assertEquals(findCustomer.get().getName(), cusName);
-            assertEquals(findCustomer.get().getAddress(), address);
+            // assertEquals(findCustomer.get().getAddress(), address);
             assertEquals(findCustomer.get().getPhoneNumber(), phoneNumber);
             assertEquals(findCustomer.get().getTotalSpend(), totalspend);
             assertEquals(findCustomer.get().getGender(), gen);

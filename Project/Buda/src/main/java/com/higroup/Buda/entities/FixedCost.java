@@ -16,10 +16,19 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Entity
 @Table(name = "Fixed_cost", indexes = {
     @Index(columnList = "user_id", name = "fixed_cost_user_id_index")
 })
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class FixedCost {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,139 +48,6 @@ public class FixedCost {
     @OneToMany(mappedBy = "fixedCost", fetch = FetchType.LAZY)
     @JsonManagedReference(value = "fixed_cost - fixed_cost_bill")
     private Set<FixedCostBill> fixedCostBills;
-
-    public Boolean getVisible() {
-        return visible;
-    }
-
-    public void setVisible(Boolean visible) {
-        this.visible = visible;
-    }
-
-    public FixedCost(Long fixedCostID, String name, String description, Double moneyAmount, Integer period, Long userID,
-            Boolean visible, Set<FixedCostBill> fixedCostBills) {
-        this.fixedCostID = fixedCostID;
-        this.name = name;
-        this.description = description;
-        this.moneyAmount = moneyAmount;
-        this.period = period;
-        this.userID = userID;
-        this.visible = visible;
-        this.fixedCostBills = fixedCostBills;
-    }
-
-    public FixedCost(Long fixedCostID, String name, String description, Double moneyAmount, Integer period, Long userID, Set<FixedCostBill> fixedCostBills) {
-        this.fixedCostID = fixedCostID;
-        this.name = name;
-        this.description = description;
-        this.moneyAmount = moneyAmount;
-        this.period = period;
-        this.userID = userID;
-        this.fixedCostBills = fixedCostBills;
-    }
-
-    public Set<FixedCostBill> getFixedCostBills() {
-        return this.fixedCostBills;
-    }
-
-    public void setFixedCostBills(Set<FixedCostBill> fixedCostBills) {
-        this.fixedCostBills = fixedCostBills;
-    }
-
-    public FixedCost fixedCostBills(Set<FixedCostBill> fixedCostBills) {
-        setFixedCostBills(fixedCostBills);
-        return this;
-    }
-
-    public FixedCost() {
-    }
-
-    public FixedCost(Long fixedCostID, String name, String description, Double moneyAmount, Integer period, Long userID) {
-        this.fixedCostID = fixedCostID;
-        this.name = name;
-        this.description = description;
-        this.moneyAmount = moneyAmount;
-        this.period = period;
-        this.userID = userID;
-    }
-
-    public Long getFixedCostID() {
-        return this.fixedCostID;
-    }
-
-    public void setFixedCostID(Long fixedCostID) {
-        this.fixedCostID = fixedCostID;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return this.description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Double getMoneyAmount() {
-        return this.moneyAmount;
-    }
-
-    public void setMoneyAmount(Double moneyAmount) {
-        this.moneyAmount = moneyAmount;
-    }
-
-    public Integer getPeriod() {
-        return this.period;
-    }
-
-    public void setPeriod(Integer period) {
-        this.period = period;
-    }
-
-    public Long getUserID() {
-        return this.userID;
-    }
-
-    public void setUserID(Long userID) {
-        this.userID = userID;
-    }
-
-    public FixedCost fixedCostID(Long fixedCostID) {
-        setFixedCostID(fixedCostID);
-        return this;
-    }
-
-    public FixedCost name(String name) {
-        setName(name);
-        return this;
-    }
-
-    public FixedCost description(String description) {
-        setDescription(description);
-        return this;
-    }
-
-    public FixedCost moneyAmount(Double moneyAmount) {
-        setMoneyAmount(moneyAmount);
-        return this;
-    }
-
-    public FixedCost period(Integer period) {
-        setPeriod(period);
-        return this;
-    }
-
-    public FixedCost userID(Long userID) {
-        setUserID(userID);
-        return this;
-    }
 
     @Override
     public boolean equals(Object o) {

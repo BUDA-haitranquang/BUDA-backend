@@ -1,6 +1,6 @@
 package com.higroup.Buda.customDTO;
 
-import com.higroup.Buda.entities.Gender;
+import com.higroup.Buda.entities.enumeration.Gender;
 
 public class GenderStatistics {
     private Gender gender;

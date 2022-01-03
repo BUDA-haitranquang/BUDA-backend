@@ -69,7 +69,7 @@ public class SupplierController {
         Long userID = requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.supplierService.updateSupplier(userID, supplier));        
     }
-    @DeleteMapping(path = "/hide/{supplierID}")
+    @GetMapping(path = "/hide/{supplierID}")
     public ResponseEntity<?> hideSupplier(HttpServletRequest httpServletRequest, @PathVariable Long supplierID)
     {
         Long userID = requestUtil.getUserIDFromUserToken(httpServletRequest);

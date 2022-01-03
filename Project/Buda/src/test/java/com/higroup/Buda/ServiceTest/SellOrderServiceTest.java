@@ -6,13 +6,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import com.higroup.Buda.entities.AgeGroup;
 import com.higroup.Buda.entities.Customer;
-import com.higroup.Buda.entities.Gender;
 import com.higroup.Buda.entities.SellOrder;
 import com.higroup.Buda.entities.SellOrderItem;
-import com.higroup.Buda.entities.Status;
 import com.higroup.Buda.entities.User;
+import com.higroup.Buda.entities.enumeration.AgeGroup;
+import com.higroup.Buda.entities.enumeration.Gender;
+import com.higroup.Buda.entities.enumeration.Status;
 import com.higroup.Buda.repositories.CustomerRepository;
 import com.higroup.Buda.repositories.SellOrderItemRepository;
 import com.higroup.Buda.repositories.SellOrderRepository;
@@ -68,7 +68,7 @@ public class SellOrderServiceTest {
 
     @BeforeEach
     public void Setup(){
-        sellOrderService = new SellOrderService(sellOrderRepository, customerRepository, userRepository, sellOrderItemRepository);
+        // sellOrderService = new SellOrderService(sellOrderRepository, customerRepository, userRepository, sellOrderItemRepository);
     }
 
     @BeforeAll

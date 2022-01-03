@@ -1,11 +1,15 @@
 package com.higroup.Buda.services;
 
+import java.lang.reflect.InvocationTargetException;
+import java.time.ZonedDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import com.higroup.Buda.BeanUtils.NullAwareBeanUtilsBean;
+import com.higroup.Buda.customDTO.RegisterSellOrderItem;
 import com.higroup.Buda.entities.Product;
 import com.higroup.Buda.entities.SellOrder;
 import com.higroup.Buda.entities.SellOrderItem;
@@ -14,6 +18,7 @@ import com.higroup.Buda.repositories.SellOrderItemRepository;
 import com.higroup.Buda.repositories.SellOrderRepository;
 import com.higroup.Buda.util.Checker.PresentChecker;
 
+import org.apache.commons.beanutils.BeanUtilsBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -45,19 +50,40 @@ public class SellOrderItemService {
         }
         throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized");
     }
+    // @Transactional
+    // public SellOrderItem updateSellOrderItem(Long userID, SellOrderItem sellOrderItem)
+    // {
+    //     presentChecker.checkIdAndRepository(sellOrderItem.getSellOrderItemID(), this.sellOrderItemRepository);
+    //     if (sellOrderItem.getUserID().equals(userID))
+    //     {
+    //         this.sellOrderItemRepository.save(sellOrderItem);
+    //     }
+    //     else{
+    //         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "UserID does not match");
+    //     }
+    //     return sellOrderItem;
+    // }
+
     @Transactional
-    public SellOrderItem updateSellOrderItem(Long userID, SellOrderItem sellOrderItem)
-    {
-        presentChecker.checkIdAndRepository(sellOrderItem.getSellOrderItemID(), sellOrderItemRepository);
-        if (sellOrderItem.getUserID().equals(userID))
+    public SellOrderItem updateSellOrderItem(Long userID, Long sellOrderItemID,  SellOrderItem sellOrderItem) throws IllegalAccessException, InvocationTargetException{
+        presentChecker.checkIdAndRepository(sellOrderItem.getSellOrderItemID(), this.sellOrderItemRepository);
+        
+        SellOrderItem exist_sellOrderItem = this.sellOrderItemRepository.findById(sellOrderItemID).get();
+        if(exist_sellOrderItem == null)
         {
-            this.sellOrderItemRepository.save(sellOrderItem);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found sell order item with orderitemID");
         }
-        else{
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "UserID does not match");
+            
+        if(!exist_sellOrderItem.getUserID().equals(userID))
+        {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found sell order item with userid");
         }
-        return sellOrderItem;
+        BeanUtilsBean notNull = new NullAwareBeanUtilsBean();
+        notNull.copyProperties(exist_sellOrderItem, sellOrderItem);
+        this.sellOrderItemRepository.save(exist_sellOrderItem);
+        return exist_sellOrderItem;
     }
+
     @Transactional
     public void deleteSellOrderItem(Long userID, Long sellOrderItemID)
     {
@@ -79,4 +105,53 @@ public class SellOrderItemService {
         }
         return Collections.emptyList();
     }
+
+    public SellOrderItem findSellOrderItemByID(Long userID, Long sellOrderItemID){
+        if (this.sellOrderItemRepository.findById(sellOrderItemID).isPresent())
+        {
+            SellOrderItem sellOrderItem = this.sellOrderItemRepository.findById(sellOrderItemID).get();
+            if(sellOrderItem.getUserID().equals(userID)){
+                return sellOrderItem;
+            }
+            if(!sellOrderItem.getUserID().equals(userID)){
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "UserID does not have sellorderItem");
+            }
+        }
+        return null; 
+    }
+    @Transactional
+    public SellOrderItem registerNewSellOrderItem(Long userID, RegisterSellOrderItem registerSellOrderItem){
+        Product product = (Product) this.presentChecker.checkIdAndRepository(registerSellOrderItem.getProductID(), this.productRepository);
+        SellOrder sellOrder = (SellOrder) this.presentChecker.checkIdAndRepository(registerSellOrderItem.getSellOrderID(), this.sellOrderRepository);
+        if(!product.getVisible())
+        {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "product is not visible");
+        }
+        if(sellOrder.checkProductExistInItems(product))
+        {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Product already exits in list items of sell order");
+        }
+        if(product.getAmountLeft() < registerSellOrderItem.getQuantity()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Product doesnt have enough quantity left");
+        }
+
+        SellOrderItem sellOrderItem = new SellOrderItem();
+        sellOrderItem.setSellOrder(sellOrder);
+        sellOrderItem.setProduct(product);
+        sellOrderItem.setQuantity(registerSellOrderItem.getQuantity());
+        sellOrderItem.setPricePerUnit(product.getSellingPrice());
+        sellOrderItem.setCostPerUnit(product.getCostPerUnit());
+        sellOrderItem.setUserID(userID);
+        sellOrderItem.setCreationTime(sellOrder.getCreationTime());
+        Double actualTotalSale = product.getSellingPrice() * registerSellOrderItem.getQuantity();
+        sellOrderItem.setActualTotalSale(actualTotalSale);
+        sellOrderItem.setGender(sellOrder.getGender());
+        sellOrderItem.setAgeGroup(sellOrder.getAgeGroup());
+        this.sellOrderItemRepository.save(sellOrderItem);
+        // add sellorderitem to sellorder
+        sellOrder.getSellOrderItems().add(sellOrderItem);
+        return sellOrderItem;
+    }
 }
+
+

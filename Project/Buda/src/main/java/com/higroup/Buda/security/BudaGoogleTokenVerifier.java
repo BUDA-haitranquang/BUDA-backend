@@ -13,13 +13,18 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
 import com.higroup.Buda.customDTO.GoogleUserPayload;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 public class BudaGoogleTokenVerifier {
+
+    @Value("${google.oauth2}")
+    private static String googleCredentials;
+
     public static GoogleIdTokenVerifier googleIdTokenVerifier = 
     new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), new GsonFactory())
-    .setAudience(Collections.singletonList("1069931989583-9f6bge28vmggapg9ah7bgf14sismu580.apps.googleusercontent.com"))
+    .setAudience(Collections.singletonList(googleCredentials))
     .build();
     public BudaGoogleTokenVerifier()
     {
