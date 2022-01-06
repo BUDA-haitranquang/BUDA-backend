@@ -94,12 +94,12 @@ public class UserController {
         else return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No authorized");
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<?> correctLogin(@RequestBody @Valid UserLogin userLogin) {
-        String email = userLogin.getEmail();
-        String password = userLogin.getPassword();
-        return ResponseEntity.ok(userService.correctLogin(email, password));
-    }
+    // @PostMapping("/login")
+    // public ResponseEntity<?> correctLogin(@RequestBody @Valid UserLogin userLogin) {
+    //     String email = userLogin.getEmail();
+    //     String password = userLogin.getPassword();
+    //     return ResponseEntity.ok(userService.correctLogin(email, password));
+    // }
 
     @PostMapping("/refresh-token")
     public ResponseEntity<?> generateNewAccessToken(@RequestBody JwtSimple jwtSimple)
