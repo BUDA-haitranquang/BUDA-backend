@@ -1,8 +1,7 @@
-package com.higroup.Buda.restcontroller;
+package com.higroup.Buda.api.notification;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.higroup.Buda.services.NotificationService;
 import com.higroup.Buda.util.Checker.RequestUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
