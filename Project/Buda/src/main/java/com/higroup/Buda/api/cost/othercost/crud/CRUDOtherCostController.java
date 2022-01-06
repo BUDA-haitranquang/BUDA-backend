@@ -1,4 +1,4 @@
-package com.higroup.Buda.api.othercost.crud;
+package com.higroup.Buda.api.cost.othercost.crud;
 
 public class CRUDOtherCostController {
     
