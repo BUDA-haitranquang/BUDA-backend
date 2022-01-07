@@ -101,12 +101,12 @@ public class UserController {
     //     return ResponseEntity.ok(userService.correctLogin(email, password));
     // }
 
-    @PostMapping("/refresh-token")
-    public ResponseEntity<?> generateNewAccessToken(@RequestBody JwtSimple jwtSimple)
-    {
-        String token = jwtSimple.getToken();
-        return ResponseEntity.ok().body(userService.generateNewToken(token));
-    }
+    // @PostMapping("/refresh-token")
+    // public ResponseEntity<?> generateNewAccessToken(@RequestBody JwtSimple jwtSimple)
+    // {
+    //     String token = jwtSimple.getToken();
+    //     return ResponseEntity.ok().body(userService.generateNewToken(token));
+    // }
 
     @PostMapping("/login/google")
     public ResponseEntity<?> loginWithGoogle(@RequestBody JwtSimple jwtSimple) throws GeneralSecurityException, IOException{

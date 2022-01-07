@@ -1,37 +1,18 @@
 package com.higroup.Buda.api.user.login;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Optional;
+
 import javax.validation.Valid;
 
 import com.higroup.Buda.customDTO.UserLogin;
+import com.higroup.Buda.entities.User;
 import com.higroup.Buda.jwt.JwtResponse;
 import com.higroup.Buda.repositories.UserRepository;
 import com.higroup.Buda.services.MailConfirmationTokenService;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import java.lang.reflect.InvocationTargetException;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-
-import com.higroup.Buda.BeanUtils.NullAwareBeanUtilsBean;
-import com.higroup.Buda.customDTO.GoogleUserPayload;
-import com.higroup.Buda.customDTO.UserRegister;
-import com.higroup.Buda.entities.MailConfirmationToken;
-import com.higroup.Buda.entities.Picture;
-import com.higroup.Buda.entities.User;
-import com.higroup.Buda.entities.enumeration.PlanType;
-import com.higroup.Buda.jwt.JwtResponse;
-import com.higroup.Buda.repositories.PictureRepository;
-import com.higroup.Buda.repositories.RoleRepository;
-import com.higroup.Buda.repositories.UserRepository;
 import com.higroup.Buda.util.JwtTokenUtil;
 
-import org.apache.commons.beanutils.BeanUtilsBean;
-import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -40,7 +21,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 
