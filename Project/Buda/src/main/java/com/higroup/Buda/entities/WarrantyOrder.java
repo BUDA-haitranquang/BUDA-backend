@@ -47,7 +47,7 @@ public class WarrantyOrder {
     private Customer customer;
     private String customerMessage;
     private ZonedDateTime creationTime;
-    private Status status = Status.RECEIVING;
+//    private Status status = Status.RECEIVING;
    
     @Override
     public int hashCode() {
@@ -55,7 +55,7 @@ public class WarrantyOrder {
         int result = 1;
         result = prime * result + ((creationTime == null) ? 0 : creationTime.hashCode());
         result = prime * result + ((customerMessage == null) ? 0 : customerMessage.hashCode());
-        result = prime * result + ((status == null) ? 0 : status.hashCode());
+//        result = prime * result + ((status == null) ? 0 : status.hashCode());
         result = prime * result + ((userID == null) ? 0 : userID.hashCode());
         result = prime * result + ((warrantyOrderID == null) ? 0 : warrantyOrderID.hashCode());
         return result;
@@ -79,8 +79,8 @@ public class WarrantyOrder {
                 return false;
         } else if (!customerMessage.equals(other.customerMessage))
             return false;
-        if (status != other.status)
-            return false;
+//        if (status != other.status)
+//            return false;
         if (userID == null) {
             if (other.userID != null)
                 return false;
@@ -93,7 +93,8 @@ public class WarrantyOrder {
     @Override
     public String toString() {
         return "WarrantyOrder [creationTime=" + creationTime + ", customerMessage=" + customerMessage + ", status="
-                + status + ", userID=" + userID + ", warrantyOrderID=" + warrantyOrderID + "]";
+//                + status
+                + ", userID=" + userID + ", warrantyOrderID=" + warrantyOrderID + "]";
     }
     
     

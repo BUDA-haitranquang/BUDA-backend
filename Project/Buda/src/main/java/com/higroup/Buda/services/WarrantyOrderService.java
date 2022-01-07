@@ -2,13 +2,12 @@ package com.higroup.Buda.services;
 
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 import com.higroup.Buda.customDTO.RegisterWarrantyOrder;
-import com.higroup.Buda.entities.Customer;
-import com.higroup.Buda.entities.Product;
-import com.higroup.Buda.entities.SellOrder;
-import com.higroup.Buda.entities.WarrantyOrder;
+import com.higroup.Buda.entities.*;
 import com.higroup.Buda.repositories.CustomerRepository;
 import com.higroup.Buda.repositories.ProductRepository;
 import com.higroup.Buda.repositories.SellOrderRepository;
@@ -69,7 +68,6 @@ public class WarrantyOrderService {
         Product product = this.productRepository.findProductByProductID(productID);
         if (!product.getUserID().equals(userID))
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
-
         Optional<SellOrder> sellOrder = this.sellOrderRepository.findSellOrderBySellOrderID(sellOrderID);
         if (!((sellOrder.isPresent()) && (sellOrder.get().getUserID().equals(userID))))
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Sell order not found");
@@ -77,14 +75,38 @@ public class WarrantyOrderService {
         Optional<Customer> customer = this.customerRepository.findCustomerByCustomerID(customerID);
         if (!((customer.isPresent()) && (customer.get().getUserID().equals(userID))))
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Customer not found");
+
+        if (!Objects.equals(customerID, sellOrder.get().getCustomer().getCustomerID()))
+        {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid customer");
+        }
+        Set<SellOrderItem> sellOrderItems = sellOrder.get().getSellOrderItems();
+        boolean ok = false;
+        System.out.println(product);
+        for (SellOrderItem sellOrderItem : sellOrderItems)
+        {
+            System.out.println(sellOrderItem.getProduct());
+            if (sellOrderItem.getProduct().equals(product))
+            {
+                ok = true;
+                break;
+            }
+        }
+        if (!ok)
+        {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found in sell order");
+        }
+        if (ZonedDateTime.now().isAfter(sellOrder.get().getCreationTime().plusDays(product.getWarrantyPeriod())) || product.getWarrantyPeriod() == null)
+        {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Warranty period is over");
+        }
         WarrantyOrder warrantyOrder = new WarrantyOrder();
         warrantyOrder.setUserID(userID);
         warrantyOrder.setProduct(product);
         warrantyOrder.setSellOrder(sellOrder.get());
         warrantyOrder.setCustomer(customer.get());
         warrantyOrder.setCreationTime(ZonedDateTime.now());
-        if (registerWarrantyOrder.getCustomerID() != null)
-            warrantyOrder.setCustomerMessage(registerWarrantyOrder.getCustomerMessage());
+        warrantyOrder.setCustomerMessage(registerWarrantyOrder.getCustomerMessage());
         this.warrantyOrderRepository.save(warrantyOrder);
         return warrantyOrder;
     }

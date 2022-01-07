@@ -74,7 +74,15 @@ public class Customer{
             return false;
         }
         Customer customer = (Customer) o;
-        return Objects.equals(customerID, customer.customerID) && Objects.equals(ageGroup, customer.ageGroup) && Objects.equals(gender, customer.gender) && totalSpend == customer.totalSpend && Objects.equals(membershipID, customer.membershipID) && Objects.equals(name, customer.name) /**&& Objects.equals(address, customer.address)*/ && Objects.equals(phoneNumber, customer.phoneNumber) && Objects.equals(userID, customer.userID);
+        return Objects.equals(customerID, customer.customerID)
+                && Objects.equals(ageGroup, customer.ageGroup)
+                && Objects.equals(gender, customer.gender)
+                && Objects.equals(totalSpend, customer.totalSpend)
+                && Objects.equals(membershipID, customer.membershipID)
+                && Objects.equals(name, customer.name)
+//                && Objects.equals(address, customer.address)
+                && Objects.equals(phoneNumber, customer.phoneNumber)
+                && Objects.equals(userID, customer.userID);
     }
 
     @Override
