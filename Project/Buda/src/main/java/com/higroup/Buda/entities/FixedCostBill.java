@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,6 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.higroup.Buda.entities.enumeration.Status;
 
 import lombok.AllArgsConstructor;
@@ -37,7 +39,7 @@ public class FixedCostBill {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "fixed_cost_bill_id")
     private Long fixedCostBillID;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fixed_Cost_ID", nullable = true)
     @JsonBackReference(value = "fixed_cost - fixed_cost_bill")
     private FixedCost fixedCost;
