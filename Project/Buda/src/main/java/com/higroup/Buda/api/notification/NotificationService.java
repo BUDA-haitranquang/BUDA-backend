@@ -25,11 +25,14 @@ public class NotificationService {
     @Transactional
     public List<Notification> findAllPendingNotificationByUserID(Long userID)
     {
+        List<Notification> result = this.notificationRepository.findPendingNotificationByUserID(userID);
         this.notificationRepository.seenAllNotification(userID);
-        return this.notificationRepository.findPendingNotificationByUserID(userID);
+        return result;
     }
+    @Transactional
     public List<Notification> findAllNotificationByUserID(Long userID)
     {
+        this.notificationRepository.seenAllNotification(userID);
         return this.notificationRepository.findAllNotificationByUserID(userID);
     }
 }
