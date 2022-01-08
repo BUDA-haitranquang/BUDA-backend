@@ -16,6 +16,9 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -47,6 +50,7 @@ public class FixedCost {
     private Boolean visible = Boolean.TRUE;
     @OneToMany(mappedBy = "fixedCost", fetch = FetchType.LAZY)
     @JsonManagedReference(value = "fixed_cost - fixed_cost_bill")
+    @Fetch(FetchMode.SUBSELECT)
     private Set<FixedCostBill> fixedCostBills;
 
     @Override

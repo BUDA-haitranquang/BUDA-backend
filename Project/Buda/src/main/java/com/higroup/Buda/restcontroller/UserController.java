@@ -48,51 +48,51 @@ public class UserController {
     // BEN NAY CAC FUNCTION CHI CO MOT DONG DUY NHAT
     // return this.userService.get(tham so)/update(tham so)/...
 
-    // only admin can use this request
-    @GetMapping
-    public List<User> getUsers() {
-        return userService.getUsers();
-    }
+    // // only admin can use this request
+    // @GetMapping
+    // public List<User> getUsers() {
+    //     return userService.getUsers();
+    // }
 
-    @GetMapping(path = "/id/{id}")
-    public ResponseEntity<?> getUserByID(@PathVariable("id") Long id, HttpServletRequest request) {
-        Long userID = requestUtil.getUserIDFromUserToken(request);
-        if(userID != id){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No authorized");
-        }
-        return ResponseEntity.ok().body(userService.getUserByID(id));
-    }
+    // @GetMapping(path = "/id/{id}")
+    // public ResponseEntity<?> getUserByID(@PathVariable("id") Long id, HttpServletRequest request) {
+    //     Long userID = requestUtil.getUserIDFromUserToken(request);
+    //     if(userID != id){
+    //         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No authorized");
+    //     }
+    //     return ResponseEntity.ok().body(userService.getUserByID(id));
+    // }
     // get current user 
-    @GetMapping(path = "/me")
-    public ResponseEntity<?> getCurrentUser(HttpServletRequest request){
-        Long userID = requestUtil.getUserIDFromUserToken(request);
-        return ResponseEntity.ok().body(userService.getUserByID(userID));
-    }
+    // @GetMapping(path = "/me")
+    // public ResponseEntity<?> getCurrentUser(HttpServletRequest request){
+    //     Long userID = requestUtil.getUserIDFromUserToken(request);
+    //     return ResponseEntity.ok().body(userService.getUserByID(userID));
+    // }
 
     @GetMapping(path = "uuid/{userUUID}")
     public User getUserByUUID(@PathVariable("userUUID") String userUUID) {
         return userService.getUserByUserUUID(userUUID);
     }
 
-    @PostMapping("/register")
-    public void registerNewUser(@Valid @RequestBody UserRegister userRegister) {
-        userService.registerNewUser(userRegister);
-    }
+    // @PostMapping("/register")
+    // public void registerNewUser(@Valid @RequestBody UserRegister userRegister) {
+    //     userService.registerNewUser(userRegister);
+    // }
 
-    @GetMapping("/register/confirm")
-    public ResponseEntity<?> confirmAccountActivationEmail(@RequestParam(name = "token") String token) {
-        return ResponseEntity.ok(userService.confirmAccountActivation(token));
-    }
+    // @GetMapping("/register/confirm")
+    // public ResponseEntity<?> confirmAccountActivationEmail(@RequestParam(name = "token") String token) {
+    //     return ResponseEntity.ok(userService.confirmAccountActivation(token));
+    // }
 
-    @DeleteMapping(path = "id/{userID}")
-    public ResponseEntity<?> deleteUserByID(@PathVariable("userID") Long id, HttpServletRequest request) {
-        Long get_userid = requestUtil.getUserIDFromUserToken(request);
-        if(get_userid.equals(id)){
-            userService.deleteUserByID(id);
-            return ResponseEntity.ok().body("Delete Succesfully");
-        }
-        else return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No authorized");
-    }
+    // @DeleteMapping(path = "id/{userID}")
+    // public ResponseEntity<?> deleteUserByID(@PathVariable("userID") Long id, HttpServletRequest request) {
+    //     Long get_userid = requestUtil.getUserIDFromUserToken(request);
+    //     if(get_userid.equals(id)){
+    //         userService.deleteUserByID(id);
+    //         return ResponseEntity.ok().body("Delete Succesfully");
+    //     }
+    //     else return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No authorized");
+    // }
 
     // @PostMapping("/login")
     // public ResponseEntity<?> correctLogin(@RequestBody @Valid UserLogin userLogin) {

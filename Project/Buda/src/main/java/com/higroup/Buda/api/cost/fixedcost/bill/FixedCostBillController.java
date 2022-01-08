@@ -1,11 +1,10 @@
-package com.higroup.Buda.restcontroller;
+package com.higroup.Buda.api.cost.fixedcost.bill;
 
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import com.higroup.Buda.entities.FixedCostBill;
-import com.higroup.Buda.services.FixedCostBillService;
 import com.higroup.Buda.util.Checker.RequestUtil;
 
 import org.apache.catalina.connector.Response;
@@ -20,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("api/fixed-cost-bill")
+@RequestMapping("api/fixed-cost/bill")
 @CrossOrigin("*")
 public class FixedCostBillController {
     private final FixedCostBillService fixedCostBillService;
