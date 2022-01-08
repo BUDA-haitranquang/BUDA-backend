@@ -2,17 +2,14 @@ package com.higroup.Buda.restcontroller;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.higroup.Buda.customDTO.RegisterWarrantyOrder;
 import com.higroup.Buda.services.WarrantyOrderService;
 import com.higroup.Buda.util.Checker.RequestUtil;
 
 import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin("*")
@@ -43,5 +40,11 @@ public class WarrantyOrderController {
     {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.warrantyOrderService.findAllWarrantyOrderByCustomerID(userID, customerID));
+    }
+    @PostMapping(path = "/new")
+    public ResponseEntity<?> registerNewWarrantyOrder(HttpServletRequest httpServletRequest, @RequestBody RegisterWarrantyOrder registerWarrantyOrder)
+    {
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
+        return ResponseEntity.ok().body(this.warrantyOrderService.registerNewWarrantyOrder(userID, registerWarrantyOrder));
     }
 }

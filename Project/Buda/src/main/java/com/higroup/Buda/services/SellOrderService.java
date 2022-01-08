@@ -117,7 +117,6 @@ public class SellOrderService {
         for(Long productID : registerSellOrder.getProducts().keySet()){
             Integer quantity = registerSellOrder.getProducts().get(productID);
             SellOrderItem sellOrderItem = sellOrderItemService.registerNewSellOrderItem(userID, new RegisterSellOrderItem(productID, sellOrder.getSellOrderID(), quantity));
-            warrantyOrderService.registerNewWarrantyOrder(userID, userID, sellOrder.getSellOrderID(), customer.getCustomerID());
             realCost += sellOrderItem.getActualTotalSale(); 
             productService.editProductQuantity(userID, productID, -quantity, String.format("buy %d products with id: %d", quantity, productID));
         }

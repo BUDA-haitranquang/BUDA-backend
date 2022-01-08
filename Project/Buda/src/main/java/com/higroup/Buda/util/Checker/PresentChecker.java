@@ -18,7 +18,7 @@ public class PresentChecker {
     public Object checkIdAndRepository(Long id, JpaRepository<?,Long> repository) {
         checkId(id);
         Optional<?> object = repository.findById(id);
-        if (!object.isPresent())
+        if (object.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, repository.getClass().getName() + " Not found");
         return object.get();
     }
