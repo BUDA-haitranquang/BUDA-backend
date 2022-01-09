@@ -88,7 +88,7 @@ public class Product {
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     @JsonManagedReference
     private Set<ProductComboItem> productComboItems;
-
+    private Long warrantyPeriod;
     @Override
     public boolean equals(Object o) {
         if (o == this)
@@ -108,32 +108,35 @@ public class Product {
                 && Objects.equals(costPerUnit, product.costPerUnit)
                 && Objects.equals(sellOrderItems, product.sellOrderItems)
                 && Objects.equals(productLeftLogs, product.productLeftLogs)
-                && Objects.equals(productGroups, product.productGroups);
+                && Objects.equals(productGroups, product.productGroups)
+                && Objects.equals(warrantyPeriod, product.warrantyPeriod);
     }
     
     @Override
     public int hashCode() {
 //        return Objects.hash(productID, name, description, userID, pictureID, sellingPrice, alertAmount, amountLeft, costPerUnit, sellOrderItems, productLeftLogs, productGroup);
-        return Objects.hash(productID, name, description, userID, pictureID, sellingPrice, alertAmount, amountLeft, costPerUnit, sellOrderItems);
+        return Objects.hash(productID, name, description, userID, pictureID, sellingPrice, alertAmount, amountLeft, costPerUnit, sellOrderItems, warrantyPeriod);
 
     }
 
     @Override
     public String toString() {
-        return "{" +
-            " productID='" + getProductID() + "'" +
-            ", name='" + getName() + "'" +
-            ", description='" + getDescription() + "'" +
-            ", userID='" + getUserID() + "'" +
-            ", pictureID='" + getPictureID() + "'" +
-            ", sellingPrice='" + getSellingPrice() + "'" +
-            ", alertAmount='" + getAlertAmount() + "'" +
-            ", amountLeft='" + getAmountLeft() + "'" +
-            ", costPerUnit='" + getCostPerUnit() + "'" +
-            ", sellOrderItems='" + getSellOrderItems() + "'" +
-            // ", productLeftLogs='" + getProductLeftLogs() + "'" +
-            // ", productGroup='" + getProductGroup() + "'" +
-            "}";
+        return "Product{" +
+                "productID=" + productID +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", userID=" + userID +
+                ", pictureID=" + pictureID +
+                ", sellingPrice=" + sellingPrice +
+                ", alertAmount=" + alertAmount +
+                ", amountLeft=" + amountLeft +
+                ", costPerUnit=" + costPerUnit +
+//                ", sellOrderItems=" + sellOrderItems +
+//                ", productLeftLogs=" + productLeftLogs +
+//                ", productGroups=" + productGroups +
+//                ", productComboItems=" + productComboItems +
+//                ", warrantyPeriod=" + warrantyPeriod +
+                '}';
     }
-    
+
 }

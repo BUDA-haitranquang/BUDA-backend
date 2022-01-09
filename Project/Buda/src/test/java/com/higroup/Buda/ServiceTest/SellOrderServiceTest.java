@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import com.higroup.Buda.api.customer.crud.CRUDCustomerService;
 import com.higroup.Buda.entities.Customer;
 import com.higroup.Buda.entities.SellOrder;
 import com.higroup.Buda.entities.SellOrderItem;
@@ -17,7 +18,6 @@ import com.higroup.Buda.repositories.CustomerRepository;
 import com.higroup.Buda.repositories.SellOrderItemRepository;
 import com.higroup.Buda.repositories.SellOrderRepository;
 import com.higroup.Buda.repositories.UserRepository;
-import com.higroup.Buda.services.CustomerService;
 import com.higroup.Buda.services.SellOrderItemService;
 import com.higroup.Buda.services.SellOrderService;
 import com.higroup.Buda.services.UserService;

@@ -13,8 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.higroup.Buda.entities.enumeration.Status;
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -44,10 +43,11 @@ public class WarrantyOrder {
     private SellOrder sellOrder;
     @ManyToOne(optional = true)
     @JoinColumn(name = "customer_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Customer customer;
     private String customerMessage;
     private ZonedDateTime creationTime;
-    private Status status = Status.RECEIVING;
+//    private Status status = Status.RECEIVING;
    
     @Override
     public int hashCode() {
@@ -55,7 +55,7 @@ public class WarrantyOrder {
         int result = 1;
         result = prime * result + ((creationTime == null) ? 0 : creationTime.hashCode());
         result = prime * result + ((customerMessage == null) ? 0 : customerMessage.hashCode());
-        result = prime * result + ((status == null) ? 0 : status.hashCode());
+//        result = prime * result + ((status == null) ? 0 : status.hashCode());
         result = prime * result + ((userID == null) ? 0 : userID.hashCode());
         result = prime * result + ((warrantyOrderID == null) ? 0 : warrantyOrderID.hashCode());
         return result;
@@ -79,24 +79,22 @@ public class WarrantyOrder {
                 return false;
         } else if (!customerMessage.equals(other.customerMessage))
             return false;
-        if (status != other.status)
-            return false;
+//        if (status != other.status)
+//            return false;
         if (userID == null) {
             if (other.userID != null)
                 return false;
         } else if (!userID.equals(other.userID))
             return false;
         if (warrantyOrderID == null) {
-            if (other.warrantyOrderID != null)
-                return false;
-        } else if (!warrantyOrderID.equals(other.warrantyOrderID))
-            return false;
-        return true;
+            return other.warrantyOrderID == null;
+        } else return warrantyOrderID.equals(other.warrantyOrderID);
     }
     @Override
     public String toString() {
         return "WarrantyOrder [creationTime=" + creationTime + ", customerMessage=" + customerMessage + ", status="
-                + status + ", userID=" + userID + ", warrantyOrderID=" + warrantyOrderID + "]";
+//                + status
+                + ", userID=" + userID + ", warrantyOrderID=" + warrantyOrderID + "]";
     }
     
     
