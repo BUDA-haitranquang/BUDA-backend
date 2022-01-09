@@ -1,13 +1,10 @@
 package com.higroup.Buda.api.cost.fixedcost.bill;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 
 import com.higroup.Buda.entities.FixedCostBill;
 import com.higroup.Buda.util.Checker.RequestUtil;
 
-import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -59,23 +56,5 @@ public class FixedCostBillController {
     {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.fixedCostBillService.createNewFixedCostBill(userID, fixedCostBill));
-    }
-    @GetMapping("/expense/weekly")
-    public ResponseEntity<?> findFixedCostExpenseByWeek(HttpServletRequest httpServletRequest)
-    {
-        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
-        return ResponseEntity.ok().body(this.fixedCostBillService.findFixedCostBillExpenseByWeek(userID));
-    }
-    @GetMapping("/expense/this-month")
-    public ResponseEntity<?> findFixedCostBillExpenseCurrentMonth(HttpServletRequest httpServletRequest)
-    {
-        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
-        return ResponseEntity.ok().body(this.fixedCostBillService.findFixedCostBillExpenseCurrentMonth(userID));
-    }
-    @GetMapping("/expense/monthly")
-    public ResponseEntity<?> findFixedCostBillExpenseGroupByMonth(HttpServletRequest httpServletRequest)
-    {
-        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
-        return ResponseEntity.ok().body(this.fixedCostBillService.findFixedCostBillExpenseGroupByMonth(userID));
     }
 }

@@ -64,22 +64,4 @@ public class CRUDOtherCostController {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.otherCostService.findAllHiddenOtherCostByUserID(userID));
     }
-    @GetMapping("expense/weekly")
-    public ResponseEntity<?> findOtherCostExpenseByWeek(HttpServletRequest httpServletRequest)
-    {
-        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
-        return ResponseEntity.ok().body(this.otherCostService.findOtherCostExpenseByWeek(userID));
-    }
-    @GetMapping("expense/this-month")
-    public ResponseEntity<?> findOtherCostExpenseCurrentMonth(HttpServletRequest httpServletRequest)
-    {
-        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
-        return ResponseEntity.ok().body(this.otherCostService.findOtherCostExpenseCurrentMonth(userID));
-    }
-    @GetMapping("expense/monthly")
-    public ResponseEntity<?> findOtherCostExpenseGroupByMonth(HttpServletRequest httpServletRequest)
-    {
-        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
-        return ResponseEntity.ok().body(this.otherCostService.findOtherCostExpenseGroupByMonth(userID));
-    }
 }
