@@ -1,4 +1,4 @@
-package com.higroup.Buda.services;
+package com.higroup.Buda.api.ingredient.quantitylog;
 
 import java.util.List;
 import java.util.Optional;

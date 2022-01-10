@@ -1,11 +1,10 @@
-package com.higroup.Buda.restcontroller;
+package com.higroup.Buda.api.ingredient.quantitylog;
 
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import com.higroup.Buda.entities.IngredientLeftLog;
-import com.higroup.Buda.services.IngredientLeftLogService;
 import com.higroup.Buda.util.Checker.RequestUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
