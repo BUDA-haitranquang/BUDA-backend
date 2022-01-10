@@ -10,7 +10,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.higroup.Buda.services.StaffService;
+import com.higroup.Buda.api.staff.crud.StaffService;
 import com.higroup.Buda.services.UserService;
 import com.higroup.Buda.util.JwtTokenUtil;
 
