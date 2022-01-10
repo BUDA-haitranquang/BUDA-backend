@@ -194,8 +194,4 @@ public class ProductService {
 
     }
 
-    public List<ProductGroup> findAllProductGroupByProduct(Long userID, Long productID)
-    {
-        return this.productGroupRepository.findAllByProduct(userID, productID);
-    }
 }
