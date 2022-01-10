@@ -1,4 +1,4 @@
-package com.higroup.Buda.services;
+package com.higroup.Buda.api.staff.salary;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,9 +13,8 @@ import com.higroup.Buda.repositories.SalaryLogRepository;
 import com.higroup.Buda.repositories.StaffRepository;
 import com.higroup.Buda.repositories.UserRepository;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
