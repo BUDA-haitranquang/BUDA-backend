@@ -13,7 +13,7 @@ import javax.validation.Valid;
 import java.lang.reflect.InvocationTargetException;
 
 @RestController
-@RequestMapping("api/product")
+@RequestMapping("api/product/crud")
 @CrossOrigin("*")
 public class CRUDProductController {
     private final RequestUtil requestUtil;

@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.InvocationTargetException;
 
 @RestController
-@RequestMapping("api/ingredient")
+@RequestMapping("api/ingredient/crud")
 @CrossOrigin("*")
 public class CRUDIngredientController {
     private final RequestUtil requestUtil;
