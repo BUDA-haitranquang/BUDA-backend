@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/statistics/revenue/sell-order")
+@RequestMapping("/api/statistics/revenue/sell-order") 
 @CrossOrigin("*")
 public class SellOrderRevenueController {
     private final RequestUtil requestUtil;
