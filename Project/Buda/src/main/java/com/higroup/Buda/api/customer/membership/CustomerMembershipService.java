@@ -19,13 +19,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
-public class MembershipService {
+public class CustomerMembershipService {
     private final MembershipTypeRepository membershipTypeRepository;
     private final UserRepository userRepository;
     private final DiscountRepository discountRepository;
 
     @Autowired
-    public MembershipService(MembershipTypeRepository membershipTypeRepository, UserRepository userRepository, DiscountRepository discountRepository) 
+    public CustomerMembershipService(MembershipTypeRepository membershipTypeRepository, UserRepository userRepository, DiscountRepository discountRepository) 
     {
         this.membershipTypeRepository = membershipTypeRepository;
         this.userRepository = userRepository;
