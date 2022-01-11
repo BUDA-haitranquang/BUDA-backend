@@ -50,6 +50,8 @@ public class FixedCostBill {
     private String message;
     private ZonedDateTime creationTime;
     private ZonedDateTime dueTime;
+    @Column(name = "closed_time")
+    private ZonedDateTime closedTime;
     @Enumerated(EnumType.STRING)
     private Status status = Status.PREPARING;
 

@@ -1,4 +1,4 @@
-package com.higroup.Buda.services;
+package com.higroup.Buda.api.customer.membership;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,18 +15,17 @@ import com.higroup.Buda.util.Checker.PresentChecker;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
-public class MembershipTypeService {
+public class CustomerMembershipService {
     private final MembershipTypeRepository membershipTypeRepository;
     private final UserRepository userRepository;
     private final DiscountRepository discountRepository;
 
     @Autowired
-    public MembershipTypeService(MembershipTypeRepository membershipTypeRepository, UserRepository userRepository, DiscountRepository discountRepository) 
+    public CustomerMembershipService(MembershipTypeRepository membershipTypeRepository, UserRepository userRepository, DiscountRepository discountRepository) 
     {
         this.membershipTypeRepository = membershipTypeRepository;
         this.userRepository = userRepository;

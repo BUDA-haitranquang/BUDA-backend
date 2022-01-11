@@ -1,12 +1,8 @@
-package com.higroup.Buda.restcontroller;
-
-import java.util.List;
-import java.util.Optional;
+package com.higroup.Buda.api.customer.membership;
 
 import javax.servlet.http.HttpServletRequest;
 
 import com.higroup.Buda.entities.MembershipType;
-import com.higroup.Buda.services.MembershipTypeService;
 import com.higroup.Buda.util.Checker.RequestUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,27 +19,26 @@ import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("api/membership-type")
-public class MembershipTypeController {
-    private final MembershipTypeService membershipTypeService;
+@RequestMapping("api/customer/membership")
+public class CustomerMembershipController {
+    private final CustomerMembershipService customerMembershipService;
     private final RequestUtil requestUtil;
     @Autowired
-    public MembershipTypeController(MembershipTypeService membershipTypeService, RequestUtil requestUtil)
-    {
+    public CustomerMembershipController(CustomerMembershipService membershipService, RequestUtil requestUtil) {
+        this.customerMembershipService = membershipService;
         this.requestUtil = requestUtil;
-        this.membershipTypeService = membershipTypeService;
     }
     @GetMapping("/all")
     public ResponseEntity<?> findAllByCurrentUser(HttpServletRequest httpServletRequest)
     {   
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
-        return ResponseEntity.ok().body(this.membershipTypeService.findAllByUserID(userID));
+        return ResponseEntity.ok().body(this.customerMembershipService.findAllByUserID(userID));
     }
     @GetMapping("membershipTypeID/{membershipTypeID}")
     public ResponseEntity<?> findMembershipTypeByMembershipTypeID(HttpServletRequest httpServletRequest, @PathVariable Long membershipTypeID)
     {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
-        MembershipType membershipType = this.membershipTypeService.findMembershipTypeByMembershipTypeID(membershipTypeID);
+        MembershipType membershipType = this.customerMembershipService.findMembershipTypeByMembershipTypeID(membershipTypeID);
         if (membershipType.getUserID()!=userID)
         {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized");
@@ -54,6 +49,6 @@ public class MembershipTypeController {
     public ResponseEntity<?> createNewMembershipType(HttpServletRequest httpServletRequest, @RequestBody MembershipType membershipType)
     {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
-        return ResponseEntity.ok().body(this.membershipTypeService.createNewMembershipType(userID, membershipType));
+        return ResponseEntity.ok().body(this.customerMembershipService.createNewMembershipType(userID, membershipType));
     }
 }
