@@ -19,19 +19,19 @@ public interface FixedCostBillRepository extends JpaRepository<FixedCostBill, Lo
     List<FixedCostBill> findAllFixedCostBillByUserIDLastXDays(@Param("userID") Long userID, @Param("X") Long X);
     @Query(value = "select * from fixed_cost_bill b where b.user_id = :userID and b.status != 'FINISHED' and b.status != 'CANCELLED'", nativeQuery = true)
     List<FixedCostBill> findAllIncompletedFixedCostBillByUser(@Param("userID") Long userID);
-    @Query(value = "select new com.higroup.Buda.customDTO.ExpenseByTimeStatistics(DATE_FORMAT(f.creationTime, '%V-%Y'), SUM(f.totalSpend)) "
-    + "from FixedCostBill f where f.userID = :userID and year(f.creationTime) = year(current_date) "
-    + "group by DATE_FORMAT(f.creationTime, '%V-%Y') "
-    + "order by DATE_FORMAT(f.creationTime, '%V-%Y') ")
+    @Query(value = "select new com.higroup.Buda.customDTO.ExpenseByTimeStatistics(DATE_FORMAT(f.closedTime, '%V-%Y'), SUM(f.totalSpend)) "
+    + "from FixedCostBill f where f.userID = :userID and year(f.closedTime) = year(current_date) "
+    + "group by DATE_FORMAT(f.closedTime, '%V-%Y') "
+    + "order by DATE_FORMAT(f.closedTime, '%V-%Y') ")
     List<ExpenseByTimeStatistics> findFixedCostBillExpenseByWeek(@Param("userID") Long userID);
-    @Query(value = "select new com.higroup.Buda.customDTO.ExpenseByTimeStatistics(DATE_FORMAT(f.creationTime, '%d-%m-%Y'), SUM(f.totalSpend)) "
-    + "from FixedCostBill f where f.userID = :userID and month(f.creationTime) = month(current_date) "
-    + "group by DATE_FORMAT(f.creationTime, '%d-%m-%Y') "
-    + "order by DATE_FORMAT(f.creationTime, '%d-%m-%Y') ")
+    @Query(value = "select new com.higroup.Buda.customDTO.ExpenseByTimeStatistics(DATE_FORMAT(f.closedTime, '%d-%m-%Y'), SUM(f.totalSpend)) "
+    + "from FixedCostBill f where f.userID = :userID and month(f.closedTime) = month(current_date) "
+    + "group by DATE_FORMAT(f.closedTime, '%d-%m-%Y') "
+    + "order by DATE_FORMAT(f.closedTime, '%d-%m-%Y') ")
     List<ExpenseByTimeStatistics> findFixedCostBillExpenseCurrentMonth(@Param("userID") Long userID);
-    @Query(value = "select new com.higroup.Buda.customDTO.ExpenseByTimeStatistics(DATE_FORMAT(f.creationTime, '%m-%Y'), SUM(f.totalSpend)) "
-    + "from FixedCostBill f where f.userID = :userID and year(f.creationTime) >= (year(current_date) - 1) "
-    + "group by DATE_FORMAT(f.creationTime, '%m-%Y') "
-    + "order by DATE_FORMAT(f.creationTime, '%m-%Y') ")
+    @Query(value = "select new com.higroup.Buda.customDTO.ExpenseByTimeStatistics(DATE_FORMAT(f.closedTime, '%m-%Y'), SUM(f.totalSpend)) "
+    + "from FixedCostBill f where f.userID = :userID and year(f.closedTime) >= (year(current_date) - 1) "
+    + "group by DATE_FORMAT(f.closedTime, '%m-%Y') "
+    + "order by DATE_FORMAT(f.closedTime, '%m-%Y') ")
     List<ExpenseByTimeStatistics> findFixedCostBillExpenseGroupByMonth(@Param("userID") Long userID);
 }
