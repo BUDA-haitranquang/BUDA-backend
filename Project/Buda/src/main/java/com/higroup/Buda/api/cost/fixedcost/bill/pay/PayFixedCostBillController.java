@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("api/cost/fixed-cost/pay")
+@RequestMapping("api/cost/fixed-cost/bill/pay")
 @CrossOrigin("*")
 public class PayFixedCostBillController {
     private final PayFixedCostBillService payFixedCostBillService;
