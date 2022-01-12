@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -30,10 +31,13 @@ public class PaySlip {
     private Long paySlipID;
     @ManyToOne(optional = true)
     @Fetch(FetchMode.JOIN)
+    @JoinColumn(name = "supplier_id", nullable = true)
     private Supplier supplier;
     private String receiverName;
     private String receiverContact;
     private ZonedDateTime creationTime;
+    @Column(length = 1000)
+    private String message;
     private Long totalCost;
     @Column(name = "user_id")
     private Long userID;

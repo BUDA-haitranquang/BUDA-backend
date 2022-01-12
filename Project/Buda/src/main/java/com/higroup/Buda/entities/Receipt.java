@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -31,10 +32,12 @@ public class Receipt {
     private Long totalCost;
     @ManyToOne(optional = true)
     @Fetch(FetchMode.JOIN)
+    @JoinColumn(name = "customer_id", nullable = true)
     private Customer customer;
     private String senderName;
     private String senderContact;
     private ZonedDateTime creationTime;
+    @Column(name = "message", length = 1000)
     private String message;
     @Column(name = "user_id")
     private Long userID;
