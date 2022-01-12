@@ -9,6 +9,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import com.higroup.Buda.BeanUtils.NullAwareBeanUtilsBean;
+import com.higroup.Buda.api.user.register.SendConfirmRegisterMailService;
 import com.higroup.Buda.customDTO.GoogleUserPayload;
 import com.higroup.Buda.customDTO.UserRegister;
 import com.higroup.Buda.entities.MailConfirmationToken;
@@ -42,7 +43,7 @@ public class UserService implements UserDetailsService{
     private final JwtTokenUtil jwtTokenUtil;
 
     @Autowired
-    private MailConfirmationTokenService mailConfirmationTokenService;
+    private SendConfirmRegisterMailService mailConfirmationTokenService;
 
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 

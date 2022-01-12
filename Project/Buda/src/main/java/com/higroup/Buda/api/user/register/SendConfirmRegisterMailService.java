@@ -1,9 +1,12 @@
-package com.higroup.Buda.services;
+package com.higroup.Buda.api.user.register;
 
 import com.higroup.Buda.entities.MailConfirmationToken;
 import com.higroup.Buda.entities.User;
+import com.higroup.Buda.entities.enumeration.MailTokenType;
 import com.higroup.Buda.repositories.MailConfirmationTokenRepository;
 import com.higroup.Buda.repositories.UserRepository;
+import com.higroup.Buda.services.EmailService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -14,7 +17,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
-public class MailConfirmationTokenService {
+public class SendConfirmRegisterMailService {
     private final MailConfirmationTokenRepository mailConfirmationTokenRepository;
 
     @Autowired
@@ -24,7 +27,7 @@ public class MailConfirmationTokenService {
     private EmailService emailService;
 
     @Autowired
-    public MailConfirmationTokenService(MailConfirmationTokenRepository mailConfirmationTokenRepository) {
+    public SendConfirmRegisterMailService(MailConfirmationTokenRepository mailConfirmationTokenRepository) {
         this.mailConfirmationTokenRepository = mailConfirmationTokenRepository;
     }
 
@@ -34,14 +37,14 @@ public class MailConfirmationTokenService {
             .findUserByEmail(email)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
         MailConfirmationToken confirmationToken = this.buildConfirmationTokenFor(user);
-
+        confirmationToken.setMailTokenType(MailTokenType.REGISTER);
         String confirmUrl = "http://localhost:8080/api/user/register/confirm?token=" + confirmationToken.getToken();
         emailService.send(
             email,
             "Please activate your BUDA account",
             this.buildAccountActivationEmail(email, confirmUrl)
         );
-
+        confirmationToken.setTargetEmail(email);
         this.save(confirmationToken);
     }
 
