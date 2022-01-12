@@ -5,11 +5,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 
+import com.higroup.Buda.api.user.register.SendConfirmRegisterMailService;
 import com.higroup.Buda.entities.MailConfirmationToken;
 import com.higroup.Buda.entities.User;
+import com.higroup.Buda.entities.enumeration.MailTokenType;
 import com.higroup.Buda.jwt.JwtResponse;
 import com.higroup.Buda.repositories.UserRepository;
-import com.higroup.Buda.services.MailConfirmationTokenService;
 import com.higroup.Buda.util.JwtTokenUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class ConfirmAccountActivationService implements UserDetailsService{
     private final UserRepository userRepository;
     private final JwtTokenUtil jwtTokenUtil;
     @Autowired
-    private MailConfirmationTokenService mailConfirmationTokenService;
+    private SendConfirmRegisterMailService confirmRegisterMailService;
 
     @Autowired
     public ConfirmAccountActivationService(UserRepository userRepository, JwtTokenUtil jwtTokenUtil) {
@@ -36,8 +37,10 @@ public class ConfirmAccountActivationService implements UserDetailsService{
     }
     @Transactional
     public User confirmAccountActivation(String token) {
-        MailConfirmationToken confirmationToken = mailConfirmationTokenService.getToken(token);
-
+        MailConfirmationToken confirmationToken = confirmRegisterMailService.getToken(token);
+        if (!confirmationToken.getMailTokenType().equals(MailTokenType.REGISTER)){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid token type");
+        }
         if (confirmationToken.getConfirmedAt() != null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email already confirmed");
         }
@@ -48,7 +51,7 @@ public class ConfirmAccountActivationService implements UserDetailsService{
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Confirmation token expired");
         }
 
-        mailConfirmationTokenService.setConfirmedAt(token);
+        confirmRegisterMailService.setConfirmedAt(token);
 
         User user = confirmationToken.getUser();
         this.enableUser(confirmationToken.getUser().getEmail());

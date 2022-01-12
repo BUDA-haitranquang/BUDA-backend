@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("api/ingredient-left-log")
+@RequestMapping("api/ingredient/quantity-log")
 @CrossOrigin("*")
 public class IngredientLeftLogController {
     private final IngredientLeftLogService ingredientLeftLogService;
