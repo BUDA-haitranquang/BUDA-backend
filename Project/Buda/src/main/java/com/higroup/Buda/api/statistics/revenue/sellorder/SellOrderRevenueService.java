@@ -1,4 +1,4 @@
-package com.higroup.Buda.api.statistics.revenue;
+package com.higroup.Buda.api.statistics.revenue.sellorder;
 
 import java.util.List;
 
@@ -9,10 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class RevenueStatisticsService {
+public class SellOrderRevenueService {
     private final SellOrderRepository sellOrderRepository;
     @Autowired
-    public RevenueStatisticsService(SellOrderRepository sellOrderRepository)
+    public SellOrderRevenueService(SellOrderRepository sellOrderRepository)
     {
         this.sellOrderRepository = sellOrderRepository;
     }

@@ -1,10 +1,9 @@
-package com.higroup.Buda.restcontroller;
+package com.higroup.Buda.api.staff.notification;
 
 import java.lang.reflect.InvocationTargetException;
 
 import javax.servlet.http.HttpServletRequest;
 import com.higroup.Buda.entities.StaffNote;
-import com.higroup.Buda.services.StaffNoteService;
 import com.higroup.Buda.util.Checker.RequestUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,54 +20,54 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("/api/staff-note")
-public class StaffNoteController {
-    private final StaffNoteService staffNoteService;
+@RequestMapping("/api/staff/notification")
+public class StaffNotificationController {
+    private final StaffNotificationService staffNotificationService;
     private final RequestUtil requestUtil;
     @Autowired
-    public StaffNoteController(StaffNoteService staffNoteService, RequestUtil requestUtil)
+    public StaffNotificationController(StaffNotificationService staffNoteService, RequestUtil requestUtil)
     {
-        this.staffNoteService = staffNoteService;
+        this.staffNotificationService = staffNoteService;
         this.requestUtil = requestUtil;
     }
-    @PostMapping(path = "/register")
+    @PostMapping(path = "/new")
     public ResponseEntity<?> registerNewStaffNote(HttpServletRequest request, @RequestBody StaffNote staffNote)
     {
         Long jwtUserID = requestUtil.getUserIDFromUserToken(request);
-        return ResponseEntity.ok().body(staffNoteService.registerNewStaffNote(jwtUserID, staffNote));
+        return ResponseEntity.ok().body(staffNotificationService.registerNewStaffNote(jwtUserID, staffNote));
     }
 
-    @GetMapping(path = "userID/all")
+    @GetMapping(path = "/all")
     public ResponseEntity<?> findAllByUserID(HttpServletRequest request)
     {
         Long jwtUserID = requestUtil.getUserIDFromUserToken(request);
-        return ResponseEntity.ok(this.staffNoteService.findAllByUserID(jwtUserID));
+        return ResponseEntity.ok(this.staffNotificationService.findAllByUserID(jwtUserID));
     }
 
     @GetMapping(path = "staffID/{staffID}/all")
     public ResponseEntity<?> findAllByStaffID(HttpServletRequest request, @PathVariable Long staffID)
     {
         Long jwtUserID = requestUtil.getUserIDFromUserToken(request);
-        return ResponseEntity.ok(this.staffNoteService.findAllByStaffID(staffID, jwtUserID));
+        return ResponseEntity.ok(this.staffNotificationService.findAllByStaffID(staffID, jwtUserID));
     }
 
     @GetMapping(path = "staffID/{staffID}/all/unseen")
     public ResponseEntity<?> findAllUnseenByStaffID(HttpServletRequest request, @PathVariable Long staffID)
     {
         Long jwtUserID = requestUtil.getUserIDFromUserToken(request);
-        return ResponseEntity.ok(this.staffNoteService.findAllUnseenByStaffID(staffID, jwtUserID));
+        return ResponseEntity.ok(this.staffNotificationService.findAllUnseenByStaffID(staffID, jwtUserID));
     }
 
     @GetMapping(path = "noteID/{staffNoteID}")
     public ResponseEntity<?> findByStaffNoteID(HttpServletRequest request, @PathVariable Long staffNoteID){
         Long jwtUserID = requestUtil.getUserIDFromUserToken(request);
-        return ResponseEntity.ok().body(staffNoteService.findStaffNotebyID(staffNoteID, jwtUserID));
+        return ResponseEntity.ok().body(staffNotificationService.findStaffNotebyID(staffNoteID, jwtUserID));
     }
 
     @DeleteMapping(path = "noteID/{staffNoteID}")
     public ResponseEntity<?> deleteByStaffNoteID(HttpServletRequest request, @PathVariable Long staffNoteID){
         Long jwtUserID = requestUtil.getUserIDFromUserToken(request);
-        staffNoteService.deleteStaffNotebyID(staffNoteID, jwtUserID);
+        staffNotificationService.deleteStaffNotebyID(staffNoteID, jwtUserID);
         return ResponseEntity.ok("delete successfully!!");
     }
 
@@ -76,6 +75,6 @@ public class StaffNoteController {
     public ResponseEntity<?> updateStaffNoteByID(HttpServletRequest request, @RequestBody StaffNote newstaffNote, @PathVariable Long staffNoteID) throws IllegalAccessException, InvocationTargetException
     {
         Long jwtUserID = requestUtil.getUserIDFromUserToken(request);  
-        return ResponseEntity.ok(staffNoteService.updateStaffNotebyID(staffNoteID, newstaffNote, jwtUserID));
+        return ResponseEntity.ok(staffNotificationService.updateStaffNotebyID(staffNoteID, newstaffNote, jwtUserID));
     }
 }

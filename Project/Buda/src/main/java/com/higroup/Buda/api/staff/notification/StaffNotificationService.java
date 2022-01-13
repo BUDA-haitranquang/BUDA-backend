@@ -1,4 +1,4 @@
-package com.higroup.Buda.services;
+package com.higroup.Buda.api.staff.notification;
 
 import java.lang.reflect.InvocationTargetException;
 import java.time.ZonedDateTime;
@@ -22,12 +22,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
-public class StaffNoteService {
+public class StaffNotificationService {
     private final StaffNoteRepository staffNoteRepository;
     private final StaffRepository staffRepository;
     private final UserRepository userRepository;
     @Autowired
-    public StaffNoteService(StaffNoteRepository staffNoteRepository, UserRepository userRepository, StaffRepository staffRepository)
+    public StaffNotificationService(StaffNoteRepository staffNoteRepository, UserRepository userRepository, StaffRepository staffRepository)
     {
         this.staffRepository = staffRepository;
         this.userRepository = userRepository;
