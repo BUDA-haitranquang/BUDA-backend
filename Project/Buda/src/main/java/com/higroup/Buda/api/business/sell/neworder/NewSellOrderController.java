@@ -37,18 +37,7 @@ public class NewSellOrderController {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.newsellOrderService.registerSellOrder(userID, registerSellOrder));
     }
-    @GetMapping(path = "/all")
-    public ResponseEntity<?> findAllSellOrderByCurrentUser(HttpServletRequest httpServletRequest)
-    {
-        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
-        return ResponseEntity.ok().body(this.newsellOrderService.findAllSellOrderByUserID(userID));
-    }
-    @GetMapping(path = "customer/{customerID}/all")
-    public ResponseEntity<?> findAllSellOrderByCustomerID(HttpServletRequest httpServletRequest, @PathVariable Long customerID)
-    {
-        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
-        return ResponseEntity.ok().body(this.newsellOrderService.findAllSellOrderByCustomerID(userID, customerID));
-    }
+    
     @DeleteMapping(path = "/{sellOrderID}")
     public ResponseEntity<?> deleteSellOrderBySellOrderID(HttpServletRequest httpServletRequest, @PathVariable Long sellOrderID)
     {
@@ -56,28 +45,10 @@ public class NewSellOrderController {
         this.newsellOrderService.deleteSellOrderBySellOrderID(userID, sellOrderID);
         return ResponseEntity.ok().body("Delete succesfully");
     }
-    // @PutMapping(path = "/update")
-    // public ResponseEntity<?> updateSellOrder(HttpServletRequest httpServletRequest, @RequestBody SellOrder sellOrder)
-    // {
-    //     Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
-    //     return ResponseEntity.ok().body(this.newsellOrderService.updateSellOrder(userID, sellOrder));
-    // }
-    @GetMapping(path = "all/last-x-days/{X}")
-    public ResponseEntity<?> findAllLastXDaysSellOrderByCurrentUser(HttpServletRequest httpServletRequest, @PathVariable Long X)
+    @PutMapping(path = "/update")
+    public ResponseEntity<?> updateSellOrder(HttpServletRequest httpServletRequest, @RequestBody SellOrder sellOrder)
     {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
-        return ResponseEntity.ok().body(this.newsellOrderService.findAllSellOrderByUserIDLastXDays(userID, X));
-    }
-    @GetMapping(path = "all/incompleted")
-    public ResponseEntity<?> findAllIncompletedSellOrderByCurrentUser(HttpServletRequest httpServletRequest)
-    {
-        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
-        return ResponseEntity.ok().body(this.newsellOrderService.findAllIIncompletedSellOrderByUserID(userID));
-    }
-    @GetMapping(path = "all/status/{status}")
-    public ResponseEntity<?> findAllSellOrderByCurrentUserAndStatus(HttpServletRequest httpServletRequest, @PathVariable Status status)
-    {
-        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
-        return ResponseEntity.ok().body(this.newsellOrderService.findAllSellOrderByUserAndStatus(userID, status));
+        return ResponseEntity.ok().body(this.newsellOrderService.updateSellOrder(userID, sellOrder));
     }
 }
