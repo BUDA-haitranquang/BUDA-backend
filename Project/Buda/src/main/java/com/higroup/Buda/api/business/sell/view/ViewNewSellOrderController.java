@@ -1,4 +1,4 @@
-package com.higroup.Buda.api.business.sell.neworder;
+package com.higroup.Buda.api.business.sell.view;
 
 import javax.servlet.http.HttpServletRequest;
 

@@ -1,4 +1,4 @@
-package com.higroup.Buda.api.business.buy.neworder;
+package com.higroup.Buda.api.business.buy.view;
 
 import java.util.Collections;
 import java.util.List;

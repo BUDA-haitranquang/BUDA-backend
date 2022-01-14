@@ -1,6 +1,7 @@
-package com.higroup.Buda.api.business.buy.neworder;
+package com.higroup.Buda.api.business.buy.view;
 
 import javax.servlet.http.HttpServletRequest;
+
 import com.higroup.Buda.entities.enumeration.Status;
 import com.higroup.Buda.util.Checker.RequestUtil;
 
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("api/business/buy/neworder")
+@RequestMapping("api/business/buy/new-order")
 public class ViewNewBuyOrderController {
 
     private final ViewNewBuyOrderService viewNewBuyOrderService;
