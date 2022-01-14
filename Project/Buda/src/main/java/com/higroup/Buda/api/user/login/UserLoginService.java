@@ -6,11 +6,11 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+import com.higroup.Buda.api.user.register.SendConfirmRegisterMailService;
 import com.higroup.Buda.customDTO.UserLogin;
 import com.higroup.Buda.entities.User;
 import com.higroup.Buda.jwt.JwtResponse;
 import com.higroup.Buda.repositories.UserRepository;
-import com.higroup.Buda.services.MailConfirmationTokenService;
 import com.higroup.Buda.util.JwtTokenUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,11 +27,11 @@ import org.springframework.web.server.ResponseStatusException;
 @Service
 public class UserLoginService implements UserDetailsService{
     private final UserRepository userRepository;
-    private final MailConfirmationTokenService mailConfirmationTokenService;
+    private final SendConfirmRegisterMailService mailConfirmationTokenService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final JwtTokenUtil jwtTokenUtil;
     @Autowired
-    public UserLoginService(UserRepository userRepository, MailConfirmationTokenService mailConfirmationTokenService, JwtTokenUtil jwtTokenUtil)
+    public UserLoginService(UserRepository userRepository, SendConfirmRegisterMailService mailConfirmationTokenService, JwtTokenUtil jwtTokenUtil)
     {
         this.bCryptPasswordEncoder = new BCryptPasswordEncoder();
         this.jwtTokenUtil = jwtTokenUtil;

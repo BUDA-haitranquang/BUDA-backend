@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("api/fixed-cost/bill")
+@RequestMapping("api/cost/fixed-cost/bill")
 @CrossOrigin("*")
 public class FixedCostBillController {
     private final FixedCostBillService fixedCostBillService;

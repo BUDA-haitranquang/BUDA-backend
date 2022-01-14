@@ -9,7 +9,6 @@ import com.higroup.Buda.entities.User;
 import com.higroup.Buda.entities.enumeration.PlanType;
 import com.higroup.Buda.repositories.RoleRepository;
 import com.higroup.Buda.repositories.UserRepository;
-import com.higroup.Buda.services.MailConfirmationTokenService;
 
 import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +29,7 @@ public class UserRegisterService implements UserDetailsService{
     private final RoleRepository roleRepository;
 
     @Autowired
-    private MailConfirmationTokenService mailConfirmationTokenService;
+    private SendConfirmRegisterMailService confirmRegisterMailService;
 
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -85,7 +84,7 @@ public class UserRegisterService implements UserDetailsService{
         newUser.addRole(roleRepository.findRoleByName("USER").get());
         newUser.setPlanType(PlanType.BASIC);
         userRepository.save(newUser);
-        mailConfirmationTokenService.sendMailConfirmationTo(email);
+        confirmRegisterMailService.sendMailConfirmationTo(email);
     }
     
     @Override
