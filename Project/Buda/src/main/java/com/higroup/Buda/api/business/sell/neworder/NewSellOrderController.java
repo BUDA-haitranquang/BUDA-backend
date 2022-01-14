@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.higroup.Buda.customDTO.RegisterSellOrder;
 import com.higroup.Buda.entities.SellOrder;
+import com.higroup.Buda.entities.enumeration.Status;
 import com.higroup.Buda.util.Checker.RequestUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,12 +56,12 @@ public class NewSellOrderController {
         this.newsellOrderService.deleteSellOrderBySellOrderID(userID, sellOrderID);
         return ResponseEntity.ok().body("Delete succesfully");
     }
-    // @PutMapping(path = "/update")
-    // public ResponseEntity<?> updateSellOrder(HttpServletRequest httpServletRequest, @RequestBody SellOrder sellOrder)
-    // {
-    //     Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
-    //     return ResponseEntity.ok().body(this.newsellOrderService.updateSellOrder(userID, sellOrder));
-    // }
+    @PutMapping(path = "/update")
+    public ResponseEntity<?> updateSellOrder(HttpServletRequest httpServletRequest, @RequestBody SellOrder sellOrder)
+    {
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
+        return ResponseEntity.ok().body(this.newsellOrderService.updateSellOrder(userID, sellOrder));
+    }
     @GetMapping(path = "all/last-x-days/{X}")
     public ResponseEntity<?> findAllLastXDaysSellOrderByCurrentUser(HttpServletRequest httpServletRequest, @PathVariable Long X)
     {
