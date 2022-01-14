@@ -15,18 +15,15 @@ import com.higroup.Buda.entities.Product;
 import com.higroup.Buda.entities.ProductLeftLog;
 import com.higroup.Buda.entities.SellOrder;
 import com.higroup.Buda.entities.SellOrderItem;
-import com.higroup.Buda.entities.User;
 import com.higroup.Buda.entities.enumeration.AgeGroup;
 import com.higroup.Buda.entities.enumeration.DiscountType;
 import com.higroup.Buda.entities.enumeration.Gender;
-import com.higroup.Buda.entities.enumeration.Status;
 import com.higroup.Buda.repositories.CustomerRepository;
 import com.higroup.Buda.repositories.DiscountRepository;
 import com.higroup.Buda.repositories.ProductLeftLogRepository;
 import com.higroup.Buda.repositories.ProductRepository;
 import com.higroup.Buda.repositories.SellOrderItemRepository;
 import com.higroup.Buda.repositories.SellOrderRepository;
-import com.higroup.Buda.repositories.UserRepository;
 import com.higroup.Buda.util.Checker.PresentChecker;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,14 +41,12 @@ public class NewSellOrderService {
     private DiscountRepository discountRepository;
     private ProductRepository productRepository;
     private ProductLeftLogRepository productLeftLogRepository;
-    private UserRepository userRepository;
 
     private DecimalFormat df = new DecimalFormat("###.##");
 
     @Autowired
     public NewSellOrderService(CustomerRepository customerRepository, SellOrderRepository sellOrderRepository, SellOrderItemRepository sellOrderItemRepository, 
-                               DiscountRepository discountRepository, ProductRepository productRepository, ProductLeftLogRepository productLeftLogRepository,
-                               UserRepository userRepository)
+                               DiscountRepository discountRepository, ProductRepository productRepository, ProductLeftLogRepository productLeftLogRepository)
     {
         this.customerRepository = customerRepository;
         this.sellOrderRepository = sellOrderRepository;
@@ -59,7 +54,6 @@ public class NewSellOrderService {
         this.discountRepository = discountRepository;
         this.productRepository = productRepository;
         this.productLeftLogRepository = productLeftLogRepository;
-        this.userRepository = userRepository;
     }
 
     @Autowired
@@ -141,8 +135,6 @@ public class NewSellOrderService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "SellOrderItem not found");
         }
     }
-
-
 
     @Transactional
     public SellOrder registerSellOrder(Long userID, RegisterSellOrder registerSellOrder){
@@ -232,26 +224,6 @@ public class NewSellOrderService {
         return sellOrder;
     } 
     
-    public List<SellOrder> findAllSellOrderByUserID(Long userID) {
-        Optional<User> user = this.userRepository.findUserByUserID(userID);
-        if (user.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
-        }
-        return this.sellOrderRepository.findAllSellOrderByUserID(userID);
-    }
-
-    public List<SellOrder> findAllSellOrderByCustomerID(Long userID, Long customerID) {
-        Optional<User> user = this.userRepository.findUserByUserID(userID);
-        if (user.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
-        }
-        Optional<Customer> customer = this.customerRepository.findCustomerByCustomerID(customerID);
-        if ((customer.isPresent()) && (customer.get().getUserID().equals(userID))) {
-            return this.sellOrderRepository.findAllSellOrderByCustomer(customer.get());
-        } else {
-            return Collections.emptyList();
-        }
-    }
 
     @Transactional
     public void deleteSellOrderBySellOrderID(Long userID, Long sellOrderID)
@@ -274,26 +246,6 @@ public class NewSellOrderService {
         {
             throw e;               
         }
-    }
-
-    public List<SellOrder> findAllSellOrderByUserIDLastXDays(Long userID, Long X)
-    {
-        presentChecker.checkIdAndRepository(userID, this.userRepository);
-        ZonedDateTime xDaysAgo = ZonedDateTime.now().minusDays(X);
-        xDaysAgo.withSecond(0).withHour(0).withMinute(0);
-        return this.sellOrderRepository.findAllSellOrderByUserIDLastXDays(userID, xDaysAgo);
-    }
-
-    public List<SellOrder> findAllIIncompletedSellOrderByUserID(Long userID)
-    {
-        presentChecker.checkIdAndRepository(userID, this.userRepository);
-        return this.sellOrderRepository.findAllIncompletedSellOrderByUser(userID);
-    }
-
-    public List<SellOrder> findAllSellOrderByUserAndStatus(Long userID, Status status)
-    {
-        // return this.sellOrderRepository.findAllSellOrderByStatusAndUserID(userID, status.toString());
-        return this.sellOrderRepository.findAllSellOrderByUserIDAndStatus(userID, status);
     }
 
     @Transactional
@@ -328,6 +280,4 @@ public class NewSellOrderService {
         }
         throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized");
     }
-
-
 }
