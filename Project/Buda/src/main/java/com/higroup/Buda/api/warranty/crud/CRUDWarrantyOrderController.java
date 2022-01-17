@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping(path = "/api/warranty-order")
+@RequestMapping(path = "/api/warranty-order/crud")
 public class CRUDWarrantyOrderController {
     private final CRUDWarrantyOrderService warrantyOrderService;
     private final RequestUtil requestUtil;

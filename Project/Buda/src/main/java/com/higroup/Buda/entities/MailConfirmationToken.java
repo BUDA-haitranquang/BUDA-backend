@@ -1,10 +1,22 @@
 package com.higroup.Buda.entities;
 
 import javax.persistence.*;
+
+import com.higroup.Buda.entities.enumeration.MailTokenType;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "mail_confirmation_token")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class MailConfirmationToken {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,12 +34,14 @@ public class MailConfirmationToken {
 
     private LocalDateTime confirmedAt;
 
+    private MailTokenType mailTokenType;
+
+    @Column(name = "target_email")
+    private String targetEmail;
+
     @ManyToOne
     @JoinColumn(name = "user_ID", referencedColumnName = "user_ID")
     private User user;
-
-    public MailConfirmationToken() {
-    }
 
     public MailConfirmationToken(String token, LocalDateTime createdAt, LocalDateTime expiredAt, User user) {
         this.token = token;
@@ -36,23 +50,5 @@ public class MailConfirmationToken {
         this.user = user;
     }
 
-    public String getToken() {
-        return token;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public LocalDateTime getExpiredAt() {
-        return expiredAt;
-    }
-
-    public LocalDateTime getConfirmedAt() {
-        return confirmedAt;
-    }
-
-    public User getUser() {
-        return this.user;
-    }
+    
 }
