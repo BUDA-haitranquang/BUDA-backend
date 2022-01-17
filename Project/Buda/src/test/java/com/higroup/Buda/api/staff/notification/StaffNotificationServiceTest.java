@@ -1,4 +1,4 @@
-package com.higroup.Buda.api.business.sell.neworder;
+package com.higroup.Buda.api.staff.notification;
 
 import com.higroup.Buda.BudaApplication;
 
@@ -9,35 +9,39 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = BudaApplication.class)
-public class NewSellOrderServiceTest {
-
+public class StaffNotificationServiceTest {
     @Test
-    void testDeleteSellOrderBySellOrderID() {
-        
+    void testDeleteStaffNotebyID() {
+
     }
 
     @Test
-    void testDeleteSellOrderItem() {
-        
+    void testFindAllByStaffID() {
+
     }
 
     @Test
-    void testEditProductQuantity() {
-        
+    void testFindAllByUserID() {
+
     }
 
     @Test
-    void testRegisterNewSellOrderItem() {
-        
+    void testFindAllUnseenByStaffID() {
+
     }
 
     @Test
-    void testRegisterSellOrder() {
-        
+    void testFindStaffNotebyID() {
+
     }
 
     @Test
-    void testUpdateSellOrder() {
-        
+    void testRegisterNewStaffNote() {
+
+    }
+
+    @Test
+    void testUpdateStaffNotebyID() {
+
     }
 }

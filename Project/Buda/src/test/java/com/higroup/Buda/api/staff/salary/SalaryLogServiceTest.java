@@ -1,4 +1,4 @@
-package com.higroup.Buda.api.business.sell.neworder;
+package com.higroup.Buda.api.staff.salary;
 
 import com.higroup.Buda.BudaApplication;
 
@@ -9,35 +9,39 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = BudaApplication.class)
-public class NewSellOrderServiceTest {
-
+public class SalaryLogServiceTest {
     @Test
-    void testDeleteSellOrderBySellOrderID() {
-        
+    void testDeleteSalaryLogbyID() {
+
     }
 
     @Test
-    void testDeleteSellOrderItem() {
-        
+    void testFindAllByStaffID() {
+
     }
 
     @Test
-    void testEditProductQuantity() {
-        
+    void testFindAllByUserID() {
+
     }
 
     @Test
-    void testRegisterNewSellOrderItem() {
-        
+    void testFindByID() {
+
     }
 
     @Test
-    void testRegisterSellOrder() {
-        
+    void testFindSalaryLogExpenseCurrentMonth() {
+
     }
 
     @Test
-    void testUpdateSellOrder() {
-        
+    void testFindSalaryLogExpenseGroupByMonth() {
+
+    }
+
+    @Test
+    void testRegisterNewSalaryLog() {
+
     }
 }

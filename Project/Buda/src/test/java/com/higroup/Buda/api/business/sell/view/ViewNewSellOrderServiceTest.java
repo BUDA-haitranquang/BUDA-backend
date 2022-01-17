@@ -1,4 +1,4 @@
-package com.higroup.Buda.api.business.sell.neworder;
+package com.higroup.Buda.api.business.sell.view;
 
 import com.higroup.Buda.BudaApplication;
 
@@ -9,35 +9,29 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = BudaApplication.class)
-public class NewSellOrderServiceTest {
-
+public class ViewNewSellOrderServiceTest {
     @Test
-    void testDeleteSellOrderBySellOrderID() {
-        
+    void testFindAllIIncompletedSellOrderByUserID() {
+
     }
 
     @Test
-    void testDeleteSellOrderItem() {
-        
+    void testFindAllSellOrderByCustomerID() {
+
     }
 
     @Test
-    void testEditProductQuantity() {
-        
+    void testFindAllSellOrderByUserAndStatus() {
+
     }
 
     @Test
-    void testRegisterNewSellOrderItem() {
-        
+    void testFindAllSellOrderByUserID() {
+
     }
 
     @Test
-    void testRegisterSellOrder() {
-        
-    }
+    void testFindAllSellOrderByUserIDLastXDays() {
 
-    @Test
-    void testUpdateSellOrder() {
-        
     }
 }

@@ -1,4 +1,4 @@
-package com.higroup.Buda.api.business.sell.neworder;
+package com.higroup.Buda.api.cost.fixedcost.crud;
 
 import com.higroup.Buda.BudaApplication;
 
@@ -9,35 +9,39 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = BudaApplication.class)
-public class NewSellOrderServiceTest {
-
+public class CRUDFixedCostServiceTest {
     @Test
-    void testDeleteSellOrderBySellOrderID() {
-        
+    void testCreateNewFixedCost() {
+
     }
 
     @Test
-    void testDeleteSellOrderItem() {
-        
+    void testDeleteFixedCost() {
+
     }
 
     @Test
-    void testEditProductQuantity() {
-        
+    void testFindAllByUserID() {
+
     }
 
     @Test
-    void testRegisterNewSellOrderItem() {
-        
+    void testFindAllHiddenFixedCostByUserID() {
+
     }
 
     @Test
-    void testRegisterSellOrder() {
-        
+    void testFindFixedCostByFixedCostID() {
+
     }
 
     @Test
-    void testUpdateSellOrder() {
-        
+    void testHideFixedCost() {
+
+    }
+
+    @Test
+    void testUpdateFixedCost() {
+
     }
 }
