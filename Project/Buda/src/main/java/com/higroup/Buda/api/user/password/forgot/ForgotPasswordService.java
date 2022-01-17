@@ -4,7 +4,6 @@ import com.higroup.Buda.customDTO.UserUpdatePassword;
 import com.higroup.Buda.entities.MailConfirmationToken;
 import com.higroup.Buda.entities.User;
 import com.higroup.Buda.repositories.UserRepository;
-import com.higroup.Buda.services.MailConfirmationTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -20,10 +19,10 @@ public class ForgotPasswordService {
     private final UserRepository userRepository;
 
     @Autowired
-    private MailConfirmationTokenService mailConfirmationTokenService;
+    private ForgotPasswordMailService mailConfirmationTokenService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired
-    public ForgotPasswordService(UserRepository userRepository, MailConfirmationTokenService mailConfirmationTokenService)
+    public ForgotPasswordService(UserRepository userRepository, ForgotPasswordMailService mailConfirmationTokenService)
     {
         this.bCryptPasswordEncoder = new BCryptPasswordEncoder();
         this.userRepository = userRepository;
