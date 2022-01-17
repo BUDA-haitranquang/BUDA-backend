@@ -49,6 +49,18 @@ public class SendConfirmRegisterMailService {
     }
 
     @Transactional
+    public void sendMailForgotPassword(String email) {
+        User user = userRepository
+                .findUserByEmail(email)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+        MailConfirmationToken confirmationToken = this.buildConfirmationTokenFor(user);
+
+        String confirmUrl = "http://localhost:8080/api/user/password/forgot/confirm?token=" + confirmationToken.getToken();
+        emailService.send(email, "Forgot password", this.buildAccountConfirmationEmail(confirmUrl));
+        this.save(confirmationToken);
+    }
+
+    @Transactional
     public void save(MailConfirmationToken token) {
         this.mailConfirmationTokenRepository.save(token);
     }
@@ -140,5 +152,10 @@ public class SendConfirmRegisterMailService {
             "  </tbody></table><div class=\"yj6qo\"></div><div class=\"adL\">\n" +
             "\n" +
             "</div></div>";
+    }
+
+    private String buildAccountConfirmationEmail(String link)
+    {
+        return link;
     }
 }
