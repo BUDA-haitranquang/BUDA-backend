@@ -85,6 +85,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests().antMatchers("/api/user/login", "/api/user/register/**").permitAll();
 		http.authorizeRequests().antMatchers("/api/user/login/google").permitAll();
 		http.authorizeRequests().antMatchers("/api/user/refresh-token").permitAll();
+		http.authorizeRequests().antMatchers("/api/user/password/forgot/**").permitAll();
 		// require ROLE USER to make get request for user 
 		http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/user/**").hasAnyAuthority("USER");
 		// Admin can do something
