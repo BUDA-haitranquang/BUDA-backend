@@ -1,4 +1,4 @@
-package com.higroup.Buda.api.business.sell.neworder;
+package com.higroup.Buda.api.staff.crud;
 
 import com.higroup.Buda.BudaApplication;
 
@@ -9,35 +9,44 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = BudaApplication.class)
-public class NewSellOrderServiceTest {
-
+public class StaffServiceTest {
     @Test
-    void testDeleteSellOrderBySellOrderID() {
-        
+    void testCorrectLogin() {
+
     }
 
     @Test
-    void testDeleteSellOrderItem() {
-        
+    void testDeleteStaffByID() {
+
     }
 
     @Test
-    void testEditProductQuantity() {
-        
+    void testFindAllByUserID() {
+
     }
 
     @Test
-    void testRegisterNewSellOrderItem() {
-        
+    void testFindStaffByID() {
+
     }
 
     @Test
-    void testRegisterSellOrder() {
-        
+    void testLoadUserByUsername() {
+
     }
 
     @Test
-    void testUpdateSellOrder() {
-        
+    void testRegisterNewStaff() {
+
+    }
+
+    @Test
+    void testUpdateStaff() {
+
+    }
+
+    @Test
+    void testUpdateStaffByID() {
+
     }
 }

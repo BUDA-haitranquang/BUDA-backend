@@ -16,14 +16,12 @@ import java.util.Optional;
 public class UpdateUserPasswordService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    private final JwtTokenUtil jwtTokenUtil;
 
 
     @Autowired
-    public UpdateUserPasswordService(UserRepository userRepository, JwtTokenUtil jwtTokenUtil) {
+    public UpdateUserPasswordService(UserRepository userRepository) {
         this.bCryptPasswordEncoder = new BCryptPasswordEncoder();
         this.userRepository = userRepository;
-        this.jwtTokenUtil = jwtTokenUtil;
     }
     public void updateUserPassword(Long userID, UserUpdatePassword userUpdatePassword)
     {

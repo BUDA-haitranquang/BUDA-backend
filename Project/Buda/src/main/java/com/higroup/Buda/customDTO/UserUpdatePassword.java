@@ -13,7 +13,6 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserUpdatePassword {
-    @NotNull
     private String currentPassword;
     @NotNull
     private String newPassword;

@@ -1,4 +1,4 @@
-package com.higroup.Buda.api.business.sell.neworder;
+package com.higroup.Buda.api.ingredient.quantitylog;
 
 import com.higroup.Buda.BudaApplication;
 
@@ -9,35 +9,29 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = BudaApplication.class)
-public class NewSellOrderServiceTest {
-
+public class IngredientLeftLogServiceTest {
     @Test
-    void testDeleteSellOrderBySellOrderID() {
-        
+    void testFindAllIngredientLeftLogByIngredient() {
+
     }
 
     @Test
-    void testDeleteSellOrderItem() {
-        
+    void testFindAllIngredientLeftLogByStaffID() {
+
     }
 
     @Test
-    void testEditProductQuantity() {
-        
+    void testFindAllIngredientLeftLogByUserID() {
+
     }
 
     @Test
-    void testRegisterNewSellOrderItem() {
-        
+    void testFindIngredientLeftLogByIngredientLeftLogID() {
+
     }
 
     @Test
-    void testRegisterSellOrder() {
-        
-    }
+    void testRegisterNewIngredientLeftLog() {
 
-    @Test
-    void testUpdateSellOrder() {
-        
     }
 }
