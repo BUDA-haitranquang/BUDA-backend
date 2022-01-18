@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping(path = "api/business/sell/neworder")
+@RequestMapping(path = "api/business/sell/new-order")
 public class NewSellOrderController {
     private final NewSellOrderService newsellOrderService;
     private final RequestUtil requestUtil;

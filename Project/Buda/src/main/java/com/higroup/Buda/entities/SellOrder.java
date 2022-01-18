@@ -85,7 +85,7 @@ public class SellOrder implements Serializable{
     private String address;
     @Enumerated(EnumType.STRING)
     private Status status = Status.PREPARING;
-    @OneToMany(mappedBy = "sellOrder", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "sellOrder")
     @JsonManagedReference(value = "sell_order - sell_order_item")
     @Fetch(FetchMode.SUBSELECT)
     private Set<SellOrderItem> sellOrderItems;

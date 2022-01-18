@@ -1,4 +1,4 @@
-package com.higroup.Buda.restcontroller;
+package com.higroup.Buda.api.discount;
 
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -6,7 +6,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import com.higroup.Buda.entities.Discount;
-import com.higroup.Buda.services.DiscountService;
 import com.higroup.Buda.util.JwtTokenUtil;
 import com.higroup.Buda.util.Checker.RequestUtil;
 
