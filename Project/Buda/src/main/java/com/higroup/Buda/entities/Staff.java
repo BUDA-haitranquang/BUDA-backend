@@ -69,6 +69,8 @@ public class Staff {
     )
     private Collection<Role> roles = new ArrayList<Role>();
 
+    @Column(columnDefinition = "boolean default true")
+    private Boolean enabled = Boolean.TRUE;
 
     @Override
     public boolean equals(Object o) {

@@ -45,8 +45,12 @@ public class StaffLoginService implements UserDetailsService{
     public JwtResponse correctLogin(String account, String rawPassword)
     {
         Optional<Staff> staff = this.staffRepository.findStaffByAccount(account);
-        if ((staff.isPresent())&&(this.bCryptPasswordEncoder.matches(rawPassword, staff.get().getPassword())))
+        if ((staff.isPresent())
+        &&(this.bCryptPasswordEncoder.matches(rawPassword, staff.get().getPassword())))
         {
+            if (!(staff.get().getEnabled().equals(Boolean.TRUE))){
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "This staff account has been disabled");
+            }
             JwtTokenUtil jwtTokenUtil = new JwtTokenUtil();
             UserDetails userDetails = loadUserByUsername(account);
 
