@@ -2,7 +2,7 @@ package com.higroup.Buda.api.business.sell.neworder;
 
 import java.text.DecimalFormat;
 import java.time.ZonedDateTime;
-import java.util.Collections;
+import java.util.*;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -178,8 +178,9 @@ public class NewSellOrderService {
 
         double realCost = 0;
         // add sellorderitem by product id
-        for(Long productID : registerSellOrder.getProducts().keySet()){
-            Integer quantity = registerSellOrder.getProducts().get(productID);
+        for(int i = 0; i < registerSellOrder.getProductIDList().size(); i++){
+            Long productID = registerSellOrder.getProductIDList().get(i);
+            Integer quantity = registerSellOrder.getNumberProductList().get(i);
             SellOrderItem sellOrderItem = this.registerNewSellOrderItem(userID, new RegisterSellOrderItem(productID, sellOrder.getSellOrderID(), quantity));
             realCost += sellOrderItem.getActualTotalSale(); 
             this.editProductQuantity(userID, productID, -quantity, String.format("buy %d products with id: %d", quantity, productID));
