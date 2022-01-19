@@ -1,4 +1,4 @@
-package com.higroup.Buda.api.statistics.agegroup;
+package com.higroup.Buda.api.statistics.customer.agegroup;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("api/statistics/age-group")
+@RequestMapping("api/statistics/customer/age-group")
 public class AgeGroupStatisticsController {
     private final RequestUtil requestUtil;
     private final AgeGroupStatisticsService ageGroupStatisticsService;

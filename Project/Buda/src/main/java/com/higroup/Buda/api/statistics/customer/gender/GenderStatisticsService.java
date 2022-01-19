@@ -1,4 +1,4 @@
-package com.higroup.Buda.api.statistics.gender;
+package com.higroup.Buda.api.statistics.customer.gender;
 
 import java.util.List;
 
