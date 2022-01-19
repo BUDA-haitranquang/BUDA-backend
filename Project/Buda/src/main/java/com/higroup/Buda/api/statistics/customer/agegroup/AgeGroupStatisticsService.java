@@ -1,4 +1,4 @@
-package com.higroup.Buda.api.statistics.agegroup;
+package com.higroup.Buda.api.statistics.customer.agegroup;
 
 import java.util.List;
 

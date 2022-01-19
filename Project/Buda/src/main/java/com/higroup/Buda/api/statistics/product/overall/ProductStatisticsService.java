@@ -1,4 +1,4 @@
-package com.higroup.Buda.api.statistics.product;
+package com.higroup.Buda.api.statistics.product.overall;
 
 import java.util.List;
 

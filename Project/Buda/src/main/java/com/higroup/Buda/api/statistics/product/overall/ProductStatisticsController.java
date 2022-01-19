@@ -1,4 +1,4 @@
-package com.higroup.Buda.api.statistics.product;
+package com.higroup.Buda.api.statistics.product.overall;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("api/statistics/product")
+@RequestMapping("api/statistics/product/overall")
 @CrossOrigin("*")
 public class ProductStatisticsController {
     private final RequestUtil requestUtil;

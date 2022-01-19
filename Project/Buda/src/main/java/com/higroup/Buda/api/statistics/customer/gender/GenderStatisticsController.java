@@ -1,4 +1,4 @@
-package com.higroup.Buda.api.statistics.gender;
+package com.higroup.Buda.api.statistics.customer.gender;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("api/statistics/gender")
+@RequestMapping("api/statistics/customer/gender")
 @CrossOrigin("*")
 public class GenderStatisticsController {
     private final RequestUtil requestUtil;
