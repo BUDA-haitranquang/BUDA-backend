@@ -1,4 +1,4 @@
-package com.higroup.Buda.api.statistics.customer.repeat;
+package com.higroup.Buda.api.statistics.customer.retention;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -12,16 +12,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("api/statistics/customer/repeat")
+@RequestMapping("api/statistics/customer/retention")
 @CrossOrigin("*")
-public class RepeatCustomerRateStatsController {
-    private final RepeatCustomerRateStatsService repeatCustomerRateStatsService;
+public class RetentionCustomerRateStatsController {
+    private final RetentionCustomerRateStatsService retentionCustomerRateStatsService;
     private final RequestUtil requestUtil;
     @Autowired
-    public RepeatCustomerRateStatsController(RepeatCustomerRateStatsService repeatCustomerRateStatsService,
+    public RetentionCustomerRateStatsController(RetentionCustomerRateStatsService retentionCustomerRateStatsService,
     RequestUtil requestUtil){
         this.requestUtil = requestUtil;
-        this.repeatCustomerRateStatsService = repeatCustomerRateStatsService;
+        this.retentionCustomerRateStatsService = retentionCustomerRateStatsService;
     }
     @GetMapping("/weekly")
     public ResponseEntity<?> findRepeatRateGroupByWeek(HttpServletRequest httpServletRequest){
