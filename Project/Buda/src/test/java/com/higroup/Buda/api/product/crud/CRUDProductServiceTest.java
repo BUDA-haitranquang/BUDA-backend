@@ -49,8 +49,12 @@ public class CRUDProductServiceTest {
     }
     @Test
     void testFindAllProductByUserID() {
-        int size = productService.findAllProductByUserID(2l).size();
-        assertEquals(size, 245);
+        List<Product> products = productService.findAllProductByUserID(2l);
+        for (Product product: products)
+        {
+            assertEquals(product.getUserID(), 2l);
+            assertEquals(product.getVisible(), Boolean.TRUE);
+        }
     }
     @Test
     void testFindProductByProductID() {

@@ -5,9 +5,9 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.Optional;
 
+import com.higroup.Buda.api.picture.PictureService;
 import com.higroup.Buda.entities.Picture;
 import com.higroup.Buda.repositories.PictureRepository;
-import com.higroup.Buda.services.PictureService;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;

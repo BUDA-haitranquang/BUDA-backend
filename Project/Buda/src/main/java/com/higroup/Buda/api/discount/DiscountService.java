@@ -1,4 +1,4 @@
-package com.higroup.Buda.services;
+package com.higroup.Buda.api.discount;
 
 import java.time.ZonedDateTime;
 import java.util.List;

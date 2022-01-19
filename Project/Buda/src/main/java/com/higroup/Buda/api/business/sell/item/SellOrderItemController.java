@@ -1,16 +1,13 @@
-package com.higroup.Buda.restcontroller;
+package com.higroup.Buda.api.business.sell.item;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import com.higroup.Buda.customDTO.RegisterSellOrderItem;
 import com.higroup.Buda.entities.SellOrderItem;
-import com.higroup.Buda.services.SellOrderItemService;
 import com.higroup.Buda.util.Checker.RequestUtil;
 
-import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -21,12 +18,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("api/sell-order-item")
+@RequestMapping("api/business/sell/item")
 public class SellOrderItemController {
     private final SellOrderItemService sellOrderItemService;
     private final RequestUtil requestUtil;

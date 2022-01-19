@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping(path = "api/business/sell/neworder")
+@RequestMapping(path = "api/business/sell/view")
 public class ViewNewSellOrderController {
     private final ViewNewSellOrderService viewNewSellOrderService;
     private final RequestUtil requestUtil;
