@@ -1,14 +1,9 @@
-package com.higroup.Buda.restcontroller;
-
-import java.util.List;
+package com.higroup.Buda.api.business.buy.item;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.higroup.Buda.entities.BuyOrderItem;
-import com.higroup.Buda.services.BuyOrderItemService;
 import com.higroup.Buda.util.Checker.RequestUtil;
 
-import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -20,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("api/buy-order-item")
+@RequestMapping("api/business/buy/item")
 public class BuyOrderItemController {
     private final BuyOrderItemService buyOrderItemService;
     private final RequestUtil requestUtil;
