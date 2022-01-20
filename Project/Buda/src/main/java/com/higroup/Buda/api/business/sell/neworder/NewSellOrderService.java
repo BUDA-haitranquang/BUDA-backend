@@ -108,11 +108,11 @@ public class NewSellOrderService {
         sellOrderItem.setSellOrder(sellOrder);
         sellOrderItem.setProduct(product);
         sellOrderItem.setQuantity(registerSellOrderItem.getQuantity());
-        sellOrderItem.setPricePerUnit(product.getSellingPrice());
+        sellOrderItem.setPricePerUnit(registerSellOrderItem.getPricePerUnit());
         sellOrderItem.setCostPerUnit(product.getCostPerUnit());
         sellOrderItem.setUserID(userID);
         sellOrderItem.setCreationTime(sellOrder.getCreationTime());
-        Double actualTotalSale = product.getSellingPrice() * registerSellOrderItem.getQuantity();
+        Double actualTotalSale = registerSellOrderItem.getPricePerUnit() * registerSellOrderItem.getQuantity();
         sellOrderItem.setActualTotalSale(actualTotalSale);
         sellOrderItem.setGender(sellOrder.getGender());
         sellOrderItem.setAgeGroup(sellOrder.getAgeGroup());
@@ -186,7 +186,8 @@ public class NewSellOrderService {
         for(int i = 0; i < registerSellOrder.getProductIDList().size(); i++){
             Long productID = registerSellOrder.getProductIDList().get(i);
             Integer quantity = registerSellOrder.getNumberProductList().get(i);
-            SellOrderItem sellOrderItem = this.registerNewSellOrderItem(userID, new RegisterSellOrderItem(productID, sellOrder.getSellOrderID(), quantity));
+            Double pricePerUnit = registerSellOrder.getPricePerUnitList().get(i);
+            SellOrderItem sellOrderItem = this.registerNewSellOrderItem(userID, new RegisterSellOrderItem(productID, sellOrder.getSellOrderID(), quantity, pricePerUnit));
             realCost += sellOrderItem.getActualTotalSale(); 
             this.editProductQuantity(userID, productID, -quantity, String.format("buy %d products with id: %d", quantity, productID));
         }
