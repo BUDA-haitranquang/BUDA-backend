@@ -8,7 +8,6 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 
 import com.higroup.Buda.BeanUtils.NullAwareBeanUtilsBean;
-import com.higroup.Buda.customDTO.RegisterSellOrderItem;
 import com.higroup.Buda.entities.Product;
 import com.higroup.Buda.entities.SellOrder;
 import com.higroup.Buda.entities.SellOrderItem;
@@ -118,39 +117,6 @@ public class SellOrderItemService {
             }
         }
         return null; 
-    }
-    @Transactional
-    public SellOrderItem registerNewSellOrderItem(Long userID, RegisterSellOrderItem registerSellOrderItem){
-        Product product = (Product) this.presentChecker.checkIdAndRepository(registerSellOrderItem.getProductID(), this.productRepository);
-        SellOrder sellOrder = (SellOrder) this.presentChecker.checkIdAndRepository(registerSellOrderItem.getSellOrderID(), this.sellOrderRepository);
-        if(!product.getVisible())
-        {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "product is not visible");
-        }
-        if(sellOrder.checkProductExistInItems(product))
-        {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Product already exits in list items of sell order");
-        }
-        if(product.getAmountLeft() < registerSellOrderItem.getQuantity()){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Product doesnt have enough quantity left");
-        }
-
-        SellOrderItem sellOrderItem = new SellOrderItem();
-        sellOrderItem.setSellOrder(sellOrder);
-        sellOrderItem.setProduct(product);
-        sellOrderItem.setQuantity(registerSellOrderItem.getQuantity());
-        sellOrderItem.setPricePerUnit(product.getSellingPrice());
-        sellOrderItem.setCostPerUnit(product.getCostPerUnit());
-        sellOrderItem.setUserID(userID);
-        sellOrderItem.setCreationTime(sellOrder.getCreationTime());
-        Double actualTotalSale = product.getSellingPrice() * registerSellOrderItem.getQuantity();
-        sellOrderItem.setActualTotalSale(actualTotalSale);
-        sellOrderItem.setGender(sellOrder.getGender());
-        sellOrderItem.setAgeGroup(sellOrder.getAgeGroup());
-        this.sellOrderItemRepository.save(sellOrderItem);
-        // add sellorderitem to sellorder
-        sellOrder.getSellOrderItems().add(sellOrderItem);
-        return sellOrderItem;
     }
 }
 

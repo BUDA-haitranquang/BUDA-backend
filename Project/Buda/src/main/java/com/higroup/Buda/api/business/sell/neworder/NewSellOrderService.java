@@ -2,13 +2,11 @@ package com.higroup.Buda.api.business.sell.neworder;
 
 import java.text.DecimalFormat;
 import java.time.ZonedDateTime;
-import java.util.*;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import com.higroup.Buda.customDTO.RegisterSellOrder;
-import com.higroup.Buda.customDTO.RegisterSellOrderItem;
+import javax.validation.Valid;
+
 import com.higroup.Buda.entities.Customer;
 import com.higroup.Buda.entities.Discount;
 import com.higroup.Buda.entities.Product;
@@ -88,39 +86,38 @@ public class NewSellOrderService {
 
     // sell order item function
     // sell order item register
-    @Transactional
-    public SellOrderItem registerNewSellOrderItem(Long userID, RegisterSellOrderItem registerSellOrderItem){
-        Product product = this.productRepository.findProductByProductID(registerSellOrderItem.getProductID());
-        SellOrder sellOrder = this.sellOrderRepository.findSellOrderBySellOrderID(registerSellOrderItem.getSellOrderID()).get();
+    @Transactional 
+    public SellOrderItem registerNewSellOrderItem(Long userID, Long sellOrderID, @Valid SellOrderItemDTO sellOrderItemDTO){
+        Product product = this.productRepository.findProductByProductID(sellOrderItemDTO.getProductID());
+        SellOrder sellOrder = this.sellOrderRepository.findSellOrderBySellOrderID(sellOrderID).get();
+        // check product visible
         if(!product.getVisible())
         {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "product is not visible");
         }
-        // if(sellOrder.checkProductExistInItems(product))
-        // {
-        //     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Product already exits in list items of sell order");
-        // }
-        if(product.getAmountLeft() < registerSellOrderItem.getQuantity()){
+        // check product belong to user
+        if(!product.getUserID().equals(userID)){
+            throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "product not belong to user");
+        }
+        // check enough quantity
+        if(product.getAlertAmount() < sellOrderItemDTO.getQuantity()){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Product doesnt have enough quantity left");
         }
-
         SellOrderItem sellOrderItem = new SellOrderItem();
         sellOrderItem.setSellOrder(sellOrder);
         sellOrderItem.setProduct(product);
-        sellOrderItem.setQuantity(registerSellOrderItem.getQuantity());
-        sellOrderItem.setPricePerUnit(registerSellOrderItem.getPricePerUnit());
+        sellOrderItem.setProduct(product);
+        sellOrderItem.setPricePerUnit(sellOrderItemDTO.getPricePerUnit());
         sellOrderItem.setCostPerUnit(product.getCostPerUnit());
         sellOrderItem.setUserID(userID);
         sellOrderItem.setCreationTime(sellOrder.getCreationTime());
-        Double actualTotalSale = registerSellOrderItem.getPricePerUnit() * registerSellOrderItem.getQuantity();
+        Double actualTotalSale = sellOrderItemDTO.getPricePerUnit() * sellOrderItemDTO.getQuantity();
         sellOrderItem.setActualTotalSale(actualTotalSale);
         sellOrderItem.setGender(sellOrder.getGender());
         sellOrderItem.setAgeGroup(sellOrder.getAgeGroup());
         this.sellOrderItemRepository.save(sellOrderItem);
-        // add sellorderitem to sellorder
-        //sellOrder.getSellOrderItems().add(sellOrderItem);
         return sellOrderItem;
-    }
+    }   
 
     // sell order item delete
     @Transactional
@@ -137,14 +134,11 @@ public class NewSellOrderService {
     }
 
     @Transactional
-    public SellOrder registerSellOrder(Long userID, RegisterSellOrder registerSellOrder){
+    public SellOrder registerSellOrder(Long userID, @Valid SellOrderDTO sellOrderDTO){
         SellOrder sellOrder = new SellOrder();
-
         sellOrder.setUserID(userID);
-        sellOrder.setCreationTime(ZonedDateTime.now());
-        // customer solving
-        
-        if(registerSellOrder.getCustomer() == null){
+        // customer 
+        if(sellOrderDTO.getClass() == null){
             String default_phoneNumber = "000000000";
             Optional<Customer> customerOptional = this.customerRepository.findCustomerByUserIDAndPhoneNumber(userID, default_phoneNumber);
             if(!customerOptional.isPresent()){
@@ -159,46 +153,50 @@ public class NewSellOrderService {
                 sellOrder.setGender(customer.getGender());
                 sellOrder.setAgeGroup(customer.getAgeGroup());
             }
-            else {
+            else{
                 sellOrder.setCustomer(customerOptional.get());
                 sellOrder.setGender(Gender.UNKNOWN);
                 sellOrder.setAgeGroup(AgeGroup.UNKNOWN);
             }
         }
         else{
-            String phoneNumber = registerSellOrder.getCustomer().getPhoneNumber();
+            String phoneNumber = sellOrderDTO.getCustomer().getPhoneNumber();
             if(phoneNumber == null){
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Phone number invalid");
             }
             Customer customer = this.customerRepository.findCustomerByUserIDAndPhoneNumber(userID, phoneNumber).get();
             if(customer == null){
-                customer = registerSellOrder.getCustomer();
+                customer = sellOrderDTO.getCustomer();
                 this.customerRepository.save(sellOrder.getCustomer());
             }
             sellOrder.setCustomer(customer);
             sellOrder.setGender(customer.getGender());
             sellOrder.setAgeGroup(customer.getAgeGroup());
         }
-        
-        sellOrder.setCustomerMessage(registerSellOrder.getCustomer_message());
-        sellOrder.setStatus(registerSellOrder.getStatus());
-        sellOrder.setAddress(registerSellOrder.getAddress());
+        sellOrder.setCustomerMessage(sellOrderDTO.getCustomerMessage());
+        sellOrder.setStatus(sellOrderDTO.getStatus());
+        sellOrder.setAddress(sellOrderDTO.getAddress());
+        sellOrder.setCreationTime(ZonedDateTime.now());
         this.sellOrderRepository.save(sellOrder);
 
-        double realCost = 0;
-        // add sellorderitem by product id
-        for(int i = 0; i < registerSellOrder.getProductIDList().size(); i++){
-            Long productID = registerSellOrder.getProductIDList().get(i);
-            Integer quantity = registerSellOrder.getNumberProductList().get(i);
-            Double pricePerUnit = registerSellOrder.getPricePerUnitList().get(i);
-            SellOrderItem sellOrderItem = this.registerNewSellOrderItem(userID, new RegisterSellOrderItem(productID, sellOrder.getSellOrderID(), quantity, pricePerUnit));
-            realCost += sellOrderItem.getActualTotalSale(); 
+        // real cost
+        Double realCost = 0.0;
+        for(SellOrderItemDTO sellOrderItemDTO: sellOrderDTO.getSellOrderItemDTOs()){
+            Long productID = sellOrderItemDTO.getProductID();
+            Integer quantity = sellOrderItemDTO.getQuantity();
+            Double pricePerUnit = sellOrderItemDTO.getPricePerUnit();
+            SellOrderItem sellOrderItem = this.registerNewSellOrderItem(userID, sellOrder.getSellOrderID(), sellOrderItemDTO);
+            realCost += sellOrderItem.getActualTotalSale();
+            // decrease number of product in database
             this.editProductQuantity(userID, productID, -quantity, String.format("buy %d products with id: %d", quantity, productID));
         }
-        double actual_discount_cash = 0;
-        // discount solving 
-        if(registerSellOrder.getDiscountID() != null){
-            Discount discount = this.discountRepository.findDiscountByDiscountID(registerSellOrder.getDiscountID());
+
+        Double actualDiscountCash = 0.0;
+        // if no discount provided
+        if(sellOrderDTO.getDiscountID() != null){
+            Long discountID = sellOrderDTO.getDiscountID();
+            Discount discount = discountRepository.findDiscountByDiscountID(discountID);
+            // found discount
             if(discount != null){
                 if(discount.getExpiryTime().isBefore(ZonedDateTime.now())){
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "discount expired time !!!");
@@ -210,12 +208,12 @@ public class NewSellOrderService {
                     }
                     else{
                         if(discount.getDiscountType() == DiscountType.CASH_ONLY){
-                            actual_discount_cash = discount.getCash();
+                            actualDiscountCash = discount.getCash();
                         }
                         else if(discount.getDiscountType() == DiscountType.PERCENTAGE_ONLY){
-                            actual_discount_cash = (long)(discount.getPercentage() / 100.0 * realCost);
-                            if(actual_discount_cash > discount.getCashLimit()){
-                                actual_discount_cash = discount.getCashLimit();
+                            actualDiscountCash = (Double)(discount.getPercentage() / 100.0 * realCost);
+                            if(actualDiscountCash > discount.getCashLimit()){
+                                actualDiscountCash = discount.getCashLimit();
                             }
                         }
                     }
@@ -223,18 +221,17 @@ public class NewSellOrderService {
             }
             else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "not found discount");
         }
-        // set precistion == 2
-        double actualDiscountPercentage = Double.parseDouble(df.format(actual_discount_cash / realCost));
-        double finalCost = Double.parseDouble(df.format(realCost - actual_discount_cash));
-        sellOrder.setActualDiscountCash(Double.valueOf(df.format(actual_discount_cash)));
+
+        double actualDiscountPercentage = Double.parseDouble(df.format(actualDiscountCash/ realCost));
+        double finalCost = Double.parseDouble(df.format(realCost - actualDiscountPercentage));
+        sellOrder.setActualDiscountCash(Double.valueOf(df.format(actualDiscountPercentage)));
         sellOrder.setActualDiscountPercentage(actualDiscountPercentage);
         sellOrder.setFinalCost(finalCost);
         sellOrder.setRealCost(Double.valueOf(df.format(realCost)));
-        // 
         this.sellOrderRepository.save(sellOrder);
         return sellOrder;
-    } 
-    
+    }
+
 
     @Transactional
     public void deleteSellOrderBySellOrderID(Long userID, Long sellOrderID)

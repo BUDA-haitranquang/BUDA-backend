@@ -17,7 +17,7 @@ public class SellOrderItemDTO {
     @NotNull
     private Long productID;
     @Positive(message = "quantity must be greater than 0")
-    private Long quantity;
+    private Integer quantity;
     @PositiveOrZero(message = "price per unit must be equal or greater than 0")
     private Double pricePerUnit;
 }
