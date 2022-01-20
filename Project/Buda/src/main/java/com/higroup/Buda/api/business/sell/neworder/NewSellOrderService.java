@@ -90,16 +90,16 @@ public class NewSellOrderService {
     // sell order item register
     @Transactional
     public SellOrderItem registerNewSellOrderItem(Long userID, RegisterSellOrderItem registerSellOrderItem){
-        Product product = (Product) this.presentChecker.checkIdAndRepository(registerSellOrderItem.getProductID(), this.productRepository);
-        SellOrder sellOrder = (SellOrder) this.presentChecker.checkIdAndRepository(registerSellOrderItem.getSellOrderID(), this.sellOrderRepository);
+        Product product = this.productRepository.findProductByProductID(registerSellOrderItem.getProductID());
+        SellOrder sellOrder = this.sellOrderRepository.findSellOrderBySellOrderID(registerSellOrderItem.getSellOrderID()).get();
         if(!product.getVisible())
         {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "product is not visible");
         }
-        if(sellOrder.checkProductExistInItems(product))
-        {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Product already exits in list items of sell order");
-        }
+        // if(sellOrder.checkProductExistInItems(product))
+        // {
+        //     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Product already exits in list items of sell order");
+        // }
         if(product.getAmountLeft() < registerSellOrderItem.getQuantity()){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Product doesnt have enough quantity left");
         }
@@ -118,7 +118,7 @@ public class NewSellOrderService {
         sellOrderItem.setAgeGroup(sellOrder.getAgeGroup());
         this.sellOrderItemRepository.save(sellOrderItem);
         // add sellorderitem to sellorder
-        sellOrder.getSellOrderItems().add(sellOrderItem);
+        //sellOrder.getSellOrderItems().add(sellOrderItem);
         return sellOrderItem;
     }
 
