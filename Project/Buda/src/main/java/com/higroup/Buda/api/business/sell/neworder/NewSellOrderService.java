@@ -159,7 +159,11 @@ public class NewSellOrderService {
                 sellOrder.setGender(customer.getGender());
                 sellOrder.setAgeGroup(customer.getAgeGroup());
             }
-            
+            else {
+                sellOrder.setCustomer(customerOptional.get());
+                sellOrder.setGender(Gender.UNKNOWN);
+                sellOrder.setAgeGroup(AgeGroup.UNKNOWN);
+            }
         }
         else{
             String phoneNumber = registerSellOrder.getCustomer().getPhoneNumber();
