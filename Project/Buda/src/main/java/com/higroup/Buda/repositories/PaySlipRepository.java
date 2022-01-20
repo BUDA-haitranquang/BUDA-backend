@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface PaySlipRepository extends JpaRepository<PaySlip, Long>{
+    PaySlip findPaySlipByPaySlipID(Long paySlipID);
     @Query("select p from PaySlip p where userID = :userID")
     List<PaySlip> findAllPaySlipByUserID(@Param("userID") Long userID);
     @Query("select new com.higroup.Buda.customDTO.ExpenseByTimeStatistics(DATE_FORMAT(f.creationTime, '%V-%Y'), SUM(f.totalCost)) "

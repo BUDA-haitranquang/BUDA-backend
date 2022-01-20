@@ -143,12 +143,11 @@ public class NewSellOrderService {
         sellOrder.setUserID(userID);
         sellOrder.setCreationTime(ZonedDateTime.now());
         // customer solving
-        Customer customer;
+        Customer customer = new Customer();
         if(registerSellOrder.getCustomer() == null){
             String default_phoneNumber = "000000000";
-            customer = this.customerRepository.findCustomerByUserIDAndPhoneNumber(userID, default_phoneNumber).get();
-            if(customer == null){
-                customer = new Customer();
+            Optional<Customer> customerOptional = this.customerRepository.findCustomerByUserIDAndPhoneNumber(userID, default_phoneNumber);
+            if(!customerOptional.isPresent()){
                 customer.setAgeGroup(AgeGroup.UNKNOWN);
                 customer.setGender(Gender.UNKNOWN);
                 customer.setPhoneNumber(default_phoneNumber);

@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface ReceiptRepository extends JpaRepository<Receipt, Long>{
+    Receipt findReceiptByReceiptID(Long receiptID);
     @Query("select r from Receipt r where userID = :userID")
     List<Receipt> findAllByUserID(@Param("userID") Long userID);
     @Query("select new com.higroup.Buda.customDTO.RevenueByTimeStatistics(DATE_FORMAT(f.creationTime, '%V-%Y'), SUM(f.totalCost)) "
