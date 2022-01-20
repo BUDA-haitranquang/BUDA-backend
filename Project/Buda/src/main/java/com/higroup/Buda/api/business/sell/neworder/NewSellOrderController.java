@@ -2,16 +2,13 @@ package com.higroup.Buda.api.business.sell.neworder;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.higroup.Buda.customDTO.RegisterSellOrder;
 import com.higroup.Buda.entities.SellOrder;
-import com.higroup.Buda.entities.enumeration.Status;
 import com.higroup.Buda.util.Checker.RequestUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -32,10 +29,10 @@ public class NewSellOrderController {
         this.newsellOrderService = newsellOrderService;
     }
     @PostMapping(path = "/new")
-    public ResponseEntity<?> registerNewSellOrder(HttpServletRequest httpServletRequest, @RequestBody RegisterSellOrder registerSellOrder)
+    public ResponseEntity<?> registerNewSellOrder(HttpServletRequest httpServletRequest, @RequestBody SellOrderDTO sellOrderDTO)
     {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
-        return ResponseEntity.ok().body(this.newsellOrderService.registerSellOrder(userID, registerSellOrder));
+        return ResponseEntity.ok().body(this.newsellOrderService.registerSellOrder(userID, sellOrderDTO));
     }
     
     @DeleteMapping(path = "/{sellOrderID}")

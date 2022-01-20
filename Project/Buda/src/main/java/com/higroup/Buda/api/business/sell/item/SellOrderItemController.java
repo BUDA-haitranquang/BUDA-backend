@@ -4,7 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.higroup.Buda.customDTO.RegisterSellOrderItem;
+import com.higroup.Buda.api.business.sell.neworder.SellOrderDTO;
 import com.higroup.Buda.entities.SellOrderItem;
 import com.higroup.Buda.util.Checker.RequestUtil;
 
@@ -58,9 +58,9 @@ public class SellOrderItemController {
         return ResponseEntity.ok().body(this.sellOrderItemService.findAllSellOrderItemByProductID(userID, productID));
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<?> registerSellOrderItem(HttpServletRequest httpServletRequest, @RequestBody RegisterSellOrderItem registerSellOrderItem){
-        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
-        return ResponseEntity.ok().body(this.sellOrderItemService.registerNewSellOrderItem(userID, registerSellOrderItem));
-    }
+    // @PostMapping("/register")
+    // public ResponseEntity<?> registerSellOrderItem(HttpServletRequest httpServletRequest, @RequestBody SellOrderDTO sellOrderDTO){
+    //     Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
+    //     return ResponseEntity.ok().body(this.sellOrderItemService.registerNewSellOrderItem(userID, sellOrderDTO));
+    // }
 }
