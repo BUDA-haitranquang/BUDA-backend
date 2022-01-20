@@ -87,7 +87,7 @@ public class NewSellOrderService {
     // sell order item function
     // sell order item register
     @Transactional 
-    public SellOrderItem registerNewSellOrderItem(Long userID, Long sellOrderID, @Valid SellOrderItemDTO sellOrderItemDTO){
+    private SellOrderItem registerNewSellOrderItem(Long userID, Long sellOrderID, @Valid SellOrderItemDTO sellOrderItemDTO){
         Product product = this.productRepository.findProductByProductID(sellOrderItemDTO.getProductID());
         SellOrder sellOrder = this.sellOrderRepository.findSellOrderBySellOrderID(sellOrderID).get();
         // check product visible
@@ -100,18 +100,21 @@ public class NewSellOrderService {
             throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "product not belong to user");
         }
         // check enough quantity
-        if(product.getAlertAmount() < sellOrderItemDTO.getQuantity()){
+        if(product.getAmountLeft() < sellOrderItemDTO.getQuantity()){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Product doesnt have enough quantity left");
         }
         SellOrderItem sellOrderItem = new SellOrderItem();
         sellOrderItem.setSellOrder(sellOrder);
         sellOrderItem.setProduct(product);
-        sellOrderItem.setProduct(product);
-        sellOrderItem.setPricePerUnit(sellOrderItemDTO.getPricePerUnit());
+        if(sellOrderItemDTO.getPricePerUnit() == null){
+            sellOrderItem.setPricePerUnit(product.getSellingPrice());
+        }
+        else sellOrderItem.setPricePerUnit(sellOrderItemDTO.getPricePerUnit());
         sellOrderItem.setCostPerUnit(product.getCostPerUnit());
+        sellOrderItem.setQuantity(sellOrderItemDTO.getQuantity());
         sellOrderItem.setUserID(userID);
         sellOrderItem.setCreationTime(sellOrder.getCreationTime());
-        Double actualTotalSale = sellOrderItemDTO.getPricePerUnit() * sellOrderItemDTO.getQuantity();
+        Double actualTotalSale = sellOrderItem.getPricePerUnit() * sellOrderItem.getQuantity();
         sellOrderItem.setActualTotalSale(actualTotalSale);
         sellOrderItem.setGender(sellOrder.getGender());
         sellOrderItem.setAgeGroup(sellOrder.getAgeGroup());
@@ -133,12 +136,27 @@ public class NewSellOrderService {
         }
     }
 
+    @Transactional 
+    private void updateDiscount(Long userID, Long discountID, Double discountCash, Double orderCost){
+        Discount discount = this.discountRepository.findDiscountByDiscountID(discountID);
+        discount.setCash(discount.getCash() + discountCash);
+        discount.setOrderCount(discount.getOrderCount() + 1);
+        // if current default value then net new minimum sell order cost
+        if(discount.getMinimumSellOrderCost().equals(0.0)){
+            discount.setMinimumSellOrderCost(orderCost);
+        }
+        else {
+            discount.setMinimumSellOrderCost(Math.min(orderCost, discount.getMinimumSellOrderCost()));
+        }
+        discountRepository.save(discount);
+    }
+
     @Transactional
     public SellOrder registerSellOrder(Long userID, @Valid SellOrderDTO sellOrderDTO){
         SellOrder sellOrder = new SellOrder();
         sellOrder.setUserID(userID);
         // customer 
-        if(sellOrderDTO.getClass() == null){
+        if(sellOrderDTO.getCustomer() == null){
             String default_phoneNumber = "000000000";
             Optional<Customer> customerOptional = this.customerRepository.findCustomerByUserIDAndPhoneNumber(userID, default_phoneNumber);
             if(!customerOptional.isPresent()){
@@ -161,17 +179,28 @@ public class NewSellOrderService {
         }
         else{
             String phoneNumber = sellOrderDTO.getCustomer().getPhoneNumber();
+            System.out.println(phoneNumber);
             if(phoneNumber == null){
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Phone number invalid");
             }
-            Customer customer = this.customerRepository.findCustomerByUserIDAndPhoneNumber(userID, phoneNumber).get();
-            if(customer == null){
+            Optional<Customer> OPcustomer = this.customerRepository.findCustomerByUserIDAndPhoneNumber(userID, phoneNumber);
+            Customer customer;
+            if(!OPcustomer.isPresent()){
                 customer = sellOrderDTO.getCustomer();
-                this.customerRepository.save(sellOrder.getCustomer());
+                this.customerRepository.save(customer);
+            }
+            else{
+                customer = OPcustomer.get();
             }
             sellOrder.setCustomer(customer);
-            sellOrder.setGender(customer.getGender());
-            sellOrder.setAgeGroup(customer.getAgeGroup());
+            if(customer.getGender() == null){
+                sellOrder.setGender(Gender.UNKNOWN);
+            }
+            else sellOrder.setGender(customer.getGender());
+            if(customer.getAgeGroup() == null){
+                sellOrder.setAgeGroup(AgeGroup.UNKNOWN);
+            }
+            else sellOrder.setAgeGroup(customer.getAgeGroup());
         }
         sellOrder.setCustomerMessage(sellOrderDTO.getCustomerMessage());
         sellOrder.setStatus(sellOrderDTO.getStatus());
@@ -184,7 +213,6 @@ public class NewSellOrderService {
         for(SellOrderItemDTO sellOrderItemDTO: sellOrderDTO.getSellOrderItemDTOs()){
             Long productID = sellOrderItemDTO.getProductID();
             Integer quantity = sellOrderItemDTO.getQuantity();
-            Double pricePerUnit = sellOrderItemDTO.getPricePerUnit();
             SellOrderItem sellOrderItem = this.registerNewSellOrderItem(userID, sellOrder.getSellOrderID(), sellOrderItemDTO);
             realCost += sellOrderItem.getActualTotalSale();
             // decrease number of product in database
@@ -216,6 +244,7 @@ public class NewSellOrderService {
                                 actualDiscountCash = discount.getCashLimit();
                             }
                         }
+                        this.updateDiscount(userID, discountID, actualDiscountCash, realCost);
                     }
                 }
             }
