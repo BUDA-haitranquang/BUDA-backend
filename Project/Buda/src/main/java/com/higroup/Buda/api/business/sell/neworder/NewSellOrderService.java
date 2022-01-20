@@ -143,33 +143,39 @@ public class NewSellOrderService {
         sellOrder.setUserID(userID);
         sellOrder.setCreationTime(ZonedDateTime.now());
         // customer solving
-        Customer customer = new Customer();
+        
         if(registerSellOrder.getCustomer() == null){
             String default_phoneNumber = "000000000";
             Optional<Customer> customerOptional = this.customerRepository.findCustomerByUserIDAndPhoneNumber(userID, default_phoneNumber);
             if(!customerOptional.isPresent()){
+                Customer customer = new Customer();
                 customer.setAgeGroup(AgeGroup.UNKNOWN);
                 customer.setGender(Gender.UNKNOWN);
                 customer.setPhoneNumber(default_phoneNumber);
                 customer.setUserID(userID);
                 customer.setName("UNKNOWN");
                 this.customerRepository.save(customer);
+                sellOrder.setCustomer(customer);
+                sellOrder.setGender(customer.getGender());
+                sellOrder.setAgeGroup(customer.getAgeGroup());
             }
+            
         }
         else{
             String phoneNumber = registerSellOrder.getCustomer().getPhoneNumber();
             if(phoneNumber == null){
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Phone number invalid");
             }
-            customer = this.customerRepository.findCustomerByUserIDAndPhoneNumber(userID, phoneNumber).get();
+            Customer customer = this.customerRepository.findCustomerByUserIDAndPhoneNumber(userID, phoneNumber).get();
             if(customer == null){
                 customer = registerSellOrder.getCustomer();
                 this.customerRepository.save(sellOrder.getCustomer());
             }
+            sellOrder.setCustomer(customer);
+            sellOrder.setGender(customer.getGender());
+            sellOrder.setAgeGroup(customer.getAgeGroup());
         }
-        sellOrder.setCustomer(customer);
-        sellOrder.setGender(customer.getGender());
-        sellOrder.setAgeGroup(customer.getAgeGroup());
+        
         sellOrder.setCustomerMessage(registerSellOrder.getCustomer_message());
         sellOrder.setStatus(registerSellOrder.getStatus());
         sellOrder.setAddress(registerSellOrder.getAddress());
