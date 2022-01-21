@@ -2,13 +2,13 @@ package com.higroup.Buda.api.business.sell.neworder;
 
 import java.text.DecimalFormat;
 import java.time.ZonedDateTime;
-import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import com.higroup.Buda.customDTO.RegisterSellOrder;
-import com.higroup.Buda.customDTO.RegisterSellOrderItem;
+import javax.validation.Valid;
+
+import com.higroup.Buda.api.business.sell.neworder.util.DefaultCustomerUtilService;
+import com.higroup.Buda.api.business.sell.neworder.util.SearchCustomerUtilService;
 import com.higroup.Buda.entities.Customer;
 import com.higroup.Buda.entities.Discount;
 import com.higroup.Buda.entities.Product;
@@ -41,13 +41,18 @@ public class NewSellOrderService {
     private DiscountRepository discountRepository;
     private ProductRepository productRepository;
     private ProductLeftLogRepository productLeftLogRepository;
+    private SearchCustomerUtilService searchCustomerUtilService;
+    private DefaultCustomerUtilService defaultCustomerUtilService;
 
     private DecimalFormat df = new DecimalFormat("###.##");
 
     @Autowired
     public NewSellOrderService(CustomerRepository customerRepository, SellOrderRepository sellOrderRepository, SellOrderItemRepository sellOrderItemRepository, 
-                               DiscountRepository discountRepository, ProductRepository productRepository, ProductLeftLogRepository productLeftLogRepository)
+                               DiscountRepository discountRepository, ProductRepository productRepository, ProductLeftLogRepository productLeftLogRepository,
+                               DefaultCustomerUtilService defaultCustomerUtilService, SearchCustomerUtilService searchCustomerUtilService)
     {
+        this.searchCustomerUtilService = searchCustomerUtilService;
+        this.defaultCustomerUtilService = defaultCustomerUtilService;
         this.customerRepository = customerRepository;
         this.sellOrderRepository = sellOrderRepository;
         this.sellOrderItemRepository = sellOrderItemRepository;
@@ -88,39 +93,41 @@ public class NewSellOrderService {
 
     // sell order item function
     // sell order item register
-    @Transactional
-    public SellOrderItem registerNewSellOrderItem(Long userID, RegisterSellOrderItem registerSellOrderItem){
-        Product product = (Product) this.presentChecker.checkIdAndRepository(registerSellOrderItem.getProductID(), this.productRepository);
-        SellOrder sellOrder = (SellOrder) this.presentChecker.checkIdAndRepository(registerSellOrderItem.getSellOrderID(), this.sellOrderRepository);
+    @Transactional 
+    private SellOrderItem registerNewSellOrderItem(Long userID, Long sellOrderID, @Valid SellOrderItemDTO sellOrderItemDTO){
+        Product product = this.productRepository.findProductByProductID(sellOrderItemDTO.getProductID());
+        SellOrder sellOrder = this.sellOrderRepository.findSellOrderBySellOrderID(sellOrderID).get();
+        // check product visible
         if(!product.getVisible())
         {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "product is not visible");
         }
-        if(sellOrder.checkProductExistInItems(product))
-        {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Product already exits in list items of sell order");
+        // check product belong to user
+        if(!product.getUserID().equals(userID)){
+            throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "product not belong to user");
         }
-        if(product.getAmountLeft() < registerSellOrderItem.getQuantity()){
+        // check enough quantity
+        if(product.getAmountLeft() < sellOrderItemDTO.getQuantity()){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Product doesnt have enough quantity left");
         }
-
         SellOrderItem sellOrderItem = new SellOrderItem();
         sellOrderItem.setSellOrder(sellOrder);
         sellOrderItem.setProduct(product);
-        sellOrderItem.setQuantity(registerSellOrderItem.getQuantity());
-        sellOrderItem.setPricePerUnit(product.getSellingPrice());
+        if(sellOrderItemDTO.getPricePerUnit() == null){
+            sellOrderItem.setPricePerUnit(product.getSellingPrice());
+        }
+        else sellOrderItem.setPricePerUnit(sellOrderItemDTO.getPricePerUnit());
         sellOrderItem.setCostPerUnit(product.getCostPerUnit());
+        sellOrderItem.setQuantity(sellOrderItemDTO.getQuantity());
         sellOrderItem.setUserID(userID);
         sellOrderItem.setCreationTime(sellOrder.getCreationTime());
-        Double actualTotalSale = product.getSellingPrice() * registerSellOrderItem.getQuantity();
+        Double actualTotalSale = sellOrderItem.getPricePerUnit() * sellOrderItem.getQuantity();
         sellOrderItem.setActualTotalSale(actualTotalSale);
         sellOrderItem.setGender(sellOrder.getGender());
         sellOrderItem.setAgeGroup(sellOrder.getAgeGroup());
         this.sellOrderItemRepository.save(sellOrderItem);
-        // add sellorderitem to sellorder
-        sellOrder.getSellOrderItems().add(sellOrderItem);
         return sellOrderItem;
-    }
+    }   
 
     // sell order item delete
     @Transactional
@@ -136,58 +143,58 @@ public class NewSellOrderService {
         }
     }
 
-    @Transactional
-    public SellOrder registerSellOrder(Long userID, RegisterSellOrder registerSellOrder){
-        SellOrder sellOrder = new SellOrder();
+    @Transactional 
+    private void updateDiscount(Long userID, Long discountID, Double discountCash, Double orderCost){
+        Discount discount = this.discountRepository.findDiscountByDiscountID(discountID);
+        discount.setCash(discount.getCash() + discountCash);
+        discount.setOrderCount(discount.getOrderCount() + 1);
+        // if current default value then net new minimum sell order cost
+        if(discount.getMinimumSellOrderCost().equals(0.0)){
+            discount.setMinimumSellOrderCost(orderCost);
+        }
+        else {
+            discount.setMinimumSellOrderCost(Math.min(orderCost, discount.getMinimumSellOrderCost()));
+        }
+        discountRepository.save(discount);
+    }
 
+    @Transactional
+    public SellOrder registerSellOrder(Long userID, @Valid SellOrderDTO sellOrderDTO){
+        SellOrder sellOrder = new SellOrder();
         sellOrder.setUserID(userID);
-        sellOrder.setCreationTime(ZonedDateTime.now());
-        // customer solving
-        Customer customer;
-        if(registerSellOrder.getCustomer() == null){
-            String default_phoneNumber = "000000000";
-            customer = this.customerRepository.findCustomerByUserIDAndPhoneNumber(userID, default_phoneNumber).get();
-            if(customer == null){
-                customer = new Customer();
-                customer.setAgeGroup(AgeGroup.UNKNOWN);
-                customer.setGender(Gender.UNKNOWN);
-                customer.setPhoneNumber(default_phoneNumber);
-                customer.setUserID(userID);
-                customer.setName("UNKNOWN");
-                this.customerRepository.save(customer);
-            }
+        // customer 
+        Customer customer = sellOrderDTO.getCustomer();
+        if(customer == null){
+            customer = defaultCustomerUtilService.defaultCustomer(userID);
         }
         else{
-            String phoneNumber = registerSellOrder.getCustomer().getPhoneNumber();
-            if(phoneNumber == null){
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Phone number invalid");
-            }
-            customer = this.customerRepository.findCustomerByUserIDAndPhoneNumber(userID, phoneNumber).get();
-            if(customer == null){
-                customer = registerSellOrder.getCustomer();
-                this.customerRepository.save(sellOrder.getCustomer());
-            }
+            customer = searchCustomerUtilService.findCustomerByIncompletedInfo(userID, customer);
         }
-        sellOrder.setCustomer(customer);
         sellOrder.setGender(customer.getGender());
         sellOrder.setAgeGroup(customer.getAgeGroup());
-        sellOrder.setCustomerMessage(registerSellOrder.getCustomer_message());
-        sellOrder.setStatus(registerSellOrder.getStatus());
-        sellOrder.setAddress(registerSellOrder.getAddress());
+        sellOrder.setCustomerMessage(sellOrderDTO.getCustomerMessage());
+        sellOrder.setStatus(sellOrderDTO.getStatus());
+        sellOrder.setAddress(sellOrderDTO.getAddress());
+        sellOrder.setCreationTime(ZonedDateTime.now());
         this.sellOrderRepository.save(sellOrder);
 
-        double realCost = 0;
-        // add sellorderitem by product id
-        for(Long productID : registerSellOrder.getProducts().keySet()){
-            Integer quantity = registerSellOrder.getProducts().get(productID);
-            SellOrderItem sellOrderItem = this.registerNewSellOrderItem(userID, new RegisterSellOrderItem(productID, sellOrder.getSellOrderID(), quantity));
-            realCost += sellOrderItem.getActualTotalSale(); 
+        // real cost
+        Double realCost = 0.0;
+        for(SellOrderItemDTO sellOrderItemDTO: sellOrderDTO.getSellOrderItemDTOs()){
+            Long productID = sellOrderItemDTO.getProductID();
+            Integer quantity = sellOrderItemDTO.getQuantity();
+            SellOrderItem sellOrderItem = this.registerNewSellOrderItem(userID, sellOrder.getSellOrderID(), sellOrderItemDTO);
+            realCost += sellOrderItem.getActualTotalSale();
+            // decrease number of product in database
             this.editProductQuantity(userID, productID, -quantity, String.format("buy %d products with id: %d", quantity, productID));
         }
-        double actual_discount_cash = 0;
-        // discount solving 
-        if(registerSellOrder.getDiscountID() != null){
-            Discount discount = this.discountRepository.findDiscountByDiscountID(registerSellOrder.getDiscountID());
+
+        Double actualDiscountCash = 0.0;
+        // if no discount provided
+        if(sellOrderDTO.getDiscountID() != null){
+            Long discountID = sellOrderDTO.getDiscountID();
+            Discount discount = discountRepository.findDiscountByDiscountID(discountID);
+            // found discount
             if(discount != null){
                 if(discount.getExpiryTime().isBefore(ZonedDateTime.now())){
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "discount expired time !!!");
@@ -199,31 +206,31 @@ public class NewSellOrderService {
                     }
                     else{
                         if(discount.getDiscountType() == DiscountType.CASH_ONLY){
-                            actual_discount_cash = discount.getCash();
+                            actualDiscountCash = discount.getCash();
                         }
                         else if(discount.getDiscountType() == DiscountType.PERCENTAGE_ONLY){
-                            actual_discount_cash = (long)(discount.getPercentage() / 100.0 * realCost);
-                            if(actual_discount_cash > discount.getCashLimit()){
-                                actual_discount_cash = discount.getCashLimit();
+                            actualDiscountCash = (Double)(discount.getPercentage() / 100.0 * realCost);
+                            if(actualDiscountCash > discount.getCashLimit()){
+                                actualDiscountCash = discount.getCashLimit();
                             }
                         }
+                        sellOrder.setDiscount(discount);
                     }
                 }
             }
             else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "not found discount");
         }
-        // set precistion == 2
-        double actualDiscountPercentage = Double.parseDouble(df.format(actual_discount_cash / realCost));
-        double finalCost = Double.parseDouble(df.format(realCost - actual_discount_cash));
-        sellOrder.setActualDiscountCash(Double.valueOf(df.format(actual_discount_cash)));
+
+        double actualDiscountPercentage = Double.parseDouble(df.format(actualDiscountCash/ realCost));
+        double finalCost = Double.parseDouble(df.format(realCost - actualDiscountCash));
+        sellOrder.setActualDiscountCash(Double.valueOf(df.format(actualDiscountCash)));
         sellOrder.setActualDiscountPercentage(actualDiscountPercentage);
         sellOrder.setFinalCost(finalCost);
         sellOrder.setRealCost(Double.valueOf(df.format(realCost)));
-        // 
         this.sellOrderRepository.save(sellOrder);
         return sellOrder;
-    } 
-    
+    }
+
 
     @Transactional
     public void deleteSellOrderBySellOrderID(Long userID, Long sellOrderID)

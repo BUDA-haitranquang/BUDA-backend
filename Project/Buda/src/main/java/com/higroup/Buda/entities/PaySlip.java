@@ -38,7 +38,7 @@ public class PaySlip {
     private ZonedDateTime creationTime;
     @Column(length = 1000)
     private String message;
-    private Long totalCost;
+    private Double totalCost;
     @Column(name = "user_id")
     private Long userID;
     @Override

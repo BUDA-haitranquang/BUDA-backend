@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import com.higroup.Buda.BeanUtils.NullAwareBeanUtilsBean;
 import com.higroup.Buda.entities.Staff;
@@ -85,6 +86,7 @@ public class StaffService implements UserDetailsService{
         }
         newStaff.setPassword(this.bCryptPasswordEncoder.encode(newStaff.getPassword()));
         newStaff.addRole(roleRepository.findRoleByName("STAFF").get());
+        newStaff.setStaffUUID(UUID.randomUUID().toString());
         this.staffRepository.save(newStaff);
         return ResponseEntity.ok().body(newStaff);
     }

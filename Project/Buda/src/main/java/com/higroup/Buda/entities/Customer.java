@@ -44,10 +44,10 @@ public class Customer{
     private Long customerID;
     @Column(columnDefinition = "varchar(50) default 'UNKNOWN'")
     @Enumerated(EnumType.STRING)
-    private AgeGroup ageGroup;
+    private AgeGroup ageGroup = AgeGroup.UNKNOWN;
     @Column(columnDefinition = "varchar(50) default 'UNKNOWN'")
     @Enumerated(EnumType.STRING)
-    private Gender gender;
+    private Gender gender = Gender.UNKNOWN;
     @Column(columnDefinition = "double default 0.0")
     private double totalSpend;
     @Column(name = "membership_id")

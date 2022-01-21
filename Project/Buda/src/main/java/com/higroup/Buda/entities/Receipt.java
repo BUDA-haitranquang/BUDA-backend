@@ -29,7 +29,7 @@ public class Receipt {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "receipt_id")
     private Long receiptID;
-    private Long totalCost;
+    private Double totalCost;
     @ManyToOne(optional = true)
     @Fetch(FetchMode.JOIN)
     @JoinColumn(name = "customer_id", nullable = true)

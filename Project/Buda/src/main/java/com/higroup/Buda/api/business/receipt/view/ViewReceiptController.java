@@ -7,6 +7,7 @@ import com.higroup.Buda.util.Checker.RequestUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,5 +25,10 @@ public class ViewReceiptController {
     public ResponseEntity<?> findAllByCurrentUser(HttpServletRequest httpServletRequest){
         Long userID = this.requestUtil.getProUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.viewReceiptService.findAllReceiptByUserID(userID));
+    }
+    @GetMapping("/id/{receiptID}")
+    public ResponseEntity<?> findReceiptByReceiptID(HttpServletRequest httpServletRequest, @PathVariable Long receiptID){
+        Long userID = this.requestUtil.getProUserIDFromUserToken(httpServletRequest);
+        return ResponseEntity.ok().body(this.viewReceiptService.findReceiptByReceiptID(userID, receiptID));
     }
 }

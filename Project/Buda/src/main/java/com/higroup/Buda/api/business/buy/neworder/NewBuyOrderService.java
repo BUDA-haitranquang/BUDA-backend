@@ -58,17 +58,22 @@ public class NewBuyOrderService {
         }
         this.buyOrderRepository.save(buyOrder);
         try {
+            Double totalCost = 0.0;
             for (BuyOrderItem buyOrderItem : buyOrder.getBuyOrderItems()) {
                 buyOrderItem.setUserID(userID);
                 buyOrderItem.setCreationTime(buyOrder.getCreationTime());
                 if (!buyOrder.getSupplier().equals(null)) {
                     buyOrderItem.setSupplierID(buyOrder.getSupplier().getSupplierID());
                 }
+                Double currentCost = buyOrderItem.getQuantity() * buyOrderItem.getPricePerUnit();
+                totalCost = totalCost + currentCost;
                 this.buyOrderItemRepository.save(buyOrderItem);
+                buyOrder.setTotalCost(totalCost);
             }
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
+        this.buyOrderRepository.save(buyOrder);
         return buyOrder;
     }
 
