@@ -1,6 +1,7 @@
 package com.higroup.Buda.api.business.sell.neworder;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import com.higroup.Buda.entities.SellOrder;
 import com.higroup.Buda.util.Checker.RequestUtil;
