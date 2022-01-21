@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("api/product/new")
+@RequestMapping("api/product/create")
 @CrossOrigin("*")
 public class ProductCreateController {
     private final RequestUtil requestUtil;

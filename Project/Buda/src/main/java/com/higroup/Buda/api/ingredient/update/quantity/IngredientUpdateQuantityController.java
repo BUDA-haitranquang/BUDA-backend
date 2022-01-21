@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 @RestController
-@RequestMapping("api/ingredient/edit/quantity")
+@RequestMapping("api/ingredient/update/quantity")
 @CrossOrigin("*")
 public class IngredientUpdateQuantityController {
     private final RequestUtil requestUtil;

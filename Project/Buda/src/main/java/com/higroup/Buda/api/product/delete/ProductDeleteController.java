@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping("api/product")
+@RequestMapping("api/product/delete")
 @CrossOrigin("*")
 public class ProductDeleteController {
     private final RequestUtil requestUtil;

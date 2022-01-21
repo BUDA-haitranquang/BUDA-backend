@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.InvocationTargetException;
 
 @RestController
-@RequestMapping("api/product/edit")
+@RequestMapping("api/product/update")
 @CrossOrigin("*")
 public class ProductUpdateController {
     private final RequestUtil requestUtil;

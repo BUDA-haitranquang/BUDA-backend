@@ -146,7 +146,6 @@ public class NewSellOrderService {
     @Transactional 
     private void updateDiscount(Long userID, Long discountID, Double discountCash){
         Discount discount = this.discountRepository.findDiscountByDiscountID(discountID);
-        discount.setCash(discount.getCash() + discountCash);
         discount.setOrderCount(discount.getOrderCount() + 1);
         discountRepository.save(discount);
     }

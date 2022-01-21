@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping(path = "/api/business/sell/warranty")
+@RequestMapping(path = "/api/business/sell/warranty/view")
 public class WarrantyOrderViewController {
     private final WarrantyOrderViewService warrantyOrderService;
     private final RequestUtil requestUtil;

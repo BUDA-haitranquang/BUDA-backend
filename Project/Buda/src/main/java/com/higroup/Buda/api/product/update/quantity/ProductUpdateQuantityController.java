@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping("api/product/edit/quantity")
+@RequestMapping("api/product/update/quantity")
 @CrossOrigin("*")
 public class ProductUpdateQuantityController {
     private final RequestUtil requestUtil;

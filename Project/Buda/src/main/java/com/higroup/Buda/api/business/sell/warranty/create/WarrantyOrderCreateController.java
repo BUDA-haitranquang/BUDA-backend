@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping(path = "/api/business/sell/warranty/new")
+@RequestMapping(path = "/api/business/sell/warranty/create")
 public class WarrantyOrderCreateController {
     private final WarrantyOrderCreateService warrantyOrderCreateService;
     private final RequestUtil requestUtil;

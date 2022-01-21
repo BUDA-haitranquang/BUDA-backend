@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.InvocationTargetException;
 
 @RestController
-@RequestMapping("api/ingredient/edit")
+@RequestMapping("api/ingredient/update")
 @CrossOrigin("*")
 public class IngredientUpdateController {
     private final RequestUtil requestUtil;
