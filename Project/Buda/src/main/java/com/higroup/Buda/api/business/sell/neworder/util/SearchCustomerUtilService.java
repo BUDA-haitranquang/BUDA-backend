@@ -27,6 +27,7 @@ public class SearchCustomerUtilService {
             else throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Customer not found");
         }
         else if (customer.getPhoneNumber()!=null){
+            if(!customer.getPhoneNumber().matches("[0-9]+")) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Phone number invalid");
             Optional<Customer> customerOptional = this.customerRepository.findCustomerByUserIDAndPhoneNumber(userID, customer.getPhoneNumber());
             if ((customerOptional.isPresent()) && (customerOptional.get().getUserID().equals(userID))){
                 return customerOptional.get();
