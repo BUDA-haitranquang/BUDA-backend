@@ -7,6 +7,8 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+import com.higroup.Buda.api.business.sell.neworder.util.DefaultCustomerUtilService;
+import com.higroup.Buda.api.business.sell.neworder.util.SearchCustomerUtilService;
 import com.higroup.Buda.entities.Customer;
 import com.higroup.Buda.entities.Discount;
 import com.higroup.Buda.entities.Product;
@@ -39,13 +41,18 @@ public class NewSellOrderService {
     private DiscountRepository discountRepository;
     private ProductRepository productRepository;
     private ProductLeftLogRepository productLeftLogRepository;
+    private SearchCustomerUtilService searchCustomerUtilService;
+    private DefaultCustomerUtilService defaultCustomerUtilService;
 
     private DecimalFormat df = new DecimalFormat("###.##");
 
     @Autowired
     public NewSellOrderService(CustomerRepository customerRepository, SellOrderRepository sellOrderRepository, SellOrderItemRepository sellOrderItemRepository, 
-                               DiscountRepository discountRepository, ProductRepository productRepository, ProductLeftLogRepository productLeftLogRepository)
+                               DiscountRepository discountRepository, ProductRepository productRepository, ProductLeftLogRepository productLeftLogRepository,
+                               DefaultCustomerUtilService defaultCustomerUtilService, SearchCustomerUtilService searchCustomerUtilService)
     {
+        this.searchCustomerUtilService = searchCustomerUtilService;
+        this.defaultCustomerUtilService = defaultCustomerUtilService;
         this.customerRepository = customerRepository;
         this.sellOrderRepository = sellOrderRepository;
         this.sellOrderItemRepository = sellOrderItemRepository;
@@ -156,52 +163,15 @@ public class NewSellOrderService {
         SellOrder sellOrder = new SellOrder();
         sellOrder.setUserID(userID);
         // customer 
-        if(sellOrderDTO.getCustomer() == null){
-            String default_phoneNumber = "000000000";
-            Optional<Customer> customerOptional = this.customerRepository.findCustomerByUserIDAndPhoneNumber(userID, default_phoneNumber);
-            if(!customerOptional.isPresent()){
-                Customer customer = new Customer();
-                customer.setAgeGroup(AgeGroup.UNKNOWN);
-                customer.setGender(Gender.UNKNOWN);
-                customer.setPhoneNumber(default_phoneNumber);
-                customer.setUserID(userID);
-                customer.setName("UNKNOWN");
-                this.customerRepository.save(customer);
-                sellOrder.setCustomer(customer);
-                sellOrder.setGender(customer.getGender());
-                sellOrder.setAgeGroup(customer.getAgeGroup());
-            }
-            else{
-                sellOrder.setCustomer(customerOptional.get());
-                sellOrder.setGender(Gender.UNKNOWN);
-                sellOrder.setAgeGroup(AgeGroup.UNKNOWN);
-            }
+        Customer customer = sellOrderDTO.getCustomer();
+        if(customer == null){
+            customer = defaultCustomerUtilService.defaultCustomer(userID);
         }
         else{
-            String phoneNumber = sellOrderDTO.getCustomer().getPhoneNumber();
-            System.out.println(phoneNumber);
-            if(phoneNumber == null){
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Phone number invalid");
-            }
-            Optional<Customer> OPcustomer = this.customerRepository.findCustomerByUserIDAndPhoneNumber(userID, phoneNumber);
-            Customer customer;
-            if(!OPcustomer.isPresent()){
-                customer = sellOrderDTO.getCustomer();
-                this.customerRepository.save(customer);
-            }
-            else{
-                customer = OPcustomer.get();
-            }
-            sellOrder.setCustomer(customer);
-            if(customer.getGender() == null){
-                sellOrder.setGender(Gender.UNKNOWN);
-            }
-            else sellOrder.setGender(customer.getGender());
-            if(customer.getAgeGroup() == null){
-                sellOrder.setAgeGroup(AgeGroup.UNKNOWN);
-            }
-            else sellOrder.setAgeGroup(customer.getAgeGroup());
+            customer = searchCustomerUtilService.findCustomerByIncompletedInfo(userID, customer);
         }
+        sellOrder.setGender(customer.getGender());
+        sellOrder.setAgeGroup(customer.getAgeGroup());
         sellOrder.setCustomerMessage(sellOrderDTO.getCustomerMessage());
         sellOrder.setStatus(sellOrderDTO.getStatus());
         sellOrder.setAddress(sellOrderDTO.getAddress());
@@ -244,7 +214,7 @@ public class NewSellOrderService {
                                 actualDiscountCash = discount.getCashLimit();
                             }
                         }
-                        this.updateDiscount(userID, discountID, actualDiscountCash, realCost);
+                        sellOrder.setDiscount(discount);
                     }
                 }
             }
@@ -252,8 +222,8 @@ public class NewSellOrderService {
         }
 
         double actualDiscountPercentage = Double.parseDouble(df.format(actualDiscountCash/ realCost));
-        double finalCost = Double.parseDouble(df.format(realCost - actualDiscountPercentage));
-        sellOrder.setActualDiscountCash(Double.valueOf(df.format(actualDiscountPercentage)));
+        double finalCost = Double.parseDouble(df.format(realCost - actualDiscountCash));
+        sellOrder.setActualDiscountCash(Double.valueOf(df.format(actualDiscountCash)));
         sellOrder.setActualDiscountPercentage(actualDiscountPercentage);
         sellOrder.setFinalCost(finalCost);
         sellOrder.setRealCost(Double.valueOf(df.format(realCost)));
