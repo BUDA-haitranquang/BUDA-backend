@@ -1,4 +1,4 @@
-package com.higroup.Buda.api.product.crud;
+package com.higroup.Buda.api.product.view;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -6,7 +6,6 @@ import java.util.List;
 
 import com.higroup.Buda.BudaApplication;
 import com.higroup.Buda.entities.Product;
-import com.higroup.Buda.repositories.ProductRepository;
 import com.higroup.Buda.services.ProductService;
 
 import org.junit.jupiter.api.Test;

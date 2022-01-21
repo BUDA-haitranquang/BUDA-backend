@@ -12,6 +12,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SimpleEmailDTO {
-    @NotNull
+    @NotNull(message = "email not null")
     private String email;
 }

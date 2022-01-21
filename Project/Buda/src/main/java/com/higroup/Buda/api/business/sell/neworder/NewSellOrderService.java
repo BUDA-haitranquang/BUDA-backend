@@ -144,17 +144,9 @@ public class NewSellOrderService {
     }
 
     @Transactional 
-    private void updateDiscount(Long userID, Long discountID, Double discountCash, Double orderCost){
+    private void updateDiscount(Long userID, Long discountID, Double discountCash){
         Discount discount = this.discountRepository.findDiscountByDiscountID(discountID);
-        discount.setCash(discount.getCash() + discountCash);
         discount.setOrderCount(discount.getOrderCount() + 1);
-        // if current default value then net new minimum sell order cost
-        if(discount.getMinimumSellOrderCost().equals(0.0)){
-            discount.setMinimumSellOrderCost(orderCost);
-        }
-        else {
-            discount.setMinimumSellOrderCost(Math.min(orderCost, discount.getMinimumSellOrderCost()));
-        }
         discountRepository.save(discount);
     }
 
@@ -214,6 +206,7 @@ public class NewSellOrderService {
                                 actualDiscountCash = discount.getCashLimit();
                             }
                         }
+                        this.updateDiscount(userID, discountID, actualDiscountCash);
                         sellOrder.setDiscount(discount);
                     }
                 }

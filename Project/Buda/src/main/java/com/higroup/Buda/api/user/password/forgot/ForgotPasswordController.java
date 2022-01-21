@@ -1,5 +1,5 @@
 package com.higroup.Buda.api.user.password.forgot;
-
+import com.higroup.Buda.api.user.updateinfo.email.SimpleEmailDTO;
 import com.higroup.Buda.customDTO.UserUpdatePassword;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +17,8 @@ public class ForgotPasswordController {
     }
 
     @GetMapping
-    public ResponseEntity<?> forgotPassword(@RequestParam(name = "email") String email) {
-        this.forgotPasswordService.forgotPassword(email);
+    public ResponseEntity<?> forgotPassword(@RequestBody SimpleEmailDTO email) {
+        this.forgotPasswordService.forgotPassword(email.getEmail());
         return ResponseEntity.ok().body("Check your email");
     }
 

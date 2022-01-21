@@ -1,36 +1,29 @@
-package com.higroup.Buda.services;
-
-import java.time.ZonedDateTime;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
+package com.higroup.Buda.api.business.sell.warranty.create;
 
 import com.higroup.Buda.customDTO.RegisterWarrantyOrder;
 import com.higroup.Buda.entities.*;
-import com.higroup.Buda.repositories.CustomerRepository;
-import com.higroup.Buda.repositories.ProductRepository;
-import com.higroup.Buda.repositories.SellOrderRepository;
-import com.higroup.Buda.repositories.UserRepository;
-import com.higroup.Buda.repositories.WarrantyOrderRepository;
-
+import com.higroup.Buda.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.swing.text.html.Option;
+import javax.transaction.Transactional;
+import java.time.ZonedDateTime;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 
 @Service
-public class WarrantyOrderService {
+public class WarrantyOrderCreateService {
     private final WarrantyOrderRepository warrantyOrderRepository;
     private final UserRepository userRepository;
     private final SellOrderRepository sellOrderRepository;
     private final ProductRepository productRepository;
     private final CustomerRepository customerRepository;
     @Autowired
-    public WarrantyOrderService(WarrantyOrderRepository warrantyOrderRepository, UserRepository userRepository, SellOrderRepository sellOrderRepository,
-    ProductRepository productRepository, CustomerRepository customerRepository)
+    public WarrantyOrderCreateService(WarrantyOrderRepository warrantyOrderRepository, UserRepository userRepository, SellOrderRepository sellOrderRepository,
+                                      ProductRepository productRepository, CustomerRepository customerRepository)
     {
         this.customerRepository = customerRepository;
         this.productRepository = productRepository;
@@ -38,30 +31,14 @@ public class WarrantyOrderService {
         this.userRepository = userRepository;
         this.warrantyOrderRepository = warrantyOrderRepository;
     }
-    public List<WarrantyOrder> findAllWarrantyOrderByUserID(Long userID)
+    @Transactional
+    public WarrantyOrder createNewWarrantyOrder(Long userID, RegisterWarrantyOrder registerWarrantyOrder)
     {
-        return this.warrantyOrderRepository.findAllByUserID(userID);
-    }
-    public List<WarrantyOrder> findAllWarrantyOrderByProductID(Long userID, Long productID)
-    {
-        Product product = this.productRepository.findProductByProductID(productID);
-        if ((product!=null) && (product.getUserID().equals(userID)))
+        Optional<User> user = this.userRepository.findUserByUserID(userID);
+        if (user.isEmpty())
         {
-            return this.warrantyOrderRepository.findAllByProductID(productID);
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
         }
-        else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
-    }
-    public List<WarrantyOrder> findAllWarrantyOrderByCustomerID(Long userID, Long customerID)
-    {
-        Optional<Customer> customer = this.customerRepository.findCustomerByCustomerID(customerID);
-        if ((customer.isPresent()) && (customer.get().getUserID().equals(userID)))
-        {
-            return this.warrantyOrderRepository.findAllByCustomerID(customerID);
-        }
-        else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Customer not found");
-    }
-    public WarrantyOrder registerNewWarrantyOrder(Long userID, RegisterWarrantyOrder registerWarrantyOrder)
-    {
         Long productID = registerWarrantyOrder.getProductID();
         Long sellOrderID = registerWarrantyOrder.getSellOrderID();
         Long customerID = registerWarrantyOrder.getCustomerID();
