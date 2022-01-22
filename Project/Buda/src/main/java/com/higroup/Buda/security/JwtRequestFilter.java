@@ -20,6 +20,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -37,9 +39,16 @@ public class JwtRequestFilter extends OncePerRequestFilter{
     @Autowired 
     private JwtTokenUtil jwtTokenUtil;
 
+    private final RequestMatcher ignoredPaths = new AntPathRequestMatcher("/api/user/login/**");
+    
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
         throws ServletException, IOException {
+            if (this.ignoredPaths.matches(request)) { 
+                chain.doFilter(request, response);
+                return;
+           }
+   
             final String requestTokenHeader = request.getHeader("Authorization");
             // System.out.println(requestTokenHeader);
             String username = null;
