@@ -49,7 +49,7 @@ public class Customer{
     @Enumerated(EnumType.STRING)
     private Gender gender = Gender.UNKNOWN;
     @Column(columnDefinition = "double default 0.0")
-    private double totalSpend;
+    private double totalSpend = 0.0;
     @Column(name = "membership_id")
     private Long membershipID;
     @Column(length = 50)
