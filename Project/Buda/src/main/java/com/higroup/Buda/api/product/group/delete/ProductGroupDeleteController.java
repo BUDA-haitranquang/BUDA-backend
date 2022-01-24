@@ -1,4 +1,4 @@
-package com.higroup.Buda.api.product.packaging.group.delete;
+package com.higroup.Buda.api.product.group.delete;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping("api/product/packaging/group/delete")
+@RequestMapping("api/product/group/delete")
 @CrossOrigin("*")
 public class ProductGroupDeleteController {
     private final ProductGroupDeleteService productGroupService;
@@ -24,8 +24,7 @@ public class ProductGroupDeleteController {
         this.productGroupService = productGroupService;
         this.requestUtil = requestUtil;
     }
-    @GetMapping(path = "/all")
-    @DeleteMapping(path = "/{productGroupID}")
+    @DeleteMapping(path = "id/{productGroupID}")
     public ResponseEntity<?> deleteProductGroup(HttpServletRequest httpServletRequest, @PathVariable Long productGroupID)
     {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);

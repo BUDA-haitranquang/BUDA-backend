@@ -1,4 +1,4 @@
-package com.higroup.Buda.api.product.packaging.group;
+package com.higroup.Buda.api.product.group;
 
 import java.util.*;
 

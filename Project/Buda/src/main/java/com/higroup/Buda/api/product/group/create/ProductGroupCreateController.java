@@ -1,4 +1,4 @@
-package com.higroup.Buda.api.product.packaging.group.create;
+package com.higroup.Buda.api.product.group.create;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping("api/product/packaging/group/create")
+@RequestMapping("api/product/group/create")
 @CrossOrigin("*")
 public class ProductGroupCreateController {
     private final ProductGroupCreateService productGroupCreateService;

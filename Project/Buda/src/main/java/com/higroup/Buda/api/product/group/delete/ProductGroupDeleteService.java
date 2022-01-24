@@ -1,4 +1,4 @@
-package com.higroup.Buda.api.product.packaging.group.delete;
+package com.higroup.Buda.api.product.group.delete;
 
 import com.higroup.Buda.entities.ProductGroup;
 import com.higroup.Buda.entities.User;
