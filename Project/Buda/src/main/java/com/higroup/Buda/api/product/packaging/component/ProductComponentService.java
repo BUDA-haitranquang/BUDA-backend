@@ -1,4 +1,11 @@
-package com.higroup.Buda.services;
+package com.higroup.Buda.api.product.packaging.component;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
+import javax.transaction.Transactional;
 
 import com.higroup.Buda.entities.Ingredient;
 import com.higroup.Buda.entities.Product;
@@ -10,16 +17,8 @@ import com.higroup.Buda.util.Checker.PresentChecker;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-
-import javax.transaction.Transactional;
 
 @Service
 public class ProductComponentService {

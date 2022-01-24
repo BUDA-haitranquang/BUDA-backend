@@ -1,10 +1,8 @@
-package com.higroup.Buda.restcontroller;
+package com.higroup.Buda.api.product.group;
 
 import java.util.List;
 
-import com.higroup.Buda.entities.Product;
 import com.higroup.Buda.entities.ProductGroup;
-import com.higroup.Buda.services.ProductGroupService;
 
 import com.higroup.Buda.util.Checker.RequestUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping("api/product-group")
+@RequestMapping("api/product/packaging/group")
 @CrossOrigin("*")
 public class ProductGroupController {
     private final ProductGroupService productGroupService;
@@ -31,19 +29,6 @@ public class ProductGroupController {
     {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return this.productGroupService.findAllByUserID(userID);
-    }
-    @PostMapping(path = "/new")
-    public ResponseEntity<?> createProductGroup(HttpServletRequest httpServletRequest, @RequestBody ProductGroup productGroup)
-    {
-        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
-        return ResponseEntity.ok().body(this.productGroupService.createProductGroup(userID, productGroup));
-    }
-    @DeleteMapping(path = "/remove/{productGroupID}")
-    public ResponseEntity<?> deleteProductGroup(HttpServletRequest httpServletRequest, @PathVariable Long productGroupID)
-    {
-        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
-        this.productGroupService.deleteProductGroup(userID, productGroupID);
-        return ResponseEntity.ok().body("Delete successfully");
     }
     @PostMapping(path = "/{productGroupID}/add/{productID}")
     public ResponseEntity<?> addProductToProductGroup(HttpServletRequest httpServletRequest, @PathVariable Long productGroupID, @PathVariable Long productID)

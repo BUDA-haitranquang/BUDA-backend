@@ -1,4 +1,4 @@
-package com.higroup.Buda.services;
+package com.higroup.Buda.api.product.group;
 
 import java.util.*;
 
@@ -34,33 +34,6 @@ public class ProductGroupService {
     public List<ProductGroup> findAllByUserID(Long userID)
     {
         return this.productGroupRepository.findAllByUserID(userID);
-    }
-    @Transactional
-    public ProductGroup createProductGroup(Long userID, ProductGroup productGroup)
-    {
-        Optional<User> user = this.userRepository.findUserByUserID(userID);
-        if (user.isEmpty())
-        {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
-        }
-        productGroup.setUserID(userID);
-        this.productGroupRepository.save(productGroup);
-        return productGroup;
-    }
-    @Transactional
-    public void deleteProductGroup(Long userID, Long productGroupID)
-    {
-        Optional<User> user = this.userRepository.findUserByUserID(userID);
-        if (user.isEmpty())
-        {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
-        }
-        Optional<ProductGroup> productGroup = this.productGroupRepository.findProductGroupByProductGroupID(productGroupID);
-        if (productGroup.isEmpty())
-        {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product group not found");
-        }
-        this.productGroupRepository.delete(productGroup.get());
     }
     @Transactional
     public ProductGroup addProductToProductGroup(Long userID, Long productGroupID, Long productID)
