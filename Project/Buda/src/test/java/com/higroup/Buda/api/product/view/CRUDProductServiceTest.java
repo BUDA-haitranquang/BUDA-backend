@@ -6,7 +6,6 @@ import java.util.List;
 
 import com.higroup.Buda.BudaApplication;
 import com.higroup.Buda.entities.Product;
-import com.higroup.Buda.services.ProductService;
 
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -18,7 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest(classes = BudaApplication.class)
 public class CRUDProductServiceTest {
     @Autowired
-    private ProductService productService;
+    private ProductViewService productService;
     @Autowired 
     private 
     

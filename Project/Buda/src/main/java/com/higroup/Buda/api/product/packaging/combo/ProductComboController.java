@@ -1,21 +1,15 @@
-package com.higroup.Buda.restcontroller;
+package com.higroup.Buda.api.product.packaging.combo;
+
+import com.higroup.Buda.util.Checker.RequestUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.higroup.Buda.services.ProductComboService;
-import com.higroup.Buda.util.Checker.RequestUtil;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 @RestController
 @CrossOrigin("*")
-@RequestMapping("api/product-combo")
+@RequestMapping("api/product/packaging/combo")
 public class ProductComboController {
     private final ProductComboService productComboService;
     private final RequestUtil requestUtil;
