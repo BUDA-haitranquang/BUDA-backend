@@ -1,4 +1,4 @@
-package com.higroup.Buda.services;
+package com.higroup.Buda.api.product.packaging.combo;
 
 import java.util.List;
 

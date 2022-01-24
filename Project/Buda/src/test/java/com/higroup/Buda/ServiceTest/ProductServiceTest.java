@@ -2,27 +2,8 @@ package com.higroup.Buda.ServiceTest;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-
-import com.higroup.Buda.entities.Product;
-import com.higroup.Buda.entities.User;
-import com.higroup.Buda.repositories.ProductGroupRepository;
-import com.higroup.Buda.repositories.ProductRepository;
-import com.higroup.Buda.repositories.UserRepository;
-import com.higroup.Buda.services.ProductService;
-
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.http.ResponseEntity;
-import org.testcontainers.containers.MySQLContainer;
-import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 

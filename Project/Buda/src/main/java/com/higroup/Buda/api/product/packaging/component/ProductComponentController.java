@@ -1,9 +1,7 @@
-package com.higroup.Buda.restcontroller;
+package com.higroup.Buda.api.product.packaging.component;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.higroup.Buda.entities.ProductComponent;
-import com.higroup.Buda.services.ProductComponentService;
 import com.higroup.Buda.util.Checker.RequestUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("api/product-component")
+@RequestMapping("api/product/packaging/component")
 public class ProductComponentController {
     private final ProductComponentService productComponentService;
     private final RequestUtil requestUtil;
