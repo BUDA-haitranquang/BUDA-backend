@@ -12,6 +12,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class IngredientCreateService {
@@ -30,12 +31,17 @@ public class IngredientCreateService {
         {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
         }
-        //Optional<Ingredient> ingredient = this.ingredientRepository.findIngredientByName(newIngredient.getName());
+        if (newIngredient.getIngredientSKU()==null){
+            newIngredient.setIngredientSKU(UUID.randomUUID().toString());
+        }
+        Ingredient ingredientBySKU = 
+        this.ingredientRepository.findIngredientByUserIDAndIngredientSKU(userID, newIngredient.getIngredientSKU());
         // check if name of ingredient exist
-        // if(ingredient.isPresent()){
-        //     return ResponseEntity.badRequest().body(String.format("Already existed ingredient %s", newIngredient.getName()));
-        // }
-        else{
+        if(ingredientBySKU!=null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+            "Another ingredient with SKU has already existed: " + ingredientBySKU.getName());
+        }
+        else {
             newIngredient.setUserID(userID);
             this.ingredientRepository.save(newIngredient);
             return newIngredient;

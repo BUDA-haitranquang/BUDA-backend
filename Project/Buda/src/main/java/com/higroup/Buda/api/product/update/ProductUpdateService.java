@@ -39,6 +39,7 @@ public class ProductUpdateService {
         if (dest_product.getUserID().equals(userID))
         {
             BeanUtilsBean notNull = new NullAwareBeanUtilsBean();
+            product.setProductSKU(dest_product.getProductSKU());
             notNull.copyProperties(dest_product, product);
             this.productRepository.save(dest_product);
             return dest_product;
