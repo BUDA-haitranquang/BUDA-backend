@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
+import java.util.UUID;
 @Service
 public class ProductCreateService {
     private final ProductRepository productRepository;
@@ -27,6 +28,14 @@ public class ProductCreateService {
         if (user.isEmpty())
         {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
+        }
+        if (product.getProductSKU()==null){
+            product.setProductSKU(UUID.randomUUID().toString());
+        } 
+
+        Product productBySKU = this.productRepository.findProductByUserIDAndProductSKU(userID, product.getProductSKU());
+        if (productBySKU!=null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Another product with this SKU has already existed: " + productBySKU.getName());
         }
         product.setUserID(userID);
         this.productRepository.save(product);

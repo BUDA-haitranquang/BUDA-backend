@@ -26,6 +26,8 @@ public class Ingredient {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ingredient_id")
     private Long ingredientID;
+    @Column(name = "ingredient_sku", length = 150)
+    private String ingredientSKU;
     @Column(length = 100)
     private String name;
     @Column(length = 1000)

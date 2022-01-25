@@ -40,6 +40,7 @@ public class IngredientUpdateService {
         if (Objects.equals(dest_ingredient.get().getUserID(), userID))
         {
             BeanUtilsBean notNull = new NullAwareBeanUtilsBean();
+            ingredient.setIngredientSKU(dest_ingredient.get().getIngredientSKU());
             notNull.copyProperties(dest_ingredient.get(), ingredient);
             this.ingredientRepository.save(dest_ingredient.get());
             return dest_ingredient.get();
