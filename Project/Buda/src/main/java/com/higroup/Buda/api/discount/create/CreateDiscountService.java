@@ -1,48 +1,36 @@
-package com.higroup.Buda.api.discount;
+package com.higroup.Buda.api.discount.create;
 
 import java.time.ZonedDateTime;
-import java.util.List;
-import java.util.Optional;
+import java.util.UUID;
 
 import javax.transaction.Transactional;
 
 import com.higroup.Buda.entities.Discount;
-import com.higroup.Buda.entities.User;
-import com.higroup.Buda.entities.enumeration.DiscountType;
 import com.higroup.Buda.repositories.DiscountRepository;
-import com.higroup.Buda.repositories.UserRepository;
-import com.higroup.Buda.util.Checker.PresentChecker;
 
-import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
-public class DiscountService {
+public class CreateDiscountService {
     private final DiscountRepository discountRepository;
-    private final UserRepository userRepository;
-    
     @Autowired
-    public DiscountService(DiscountRepository discountRepository, UserRepository userRepository)
-    {
-        this.userRepository = userRepository;
+    public CreateDiscountService(DiscountRepository discountRepository){
         this.discountRepository = discountRepository;
     }
-    @Autowired
-    private PresentChecker presentChecker;
     @Transactional
-    public Discount createNewDiscount(Long userID, Discount discount)
-    {
-        Optional<User> user = this.userRepository.findUserByUserID(userID);
-        if (user.isEmpty())
-        {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "UserID does not exist");
-        }
+    public Discount createDiscount(Long userID, Discount discount){
         discount.setCreatedTime(ZonedDateTime.now());
         discount.setUserID(userID);
+        if (discount.getDiscountCode()==null){
+            discount.setDiscountCode(UUID.randomUUID().toString());
+        }
+        Discount discountByCode = this.discountRepository.findDiscountByUserIDAndDiscountCode(userID, discount.getDiscountCode());
+        if (discountByCode!=null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Another discount with this code has already existed: " + discountByCode.getName());
+        }
         if (discount.getExpiryTime().isBefore(discount.getCreatedTime()))
         {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Expiry time cannot before Created time!");
@@ -86,26 +74,5 @@ public class DiscountService {
         discount.setOrderCount(0);
         this.discountRepository.save(discount);
         return discount;
-    }
-    public Discount findDiscountByDiscountID(Long discountID)
-    {
-        presentChecker.checkIdAndRepository(discountID, this.discountRepository);
-        return this.discountRepository.findDiscountByDiscountID(discountID);
-    }
-    public List<Discount> findAllDiscountByUserID(Long userID)
-    {
-        presentChecker.checkId(userID);
-        return this.discountRepository.findAllDiscountByUserID(userID);
-    }
-    @Transactional
-    public void deleteDiscount(Long userID, Long discountID)
-    {
-        presentChecker.checkIdAndRepository(discountID, this.discountRepository);
-        Discount discount = this.discountRepository.findDiscountByDiscountID(discountID);
-        if (!discount.getUserID().equals(userID))
-        {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "UserID does not match");
-        }
-        this.discountRepository.deleteById(discountID);
     }
 }
