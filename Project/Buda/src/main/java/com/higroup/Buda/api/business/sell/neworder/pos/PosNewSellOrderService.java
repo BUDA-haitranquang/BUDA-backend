@@ -132,10 +132,11 @@ public class PosNewSellOrderService {
     @Transactional
     public SellOrderItem newPosSellOrderItem(SellOrderItemDTO sellOrderItemDTO){
         SellOrderItem sellOrderItem = new SellOrderItem();
-        Product product = this.productRepository.findProductByProductID(sellOrderItemDTO.getProductID());
-        if (product == null){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Product not found");
+        Optional<Product> opProduct = this.productRepository.findProductByProductID(sellOrderItemDTO.getProductID());
+        if(!opProduct.isPresent()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
         }
+        Product product = opProduct.get();
         sellOrderItem.setProduct(product);
         sellOrderItem.setPricePerUnit(sellOrderItemDTO.getPricePerUnit());
         if (product.getAmountLeft() >= sellOrderItemDTO.getQuantity()){

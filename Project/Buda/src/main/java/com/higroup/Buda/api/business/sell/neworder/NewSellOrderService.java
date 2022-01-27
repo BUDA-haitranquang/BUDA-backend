@@ -68,7 +68,11 @@ public class NewSellOrderService {
     @Transactional
     public Product editProductQuantity(Long userID, Long productID, Integer amountLeftChange, String message)
     {
-        Product product = this.productRepository.findProductByProductID(productID);
+        Optional<Product> opProduct = this.productRepository.findProductByProductID(productID);
+        if(!opProduct.isPresent()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
+        }
+        Product product = opProduct.get();
         if (Objects.equals(product.getUserID(), userID))
         {
             Integer amountLeft = product.getAmountLeft();
@@ -87,7 +91,9 @@ public class NewSellOrderService {
             this.productLeftLogRepository.save(productLeftLog);
             return product;
         }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
+        else{
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not belong to user");
+        }
     }
 
 
@@ -95,12 +101,16 @@ public class NewSellOrderService {
     // sell order item register
     @Transactional 
     private SellOrderItem registerNewSellOrderItem(Long userID, Long sellOrderID, @Valid SellOrderItemDTO sellOrderItemDTO){
-        Product product = this.productRepository.findProductByProductID(sellOrderItemDTO.getProductID());
+        Optional<Product> opProduct = this.productRepository.findProductByProductID(sellOrderItemDTO.getProductID());
+        if(!opProduct.isPresent()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
+        }
+        Product product = opProduct.get();
         SellOrder sellOrder = this.sellOrderRepository.findSellOrderBySellOrderID(sellOrderID).get();
         // check product visible
         if(!product.getVisible())
         {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "product is not visible");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format("product %s is not visible", product.getName()));
         }
         // check product belong to user
         if(!product.getUserID().equals(userID)){
@@ -108,7 +118,7 @@ public class NewSellOrderService {
         }
         // check enough quantity
         if(product.getAmountLeft() < sellOrderItemDTO.getQuantity()){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Product doesnt have enough quantity left");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format("Product %s doesnt have enough quantity left", product.getName()));
         }
         SellOrderItem sellOrderItem = new SellOrderItem();
         sellOrderItem.setSellOrder(sellOrder);

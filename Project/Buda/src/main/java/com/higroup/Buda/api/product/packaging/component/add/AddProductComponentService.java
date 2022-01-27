@@ -27,7 +27,11 @@ public class AddProductComponentService {
         this.productRepository = productRepository;
     }
     public ProductComponent addProductComponent(Long userID, AddProductComponentDTO addProductComponentDTO){
-        Product product = this.productRepository.findProductByProductID(addProductComponentDTO.getProductID());
+        Optional<Product> opProduct = this.productRepository.findProductByProductID(addProductComponentDTO.getProductID());
+        if(!opProduct.isPresent()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
+        }
+        Product product = opProduct.get();
         Optional<Ingredient> ingredientOptional = this.ingredientRepository.findIngredientByIngredientID(addProductComponentDTO.getIngredientID());
         if ((product != null) && (ingredientOptional.isPresent()) 
         && (product.getUserID().equals(userID))
