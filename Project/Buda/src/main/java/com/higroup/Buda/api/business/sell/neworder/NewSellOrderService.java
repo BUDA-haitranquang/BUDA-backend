@@ -18,6 +18,7 @@ import com.higroup.Buda.entities.SellOrderItem;
 import com.higroup.Buda.entities.enumeration.AgeGroup;
 import com.higroup.Buda.entities.enumeration.DiscountType;
 import com.higroup.Buda.entities.enumeration.Gender;
+import com.higroup.Buda.entities.enumeration.Status;
 import com.higroup.Buda.repositories.CustomerRepository;
 import com.higroup.Buda.repositories.DiscountRepository;
 import com.higroup.Buda.repositories.ProductLeftLogRepository;
@@ -180,8 +181,11 @@ public class NewSellOrderService {
         sellOrder.setAgeGroup(customer.getAgeGroup());
         sellOrder.setCustomerMessage(sellOrderDTO.getCustomerMessage());
         sellOrder.setStatus(sellOrderDTO.getStatus());
-        sellOrder.setAddress(sellOrderDTO.getAddress());
         sellOrder.setCreationTime(ZonedDateTime.now());
+        if(sellOrderDTO.getStatus().equals(Status.FINISHED)){
+            sellOrder.setFinishTime(ZonedDateTime.now());
+        }
+        sellOrder.setAddress(sellOrderDTO.getAddress());
         this.sellOrderRepository.save(sellOrder);
 
         // real cost
