@@ -3,11 +3,11 @@ package com.higroup.Buda.api.statistics.product.worst.returning;
 import java.util.List;
 import java.util.Optional;
 
-import com.higroup.Buda.customDTO.ProductRanking;
 import com.higroup.Buda.entities.User;
 import com.higroup.Buda.entities.enumeration.PlanType;
 import com.higroup.Buda.repositories.SellOrderItemRepository;
 import com.higroup.Buda.repositories.UserRepository;
+import com.higroup.Buda.repositories.SellOrderItemRepository.ProductRanking;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
