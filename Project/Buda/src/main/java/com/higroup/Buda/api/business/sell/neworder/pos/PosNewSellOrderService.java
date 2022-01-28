@@ -77,6 +77,7 @@ public class PosNewSellOrderService {
         // Day la don mua truc tiep - phai tra tien ngay
         sellOrder.setStatus(Status.FINISHED);
         sellOrder.setCreationTime(ZonedDateTime.now());
+        sellOrder.setFinishTime(ZonedDateTime.now());
         Double realCost = 0.0;
         this.sellOrderRepository.save(sellOrder);
         for (SellOrderItemDTO sellOrderItemDTO: sellOrderDTO.getSellOrderItemDTOs()){
