@@ -37,7 +37,11 @@ public class ProductUpdateQuantityService {
         {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
         }
-        Product product = this.productRepository.findProductByProductID(productID);
+        Optional<Product> opProduct = this.productRepository.findProductByProductID(productID);
+        if(!opProduct.isPresent()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
+        }
+        Product product = opProduct.get();
         if (Objects.equals(product.getUserID(), userID))
         {
             Integer amountLeft = product.getAmountLeft();
@@ -56,6 +60,6 @@ public class ProductUpdateQuantityService {
             this.productLeftLogRepository.save(productLeftLog);
             return product;
         }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not belong to user");
     }
 }

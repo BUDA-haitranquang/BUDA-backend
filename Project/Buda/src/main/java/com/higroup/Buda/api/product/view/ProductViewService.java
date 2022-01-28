@@ -42,7 +42,11 @@ public class ProductViewService {
     @Transactional
     public Product hideProductByProductID(Long userID, Long productID)
     {
-        Product product = this.productRepository.findProductByProductID(productID);
+        Optional<Product> opProduct = this.productRepository.findProductByProductID(productID);
+        if(!opProduct.isPresent()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
+        }
+        Product product = opProduct.get();
         if ((product!=null) && (Objects.equals(product.getUserID(), userID)))
         {
             product.setVisible(false);
@@ -53,7 +57,11 @@ public class ProductViewService {
     }
     public Product findProductByProductID(Long userID, Long productID)
     {
-        Product product = this.productRepository.findProductByProductID(productID);
+        Optional<Product> opProduct = this.productRepository.findProductByProductID(productID);
+        if(!opProduct.isPresent()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
+        }
+        Product product = opProduct.get();
         if ((product!=null) && (Objects.equals(product.getUserID(), userID)))
         {
             return product;

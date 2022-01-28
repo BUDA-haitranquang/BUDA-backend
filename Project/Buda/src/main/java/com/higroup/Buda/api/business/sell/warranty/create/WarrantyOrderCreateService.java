@@ -42,7 +42,11 @@ public class WarrantyOrderCreateService {
         Long productID = registerWarrantyOrder.getProductID();
         Long sellOrderID = registerWarrantyOrder.getSellOrderID();
         Long customerID = registerWarrantyOrder.getCustomerID();
-        Product product = this.productRepository.findProductByProductID(productID);
+        Optional<Product> opProduct = this.productRepository.findProductByProductID(productID);
+        if(!opProduct.isPresent()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
+        }
+        Product product = opProduct.get();
         if (!product.getUserID().equals(userID))
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
         Optional<SellOrder> sellOrder = this.sellOrderRepository.findSellOrderBySellOrderID(sellOrderID);

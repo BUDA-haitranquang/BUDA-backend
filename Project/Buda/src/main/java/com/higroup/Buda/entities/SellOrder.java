@@ -67,6 +67,8 @@ public class SellOrder implements Serializable{
     private Discount discount;
     @Column(name = "creation_time")
     private ZonedDateTime creationTime;
+    @Column(name = "finish_time")
+    private ZonedDateTime finishTime;
     @Enumerated(EnumType.STRING)
     private AgeGroup ageGroup = AgeGroup.UNKNOWN;
     @Enumerated(EnumType.STRING)
@@ -110,6 +112,11 @@ public class SellOrder implements Serializable{
             if (other.creationTime != null)
                 return false;
         } else if (!creationTime.equals(other.creationTime))
+            return false;
+        if (finalCost == null) {
+            if (other.finishTime != null)
+                return false;
+        } else if (!finishTime.equals(other.finishTime))
             return false;
         if (customer == null) {
             if (other.customer != null)

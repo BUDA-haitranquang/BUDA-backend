@@ -45,10 +45,14 @@ public class AddProductToGroupService {
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Product's already in the group.");
                 }
             }
-            Product product = this.productRepository.findProductByProductID(productID);
+            Optional<Product> opProduct = this.productRepository.findProductByProductID(productID);
+            if(!opProduct.isPresent()){
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
+            }
+            Product product = opProduct.get();
             if (!product.getUserID().equals(userID))
             {
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not belong to user");
             }
             Set<ProductGroup> productGroups = product.getProductGroups();
             productGroups.add(productGroup.get());

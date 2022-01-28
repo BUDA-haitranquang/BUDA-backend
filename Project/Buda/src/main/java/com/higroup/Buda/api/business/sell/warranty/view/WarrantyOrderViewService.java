@@ -38,12 +38,16 @@ public class WarrantyOrderViewService {
     }
     public List<WarrantyOrder> findAllWarrantyOrderByProductID(Long userID, Long productID)
     {
-        Product product = this.productRepository.findProductByProductID(productID);
-        if ((product!=null) && (product.getUserID().equals(userID)))
+        Optional<Product> opProduct = this.productRepository.findProductByProductID(productID);
+        if(!opProduct.isPresent()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
+        }
+        Product product = opProduct.get();
+        if (product.getUserID().equals(userID))
         {
             return this.warrantyOrderRepository.findAllByProductID(productID);
         }
-        else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
+        else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not belong to user");
     }
     public List<WarrantyOrder> findAllWarrantyOrderByCustomerID(Long userID, Long customerID)
     {
