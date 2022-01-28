@@ -35,7 +35,11 @@ public class ProductUpdateService {
         {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
         }
-        Product dest_product = this.productRepository.findProductByProductID(productID);
+        Optional<Product> opProduct = this.productRepository.findProductByProductID(productID);
+        if(!opProduct.isPresent()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
+        }
+        Product dest_product = opProduct.get();
         if (dest_product.getUserID().equals(userID))
         {
             BeanUtilsBean notNull = new NullAwareBeanUtilsBean();
@@ -44,7 +48,7 @@ public class ProductUpdateService {
             this.productRepository.save(dest_product);
             return dest_product;
         }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not belong to user");
 
     }
 }

@@ -36,10 +36,14 @@ public class RemoveProductFromGroupService {
     @Transactional
     public void removeProductFromProductGroup(Long userID, Long productGroupID, Long productID)
     {
-        Product product = this.productRepository.findProductByProductID(productID);
+        Optional<Product> opProduct = this.productRepository.findProductByProductID(productID);
+        if(!opProduct.isPresent()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
+        }
+        Product product = opProduct.get();
         if (!product.getUserID().equals(userID))
         {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not belong to user");
         }
         Optional<ProductGroup> productGroup = this.productGroupRepository.findProductGroupByProductGroupID(productGroupID);
         if (productGroup.isPresent() && Objects.equals(productGroup.get().getUserID(), userID))
