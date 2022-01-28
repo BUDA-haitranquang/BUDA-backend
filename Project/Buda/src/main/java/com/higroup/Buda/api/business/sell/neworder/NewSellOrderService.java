@@ -167,6 +167,9 @@ public class NewSellOrderService {
 
     @Transactional
     public SellOrder registerSellOrder(Long userID, @Valid SellOrderDTO sellOrderDTO){
+        if(sellOrderDTO.getStatus().equals(Status.RETURNED)){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "can not set status as returned");
+        }
         SellOrder sellOrder = new SellOrder();
         sellOrder.setUserID(userID);
         // customer 
