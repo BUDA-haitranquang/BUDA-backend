@@ -1,15 +1,17 @@
 package com.higroup.Buda.api.user.password.update;
 
-import com.higroup.Buda.api.user.login.UserLoginService;
-import com.higroup.Buda.customDTO.UserLogin;
+import javax.servlet.http.HttpServletRequest;
+
 import com.higroup.Buda.customDTO.UserUpdatePassword;
 import com.higroup.Buda.util.Checker.RequestUtil;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("api/user/password/update")

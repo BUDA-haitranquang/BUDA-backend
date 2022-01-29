@@ -6,7 +6,6 @@ import javax.transaction.Transactional;
 
 import com.higroup.Buda.entities.MailConfirmationToken;
 import com.higroup.Buda.entities.User;
-import com.higroup.Buda.entities.enumeration.MailTokenType;
 import com.higroup.Buda.repositories.MailConfirmationTokenRepository;
 import com.higroup.Buda.repositories.UserRepository;
 import com.higroup.Buda.services.EmailService;

@@ -9,16 +9,14 @@ import javax.validation.Valid;
 
 import com.higroup.Buda.api.business.sell.neworder.SellOrderDTO;
 import com.higroup.Buda.api.business.sell.neworder.SellOrderItemDTO;
-import com.higroup.Buda.api.business.sell.neworder.util.SearchCustomerUtilService;
 import com.higroup.Buda.api.business.sell.neworder.util.DefaultCustomerUtilService;
+import com.higroup.Buda.api.business.sell.neworder.util.SearchCustomerUtilService;
 import com.higroup.Buda.entities.Customer;
 import com.higroup.Buda.entities.Discount;
 import com.higroup.Buda.entities.Product;
 import com.higroup.Buda.entities.SellOrder;
 import com.higroup.Buda.entities.SellOrderItem;
-import com.higroup.Buda.entities.enumeration.AgeGroup;
 import com.higroup.Buda.entities.enumeration.DiscountType;
-import com.higroup.Buda.entities.enumeration.Gender;
 import com.higroup.Buda.entities.enumeration.Status;
 import com.higroup.Buda.repositories.CustomerRepository;
 import com.higroup.Buda.repositories.DiscountRepository;

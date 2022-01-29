@@ -19,8 +19,6 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.higroup.Buda.entities.enumeration.Status;
 
-import org.checkerframework.checker.units.qual.C;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

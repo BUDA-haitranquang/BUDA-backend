@@ -1,9 +1,6 @@
 package com.higroup.Buda.repositories;
 
 import java.util.List;
-import java.util.Optional;
-
-import javax.print.attribute.standard.MediaSize.Other;
 
 import com.higroup.Buda.customDTO.ExpenseByTimeStatistics;
 import com.higroup.Buda.entities.OtherCost;

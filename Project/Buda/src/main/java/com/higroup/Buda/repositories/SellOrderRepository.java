@@ -1,6 +1,5 @@
 package com.higroup.Buda.repositories;
 
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -10,7 +9,6 @@ import com.higroup.Buda.customDTO.GenderStatistics;
 import com.higroup.Buda.customDTO.RevenueByTimeStatistics;
 import com.higroup.Buda.entities.Customer;
 import com.higroup.Buda.entities.SellOrder;
-import com.higroup.Buda.entities.enumeration.AgeGroup;
 import com.higroup.Buda.entities.enumeration.Status;
 
 import org.springframework.data.jpa.repository.JpaRepository;
