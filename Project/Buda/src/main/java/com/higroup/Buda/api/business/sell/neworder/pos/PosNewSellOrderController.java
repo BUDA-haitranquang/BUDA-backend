@@ -4,7 +4,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import com.higroup.Buda.api.business.sell.neworder.SellOrderDTO;
-import com.higroup.Buda.entities.SellOrder;
 import com.higroup.Buda.util.Checker.RequestUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;

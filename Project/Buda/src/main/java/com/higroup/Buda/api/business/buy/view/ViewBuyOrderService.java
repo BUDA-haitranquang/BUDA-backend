@@ -15,12 +15,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ViewNewBuyOrderService {
+public class ViewBuyOrderService {
     private BuyOrderRepository buyOrderRepository;
     private SupplierRepository supplierRepository;
 
     @Autowired
-    public ViewNewBuyOrderService(BuyOrderRepository buyOrderRepository, SupplierRepository supplierRepository){
+    public ViewBuyOrderService(BuyOrderRepository buyOrderRepository, SupplierRepository supplierRepository){
         this.buyOrderRepository = buyOrderRepository;
         this.supplierRepository = supplierRepository;
     }

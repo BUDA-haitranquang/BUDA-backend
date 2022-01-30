@@ -30,7 +30,7 @@ public class NewSellOrderController {
         this.newsellOrderService = newsellOrderService;
     }
     @PostMapping(path = "/new")
-    public ResponseEntity<?> registerNewSellOrder(HttpServletRequest httpServletRequest, @RequestBody SellOrderDTO sellOrderDTO)
+    public ResponseEntity<?> registerNewSellOrder(HttpServletRequest httpServletRequest, @RequestBody @Valid SellOrderDTO sellOrderDTO)
     {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.newsellOrderService.registerSellOrder(userID, sellOrderDTO));
