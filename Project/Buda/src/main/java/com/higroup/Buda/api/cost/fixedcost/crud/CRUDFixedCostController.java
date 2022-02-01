@@ -1,17 +1,11 @@
 package com.higroup.Buda.api.cost.fixedcost.crud;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 
 import com.higroup.Buda.entities.FixedCost;
-import com.higroup.Buda.util.JwtTokenUtil;
 import com.higroup.Buda.util.Checker.RequestUtil;
 
-import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.web.ResourceProperties.Fixed;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;

@@ -1,26 +1,18 @@
 package com.higroup.Buda.api.product.group.removeproduct;
 
-import com.higroup.Buda.repositories.ProductGroupRepository;
-import com.higroup.Buda.repositories.ProductRepository;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import java.util.*;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 
 import com.higroup.Buda.entities.Product;
 import com.higroup.Buda.entities.ProductGroup;
-import com.higroup.Buda.entities.ProductLeftLog;
-import com.higroup.Buda.entities.User;
 import com.higroup.Buda.repositories.ProductGroupRepository;
 import com.higroup.Buda.repositories.ProductRepository;
 
-import com.higroup.Buda.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 

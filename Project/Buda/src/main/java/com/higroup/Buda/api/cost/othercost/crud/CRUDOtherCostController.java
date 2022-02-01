@@ -5,7 +5,6 @@ import javax.servlet.http.HttpServletRequest;
 import com.higroup.Buda.entities.OtherCost;
 import com.higroup.Buda.util.Checker.RequestUtil;
 
-import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
