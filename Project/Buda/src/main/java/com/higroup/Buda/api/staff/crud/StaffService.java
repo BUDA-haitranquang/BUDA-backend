@@ -7,13 +7,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 
 import com.higroup.Buda.BeanUtils.NullAwareBeanUtilsBean;
 import com.higroup.Buda.entities.Staff;
 import com.higroup.Buda.entities.enumeration.StaffPosition;
 import com.higroup.Buda.jwt.JwtResponse;
-import com.higroup.Buda.repositories.RoleRepository;
 import com.higroup.Buda.repositories.StaffRepository;
 import com.higroup.Buda.util.Config;
 import com.higroup.Buda.util.JwtTokenUtil;
@@ -21,7 +19,6 @@ import com.higroup.Buda.util.JwtTokenUtil;
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -34,15 +31,13 @@ import org.springframework.web.server.ResponseStatusException;
 @Service
 public class StaffService implements UserDetailsService{
     private final StaffRepository staffRepository;
-    private final RoleRepository roleRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public StaffService(StaffRepository staffRepository, RoleRepository roleRepository)
+    public StaffService(StaffRepository staffRepository)
     {
         this.bCryptPasswordEncoder = new BCryptPasswordEncoder();
         this.staffRepository = staffRepository;
-        this.roleRepository = roleRepository;
     }
 
     public JwtResponse correctLogin(String account, String rawPassword)
@@ -64,33 +59,7 @@ public class StaffService implements UserDetailsService{
         }
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "false");
     }
-    @Transactional
-    public ResponseEntity<?> registerNewStaff(Staff newStaff, Long userID)
-    {
-        newStaff.setUserID(userID);
-        Optional<Staff> staff = this.staffRepository.findStaffByStaffUUID(newStaff.getStaffUUID());
-        if (staff.isPresent())
-        {
-            return ResponseEntity.badRequest().body("Exists UUID, try again");
-        }
-
-        staff = this.staffRepository.findStaffByAccount(newStaff.getAccount());
-        if(staff.isPresent()){
-            return ResponseEntity.badRequest().body("Exists Account, try again");
-        }
-
-        String phoneNumber = newStaff.getPhoneNumber();
-        if ((phoneNumber==null) || (!phoneNumber.matches("[0-9]+")))
-        {
-            return ResponseEntity.badRequest().body("Invalid PhoneNumber");
-        }
-        newStaff.setPassword(this.bCryptPasswordEncoder.encode(newStaff.getPassword()));
-        newStaff.addRole(roleRepository.findRoleByName("STAFF").get());
-        newStaff.setStaffUUID(UUID.randomUUID().toString());
-        this.staffRepository.save(newStaff);
-        return ResponseEntity.ok().body(newStaff);
-    }
-
+    
     public List<Staff> findAllByUserID(Long userID)
     {
         return this.staffRepository.findAllByUserID(userID);
