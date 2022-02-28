@@ -12,21 +12,23 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-
 @Service
 public class CreateSupplierService {
     private final SupplierRepository supplierRepository;
+
     @Autowired
-    public CreateSupplierService(SupplierRepository supplierRepository){
+    public CreateSupplierService(SupplierRepository supplierRepository) {
         this.supplierRepository = supplierRepository;
     }
+
     @Transactional
-    public Supplier createNewSupplier(Long userID, Supplier supplier)
-    {
-        Optional<Supplier> phoneSupplier = this.supplierRepository.findSupplierByUserIDAndPhoneNumber(userID, supplier.getPhoneNumber());
-        if (phoneSupplier.isPresent())
-        {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Supplier with this phoneNumber already exists");
+    public Supplier createNewSupplier(Long userID, Supplier supplier) {
+        Optional<Supplier> phoneSupplier = this.supplierRepository.findSupplierByUserIDAndPhoneNumber(userID,
+                supplier.getPhoneNumber());
+        if (phoneSupplier.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "This phone number has been used for another supplier: "
+                            + phoneSupplier.get().getName());
         }
         supplier.setUserID(userID);
         this.supplierRepository.save(supplier);
