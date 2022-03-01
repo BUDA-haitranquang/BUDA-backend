@@ -13,17 +13,19 @@ import org.springframework.web.server.ResponseStatusException;
 @Service
 public class ViewPictureService {
     private final PictureRepository pictureRepository;
+
     @Autowired
-    public ViewPictureService(PictureRepository pictureRepository){
+    public ViewPictureService(PictureRepository pictureRepository) {
         this.pictureRepository = pictureRepository;
     }
-    public Picture findPictureByPictureID(Long userID, Long pictureID)
-    {
+
+    public Picture findPictureByPictureID(Long userID, Long pictureID) {
         Optional<Picture> picture = this.pictureRepository.findPictureByPictureID(pictureID);
-        if ((picture.isPresent()) && ((picture.get().getUserID().equals(userID)) || (picture.get().getUserID() == null)))
-        {
+        if ((picture.isPresent())
+                && ((picture.get().getUserID().equals(userID)) || (picture.get().getUserID() == null))) {
             return picture.get();
-        }
-        else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Picture not found");
+        } else
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    "Picture with ID: " + pictureID.toString() + " not found");
     }
 }

@@ -37,7 +37,7 @@ public interface SellOrderItemRepository extends JpaRepository<SellOrderItem, Lo
     + "sum(if(s.status = 'RETURNED', i.quantity, 0)) as returnNumber, "
     + "sum(if(s.status = 'RETURNED', i.price_per_unit * i.quantity, 0)) as returnPrice "
     + "from sell_order_item i " + "inner join product p on i.product_id = p.product_id " + "inner join sell_order s on s.sell_order_id = i.sell_order_id "
-    + "where i.user_id = :userID and month(current_date()) = month(s.finish_time) and year(current_date()) = year(s.finish_time) "
+    + "where i.user_id = :userID and s.finish_time BETWEEN DATE_SUB(NOW(), INTERVAL 30 DAY) and now() "
     + "group by i.product_id "
     + "order by sellNumber desc, p.name asc "
     + "limit :number", nativeQuery = true)
@@ -50,7 +50,7 @@ public interface SellOrderItemRepository extends JpaRepository<SellOrderItem, Lo
     + "sum(if(s.status = 'RETURNED', i.quantity, 0)) as returnNumber, "
     + "sum(if(s.status = 'RETURNED', i.price_per_unit * i.quantity, 0)) as returnPrice "
     + "from sell_order_item i " + "inner join product p on i.product_id = p.product_id " + "inner join sell_order s on s.sell_order_id = i.sell_order_id "
-    + "where i.user_id = :userID and month(current_date()) = month(s.finish_time) and year(current_date()) = year(s.finish_time) "
+    + "where i.user_id = :userID and s.finish_time BETWEEN DATE_SUB(NOW(), INTERVAL 30 DAY) and now() "
     + "group by i.product_id "
     + "order by revenue desc, p.name asc "
     + "limit :number", nativeQuery = true)
@@ -63,7 +63,7 @@ public interface SellOrderItemRepository extends JpaRepository<SellOrderItem, Lo
     + "sum(if(s.status = 'RETURNED', i.quantity, 0)) as returnNumber, "
     + "sum(if(s.status = 'RETURNED', i.price_per_unit * i.quantity, 0)) as returnPrice "
     + "from sell_order_item i " + "inner join product p on i.product_id = p.product_id " + "inner join sell_order s on s.sell_order_id = i.sell_order_id "
-    + "where i.user_id = :userID and month(current_date()) = month(s.finish_time) and year(current_date()) = year(s.finish_time) "
+    + "where i.user_id = :userID and s.finish_time BETWEEN DATE_SUB(NOW(), INTERVAL 30 DAY) and now() "
     + "group by i.product_id "
     + "order by profit desc, p.name asc "
     + "limit :number", nativeQuery = true)
@@ -76,7 +76,7 @@ public interface SellOrderItemRepository extends JpaRepository<SellOrderItem, Lo
     + "sum(if(s.status = 'RETURNED', i.quantity, 0)) as returnNumber, "
     + "sum(if(s.status = 'RETURNED', i.price_per_unit * i.quantity, 0)) as returnPrice "
     + "from sell_order_item i " + "inner join product p on i.product_id = p.product_id " + "inner join sell_order s on s.sell_order_id = i.sell_order_id "
-    + "where i.user_id = :userID and month(current_date()) = month(s.finish_time) and year(current_date()) = year(s.finish_time) "
+    + "where i.user_id = :userID and s.finish_time BETWEEN DATE_SUB(NOW(), INTERVAL 30 DAY) and now() "
     + "group by i.product_id "
     + "order by revenue asc, p.name asc "
     + "limit :number", nativeQuery = true)
@@ -89,7 +89,7 @@ public interface SellOrderItemRepository extends JpaRepository<SellOrderItem, Lo
     + "sum(if(s.status = 'RETURNED', i.quantity, 0)) as returnNumber, "
     + "sum(if(s.status = 'RETURNED', i.price_per_unit * i.quantity, 0)) as returnPrice "
     + "from sell_order_item i " + "inner join product p on i.product_id = p.product_id " + "inner join sell_order s on s.sell_order_id = i.sell_order_id "
-    + "where i.user_id = :userID and month(current_date()) = month(s.finish_time) and year(current_date()) = year(s.finish_time) "
+    + "where i.user_id = :userID and s.finish_time BETWEEN DATE_SUB(NOW(), INTERVAL 30 DAY) and now() "
     + "group by i.product_id "
     + "order by sellNumber asc, p.name asc "
     + "limit :number", nativeQuery = true)
@@ -102,7 +102,7 @@ public interface SellOrderItemRepository extends JpaRepository<SellOrderItem, Lo
     + "sum(if(s.status = 'RETURNED', i.quantity, 0)) as returnNumber, "
     + "sum(if(s.status = 'RETURNED', i.price_per_unit * i.quantity, 0)) as returnPrice "
     + "from sell_order_item i " + "inner join product p on i.product_id = p.product_id " + "inner join sell_order s on s.sell_order_id = i.sell_order_id "
-    + "where i.user_id = :userID and month(current_date()) = month(s.finish_time) and year(current_date()) = year(s.finish_time) "
+    + "where i.user_id = :userID and s.finish_time BETWEEN DATE_SUB(NOW(), INTERVAL 30 DAY) and now() "
     + "group by i.product_id "
     + "order by profit asc, p.name asc "
     + "limit :number", nativeQuery = true)
@@ -115,7 +115,7 @@ public interface SellOrderItemRepository extends JpaRepository<SellOrderItem, Lo
     + "sum(if(s.status = 'RETURNED', i.quantity, 0)) as returnNumber, "
     + "sum(if(s.status = 'RETURNED', i.price_per_unit * i.quantity, 0)) as returnPrice "
     + "from sell_order_item i " + "inner join product p on i.product_id = p.product_id " + "inner join sell_order s on s.sell_order_id = i.sell_order_id "
-    + "where i.user_id = :userID and month(current_date()) = month(s.finish_time) and year(current_date()) = year(s.finish_time) "
+    + "where i.user_id = :userID and s.finish_time BETWEEN DATE_SUB(NOW(), INTERVAL 30 DAY) and now() "
     + "group by i.product_id "
     + "order by returnNumber desc, p.name asc "
     + "limit :number", nativeQuery = true)
@@ -128,7 +128,7 @@ public interface SellOrderItemRepository extends JpaRepository<SellOrderItem, Lo
     + "sum(if(s.status = 'RETURNED', i.quantity, 0)) as returnNumber, "
     + "sum(if(s.status = 'RETURNED', i.price_per_unit * i.quantity, 0)) as returnPrice "
     + "from sell_order_item i " + "inner join product p on i.product_id = p.product_id " + "inner join sell_order s on s.sell_order_id = i.sell_order_id "
-    + "where i.user_id = :userID and month(current_date()) = month(s.finish_time) and year(current_date()) = year(s.finish_time) "
+    + "where i.user_id = :userID and s.finish_time BETWEEN DATE_SUB(NOW(), INTERVAL 30 DAY) and now() "
     + "group by i.product_id "
     + "order by returnPrice desc, p.name asc "
     + "limit :number", nativeQuery = true)
