@@ -24,12 +24,11 @@ public class BuyOrderItemService {
     private final BuyOrderItemRepository buyOrderItemRepository;
     private final BuyOrderRepository buyOrderRepository;
     private final IngredientRepository ingredientRepository;
-    private final PresentChecker presentChecker;
+
     @Autowired
-    public BuyOrderItemService(BuyOrderItemRepository buyOrderItemRepository, BuyOrderRepository buyOrderRepository, PresentChecker presentChecker, IngredientRepository ingredientRepository)
+    public BuyOrderItemService(BuyOrderItemRepository buyOrderItemRepository, BuyOrderRepository buyOrderRepository, IngredientRepository ingredientRepository)
     {
         this.ingredientRepository = ingredientRepository;
-        this.presentChecker = presentChecker;
         this.buyOrderRepository = buyOrderRepository;
         this.buyOrderItemRepository = buyOrderItemRepository;
     }
@@ -44,8 +43,11 @@ public class BuyOrderItemService {
     }
     @Transactional
     public BuyOrderItem updateBuyOrderItem(Long userID, BuyOrderItem buyOrderItem)
-    {
-        this.presentChecker.checkIdAndRepository(buyOrderItem.getBuyOrderItemID(), this.buyOrderItemRepository);
+    {   
+        Optional<BuyOrderItem> opBuyOrderItem = buyOrderItemRepository.findBuyOrderItemByBuyOrderItemID(buyOrderItem.getBuyOrderItemID());
+        if(!opBuyOrderItem.isPresent()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Buy order item not found");
+        }
         if (buyOrderItem.getUserID().equals(userID))
         {
             this.buyOrderItemRepository.save(buyOrderItem);

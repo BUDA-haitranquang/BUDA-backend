@@ -28,7 +28,7 @@ public class FinishSellOrderService {
             SellOrder sellOrder = sellOrderOptional.get();
             if ((sellOrder.getStatus().equals(Status.FINISHED)) || (sellOrder.getStatus().equals(Status.CANCELLED))
             || (sellOrder.getStatus().equals(Status.RETURNED))){
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "This sell order has already been " + sellOrder.getStatus());
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Sell order has already been " + sellOrder.getStatus());
             }
             sellOrder.setStatus(Status.FINISHED);
             sellOrder.setFinishTime(ZonedDateTime.now());

@@ -140,7 +140,7 @@ public class PosNewSellOrderService {
         sellOrderItem.setPricePerUnit(sellOrderItemDTO.getPricePerUnit());
         if (product.getAmountLeft() >= sellOrderItemDTO.getQuantity()){
             sellOrderItem.setQuantity(sellOrderItemDTO.getQuantity());
-        } else throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "There are not enough products" + product.getName() + "left");
+        } else throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "There are not enough products " + product.getName() + " left");
         Double actualTotalSale = 
         sellOrderItem.getPricePerUnit() * Double.valueOf(sellOrderItem.getQuantity().doubleValue());
         sellOrderItem.setActualTotalSale(actualTotalSale);

@@ -1,5 +1,7 @@
 package com.higroup.Buda.api.discount.delete;
 
+import java.util.Optional;
+
 import javax.transaction.Transactional;
 
 import com.higroup.Buda.entities.Discount;
@@ -20,11 +22,11 @@ public class DeleteDiscountService {
     @Transactional
     public void deleteDiscount(Long userID, Long discountID)
     {
-        Discount discount = this.discountRepository.findDiscountByDiscountID(discountID);
-        if ((discount!=null) && (!discount.getUserID().equals(userID)))
+        Optional<Discount> discountOptional = this.discountRepository.findDiscountByDiscountID(discountID);
+        if ((!discountOptional.isPresent()) || (!discountOptional.get().getUserID().equals(userID)))
         {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "UserID does not match");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Discount not found");
         }
-        this.discountRepository.delete(discount);
+        this.discountRepository.delete(discountOptional.get());
     }
 }

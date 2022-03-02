@@ -48,11 +48,11 @@ public class CustomerMembershipService {
     {
         Optional<User> user = this.userRepository.findUserByUserID(userID);
         if (user.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "UserID does not exist");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found");
         }
         Discount discount = this.discountRepository.findDiscountByDiscountID(membershipType.getDiscount().getDiscountID());
         if (!userID.equals(discount.getUserID())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "UserID does not match");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "discount not belong to user");
         }
         else
         {
