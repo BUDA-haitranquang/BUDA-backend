@@ -68,8 +68,8 @@ public class IngredientViewService {
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Ingredient not found");
     }
     public List<Ingredient> findAlertAmountIngredient(Long userID){
-        Optional<User> user = this.userRepository.findUserByUserID(userID);
-        if (user.isEmpty())
+        Optional<User> userOptional = this.userRepository.findUserByUserID(userID);
+        if (!userOptional.isPresent())
         {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
         }

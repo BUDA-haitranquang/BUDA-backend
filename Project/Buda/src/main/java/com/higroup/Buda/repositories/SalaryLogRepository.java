@@ -19,7 +19,7 @@ public interface SalaryLogRepository extends JpaRepository<SalaryLog, Long>{
     + "order by DATE_FORMAT(f.creationTime, '%m-%Y') ")
     List<ExpenseByTimeStatistics> findSalaryLogExpenseGroupByMonth(Long userID);
     @Query(value = "select new com.higroup.Buda.customDTO.ExpenseByTimeStatistics(DATE_FORMAT(f.creationTime, '%d-%m-%Y'), SUM(f.salary)) "
-    + "from SalaryLog f where f.userID = :userID and month(f.creationTime) = month(current_date) and year(f.creationTime) = year(current_date) "
+    + "from SalaryLog f where f.userID = :userID and year(f.creationTime) = year(current_date) and month(f.creationTime) = month(current_date) and year(f.creationTime) = year(current_date) "
     + "group by DATE_FORMAT(f.creationTime, '%d-%m-%Y') "
     + "order by DATE_FORMAT(f.creationTime, '%d-%m-%Y') ")
     List<ExpenseByTimeStatistics> findSalaryLogExpenseCurrentMonth(Long userID);

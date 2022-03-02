@@ -1,6 +1,7 @@
 package com.higroup.Buda.api.discount.view;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.higroup.Buda.entities.Discount;
 import com.higroup.Buda.repositories.DiscountRepository;
@@ -21,10 +22,10 @@ public class ViewDiscountService {
         return this.discountRepository.findAllDiscountByUserID(userID);
     }
     public Discount findDiscountByDiscountID(Long userID, Long discountID){
-        Discount discount = this.discountRepository.findDiscountByDiscountID(discountID);
-        if ((discount!=null) && (discount.getUserID().equals(userID)))
+        Optional<Discount> discountOptional = this.discountRepository.findDiscountByDiscountID(discountID);
+        if (discountOptional.isPresent() && discountOptional.get().getUserID().equals(userID))
         {
-            return discount;
+            return discountOptional.get();
         }
         else throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Discount not found");
     }

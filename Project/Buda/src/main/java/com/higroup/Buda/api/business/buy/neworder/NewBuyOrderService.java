@@ -41,7 +41,7 @@ public class NewBuyOrderService {
     public BuyOrder createNewBuyOrder(Long userID, BuyOrder buyOrder) {
         Optional<User> user = this.userRepository.findUserByUserID(userID);
         if (user.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "UserID does not exist");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found");
         }
         buyOrder.setCreationTime(ZonedDateTime.now());
         if (buyOrder.getStatus().equals(Status.FINISHED)){

@@ -38,6 +38,6 @@ public class SearchCustomerUtilService {
                 return customer;
             }
         }
-        else throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not enough info to search, requires customerID or phoneNumber to search");
+        else throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not enough info to search, requires phoneNumber to search");
     }
 }

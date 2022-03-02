@@ -15,7 +15,7 @@ public interface FixedCostBillRepository extends JpaRepository<FixedCostBill, Lo
     Optional<FixedCostBill> findFixedCostBillByFixedCostBillID(Long fixedCostBillID);
     List<FixedCostBill> findAllByFixedCost(FixedCost fixedCost);
     List<FixedCostBill> findAllByUserID(Long userID);
-    @Query(value = "select * from fixed_cost_bill b where b.user_id = :userID and (b.creation_time BETWEEN NOW() - INTERVAL :X DAY and NOW())", nativeQuery = true)
+    @Query(value = "select * from fixed_cost_bill b where b.user_id = :userID and (b.creation_time BETWEEN CAST((NOW() - INTERVAL :X DAY) as DATE) and NOW())", nativeQuery = true)
     List<FixedCostBill> findAllFixedCostBillByUserIDLastXDays(@Param("userID") Long userID, @Param("X") Long X);
     @Query(value = "select * from fixed_cost_bill b where b.user_id = :userID and b.status != 'FINISHED' and b.status != 'CANCELLED'", nativeQuery = true)
     List<FixedCostBill> findAllIncompletedFixedCostBillByUser(@Param("userID") Long userID);
@@ -25,7 +25,7 @@ public interface FixedCostBillRepository extends JpaRepository<FixedCostBill, Lo
     + "order by DATE_FORMAT(f.closedTime, '%V-%Y') ")
     List<ExpenseByTimeStatistics> findFixedCostBillExpenseByWeek(@Param("userID") Long userID);
     @Query(value = "select new com.higroup.Buda.customDTO.ExpenseByTimeStatistics(DATE_FORMAT(f.closedTime, '%d-%m-%Y'), SUM(f.totalSpend)) "
-    + "from FixedCostBill f where f.userID = :userID and month(f.closedTime) = month(current_date) and f.status = 'FINISHED'"
+    + "from FixedCostBill f where f.userID = :userID and year(f.closedTime) = year(current_date) and month(f.closedTime) = month(current_date) and f.status = 'FINISHED'"
     + "group by DATE_FORMAT(f.closedTime, '%d-%m-%Y') "
     + "order by DATE_FORMAT(f.closedTime, '%d-%m-%Y') ")
     List<ExpenseByTimeStatistics> findFixedCostBillExpenseCurrentMonth(@Param("userID") Long userID);
