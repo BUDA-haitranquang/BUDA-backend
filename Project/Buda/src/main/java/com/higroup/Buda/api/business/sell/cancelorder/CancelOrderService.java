@@ -36,7 +36,7 @@ public class CancelOrderService {
         {
             SellOrder sellOrder = sellOrderOptional.get();
             if ((sellOrder.getStatus().equals(Status.FINISHED)) || (sellOrder.getStatus().equals(Status.CANCELLED))){
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "This sell order has already been closed");
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Sell order has already been closed");
             }
             sellOrder.setStatus(Status.CANCELLED);
             this.sellOrderRepository.save(sellOrder);

@@ -38,7 +38,7 @@ public class FixedCostBillService {
         {   
             return this.fixedCostBillRepository.findAllByFixedCost(fixedCost.get());
         }
-        else throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Fixed Cost ID does not exist");
+        else throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Fixed Cost not found");
     }
     public List<FixedCostBill> findAllByUserID(Long userID)
     {

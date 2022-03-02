@@ -94,9 +94,11 @@ public class PosNewSellOrderService {
         // if no discount provided
         if(sellOrderDTO.getDiscountID() != null){
             Long discountID = sellOrderDTO.getDiscountID();
-            Discount discount = discountRepository.findDiscountByDiscountID(discountID);
+            Optional<Discount> discountOptional = discountRepository.findDiscountByDiscountID(discountID);
             // found discount
-            if(discount != null){
+            if(discountOptional.isPresent())
+            {
+                Discount discount = discountOptional.get();
                 if(discount.getExpiryTime().isBefore(ZonedDateTime.now())){
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "discount expired time !!!");
                 }
@@ -140,7 +142,7 @@ public class PosNewSellOrderService {
         sellOrderItem.setPricePerUnit(sellOrderItemDTO.getPricePerUnit());
         if (product.getAmountLeft() >= sellOrderItemDTO.getQuantity()){
             sellOrderItem.setQuantity(sellOrderItemDTO.getQuantity());
-        } else throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "There are not enough products" + product.getName() + "left");
+        } else throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "There are not enough products " + product.getName() + " left");
         Double actualTotalSale = 
         sellOrderItem.getPricePerUnit() * Double.valueOf(sellOrderItem.getQuantity().doubleValue());
         sellOrderItem.setActualTotalSale(actualTotalSale);

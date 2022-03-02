@@ -117,7 +117,7 @@ public class SellOrderItemService {
                 return sellOrderItem;
             }
             if(!sellOrderItem.getUserID().equals(userID)){
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "UserID does not have sellorderItem");
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Sell order item not belong to user");
             }
         }
         return null; 

@@ -158,7 +158,11 @@ public class NewSellOrderService {
 
     @Transactional 
     private void updateDiscount(Long userID, Long discountID, Double discountCash){
-        Discount discount = this.discountRepository.findDiscountByDiscountID(discountID);
+        Optional<Discount> discountOptional = this.discountRepository.findDiscountByDiscountID(discountID);
+        if (discountOptional.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Discount not found");
+        }
+        Discount discount = discountOptional.get();
         discount.setOrderCount(discount.getOrderCount() + 1);
         discountRepository.save(discount);
     }
@@ -204,9 +208,11 @@ public class NewSellOrderService {
         // if no discount provided
         if(sellOrderDTO.getDiscountID() != null){
             Long discountID = sellOrderDTO.getDiscountID();
-            Discount discount = discountRepository.findDiscountByDiscountID(discountID);
+            Optional<Discount> discountOptional = discountRepository.findDiscountByDiscountID(discountID);
             // found discount
-            if(discount != null){
+            if (discountOptional.isPresent())
+            {
+                Discount discount = discountOptional.get();
                 if(discount.getExpiryTime().isBefore(ZonedDateTime.now())){
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "discount expired time !!!");
                 }

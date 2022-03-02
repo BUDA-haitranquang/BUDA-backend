@@ -63,7 +63,6 @@ public class WarrantyOrderCreateService {
         }
         Set<SellOrderItem> sellOrderItems = sellOrder.get().getSellOrderItems();
         boolean ok = false;
-        System.out.println(product);
         for (SellOrderItem sellOrderItem : sellOrderItems)
         {
             System.out.println(sellOrderItem.getProduct());
@@ -79,7 +78,7 @@ public class WarrantyOrderCreateService {
         }
         if (ZonedDateTime.now().isAfter(sellOrder.get().getCreationTime().plusDays(product.getWarrantyPeriod())) || product.getWarrantyPeriod() == null)
         {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Warranty period is over");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Over Warranty period");
         }
         WarrantyOrder warrantyOrder = new WarrantyOrder();
         warrantyOrder.setUserID(userID);

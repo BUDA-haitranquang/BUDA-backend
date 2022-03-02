@@ -24,7 +24,7 @@ public class PayDelayedBuyOrderService {
         if ((buyOrderOptional.isPresent()) && (buyOrderOptional.get().getUserID().equals(userID))){
             BuyOrder buyOrder = buyOrderOptional.get();
             if (!buyOrder.getStatus().equals(Status.DELAYING)){
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "This is not a delayed buy order");
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Buy order is not delayed");
             }
             buyOrder.setStatus(Status.FINISHED);
             buyOrder.setFinishTime(ZonedDateTime.now());

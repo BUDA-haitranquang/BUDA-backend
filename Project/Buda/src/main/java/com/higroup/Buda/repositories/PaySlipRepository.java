@@ -19,7 +19,7 @@ public interface PaySlipRepository extends JpaRepository<PaySlip, Long>{
     + "order by DATE_FORMAT(f.creationTime, '%V-%Y') ")
     List<ExpenseByTimeStatistics> findPaySlipExpenseByWeek(@Param("userID") Long userID);
     @Query(value = "select new com.higroup.Buda.customDTO.ExpenseByTimeStatistics(DATE_FORMAT(f.creationTime, '%d-%m-%Y'), SUM(f.totalCost)) "
-    + "from PaySlip f where f.userID = :userID and month(f.creationTime) = month(current_date) "
+    + "from PaySlip f where f.userID = :userID and year(f.creationTime) = year(current_date) and month(f.creationTime) = month(current_date) "
     + "group by DATE_FORMAT(f.creationTime, '%d-%m-%Y') "
     + "order by DATE_FORMAT(f.creationTime, '%d-%m-%Y') ")
     List<ExpenseByTimeStatistics> findPaySlipExpenseCurrentMonth(@Param("userID") Long userID);

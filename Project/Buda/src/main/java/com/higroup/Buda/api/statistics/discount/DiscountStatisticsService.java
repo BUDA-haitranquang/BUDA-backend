@@ -1,5 +1,7 @@
 package com.higroup.Buda.api.statistics.discount;
 
+import java.util.Optional;
+
 import com.higroup.Buda.entities.Discount;
 import com.higroup.Buda.entities.SellOrder;
 import com.higroup.Buda.repositories.DiscountRepository;
@@ -16,8 +18,9 @@ public class DiscountStatisticsService {
         this.discountRepository = discountRepository;
     }
     public Double totalRevenueByDiscountID(Long userID, Long discountID){
-        Discount discount = this.discountRepository.findDiscountByDiscountID(discountID);
-        if ((discount!=null) && (discount.getUserID().equals(userID))){
+        Optional<Discount> discountOptional = this.discountRepository.findDiscountByDiscountID(discountID);
+        if (discountOptional.isPresent() && (discountOptional.get().getUserID().equals(userID))){
+            Discount discount = discountOptional.get();
             Double ans = 0.0;
             for (SellOrder sellOrder: discount.getSellOrders())
             {
