@@ -8,6 +8,7 @@ import javax.transaction.Transactional;
 import com.higroup.Buda.entities.Discount;
 import com.higroup.Buda.entities.MembershipType;
 import com.higroup.Buda.entities.User;
+import com.higroup.Buda.entities.enumeration.DiscountType;
 import com.higroup.Buda.repositories.DiscountRepository;
 import com.higroup.Buda.repositories.MembershipTypeRepository;
 import com.higroup.Buda.repositories.UserRepository;
@@ -50,8 +51,13 @@ public class CustomerMembershipService {
         if (user.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found");
         }
-        Discount discount = this.discountRepository.findDiscountByDiscountID(membershipType.getDiscount().getDiscountID());
-        if (!userID.equals(discount.getUserID())) {
+        Optional<Discount> discountOptional = this.discountRepository.findDiscountByDiscountID(membershipType.getDiscount().getDiscountID());
+        if (discountOptional.isEmpty())
+        {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "discount not found");
+        }
+        Discount discount = discountOptional.get();
+        if (!discount.getUserID().equals(userID)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "discount not belong to user");
         }
         else

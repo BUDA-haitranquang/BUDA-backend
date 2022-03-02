@@ -94,9 +94,11 @@ public class PosNewSellOrderService {
         // if no discount provided
         if(sellOrderDTO.getDiscountID() != null){
             Long discountID = sellOrderDTO.getDiscountID();
-            Discount discount = discountRepository.findDiscountByDiscountID(discountID);
+            Optional<Discount> discountOptional = discountRepository.findDiscountByDiscountID(discountID);
             // found discount
-            if(discount != null){
+            if(discountOptional.isPresent())
+            {
+                Discount discount = discountOptional.get();
                 if(discount.getExpiryTime().isBefore(ZonedDateTime.now())){
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "discount expired time !!!");
                 }
