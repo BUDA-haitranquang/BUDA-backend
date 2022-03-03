@@ -1,13 +1,8 @@
 package com.higroup.Buda.entities;
 
-import java.time.ZonedDateTime;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
-
 import java.io.Serializable;
-
-import javax.persistence.CascadeType;
+import java.time.ZonedDateTime;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,8 +19,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.higroup.Buda.entities.enumeration.AgeGroup;
 import com.higroup.Buda.entities.enumeration.Gender;
@@ -67,6 +60,8 @@ public class SellOrder implements Serializable{
     private Discount discount;
     @Column(name = "creation_time")
     private ZonedDateTime creationTime;
+    @Column(name = "finish_time")
+    private ZonedDateTime finishTime;
     @Enumerated(EnumType.STRING)
     private AgeGroup ageGroup = AgeGroup.UNKNOWN;
     @Enumerated(EnumType.STRING)
@@ -110,6 +105,11 @@ public class SellOrder implements Serializable{
             if (other.creationTime != null)
                 return false;
         } else if (!creationTime.equals(other.creationTime))
+            return false;
+        if (finalCost == null) {
+            if (other.finishTime != null)
+                return false;
+        } else if (!finishTime.equals(other.finishTime))
             return false;
         if (customer == null) {
             if (other.customer != null)

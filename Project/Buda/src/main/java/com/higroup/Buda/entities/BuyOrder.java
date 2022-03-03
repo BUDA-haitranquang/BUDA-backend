@@ -35,7 +35,10 @@ public class BuyOrder {
     @JoinColumn(name = "supplier_ID", nullable = true)
     @JsonBackReference
     private Supplier supplier;
+    @Column(name = "creation_time")
     private ZonedDateTime creationTime;
+    @Column(name = "finish_time")
+    private ZonedDateTime finishTime;
     @Enumerated(EnumType.STRING)
     private Status status = Status.PREPARING;
     private Double totalCost;

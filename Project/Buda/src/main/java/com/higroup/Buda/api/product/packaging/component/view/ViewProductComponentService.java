@@ -1,6 +1,7 @@
 package com.higroup.Buda.api.product.packaging.component.view;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.higroup.Buda.entities.Product;
 import com.higroup.Buda.entities.ProductComponent;
@@ -23,7 +24,11 @@ public class ViewProductComponentService {
         this.productComponentRepository = productComponentRepository;
     }
     public List<ProductComponent> findAllProductComponentByProductID(Long userID, Long productID){
-        Product product = this.productRepository.findProductByProductID(productID);
+        Optional<Product> opProduct = this.productRepository.findProductByProductID(productID);
+        if(!opProduct.isPresent()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
+        }
+        Product product = opProduct.get();
         if ((product != null) && (product.getUserID().equals(userID))){
             return this.productComponentRepository.findAllByProductID(productID);
         }

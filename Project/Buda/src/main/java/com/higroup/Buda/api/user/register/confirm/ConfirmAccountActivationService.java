@@ -9,7 +9,6 @@ import com.higroup.Buda.api.user.register.SendConfirmRegisterMailService;
 import com.higroup.Buda.entities.MailConfirmationToken;
 import com.higroup.Buda.entities.User;
 import com.higroup.Buda.entities.enumeration.MailTokenType;
-import com.higroup.Buda.jwt.JwtResponse;
 import com.higroup.Buda.repositories.UserRepository;
 import com.higroup.Buda.util.JwtTokenUtil;
 

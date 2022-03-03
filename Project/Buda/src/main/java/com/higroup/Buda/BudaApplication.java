@@ -1,19 +1,8 @@
 package com.higroup.Buda;
 
-import com.higroup.Buda.entities.Role;
-import com.higroup.Buda.entities.Staff;
-import com.higroup.Buda.entities.User;
-import com.higroup.Buda.entities.enumeration.StaffPosition;
-import com.higroup.Buda.repositories.RoleRepository;
-import com.higroup.Buda.repositories.StaffRepository;
-import com.higroup.Buda.repositories.UserRepository;
-
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
-import org.springframework.context.annotation.Bean;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
 public class BudaApplication {

@@ -3,7 +3,6 @@ package com.higroup.Buda.api.product.quantitylog;
 import java.util.List;
 import java.util.Optional;
 
-import com.higroup.Buda.entities.Product;
 import com.higroup.Buda.entities.ProductLeftLog;
 import com.higroup.Buda.entities.User;
 import com.higroup.Buda.repositories.ProductLeftLogRepository;
@@ -11,7 +10,6 @@ import com.higroup.Buda.repositories.ProductRepository;
 import com.higroup.Buda.repositories.UserRepository;
 import com.higroup.Buda.util.Checker.PresentChecker;
 
-import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

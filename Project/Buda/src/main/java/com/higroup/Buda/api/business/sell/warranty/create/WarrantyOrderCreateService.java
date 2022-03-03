@@ -42,7 +42,11 @@ public class WarrantyOrderCreateService {
         Long productID = registerWarrantyOrder.getProductID();
         Long sellOrderID = registerWarrantyOrder.getSellOrderID();
         Long customerID = registerWarrantyOrder.getCustomerID();
-        Product product = this.productRepository.findProductByProductID(productID);
+        Optional<Product> opProduct = this.productRepository.findProductByProductID(productID);
+        if(!opProduct.isPresent()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
+        }
+        Product product = opProduct.get();
         if (!product.getUserID().equals(userID))
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
         Optional<SellOrder> sellOrder = this.sellOrderRepository.findSellOrderBySellOrderID(sellOrderID);
@@ -59,7 +63,6 @@ public class WarrantyOrderCreateService {
         }
         Set<SellOrderItem> sellOrderItems = sellOrder.get().getSellOrderItems();
         boolean ok = false;
-        System.out.println(product);
         for (SellOrderItem sellOrderItem : sellOrderItems)
         {
             System.out.println(sellOrderItem.getProduct());
@@ -75,7 +78,7 @@ public class WarrantyOrderCreateService {
         }
         if (ZonedDateTime.now().isAfter(sellOrder.get().getCreationTime().plusDays(product.getWarrantyPeriod())) || product.getWarrantyPeriod() == null)
         {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Warranty period is over");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Over Warranty period");
         }
         WarrantyOrder warrantyOrder = new WarrantyOrder();
         warrantyOrder.setUserID(userID);

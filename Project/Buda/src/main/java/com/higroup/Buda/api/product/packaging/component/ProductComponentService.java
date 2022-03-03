@@ -38,8 +38,11 @@ public class ProductComponentService {
 
     public ProductComponent findByProductAndIngredient(Long productID, Long ingredientID)
     {
-        presentChecker.checkIdAndRepository(productID, productRepository);
-        Product product = this.productRepository.findProductByProductID(productID);
+        Optional<Product> opProduct = this.productRepository.findProductByProductID(productID);
+        if(!opProduct.isPresent()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
+        }
+        Product product = opProduct.get();
         
         Optional<Ingredient> ingredient = this.ingredientRepository.findIngredientByIngredientID(ingredientID);
         if (ingredient.isEmpty())
@@ -52,7 +55,11 @@ public class ProductComponentService {
 
     public List<ProductComponent> findAllByProductID(Long userID, Long productID)
     {
-        Product product = this.productRepository.findProductByProductID(productID);
+        Optional<Product> opProduct = this.productRepository.findProductByProductID(productID);
+        if(!opProduct.isPresent()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
+        }
+        Product product = opProduct.get();
         if ((product!=null) && (Objects.equals(product.getUserID(), userID)))
         {
             return this.productComponentRepository.findAllByProductID(productID);
@@ -73,7 +80,11 @@ public class ProductComponentService {
     public ProductComponent addIngredientToProduct(Long userID, Long productID, Long ingredientID)
     {
         Optional<Ingredient> ingredient = this.ingredientRepository.findIngredientByIngredientID(ingredientID);
-        Product product = this.productRepository.findProductByProductID(productID);
+        Optional<Product> opProduct = this.productRepository.findProductByProductID(productID);
+        if(!opProduct.isPresent()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
+        }
+        Product product = opProduct.get();
         if (!product.getUserID().equals(userID))
         {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");

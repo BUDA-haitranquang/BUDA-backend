@@ -7,6 +7,7 @@ import com.higroup.Buda.entities.BuyOrder;
 import com.higroup.Buda.entities.BuyOrderItem;
 import com.higroup.Buda.entities.Supplier;
 import com.higroup.Buda.entities.User;
+import com.higroup.Buda.entities.enumeration.Status;
 import com.higroup.Buda.repositories.BuyOrderItemRepository;
 import com.higroup.Buda.repositories.BuyOrderRepository;
 import com.higroup.Buda.repositories.SupplierRepository;
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
+
 
 @Service
 public class NewBuyOrderService {
@@ -39,9 +41,12 @@ public class NewBuyOrderService {
     public BuyOrder createNewBuyOrder(Long userID, BuyOrder buyOrder) {
         Optional<User> user = this.userRepository.findUserByUserID(userID);
         if (user.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "UserID does not exist");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found");
         }
         buyOrder.setCreationTime(ZonedDateTime.now());
+        if (buyOrder.getStatus().equals(Status.FINISHED)){
+            buyOrder.setFinishTime(buyOrder.getCreationTime());
+        }
         buyOrder.setUserID(userID);
         try {
             Optional<Supplier> supplier = this.supplierRepository.findSupplierByUserIDAndPhoneNumber(userID,

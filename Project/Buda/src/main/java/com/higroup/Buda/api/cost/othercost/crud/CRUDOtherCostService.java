@@ -2,14 +2,10 @@ package com.higroup.Buda.api.cost.othercost.crud;
 
 import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.Optional;
 
-import javax.print.attribute.standard.MediaSize.Other;
 import javax.transaction.Transactional;
 
-import com.higroup.Buda.customDTO.ExpenseByTimeStatistics;
 import com.higroup.Buda.entities.OtherCost;
-import com.higroup.Buda.entities.User;
 import com.higroup.Buda.repositories.OtherCostRepository;
 import com.higroup.Buda.repositories.UserRepository;
 import com.higroup.Buda.util.Checker.PresentChecker;

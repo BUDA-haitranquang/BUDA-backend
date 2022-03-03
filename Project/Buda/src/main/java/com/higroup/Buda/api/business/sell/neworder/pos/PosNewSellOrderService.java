@@ -9,16 +9,14 @@ import javax.validation.Valid;
 
 import com.higroup.Buda.api.business.sell.neworder.SellOrderDTO;
 import com.higroup.Buda.api.business.sell.neworder.SellOrderItemDTO;
-import com.higroup.Buda.api.business.sell.neworder.util.SearchCustomerUtilService;
 import com.higroup.Buda.api.business.sell.neworder.util.DefaultCustomerUtilService;
+import com.higroup.Buda.api.business.sell.neworder.util.SearchCustomerUtilService;
 import com.higroup.Buda.entities.Customer;
 import com.higroup.Buda.entities.Discount;
 import com.higroup.Buda.entities.Product;
 import com.higroup.Buda.entities.SellOrder;
 import com.higroup.Buda.entities.SellOrderItem;
-import com.higroup.Buda.entities.enumeration.AgeGroup;
 import com.higroup.Buda.entities.enumeration.DiscountType;
-import com.higroup.Buda.entities.enumeration.Gender;
 import com.higroup.Buda.entities.enumeration.Status;
 import com.higroup.Buda.repositories.CustomerRepository;
 import com.higroup.Buda.repositories.DiscountRepository;
@@ -77,6 +75,7 @@ public class PosNewSellOrderService {
         // Day la don mua truc tiep - phai tra tien ngay
         sellOrder.setStatus(Status.FINISHED);
         sellOrder.setCreationTime(ZonedDateTime.now());
+        sellOrder.setFinishTime(ZonedDateTime.now());
         Double realCost = 0.0;
         this.sellOrderRepository.save(sellOrder);
         for (SellOrderItemDTO sellOrderItemDTO: sellOrderDTO.getSellOrderItemDTOs()){
@@ -95,9 +94,11 @@ public class PosNewSellOrderService {
         // if no discount provided
         if(sellOrderDTO.getDiscountID() != null){
             Long discountID = sellOrderDTO.getDiscountID();
-            Discount discount = discountRepository.findDiscountByDiscountID(discountID);
+            Optional<Discount> discountOptional = discountRepository.findDiscountByDiscountID(discountID);
             // found discount
-            if(discount != null){
+            if(discountOptional.isPresent())
+            {
+                Discount discount = discountOptional.get();
                 if(discount.getExpiryTime().isBefore(ZonedDateTime.now())){
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "discount expired time !!!");
                 }
@@ -132,15 +133,16 @@ public class PosNewSellOrderService {
     @Transactional
     public SellOrderItem newPosSellOrderItem(SellOrderItemDTO sellOrderItemDTO){
         SellOrderItem sellOrderItem = new SellOrderItem();
-        Product product = this.productRepository.findProductByProductID(sellOrderItemDTO.getProductID());
-        if (product == null){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Product not found");
+        Optional<Product> opProduct = this.productRepository.findProductByProductID(sellOrderItemDTO.getProductID());
+        if(!opProduct.isPresent()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
         }
+        Product product = opProduct.get();
         sellOrderItem.setProduct(product);
         sellOrderItem.setPricePerUnit(sellOrderItemDTO.getPricePerUnit());
         if (product.getAmountLeft() >= sellOrderItemDTO.getQuantity()){
             sellOrderItem.setQuantity(sellOrderItemDTO.getQuantity());
-        } else throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "There are not enough products" + product.getName() + "left");
+        } else throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "There are not enough products " + product.getName() + " left");
         Double actualTotalSale = 
         sellOrderItem.getPricePerUnit() * Double.valueOf(sellOrderItem.getQuantity().doubleValue());
         sellOrderItem.setActualTotalSale(actualTotalSale);

@@ -3,16 +3,14 @@ package com.higroup.Buda.repositories;
 import java.util.List;
 import java.util.Optional;
 
-import com.higroup.Buda.entities.Ingredient;
 import com.higroup.Buda.entities.Product;
-import com.higroup.Buda.entities.ProductGroup;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface ProductRepository extends JpaRepository<Product, Long>{
-    Product findProductByProductID(Long productID);
+    Optional<Product> findProductByProductID(Long productID);
     @Query("select p from Product p where p.userID = :userID and p.visible = true")
     List<Product> findAllProductByUserID(@Param("userID") Long userID);
     @Query("select p from Product p where p.userID = :userID and p.visible = false")
@@ -26,4 +24,5 @@ public interface ProductRepository extends JpaRepository<Product, Long>{
     @Query(value = "select * from product p where p.product_id in "
     + "(select pci.product_id from product_combo_item pci where pci.product_combo_id = :productComboID) and p.user_id = :userID", nativeQuery = true)
     List<Product> findAllProductByProductCombo(@Param("userID") Long userID, @Param("productComboID") Long productComboID);
+    Product findProductByUserIDAndProductSKU(Long userID, String productSKU);
 }

@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import com.higroup.Buda.entities.Product;
 import com.higroup.Buda.entities.ProductLeftLog;
 import com.higroup.Buda.entities.SellOrder;
 import com.higroup.Buda.entities.SellOrderItem;
@@ -34,6 +35,10 @@ public class ReturnOrderService {
     public SellOrder returnSellOrderBySellOrderID(Long userID, Long sellOrderID){
         Optional<SellOrder> sellOrder = this.sellOrderRepository.findSellOrderBySellOrderID(sellOrderID);
         if ((sellOrder.isPresent()) && (sellOrder.get().getUserID().equals(userID))){
+            if ((sellOrder.get().getStatus().equals(Status.CANCELLED)) 
+            || (sellOrder.get().getStatus().equals(Status.RETURNED))){
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "This sell order has already been " + sellOrder.get().getStatus());
+            }
             sellOrder.get().setStatus(Status.RETURNED);
             this.sellOrderRepository.save(sellOrder.get());
             for (SellOrderItem sellOrderItem: sellOrder.get().getSellOrderItems()){
@@ -43,6 +48,9 @@ public class ReturnOrderService {
                 productLeftLog.setMessage("Order returned");
                 productLeftLog.setCreationTime(ZonedDateTime.now());
                 productLeftLog.setUserID(userID);
+                Product product = sellOrderItem.getProduct();
+                product.setAmountLeft(product.getAmountLeft() + sellOrderItem.getQuantity());
+                this.productRepository.save(product);
                 this.productLeftLogRepository.save(productLeftLog);
             }
             return sellOrder.get();

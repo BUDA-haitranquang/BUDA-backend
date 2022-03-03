@@ -1,21 +1,21 @@
 package com.higroup.Buda.api.product.group.create;
 
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 
 import com.higroup.Buda.entities.Product;
 import com.higroup.Buda.entities.ProductGroup;
-import com.higroup.Buda.entities.ProductLeftLog;
 import com.higroup.Buda.entities.User;
 import com.higroup.Buda.repositories.ProductGroupRepository;
 import com.higroup.Buda.repositories.ProductRepository;
-
 import com.higroup.Buda.repositories.UserRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -79,7 +79,11 @@ public class ProductGroupCreateService {
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Product's already in the group.");
                 }
             }
-            Product product = this.productRepository.findProductByProductID(productID);
+            Optional<Product> opProduct = this.productRepository.findProductByProductID(productID);
+            if(!opProduct.isPresent()){
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
+            }
+            Product product = opProduct.get();
             if (!product.getUserID().equals(userID))
             {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
@@ -103,7 +107,11 @@ public class ProductGroupCreateService {
         {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
         }
-        Product product = this.productRepository.findProductByProductID(productID);
+        Optional<Product> opProduct = this.productRepository.findProductByProductID(productID);
+        if(!opProduct.isPresent()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
+        }
+        Product product = opProduct.get();
         if (!product.getUserID().equals(userID))
         {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");

@@ -15,9 +15,8 @@ import com.higroup.Buda.entities.Product;
 import com.higroup.Buda.entities.ProductLeftLog;
 import com.higroup.Buda.entities.SellOrder;
 import com.higroup.Buda.entities.SellOrderItem;
-import com.higroup.Buda.entities.enumeration.AgeGroup;
 import com.higroup.Buda.entities.enumeration.DiscountType;
-import com.higroup.Buda.entities.enumeration.Gender;
+import com.higroup.Buda.entities.enumeration.Status;
 import com.higroup.Buda.repositories.CustomerRepository;
 import com.higroup.Buda.repositories.DiscountRepository;
 import com.higroup.Buda.repositories.ProductLeftLogRepository;
@@ -66,9 +65,16 @@ public class NewSellOrderService {
 
     // product edit quantity function
     @Transactional
-    public Product editProductQuantity(Long userID, Long productID, Integer amountLeftChange, String message)
+    public Product editProductQuantity(Long userID, Long productID, Integer amountLeftChange)
     {
-        Product product = this.productRepository.findProductByProductID(productID);
+        if(amountLeftChange >= 0){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "the number of bought product must be positive");
+        }
+        Optional<Product> opProduct = this.productRepository.findProductByProductID(productID);
+        if(!opProduct.isPresent()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
+        }
+        Product product = opProduct.get();
         if (Objects.equals(product.getUserID(), userID))
         {
             Integer amountLeft = product.getAmountLeft();
@@ -78,6 +84,7 @@ public class NewSellOrderService {
             }
             product.setAmountLeft(amountLeft + amountLeftChange);
             this.productRepository.save(product);
+            String message = String.format("buy %d %s products", -amountLeftChange, product.getName());
             ProductLeftLog productLeftLog = new ProductLeftLog();
             productLeftLog.setProduct(product);
             productLeftLog.setAmountLeftChange(amountLeftChange);
@@ -87,7 +94,9 @@ public class NewSellOrderService {
             this.productLeftLogRepository.save(productLeftLog);
             return product;
         }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
+        else{
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not belong to user");
+        }
     }
 
 
@@ -95,20 +104,24 @@ public class NewSellOrderService {
     // sell order item register
     @Transactional 
     private SellOrderItem registerNewSellOrderItem(Long userID, Long sellOrderID, @Valid SellOrderItemDTO sellOrderItemDTO){
-        Product product = this.productRepository.findProductByProductID(sellOrderItemDTO.getProductID());
+        Optional<Product> opProduct = this.productRepository.findProductByProductID(sellOrderItemDTO.getProductID());
+        if(!opProduct.isPresent()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
+        }
+        Product product = opProduct.get();
         SellOrder sellOrder = this.sellOrderRepository.findSellOrderBySellOrderID(sellOrderID).get();
         // check product visible
         if(!product.getVisible())
         {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "product is not visible");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format("product %s is not visible", product.getName()));
         }
         // check product belong to user
         if(!product.getUserID().equals(userID)){
-            throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "product not belong to user");
+            throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, String.format("product %s not belong to user", product.getName()));
         }
         // check enough quantity
         if(product.getAmountLeft() < sellOrderItemDTO.getQuantity()){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Product doesnt have enough quantity left");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format("Product %s doesnt have enough quantity left", product.getName()));
         }
         SellOrderItem sellOrderItem = new SellOrderItem();
         sellOrderItem.setSellOrder(sellOrder);
@@ -145,13 +158,20 @@ public class NewSellOrderService {
 
     @Transactional 
     private void updateDiscount(Long userID, Long discountID, Double discountCash){
-        Discount discount = this.discountRepository.findDiscountByDiscountID(discountID);
+        Optional<Discount> discountOptional = this.discountRepository.findDiscountByDiscountID(discountID);
+        if (discountOptional.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Discount not found");
+        }
+        Discount discount = discountOptional.get();
         discount.setOrderCount(discount.getOrderCount() + 1);
         discountRepository.save(discount);
     }
 
     @Transactional
     public SellOrder registerSellOrder(Long userID, @Valid SellOrderDTO sellOrderDTO){
+        if(sellOrderDTO.getStatus().equals(Status.RETURNED)){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "can not set status as returned");
+        }
         SellOrder sellOrder = new SellOrder();
         sellOrder.setUserID(userID);
         // customer 
@@ -166,8 +186,11 @@ public class NewSellOrderService {
         sellOrder.setAgeGroup(customer.getAgeGroup());
         sellOrder.setCustomerMessage(sellOrderDTO.getCustomerMessage());
         sellOrder.setStatus(sellOrderDTO.getStatus());
-        sellOrder.setAddress(sellOrderDTO.getAddress());
         sellOrder.setCreationTime(ZonedDateTime.now());
+        if(sellOrderDTO.getStatus().equals(Status.FINISHED)){
+            sellOrder.setFinishTime(ZonedDateTime.now());
+        }
+        sellOrder.setAddress(sellOrderDTO.getAddress());
         this.sellOrderRepository.save(sellOrder);
 
         // real cost
@@ -178,16 +201,18 @@ public class NewSellOrderService {
             SellOrderItem sellOrderItem = this.registerNewSellOrderItem(userID, sellOrder.getSellOrderID(), sellOrderItemDTO);
             realCost += sellOrderItem.getActualTotalSale();
             // decrease number of product in database
-            this.editProductQuantity(userID, productID, -quantity, String.format("buy %d products with id: %d", quantity, productID));
+            this.editProductQuantity(userID, productID, -quantity);
         }
 
         Double actualDiscountCash = 0.0;
         // if no discount provided
         if(sellOrderDTO.getDiscountID() != null){
             Long discountID = sellOrderDTO.getDiscountID();
-            Discount discount = discountRepository.findDiscountByDiscountID(discountID);
+            Optional<Discount> discountOptional = discountRepository.findDiscountByDiscountID(discountID);
             // found discount
-            if(discount != null){
+            if (discountOptional.isPresent())
+            {
+                Discount discount = discountOptional.get();
                 if(discount.getExpiryTime().isBefore(ZonedDateTime.now())){
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "discount expired time !!!");
                 }
@@ -233,7 +258,7 @@ public class NewSellOrderService {
         try{
             if (!Objects.equals(sellOrder.get().getUserID(), userID))
             {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "UserID does not match");
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "sell order not belong to user");
             }
             for (SellOrderItem sellOrderItem: sellOrder.get().getSellOrderItems())
             {

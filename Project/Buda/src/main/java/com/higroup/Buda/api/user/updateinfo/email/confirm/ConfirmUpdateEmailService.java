@@ -1,7 +1,6 @@
 package com.higroup.Buda.api.user.updateinfo.email.confirm;
 
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 import java.util.Optional;
 
 import com.higroup.Buda.entities.MailConfirmationToken;

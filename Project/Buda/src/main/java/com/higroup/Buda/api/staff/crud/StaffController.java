@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,12 +33,6 @@ public class StaffController {
         this.requestUtil = requestUtil;
     }
     
-    @PostMapping(path = "/new")
-    public ResponseEntity<?> registerNewStaff(HttpServletRequest request, @RequestBody Staff newStaff)
-    {
-        Long userID = requestUtil.getUserIDFromUserToken(request);
-        return this.staffService.registerNewStaff(newStaff, userID);
-    }
 
     @GetMapping(path = "/all")
     public List<Staff> findAllByUserID(HttpServletRequest request)

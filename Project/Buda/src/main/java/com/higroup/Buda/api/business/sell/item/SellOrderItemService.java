@@ -97,7 +97,11 @@ public class SellOrderItemService {
     }
     public List<SellOrderItem> findAllSellOrderItemByProductID(Long userID, Long productID)
     {
-        Product product = this.productRepository.findProductByProductID(productID);
+        Optional<Product> opProduct = this.productRepository.findProductByProductID(productID);
+        if(!opProduct.isPresent()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
+        }
+        Product product = opProduct.get();
         if (!product.equals(null) && (product.getUserID().equals(userID)))
         {
             return this.sellOrderItemRepository.findAllSellOrderItemByProductID(productID);
@@ -113,7 +117,7 @@ public class SellOrderItemService {
                 return sellOrderItem;
             }
             if(!sellOrderItem.getUserID().equals(userID)){
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "UserID does not have sellorderItem");
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Sell order item not belong to user");
             }
         }
         return null; 
