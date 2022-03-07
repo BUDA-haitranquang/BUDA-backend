@@ -32,7 +32,7 @@ public class IngredientLeftLogService {
     {
         Optional<IngredientLeftLog> ingredientLeftLog = this.ingredientLeftLogRepository.findIngredientLeftLogByIngredientLeftLogID(ingredientLeftLogID);
         if ((ingredientLeftLog.isPresent()) && (ingredientLeftLog.get().getUserID().equals(userID))) return ingredientLeftLog.get();
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Log not found");
+        else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Log not found");
     }
     @Transactional
     public IngredientLeftLog registerNewIngredientLeftLog(Long userID, IngredientLeftLog ingredientLeftLog)
