@@ -5,6 +5,8 @@ import com.higroup.Buda.entities.User;
 import com.higroup.Buda.repositories.MailConfirmationTokenRepository;
 import com.higroup.Buda.repositories.UserRepository;
 import com.higroup.Buda.services.EmailService;
+import com.higroup.Buda.util.Config;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -36,7 +38,7 @@ public class SendConfirmForgotPasswordMailService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
         MailConfirmationToken confirmationToken = this.buildConfirmationTokenFor(user);
 
-        String confirmUrl = "http://localhost:8080/api/user/password/forgot/confirm?token=" + confirmationToken.getToken();
+        String confirmUrl = Config.url + "/api/user/password/forgot/confirm?token=" + confirmationToken.getToken();
         emailService.send(email, "Forgot password", this.buildAccountConfirmationEmail(confirmUrl));
         this.save(confirmationToken);
     }
