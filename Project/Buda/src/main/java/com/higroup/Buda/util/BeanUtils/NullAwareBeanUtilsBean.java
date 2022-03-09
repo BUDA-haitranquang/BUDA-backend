@@ -1,4 +1,4 @@
-package com.higroup.Buda.BeanUtils;
+package com.higroup.Buda.util.BeanUtils;
 
 import org.apache.commons.beanutils.BeanUtilsBean;
 

@@ -1,4 +1,4 @@
-package com.higroup.Buda.jwt;
+package com.higroup.Buda.security.jwt;
 
 public class JwtResponse{
     private final String jwtaccesstoken;

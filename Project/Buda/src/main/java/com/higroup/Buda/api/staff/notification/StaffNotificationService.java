@@ -7,13 +7,13 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
-import com.higroup.Buda.BeanUtils.NullAwareBeanUtilsBean;
 import com.higroup.Buda.entities.Staff;
 import com.higroup.Buda.entities.StaffNote;
 import com.higroup.Buda.entities.User;
 import com.higroup.Buda.repositories.StaffNoteRepository;
 import com.higroup.Buda.repositories.StaffRepository;
 import com.higroup.Buda.repositories.UserRepository;
+import com.higroup.Buda.util.BeanUtils.NullAwareBeanUtilsBean;
 
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.springframework.beans.factory.annotation.Autowired;

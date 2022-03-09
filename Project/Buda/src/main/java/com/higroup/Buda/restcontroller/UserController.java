@@ -8,8 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.higroup.Buda.customDTO.GoogleUserPayload;
 import com.higroup.Buda.entities.User;
-import com.higroup.Buda.jwt.JwtSimple;
 import com.higroup.Buda.security.BudaGoogleTokenVerifier;
+import com.higroup.Buda.security.jwt.JwtSimple;
 import com.higroup.Buda.services.UserService;
 import com.higroup.Buda.util.Checker.RequestUtil;
 

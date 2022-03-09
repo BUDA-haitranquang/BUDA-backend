@@ -1,6 +1,6 @@
 package com.higroup.Buda.api.user.refreshtoken;
 
-import com.higroup.Buda.jwt.JwtSimple;
+import com.higroup.Buda.security.jwt.JwtSimple;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

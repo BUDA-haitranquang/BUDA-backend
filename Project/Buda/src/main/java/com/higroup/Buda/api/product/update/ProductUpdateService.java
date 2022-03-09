@@ -1,10 +1,11 @@
 package com.higroup.Buda.api.product.update;
 
-import com.higroup.Buda.BeanUtils.NullAwareBeanUtilsBean;
 import com.higroup.Buda.entities.Product;
 import com.higroup.Buda.entities.User;
 import com.higroup.Buda.repositories.ProductRepository;
 import com.higroup.Buda.repositories.UserRepository;
+import com.higroup.Buda.util.BeanUtils.NullAwareBeanUtilsBean;
+
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

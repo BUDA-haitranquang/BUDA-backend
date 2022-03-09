@@ -8,13 +8,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import com.higroup.Buda.BeanUtils.NullAwareBeanUtilsBean;
 import com.higroup.Buda.entities.Staff;
 import com.higroup.Buda.entities.enumeration.StaffPosition;
-import com.higroup.Buda.jwt.JwtResponse;
 import com.higroup.Buda.repositories.StaffRepository;
+import com.higroup.Buda.security.jwt.JwtResponse;
+import com.higroup.Buda.security.jwt.JwtTokenUtil;
 import com.higroup.Buda.util.Config;
-import com.higroup.Buda.util.JwtTokenUtil;
+import com.higroup.Buda.util.BeanUtils.NullAwareBeanUtilsBean;
 
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.springframework.beans.factory.annotation.Autowired;
