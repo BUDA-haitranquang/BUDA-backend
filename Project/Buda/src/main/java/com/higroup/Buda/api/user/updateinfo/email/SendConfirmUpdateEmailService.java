@@ -11,6 +11,7 @@ import com.higroup.Buda.entities.enumeration.MailTokenType;
 import com.higroup.Buda.repositories.MailConfirmationTokenRepository;
 import com.higroup.Buda.repositories.UserRepository;
 import com.higroup.Buda.services.EmailService;
+import com.higroup.Buda.util.Config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,7 +37,7 @@ public class SendConfirmUpdateEmailService {
         MailConfirmationToken mailConfirmationToken = this.buildConfirmationTokenFor(user);
         mailConfirmationToken.setMailTokenType(MailTokenType.UPDATE_INFO);
         mailConfirmationToken.setTargetEmail(newEmail); 
-        String confirmUrl = "http://localhost:8080/api/user/update-info/email/confirm?token=" + 
+        String confirmUrl = Config.url + "/api/user/update-info/email/confirm?token=" + 
         mailConfirmationToken.getToken();
         //TO DO: send email
         this.emailService.send

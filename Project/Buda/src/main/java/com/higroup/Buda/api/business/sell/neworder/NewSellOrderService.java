@@ -167,47 +167,23 @@ public class NewSellOrderService {
         discountRepository.save(discount);
     }
 
-    @Transactional
-    public SellOrder registerSellOrder(Long userID, @Valid SellOrderDTO sellOrderDTO){
-        if(sellOrderDTO.getStatus().equals(Status.RETURNED)){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "can not set status as returned");
-        }
-        SellOrder sellOrder = new SellOrder();
-        sellOrder.setUserID(userID);
-        // customer 
-        Customer customer = sellOrderDTO.getCustomer();
-        if(customer == null){
+    private Customer findCustomerInfo(Long userID, Customer requestCustomer)
+    {
+        Customer customer;
+        if(requestCustomer == null){
             customer = defaultCustomerUtilService.defaultCustomer(userID);
         }
         else{
-            customer = searchCustomerUtilService.findCustomerByIncompletedInfo(userID, customer);
+            customer = searchCustomerUtilService.findCustomerByIncompletedInfo(userID, requestCustomer);
         }
-        sellOrder.setGender(customer.getGender());
-        sellOrder.setAgeGroup(customer.getAgeGroup());
-        sellOrder.setCustomerMessage(sellOrderDTO.getCustomerMessage());
-        sellOrder.setStatus(sellOrderDTO.getStatus());
-        sellOrder.setCreationTime(ZonedDateTime.now());
-        if(sellOrderDTO.getStatus().equals(Status.FINISHED)){
-            sellOrder.setFinishTime(ZonedDateTime.now());
-        }
-        sellOrder.setAddress(sellOrderDTO.getAddress());
-        this.sellOrderRepository.save(sellOrder);
+        return customer;
+    }
 
-        // real cost
-        Double realCost = 0.0;
-        for(SellOrderItemDTO sellOrderItemDTO: sellOrderDTO.getSellOrderItemDTOs()){
-            Long productID = sellOrderItemDTO.getProductID();
-            Integer quantity = sellOrderItemDTO.getQuantity();
-            SellOrderItem sellOrderItem = this.registerNewSellOrderItem(userID, sellOrder.getSellOrderID(), sellOrderItemDTO);
-            realCost += sellOrderItem.getActualTotalSale();
-            // decrease number of product in database
-            this.editProductQuantity(userID, productID, -quantity);
-        }
-
+    private Double getActualDiscountCash(Long userID, Long discountID, Double realCost, SellOrder sellOrder)
+    {
         Double actualDiscountCash = 0.0;
-        // if no discount provided
-        if(sellOrderDTO.getDiscountID() != null){
-            Long discountID = sellOrderDTO.getDiscountID();
+        if(discountID!= null){
+            
             Optional<Discount> discountOptional = discountRepository.findDiscountByDiscountID(discountID);
             // found discount
             if (discountOptional.isPresent())
@@ -216,16 +192,21 @@ public class NewSellOrderService {
                 if(discount.getExpiryTime().isBefore(ZonedDateTime.now())){
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "discount expired time !!!");
                 }
-                else {
+                else 
+                {
                     // check if real cost equal or bigger than sale order price limit in discount
-                    if(discount.getMinimumSellOrderCost() > realCost){
+                    if(discount.getMinimumSellOrderCost() > realCost)
+                    {
                         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "sale order cost not meet requirement");
                     }
-                    else{
-                        if(discount.getDiscountType() == DiscountType.CASH_ONLY){
+                    else
+                    {
+                        if(discount.getDiscountType() == DiscountType.CASH_ONLY)
+                        {
                             actualDiscountCash = discount.getCash();
                         }
-                        else if(discount.getDiscountType() == DiscountType.PERCENTAGE_ONLY){
+                        else if(discount.getDiscountType() == DiscountType.PERCENTAGE_ONLY)
+                        {
                             actualDiscountCash = (Double)(discount.getPercentage() / 100.0 * realCost);
                             if(actualDiscountCash > discount.getCashLimit()){
                                 actualDiscountCash = discount.getCashLimit();
@@ -238,6 +219,48 @@ public class NewSellOrderService {
             }
             else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "not found discount");
         }
+        return actualDiscountCash;
+    }
+
+    private Double getRealCost(Long userID, Long sellOrderID, SellOrderDTO sellOrderDTO)
+    {
+        Double realCost = 0.0;
+        for(SellOrderItemDTO sellOrderItemDTO: sellOrderDTO.getSellOrderItemDTOs()){
+            Long productID = sellOrderItemDTO.getProductID();
+            Integer quantity = sellOrderItemDTO.getQuantity();
+            SellOrderItem sellOrderItem = this.registerNewSellOrderItem(userID, sellOrderID, sellOrderItemDTO);
+            realCost += sellOrderItem.getActualTotalSale();
+            // decrease number of product in database
+            this.editProductQuantity(userID, productID, -quantity);
+        }
+        return realCost;
+    }
+
+    @Transactional
+    public SellOrder registerSellOrder(Long userID, @Valid SellOrderDTO sellOrderDTO){
+        if(sellOrderDTO.getStatus().equals(Status.RETURNED)){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "can not set status as returned");
+        }
+        SellOrder sellOrder = new SellOrder();
+        sellOrder.setUserID(userID);
+        // customer 
+        Customer customer = this.findCustomerInfo(userID, sellOrderDTO.getCustomer());
+        
+        sellOrder.setGender(customer.getGender());
+        sellOrder.setAgeGroup(customer.getAgeGroup());
+        sellOrder.setCustomerMessage(sellOrderDTO.getCustomerMessage());
+        sellOrder.setStatus(sellOrderDTO.getStatus());
+        sellOrder.setCreationTime(ZonedDateTime.now());
+        if(sellOrderDTO.getStatus().equals(Status.FINISHED)){
+            sellOrder.setFinishTime(ZonedDateTime.now());
+        }
+        sellOrder.setAddress(sellOrderDTO.getAddress());
+        this.sellOrderRepository.save(sellOrder);
+
+        // real cost
+        Double realCost = this.getRealCost(userID, sellOrder.getSellOrderID(), sellOrderDTO);
+
+        Double actualDiscountCash = this.getActualDiscountCash(userID, sellOrderDTO.getDiscountID(), realCost, sellOrder);
 
         double actualDiscountPercentage = Double.parseDouble(df.format(actualDiscountCash/ realCost));
         double finalCost = Double.parseDouble(df.format(realCost - actualDiscountCash));
