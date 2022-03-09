@@ -100,12 +100,12 @@ public interface SellOrderRepository extends JpaRepository<SellOrder, Long> {
             + " from sell_order s where s.user_id = :userID and s.status = 'FINISHED'"
             + " and s.customer_id in"
             + " (select distinct s1.customer_id from sell_order s1 "
-            + " where month(s1.creation_time) >= (month(current_date) - 1) and year(s1.creation_time) = year(current_date))", nativeQuery = true)
+            + " where s1.user_id = :userID and month(s1.creation_time) >= (month(current_date) - 1) and year(s1.creation_time) = year(current_date))", nativeQuery = true)
     Long findCurrentMonthCountSellOrderByUserID(Long userID);
     @Query(value = "select COUNT(s.sell_order_id)"
             + " from sell_order s where s.user_id = :userID and s.status = 'FINISHED'"
             + " and s.customer_id in"
             + " (select distinct s1.customer_id from sell_order s1 "
-            + " where week(s1.creation_time) >= (week(current_date) - 1) and month(s1.creation_time) = (month(current_date)) and year(s1.creation_time) = year(current_date))", nativeQuery = true)
+            + " where s1.user_id = :userID and week(s1.creation_time) >= (week(current_date) - 1) and month(s1.creation_time) = (month(current_date)) and year(s1.creation_time) = year(current_date))", nativeQuery = true)
     Long findCurrentWeekCountSellOrderByUserID(Long userID);
 }
