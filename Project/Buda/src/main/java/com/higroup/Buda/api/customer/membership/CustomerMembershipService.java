@@ -39,7 +39,7 @@ public class CustomerMembershipService {
         presentChecker.checkId(userID);
         return this.membershipTypeRepository.findAllByUserID(userID);
     }
-    public MembershipType findMembershipTypeByMembershipTypeID(Long membershipTypeID)
+    public Optional<MembershipType> findMembershipTypeByMembershipTypeID(Long membershipTypeID)
     {
         presentChecker.checkIdAndRepository(membershipTypeID, this.membershipTypeRepository);
         return this.membershipTypeRepository.findMembershipTypeByMembershipTypeID(membershipTypeID);
