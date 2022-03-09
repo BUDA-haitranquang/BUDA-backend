@@ -80,16 +80,16 @@ public interface SellOrderRepository extends JpaRepository<SellOrder, Long> {
     + " ORDER BY DATE_FORMAT(s.creationTime, '%d-%m-%Y')")
     List<RevenueByTimeStatistics> findRevenueAllDaysCurrentMonth(Long userID);
 
-    @Query(value = "select new com.higroup.Buda.customDTO.ActiveHoursStatistics(DATE_FORMAT(s.creationTime, '%H'), COUNT(s.sellOrderId))"
-    + " from SellOrder s where user_id = :userID and s.status = 'FINISHED'"
-    + " group by (DATE_FORMAT(s.creationTime, '%H')"
-    + " order by (DATE_FORMAT(s.creationTime, '%H')")
+    @Query(value = "select new com.higroup.Buda.customDTO.ActiveHoursStatistics(DATE_FORMAT(s.creationTime, '%H'), COUNT(s.sellOrderID))"
+    + " from SellOrder s where s.userID = :userID and s.status = 'FINISHED'"
+    + " group by DATE_FORMAT(s.creationTime, '%H')"
+    + " order by DATE_FORMAT(s.creationTime, '%H')")
     List<ActiveHoursStatistics> findTotalCountGroupByHours(Long userID);
 
-    @Query(value = "select new com.higroup.Buda.customDTO.ActiveHoursStatistics(DATE_FORMAT(s.creationTime, '%H'), COUNT(s.sellOrderId))"
-            + " from SellOrder s where user_id = :userID and s.status = 'FINISHED'"
+    @Query(value = "select new com.higroup.Buda.customDTO.ActiveHoursStatistics(DATE_FORMAT(s.creationTime, '%H'), COUNT(s.sellOrderID))"
+            + " from SellOrder s where s.userID = :userID and s.status = 'FINISHED'"
             + " and month(s.creationTime) >= (month(current_date) - 1) and year(s.creationTime) = year(current_date)"
-            + " group by (DATE_FORMAT(s.creationTime, '%H')"
-            + " order by (DATE_FORMAT(s.creationTime, '%H')")
+            + " group by DATE_FORMAT(s.creationTime, '%H')"
+            + " order by DATE_FORMAT(s.creationTime, '%H')")
     List<ActiveHoursStatistics> findCurrentMonthCountGroupByHours(Long userID);
 }
