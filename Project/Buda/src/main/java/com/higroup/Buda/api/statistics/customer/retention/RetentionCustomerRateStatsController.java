@@ -26,11 +26,11 @@ public class RetentionCustomerRateStatsController {
     @GetMapping("/weekly")
     public ResponseEntity<?> findRepeatRateGroupByWeek(HttpServletRequest httpServletRequest){
         Long userID = this.requestUtil.getPremiumUserIDFromUserToken(httpServletRequest);
-        return null;
+        return ResponseEntity.ok().body(this.retentionCustomerRateStatsService.findRepeatRateGroupByWeek(userID));
     }
     @GetMapping("/monthly")
     public ResponseEntity<?> findRepeatRateGroupByMonth(HttpServletRequest httpServletRequest){
         Long userID = this.requestUtil.getPremiumUserIDFromUserToken(httpServletRequest);
-        return null;
+        return ResponseEntity.ok().body(this.retentionCustomerRateStatsService.findRepeatRateGroupByMonth(userID));
     }
 }
