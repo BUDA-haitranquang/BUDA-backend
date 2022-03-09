@@ -8,7 +8,7 @@ import com.higroup.Buda.entities.Plan;
 import com.higroup.Buda.entities.User;
 import com.higroup.Buda.entities.enumeration.PlanType;
 import com.higroup.Buda.repositories.UserRepository;
-import com.higroup.Buda.util.JwtTokenUtil;
+import com.higroup.Buda.security.jwt.JwtTokenUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

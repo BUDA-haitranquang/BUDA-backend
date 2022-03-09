@@ -4,6 +4,7 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import com.higroup.Buda.customDTO.ActiveHoursStatistics;
 import com.higroup.Buda.customDTO.AgeGroupStatistics;
 import com.higroup.Buda.customDTO.GenderStatistics;
 import com.higroup.Buda.customDTO.RevenueByTimeStatistics;
@@ -78,4 +79,17 @@ public interface SellOrderRepository extends JpaRepository<SellOrder, Long> {
     + " GROUP BY DATE_FORMAT(s.creationTime, '%d-%m-%Y')"
     + " ORDER BY DATE_FORMAT(s.creationTime, '%d-%m-%Y')")
     List<RevenueByTimeStatistics> findRevenueAllDaysCurrentMonth(Long userID);
+
+    @Query(value = "select new com.higroup.Buda.customDTO.ActiveHoursStatistics(DATE_FORMAT(s.creationTime, '%H'), COUNT(s.sellOrderID))"
+    + " from SellOrder s where s.userID = :userID and s.status = 'FINISHED'"
+    + " group by DATE_FORMAT(s.creationTime, '%H')"
+    + " order by DATE_FORMAT(s.creationTime, '%H')")
+    List<ActiveHoursStatistics> findTotalCountGroupByHours(Long userID);
+
+    @Query(value = "select new com.higroup.Buda.customDTO.ActiveHoursStatistics(DATE_FORMAT(s.creationTime, '%H'), COUNT(s.sellOrderID))"
+            + " from SellOrder s where s.userID = :userID and s.status = 'FINISHED'"
+            + " and month(s.creationTime) >= (month(current_date) - 1) and year(s.creationTime) = year(current_date)"
+            + " group by DATE_FORMAT(s.creationTime, '%H')"
+            + " order by DATE_FORMAT(s.creationTime, '%H')")
+    List<ActiveHoursStatistics> findCurrentMonthCountGroupByHours(Long userID);
 }

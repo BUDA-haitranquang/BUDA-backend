@@ -6,6 +6,7 @@ import com.higroup.Buda.entities.enumeration.MailTokenType;
 import com.higroup.Buda.repositories.MailConfirmationTokenRepository;
 import com.higroup.Buda.repositories.UserRepository;
 import com.higroup.Buda.services.EmailService;
+import com.higroup.Buda.util.Config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -38,7 +39,7 @@ public class SendConfirmRegisterMailService {
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
         MailConfirmationToken confirmationToken = this.buildConfirmationTokenFor(user);
         confirmationToken.setMailTokenType(MailTokenType.REGISTER);
-        String confirmUrl = "http://localhost:8080/api/user/register/confirm?token=" + confirmationToken.getToken();
+        String confirmUrl = Config.url + "/api/user/register/confirm?token=" + confirmationToken.getToken();
         emailService.send(
             email,
             "Please activate your BUDA account",

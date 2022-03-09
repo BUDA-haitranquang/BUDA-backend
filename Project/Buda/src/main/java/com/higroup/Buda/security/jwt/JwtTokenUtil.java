@@ -1,4 +1,4 @@
-package com.higroup.Buda.util;
+package com.higroup.Buda.security.jwt;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+
+import com.higroup.Buda.util.Config;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
