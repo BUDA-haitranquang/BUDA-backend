@@ -28,10 +28,10 @@ public class NewBuyOrderController {
         this.newBuyOrderService = newBuyOrderService;
     }
     @PostMapping(path = "/new")
-    public ResponseEntity<?> createNewBuyOrder(HttpServletRequest httpServletRequest, @RequestBody BuyOrder buyOrder)
+    public ResponseEntity<?> createNewBuyOrder(HttpServletRequest httpServletRequest, @RequestBody BuyOrderDTO buyOrderDTO)
     {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
-        return ResponseEntity.ok().body(this.newBuyOrderService.createNewBuyOrder(userID, buyOrder));
+        return ResponseEntity.ok().body(this.newBuyOrderService.createNewBuyOrder(userID, buyOrderDTO));
     }
 
     @DeleteMapping(path = "{buyOrderID}")
