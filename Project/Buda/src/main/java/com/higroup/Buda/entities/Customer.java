@@ -47,7 +47,7 @@ public class Customer{
     @Column(columnDefinition = "varchar(50) default 'UNKNOWN'")
     @Enumerated(EnumType.STRING)
     private Gender gender = Gender.UNKNOWN;
-    @Column(columnDefinition = "double default 0.0")
+    @Column(columnDefinition = "double default 0.0", nullable = false)
     private Double totalSpend;
     @Column(name = "membership_id")
     private Long membershipID;

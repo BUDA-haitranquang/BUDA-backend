@@ -102,7 +102,7 @@ public class NewSellOrderService {
 
     // sell order item function
     // sell order item register
-    @Transactional 
+    // @Transactional 
     private SellOrderItem registerNewSellOrderItem(Long userID, Long sellOrderID, @Valid SellOrderItemDTO sellOrderItemDTO){
         Optional<Product> opProduct = this.productRepository.findProductByProductID(sellOrderItemDTO.getProductID());
         if(!opProduct.isPresent()){
@@ -236,6 +236,11 @@ public class NewSellOrderService {
         return realCost;
     }
 
+    private void updateCustomerTotalSpend(Double newTotalSpend, Customer customer){
+        customer.setTotalSpend(newTotalSpend);
+        customerRepository.save(customer);
+    }
+
     @Transactional
     public SellOrder registerSellOrder(Long userID, @Valid SellOrderDTO sellOrderDTO){
         if(sellOrderDTO.getStatus().equals(Status.RETURNED)){
@@ -269,6 +274,9 @@ public class NewSellOrderService {
         sellOrder.setFinalCost(finalCost);
         sellOrder.setRealCost(Double.valueOf(df.format(realCost)));
         this.sellOrderRepository.save(sellOrder);
+        if (sellOrder.getStatus().equals(Status.FINISHED)){
+            this.updateCustomerTotalSpend(customer.getTotalSpend() + finalCost, customer);
+        }
         return sellOrder;
     }
 
