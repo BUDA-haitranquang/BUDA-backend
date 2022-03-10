@@ -1,5 +1,7 @@
 package com.higroup.Buda.api.customer.membership;
 
+import java.util.Optional;
+
 import javax.servlet.http.HttpServletRequest;
 
 import com.higroup.Buda.entities.MembershipType;
@@ -38,8 +40,8 @@ public class CustomerMembershipController {
     public ResponseEntity<?> findMembershipTypeByMembershipTypeID(HttpServletRequest httpServletRequest, @PathVariable Long membershipTypeID)
     {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
-        MembershipType membershipType = this.customerMembershipService.findMembershipTypeByMembershipTypeID(membershipTypeID);
-        if (membershipType.getUserID()!=userID)
+        Optional<MembershipType> membershipType = this.customerMembershipService.findMembershipTypeByMembershipTypeID(membershipTypeID);
+        if (membershipType.get().getUserID()!=userID)
         {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized");
         }
