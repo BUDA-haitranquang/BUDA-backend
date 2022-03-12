@@ -5,8 +5,10 @@ import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 
 import com.higroup.Buda.entities.Plan;
+import com.higroup.Buda.entities.Staff;
 import com.higroup.Buda.entities.User;
 import com.higroup.Buda.entities.enumeration.PlanType;
+import com.higroup.Buda.repositories.StaffRepository;
 import com.higroup.Buda.repositories.UserRepository;
 import com.higroup.Buda.security.jwt.JwtTokenUtil;
 
@@ -19,11 +21,13 @@ import org.springframework.web.server.ResponseStatusException;
 public class RequestUtil {
     private final JwtTokenUtil jwtTokenUtil;
     private final UserRepository userRepository;
+    private final StaffRepository staffRepository;
     @Autowired
-    public RequestUtil(JwtTokenUtil jwtTokenUtil, UserRepository userRepository)
+    public RequestUtil(JwtTokenUtil jwtTokenUtil, UserRepository userRepository, StaffRepository staffRepository)
     {
         this.userRepository = userRepository;
         this.jwtTokenUtil = jwtTokenUtil;
+        this.staffRepository = staffRepository;
     }
     public Long getUserIDFromUserToken(HttpServletRequest httpServletRequest)
     {
@@ -82,14 +86,20 @@ public class RequestUtil {
         throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized");
     }
     
-    // public Long getStaffID(HttpServletRequest httpServletRequest)
-    // {
-    //     final String token = httpServletRequest.getHeader("Authorization").substring(7);
-    //     Long staffID = this.jwtTokenUtil.getStaffIDFromToken(token);
-    //     if (staffID!=null && jwtTokenUtil.isValid(token))
-    //     {
-    //         return staffID;
-    //     }
-    //     throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized");
-    // }
+    public Long getStaffIDFromToken(HttpServletRequest httpServletRequest)
+    {
+        final String token = httpServletRequest.getHeader("Authorization").substring(7);
+        Long staffID = this.jwtTokenUtil.getStaffIDFromToken(token);
+        if (staffID != null) {
+            Optional<Staff> staffOptional = staffRepository.findStaffByStaffID(staffID);
+            if (staffOptional.isEmpty()) {
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized");
+            }
+        }
+        if (jwtTokenUtil.isValid(token))
+        {
+            return staffID;
+        }
+        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized");
+    }
 }

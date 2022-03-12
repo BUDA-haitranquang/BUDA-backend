@@ -74,6 +74,8 @@ public class SellOrder implements Serializable{
     private Double finalCost;
     @Column(name = "user_id")
     private Long userID;
+    @Column(name = "staff_id")
+    private Long staffID;
     @Column(length = 1000)
     private String customerMessage;
     @Column(length = 200)
@@ -149,6 +151,12 @@ public class SellOrder implements Serializable{
                 return false;
         } else if (!userID.equals(other.userID))
             return false;
+
+        if (staffID == null) {
+            if (other.staffID != null)
+                return false;
+        } else if (!staffID.equals(other.staffID))
+            return false;
         return true;
     }
 
@@ -186,6 +194,7 @@ public class SellOrder implements Serializable{
         result = prime * result + ((sellOrderItems == null) ? 0 : sellOrderItems.hashCode());
         result = prime * result + ((status == null) ? 0 : status.hashCode());
         result = prime * result + ((userID == null) ? 0 : userID.hashCode());
+        result = prime * result + ((staffID == null) ? 0 : staffID.hashCode());
         return result;
     }
 
@@ -203,6 +212,7 @@ public class SellOrder implements Serializable{
             ", realCost='" + getRealCost() + "'" +
             ", finalCost='" + getFinalCost() + "'" +
             ", userID='" + getUserID() + "'" +
+            ", staffID='" + getStaffID() + "'" +
             ", customerMessage='" + getCustomerMessage() + "'" +
             ", status='" + getStatus() + "'" +
             ", sellOrderItems='" + getSellOrderItems() + "'" +

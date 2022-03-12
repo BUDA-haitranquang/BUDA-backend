@@ -44,6 +44,8 @@ public class BuyOrder {
     private Double totalCost;
     @Column(name = "user_id")
     private Long userID;
+    @Column(name = "staff_id")
+    private Long staffID;
     @OneToMany(mappedBy = "buyOrder", fetch = FetchType.LAZY)
     @JsonManagedReference(value = "buy_order - buy_order_item")
     @Fetch(FetchMode.SUBSELECT)
@@ -63,6 +65,7 @@ public class BuyOrder {
                 && Objects.equals(status, buyOrder.status)
                 && totalCost == buyOrder.totalCost
                 && Objects.equals(userID, buyOrder.userID)
+                && Objects.equals(staffID, buyOrder.staffID)
                 && Objects.equals(buyOrderItems, buyOrder.buyOrderItems);
     }
 
@@ -80,6 +83,7 @@ public class BuyOrder {
             ", status='" + getStatus() + "'" +
             ", TotalCost='" + getTotalCost() + "'" +
             ", userID='" + getUserID() + "'" +
+            ", staffID='" + getStaffID() + "'" +
             ", buyOrderItems='" + getBuyOrderItems() + "'" +
             "}";
     }

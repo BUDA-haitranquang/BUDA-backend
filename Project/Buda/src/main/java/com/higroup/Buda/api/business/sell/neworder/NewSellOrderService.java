@@ -65,7 +65,7 @@ public class NewSellOrderService {
 
     // product edit quantity function
     @Transactional
-    public Product editProductQuantity(Long userID, Long productID, Integer amountLeftChange)
+    public Product editProductQuantity(Long userID, Long staffID, Long productID, Integer amountLeftChange)
     {
         if(amountLeftChange >= 0){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "the number of bought product must be positive");
@@ -89,6 +89,7 @@ public class NewSellOrderService {
             productLeftLog.setProduct(product);
             productLeftLog.setAmountLeftChange(amountLeftChange);
             productLeftLog.setUserID(userID);
+            productLeftLog.setStaffID(staffID);
             productLeftLog.setMessage(message);
             productLeftLog.setCreationTime(ZonedDateTime.now());
             this.productLeftLogRepository.save(productLeftLog);
@@ -103,7 +104,7 @@ public class NewSellOrderService {
     // sell order item function
     // sell order item register
     // @Transactional 
-    private SellOrderItem registerNewSellOrderItem(Long userID, Long sellOrderID, @Valid SellOrderItemDTO sellOrderItemDTO){
+    private SellOrderItem registerNewSellOrderItem(Long userID, Long sellOrderID, Long staffID, @Valid SellOrderItemDTO sellOrderItemDTO){
         Optional<Product> opProduct = this.productRepository.findProductByProductID(sellOrderItemDTO.getProductID());
         if(!opProduct.isPresent()){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
@@ -222,16 +223,16 @@ public class NewSellOrderService {
         return actualDiscountCash;
     }
 
-    private Double getRealCost(Long userID, Long sellOrderID, SellOrderDTO sellOrderDTO)
+    private Double getRealCost(Long userID, Long staffID, Long sellOrderID, SellOrderDTO sellOrderDTO)
     {
         Double realCost = 0.0;
         for(SellOrderItemDTO sellOrderItemDTO: sellOrderDTO.getSellOrderItemDTOs()){
             Long productID = sellOrderItemDTO.getProductID();
             Integer quantity = sellOrderItemDTO.getQuantity();
-            SellOrderItem sellOrderItem = this.registerNewSellOrderItem(userID, sellOrderID, sellOrderItemDTO);
+            SellOrderItem sellOrderItem = this.registerNewSellOrderItem(userID, staffID, sellOrderID, sellOrderItemDTO);
             realCost += sellOrderItem.getActualTotalSale();
             // decrease number of product in database
-            this.editProductQuantity(userID, productID, -quantity);
+            this.editProductQuantity(userID, staffID, productID, -quantity);
         }
         return realCost;
     }
@@ -242,12 +243,13 @@ public class NewSellOrderService {
     }
 
     @Transactional
-    public SellOrder registerSellOrder(Long userID, @Valid SellOrderDTO sellOrderDTO){
+    public SellOrder registerSellOrder(Long userID, Long staffID, @Valid SellOrderDTO sellOrderDTO){
         if(sellOrderDTO.getStatus().equals(Status.RETURNED)){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "can not set status as returned");
         }
         SellOrder sellOrder = new SellOrder();
         sellOrder.setUserID(userID);
+        sellOrder.setStaffID(staffID);
         // customer 
         Customer customer = this.findCustomerInfo(userID, sellOrderDTO.getCustomer());
         
@@ -263,7 +265,7 @@ public class NewSellOrderService {
         this.sellOrderRepository.save(sellOrder);
 
         // real cost
-        Double realCost = this.getRealCost(userID, sellOrder.getSellOrderID(), sellOrderDTO);
+        Double realCost = this.getRealCost(userID, staffID, sellOrder.getSellOrderID(), sellOrderDTO);
 
         Double actualDiscountCash = this.getActualDiscountCash(userID, sellOrderDTO.getDiscountID(), realCost, sellOrder);
 
