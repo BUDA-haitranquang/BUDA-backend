@@ -1,4 +1,4 @@
-package com.higroup.Buda.api.product.create.retail;
+package com.higroup.Buda.api.retail.customDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,9 +10,10 @@ import javax.validation.constraints.PositiveOrZero;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RetailCreateDTO {
+public class RetailCreateFromIngredientDTO {
     @PositiveOrZero(message = "ingredientID can not be null")
     private Long ingredientID;
     private String productSKU;
+    @PositiveOrZero(message = "price must be at least 0")
     private Double price;
 }
