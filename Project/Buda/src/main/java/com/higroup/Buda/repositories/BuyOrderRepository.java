@@ -14,7 +14,6 @@ import org.springframework.data.repository.query.Param;
 
 public interface BuyOrderRepository extends JpaRepository<BuyOrder, Long> {
     Optional<BuyOrder> findBuyOrderByBuyOrderID(Long buyOrderID);
-    @Query(value = "select distinct b from BuyOrder b LEFT JOIN FETCH b.supplier s where b.userID = :userID")
     List<BuyOrder> findAllBuyOrderByUserID(Long userID);
     List<BuyOrder> findAllBuyOrderBySupplier(Supplier supplier);
     List<BuyOrder> findAllBuyOrderByUserIDAndStatus(Long userID, Status status);
