@@ -23,61 +23,70 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-
 @Service
-public class UserLoginService implements UserDetailsService{
+public class UserLoginService implements UserDetailsService {
     private final UserRepository userRepository;
     private final SendConfirmRegisterMailService mailConfirmationTokenService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final JwtTokenUtil jwtTokenUtil;
+
     @Autowired
-    public UserLoginService(UserRepository userRepository, SendConfirmRegisterMailService mailConfirmationTokenService, JwtTokenUtil jwtTokenUtil)
-    {
+    public UserLoginService(UserRepository userRepository, SendConfirmRegisterMailService mailConfirmationTokenService,
+            JwtTokenUtil jwtTokenUtil) {
         this.bCryptPasswordEncoder = new BCryptPasswordEncoder();
         this.jwtTokenUtil = jwtTokenUtil;
         this.mailConfirmationTokenService = mailConfirmationTokenService;
         this.userRepository = userRepository;
     }
-    public JwtResponse correctLogin(@Valid UserLogin userLogin)
-    {
+
+    public JwtResponse correctLogin(@Valid UserLogin userLogin) {
         String email = userLogin.getEmail();
         String rawPassword = userLogin.getPassword();
         Optional<User> mailUser = userRepository.findUserByEmail(email);
-        if (mailUser.isEmpty())
-        {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found");
+        if (mailUser.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid credentials");
         }
 
-        if(!mailUser.get().isEnabled()) {
+        if (!mailUser.get().isEnabled()) {
             mailConfirmationTokenService.sendMailConfirmationTo(email);
         }
 
-        if (bCryptPasswordEncoder.matches(rawPassword, mailUser.get().getPassword()) && mailUser.get().isEnabled())
+        if (bCryptPasswordEncoder.matches(rawPassword, mailUser.get().getPassword()) && mailUser.get().isEnabled()) 
         {
-            UserDetails userDetails = loadUserByUsername(mailUser.get().getEmail());
-            //System.out.println(userDetails);
+            UserDetails userDetails = loadUserDetails(mailUser.get());
+            // System.out.println(userDetails);
             String jwtaccessToken = jwtTokenUtil.generateAccessToken(userDetails, mailUser.get().getUserID());
             String jwtrefreshToken = jwtTokenUtil.generateRefreshToken(userDetails, mailUser.get().getUserID());
 
             return new JwtResponse(jwtaccessToken, jwtrefreshToken);
         }
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "false");
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid credentials");
     }
+
+    public UserDetails loadUserDetails(User user) {
+        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        user.getRoles().forEach(role -> {
+            authorities.add(new SimpleGrantedAuthority(role.getName()));
+        });
+        return new org.springframework.security.core.userdetails.User(user.getEmail(), 
+        user.getPassword(), authorities);
+    }
+
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         Optional<User> mailUser = this.userRepository.findUserByEmail(email);
-        
-        if(!mailUser.isPresent()){
+
+        if (!mailUser.isPresent()) {
             throw new UsernameNotFoundException("Not found user with email: " + email);
         }
 
-        mailUser.get().getRoles().forEach(role  -> 
-            {authorities.add(new SimpleGrantedAuthority(role.getName()));
+        mailUser.get().getRoles().forEach(role -> {
+            authorities.add(new SimpleGrantedAuthority(role.getName()));
         });
-        return new org.springframework.security.core.userdetails.User(mailUser.get().getEmail(), 
-                                                                      mailUser.get().getPassword(), authorities);
-        
+        return new org.springframework.security.core.userdetails.User(mailUser.get().getEmail(),
+                mailUser.get().getPassword(), authorities);
+
     }
 }
