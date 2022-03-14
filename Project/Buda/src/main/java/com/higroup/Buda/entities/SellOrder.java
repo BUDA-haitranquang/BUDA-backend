@@ -52,7 +52,7 @@ public class SellOrder implements Serializable{
     private Long sellOrderID;
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
     @JoinColumn(name = "customer_ID", nullable = true)
-    @JsonBackReference(value = "customer - sell_order")
+    //@JsonBackReference(value = "customer - sell_order")
     private Customer customer;
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
     @JoinColumn(name = "discount_ID", nullable = true)

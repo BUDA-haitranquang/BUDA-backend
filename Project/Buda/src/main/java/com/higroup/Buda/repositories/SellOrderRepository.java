@@ -18,6 +18,7 @@ import org.springframework.data.repository.query.Param;
 
 public interface SellOrderRepository extends JpaRepository<SellOrder, Long> {
     Optional<SellOrder> findSellOrderBySellOrderID(Long sellOrderID);
+    @Query(value = "select distinct s from SellOrder s LEFT JOIN FETCH s.sellOrderItems si LEFT JOIN FETCH s.customer c where s.userID = :userID")
     List<SellOrder> findAllSellOrderByUserID(Long userID);
     List<SellOrder> findAllSellOrderByCustomer(Customer customer);
     @Query(value = "select * from sell_order s where s.discount_id = :discountID", nativeQuery = true)
