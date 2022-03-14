@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.PositiveOrZero;
 
@@ -57,8 +58,11 @@ public class Product {
     @Column(name = "visible", columnDefinition = "boolean default true")
     private Boolean visible = Boolean.TRUE;
 
-    @Column(name = "picture_id")
-    private Long pictureID;
+    // @Column(name = "picture_id")
+    // private Long pictureID;
+    @OneToOne
+    @JoinColumn(name = "picture_id", referencedColumnName = "picture_id")
+    private Picture picture;
 
     @Column(name = "selling_price", columnDefinition = "double default 0.0")
     @PositiveOrZero(message = "Price must be at least 0")
@@ -110,7 +114,6 @@ public class Product {
                 && Objects.equals(name, product.name)
                 && Objects.equals(description, product.description)
                 && Objects.equals(userID, product.userID)
-                && Objects.equals(pictureID, product.pictureID)
                 && Objects.equals(sellingPrice, product.sellingPrice)
                 && Objects.equals(alertAmount, product.alertAmount)
                 && Objects.equals(amountLeft, product.amountLeft)
@@ -124,7 +127,7 @@ public class Product {
     @Override
     public int hashCode() {
 //        return Objects.hash(productID, name, description, userID, pictureID, sellingPrice, alertAmount, amountLeft, costPerUnit, sellOrderItems, productLeftLogs, productGroup);
-        return Objects.hash(productID, name, description, userID, pictureID, sellingPrice, alertAmount, amountLeft, costPerUnit, sellOrderItems, warrantyPeriod);
+        return Objects.hash(productID, name, description, userID, sellingPrice, alertAmount, amountLeft, costPerUnit, sellOrderItems, warrantyPeriod);
 
     }
 
@@ -135,7 +138,6 @@ public class Product {
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", userID=" + userID +
-                ", pictureID=" + pictureID +
                 ", sellingPrice=" + sellingPrice +
                 ", alertAmount=" + alertAmount +
                 ", amountLeft=" + amountLeft +

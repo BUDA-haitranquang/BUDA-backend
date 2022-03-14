@@ -40,8 +40,9 @@ public class Ingredient {
     private Boolean visible = Boolean.TRUE;
     @Column(name = "user_id")
     private Long userID;
-    @Column(name = "picture_id")
-    private Long pictureID;
+    @OneToOne
+    @JoinColumn(name = "picture_id", referencedColumnName = "picture_id")
+    private Picture picture;
     @Column(name = "alert_amount_left", columnDefinition = "int default 0")
     private Integer alertAmountLeft;
     @OneToMany(mappedBy = "ingredient", fetch = FetchType.LAZY)
@@ -53,12 +54,12 @@ public class Ingredient {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Ingredient that = (Ingredient) o;
-        return amountLeft == that.amountLeft && Double.compare(that.price, price) == 0 && alertAmountLeft == that.alertAmountLeft && Objects.equals(ingredientID, that.ingredientID) && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(userID, that.userID) && Objects.equals(pictureID, that.pictureID) && Objects.equals(buyOrderItems, that.buyOrderItems);
+        return amountLeft == that.amountLeft && Double.compare(that.price, price) == 0 && alertAmountLeft == that.alertAmountLeft && Objects.equals(ingredientID, that.ingredientID) && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(userID, that.userID) && Objects.equals(buyOrderItems, that.buyOrderItems);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(ingredientID, name, description, amountLeft, price, userID, pictureID, alertAmountLeft, buyOrderItems);
+        return Objects.hash(ingredientID, name, description, amountLeft, price, userID, alertAmountLeft, buyOrderItems);
     }
 
     @Override
@@ -70,7 +71,6 @@ public class Ingredient {
                 ", amountLeft=" + amountLeft +
                 ", price=" + price +
                 ", userID=" + userID +
-                ", pictureID=" + pictureID +
                 ", alertAmountLeft=" + alertAmountLeft +
                 '}';
     }

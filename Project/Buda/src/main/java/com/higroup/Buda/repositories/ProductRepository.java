@@ -10,8 +10,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface ProductRepository extends JpaRepository<Product, Long>{
+    @Query("select p from Product p LEFT JOIN FETCH p.picture pi where p.productID = :productID and p.visible = true")
     Optional<Product> findProductByProductID(Long productID);
-    @Query("select p from Product p where p.userID = :userID and p.visible = true")
+    @Query("select p from Product p LEFT JOIN FETCH p.picture pi where p.userID = :userID and p.visible = true")
     List<Product> findAllProductByUserID(@Param("userID") Long userID);
     @Query("select p from Product p where p.userID = :userID and p.visible = false")
     List<Product> findAllHiddenProductByUserID(@Param("userID") Long userID);
