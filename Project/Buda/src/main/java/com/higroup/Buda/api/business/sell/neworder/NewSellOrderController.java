@@ -33,8 +33,7 @@ public class NewSellOrderController {
     public ResponseEntity<?> registerNewSellOrder(HttpServletRequest httpServletRequest, @RequestBody @Valid SellOrderDTO sellOrderDTO)
     {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
-        Long staffID = this.requestUtil.getStaffIDFromToken(httpServletRequest);
-        return ResponseEntity.ok().body(this.newsellOrderService.registerSellOrder(userID, staffID, sellOrderDTO));
+        return ResponseEntity.ok().body(this.newsellOrderService.registerSellOrder(userID, sellOrderDTO));
     }
     
     @DeleteMapping(path = "/{sellOrderID}")

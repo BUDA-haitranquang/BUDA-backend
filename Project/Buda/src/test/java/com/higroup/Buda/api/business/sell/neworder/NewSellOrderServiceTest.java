@@ -121,7 +121,7 @@ public class NewSellOrderServiceTest {
         sellOrderDTO.setSellOrderItemDTOs(Arrays.asList(sellOrderItemDTO1, sellOrderItemDTO2, sellOrderItemDTO3));
 
         Double beforeCustomerUse = customer.getTotalSpend();
-        SellOrder sellOrder = newSellOrderService.registerSellOrder(2l, null, sellOrderDTO);
+        SellOrder sellOrder = newSellOrderService.registerSellOrder(2l, sellOrderDTO);
         
         
         // check total Price

@@ -14,6 +14,7 @@ import com.higroup.Buda.repositories.ProductRepository;
 import com.higroup.Buda.repositories.SellOrderItemRepository;
 import com.higroup.Buda.repositories.SellOrderRepository;
 import com.higroup.Buda.util.BeanUtils.NullAwareBeanUtilsBean;
+import com.higroup.Buda.util.Checker.PresentChecker;
 
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,12 +27,14 @@ public class SellOrderItemService {
     private final SellOrderItemRepository sellOrderItemRepository;
     private final SellOrderRepository sellOrderRepository;
     private final ProductRepository productRepository;
+    private final PresentChecker presentChecker;
     @Autowired
-    public SellOrderItemService(SellOrderItemRepository sellOrderItemRepository, SellOrderRepository sellOrderRepository, ProductRepository productRepository)
+    public SellOrderItemService(SellOrderItemRepository sellOrderItemRepository, SellOrderRepository sellOrderRepository, ProductRepository productRepository, PresentChecker presentChecker)
     {
         this.productRepository = productRepository;
         this.sellOrderRepository = sellOrderRepository;
         this.sellOrderItemRepository = sellOrderItemRepository;
+        this.presentChecker = presentChecker;
     }
 
     public List<SellOrderItem> findAllBySellOrderID(Long userID, Long sellOrderID)

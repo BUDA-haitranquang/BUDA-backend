@@ -120,7 +120,7 @@ public class NewBuyOrderService {
         return this.buyOrderItemRepository.save(buyOrderItem);
     }
 
-    private void editIngredientLeftAmount(Long userID, Long staffID, Long ingredientID, Integer amountLeftChange)
+    private void editIngredientLeftAmount(Long userID, Long ingredientID, Integer amountLeftChange)
     {
         Ingredient ingredient = this.ingredientRepository.findIngredientByIngredientID(ingredientID).get();
         ingredient.setAmountLeft(ingredient.getAmountLeft() + amountLeftChange);
@@ -131,26 +131,26 @@ public class NewBuyOrderService {
         ingredientLeftLog.setCreationTime(ZonedDateTime.now());
         ingredientLeftLog.setMessage(message);
         ingredientLeftLog.setUserID(userID);
-        ingredientLeftLog.setStaffID(staffID);
         this.ingredientLeftLogRepository.save(ingredientLeftLog);
     }
 
-    private Double getTotalCost(Long userID, Long staffID, Long buyOrderID, BuyOrderDTO buyOrderDTO)
+    private Double getTotalCost(Long userID, Long buyOrderID, BuyOrderDTO buyOrderDTO)
     {
 
         Double totalCost = 0.0;
         for (BuyOrderItemDTO buyOrderItemDTO: buyOrderDTO.getBuyOrderItemDTOs())
         {
+            Integer quantity = buyOrderItemDTO.getQuantity();
             BuyOrderItem buyOrderItem = this.registerBuyOrderItem(userID, buyOrderID, buyOrderItemDTO);
             Double buyOrderItemCost = buyOrderItem.getPricePerUnit() * buyOrderItem.getQuantity();
             totalCost += buyOrderItemCost;
-            this.editIngredientLeftAmount(userID, staffID, buyOrderItem.getIngredient().getIngredientID(), buyOrderItem.getQuantity());
+            this.editIngredientLeftAmount(userID, buyOrderItem.getIngredient().getIngredientID(), buyOrderItem.getQuantity());
         }
         return totalCost;
     }
 
     @Transactional
-    public BuyOrder createNewBuyOrder(Long userID, Long staffID, @Valid BuyOrderDTO buyOrderDTO) {
+    public BuyOrder createNewBuyOrder(Long userID,@Valid BuyOrderDTO buyOrderDTO) {
         BuyOrder buyOrder = new BuyOrder();
         Optional<User> user = this.userRepository.findUserByUserID(userID);
         if (user.isEmpty()) {
@@ -161,7 +161,6 @@ public class NewBuyOrderService {
             buyOrder.setFinishTime(buyOrder.getCreationTime());
         }
         buyOrder.setUserID(userID);
-        buyOrder.setStaffID(staffID);
         // get supplier info
         Supplier supplier = this.findSupplierInfo(userID, buyOrderDTO.getSupplier());
         buyOrder.setSupplier(supplier);
@@ -169,7 +168,7 @@ public class NewBuyOrderService {
         this.buyOrderRepository.save(buyOrder);
 
         // calculate total cost 
-        Double totalCost = this.getTotalCost(userID, staffID, buyOrder.getBuyOrderID(), buyOrderDTO);
+        Double totalCost = this.getTotalCost(userID, buyOrder.getBuyOrderID(), buyOrderDTO);
         buyOrder.setTotalCost(totalCost);
         this.buyOrderRepository.save(buyOrder);
         return buyOrder;

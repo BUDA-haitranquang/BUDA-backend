@@ -2,6 +2,7 @@ package com.higroup.Buda.api.business.buy.neworder;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.higroup.Buda.entities.BuyOrder;
 import com.higroup.Buda.util.Checker.RequestUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +31,7 @@ public class NewBuyOrderController {
     public ResponseEntity<?> createNewBuyOrder(HttpServletRequest httpServletRequest, @RequestBody BuyOrderDTO buyOrderDTO)
     {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
-        Long staffID = this.requestUtil.getStaffIDFromToken(httpServletRequest);
-        return ResponseEntity.ok().body(this.newBuyOrderService.createNewBuyOrder(userID, staffID, buyOrderDTO));
+        return ResponseEntity.ok().body(this.newBuyOrderService.createNewBuyOrder(userID, buyOrderDTO));
     }
 
     @DeleteMapping(path = "{buyOrderID}")
