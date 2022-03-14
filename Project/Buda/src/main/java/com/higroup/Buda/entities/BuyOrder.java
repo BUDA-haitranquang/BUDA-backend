@@ -33,7 +33,7 @@ public class BuyOrder {
     private Long buyOrderID;
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
     @JoinColumn(name = "supplier_ID", nullable = true)
-    @JsonBackReference
+    // @JsonBackReference
     private Supplier supplier;
     @Column(name = "creation_time")
     private ZonedDateTime creationTime;
