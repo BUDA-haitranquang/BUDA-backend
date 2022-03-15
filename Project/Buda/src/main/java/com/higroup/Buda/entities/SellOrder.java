@@ -23,6 +23,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.higroup.Buda.entities.enumeration.AgeGroup;
 import com.higroup.Buda.entities.enumeration.Gender;
 import com.higroup.Buda.entities.enumeration.Status;
+import com.higroup.Buda.util.RandomID.RandomIDGenerator;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -37,7 +38,8 @@ import lombok.Setter;
     @Index(columnList = "user_id", name = "sell_order_user_id_index"),
     @Index(columnList = "customer_id", name = "sell_order_customer_id_index"),
     @Index(columnList = "discount_id", name = "sell_order_discount_id_index"),
-    @Index(columnList = "creation_time", name = "sell_order_creation_time_index")
+    @Index(columnList = "creation_time", name = "sell_order_creation_time_index"),
+    @Index(columnList = "text_id", name = "sell_order_text_id_index")
 })
 //@JsonIgnoreProperties("sellOrderItems")
 @Getter
@@ -84,7 +86,8 @@ public class SellOrder implements Serializable{
     @JsonManagedReference(value = "sell_order - sell_order_item")
     @Fetch(FetchMode.SUBSELECT)
     private Set<SellOrderItem> sellOrderItems;
-
+    @Column(name = "text_id")
+    private String textID = RandomIDGenerator.randomIDString();
     @Override
     public boolean equals(Object obj) {
         if (this == obj)

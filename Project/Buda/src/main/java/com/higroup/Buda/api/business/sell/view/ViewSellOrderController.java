@@ -16,45 +16,50 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @CrossOrigin("*")
 @RequestMapping(path = "api/business/sell/view")
-public class ViewNewSellOrderController {
-    private final ViewNewSellOrderService viewNewSellOrderService;
+public class ViewSellOrderController {
+    private final ViewSellOrderService viewSellOrderService;
     private final RequestUtil requestUtil;
 
     @Autowired
-    public ViewNewSellOrderController(ViewNewSellOrderService viewNewSellOrderService, RequestUtil requestUtil)
+    public ViewSellOrderController(ViewSellOrderService viewNewSellOrderService, RequestUtil requestUtil)
     {
         this.requestUtil = requestUtil;
-        this.viewNewSellOrderService = viewNewSellOrderService;
+        this.viewSellOrderService = viewNewSellOrderService;
     }
     @GetMapping(path = "/all")
     public ResponseEntity<?> findAllSellOrderByCurrentUser(HttpServletRequest httpServletRequest)
     {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
-        return ResponseEntity.ok().body(this.viewNewSellOrderService.findAllSellOrderByUserID(userID));
+        return ResponseEntity.ok().body(this.viewSellOrderService.findAllSellOrderByUserID(userID));
     }
     @GetMapping(path = "customer/{customerID}/all")
     public ResponseEntity<?> findAllSellOrderByCustomerID(HttpServletRequest httpServletRequest, @PathVariable Long customerID)
     {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
-        return ResponseEntity.ok().body(this.viewNewSellOrderService.findAllSellOrderByCustomerID(userID, customerID));
+        return ResponseEntity.ok().body(this.viewSellOrderService.findAllSellOrderByCustomerID(userID, customerID));
     }
 
     @GetMapping(path = "all/last-x-days/{X}")
     public ResponseEntity<?> findAllLastXDaysSellOrderByCurrentUser(HttpServletRequest httpServletRequest, @PathVariable Long X)
     {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
-        return ResponseEntity.ok().body(this.viewNewSellOrderService.findAllSellOrderByUserIDLastXDays(userID, X));
+        return ResponseEntity.ok().body(this.viewSellOrderService.findAllSellOrderByUserIDLastXDays(userID, X));
     }
     @GetMapping(path = "all/incompleted")
     public ResponseEntity<?> findAllIncompletedSellOrderByCurrentUser(HttpServletRequest httpServletRequest)
     {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
-        return ResponseEntity.ok().body(this.viewNewSellOrderService.findAllIIncompletedSellOrderByUserID(userID));
+        return ResponseEntity.ok().body(this.viewSellOrderService.findAllIIncompletedSellOrderByUserID(userID));
     }
     @GetMapping(path = "all/status/{status}")
     public ResponseEntity<?> findAllSellOrderByCurrentUserAndStatus(HttpServletRequest httpServletRequest, @PathVariable Status status)
     {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
-        return ResponseEntity.ok().body(this.viewNewSellOrderService.findAllSellOrderByUserAndStatus(userID, status));
+        return ResponseEntity.ok().body(this.viewSellOrderService.findAllSellOrderByUserAndStatus(userID, status));
+    }
+    @GetMapping(path = "textID/{textID}")
+    public ResponseEntity<?> findAllSellOrderByTextID(HttpServletRequest httpServletRequest, @PathVariable String textID){
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
+        return ResponseEntity.ok().body(this.viewSellOrderService.findSellOrderByTextID(userID, textID));
     }
 }

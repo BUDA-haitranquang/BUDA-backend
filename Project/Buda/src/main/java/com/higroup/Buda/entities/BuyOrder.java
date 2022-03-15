@@ -3,6 +3,7 @@ package com.higroup.Buda.entities;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.higroup.Buda.entities.enumeration.Status;
+import com.higroup.Buda.util.RandomID.RandomIDGenerator;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -20,7 +21,8 @@ import java.util.Set;
 @Entity
 @Table(name = "Buy_order", indexes = {
     @Index(columnList = "user_id", name = "buy_order_user_id_index"),
-    @Index(columnList = "supplier_id", name = "buy_order_supplier_id_index")
+    @Index(columnList = "supplier_id", name = "buy_order_supplier_id_index"),
+    @Index(columnList = "text_id", name = "buy_order_text_id_index")
 })
 @Getter
 @Setter
@@ -48,7 +50,8 @@ public class BuyOrder {
     @JsonManagedReference(value = "buy_order - buy_order_item")
     @Fetch(FetchMode.SUBSELECT)
     private Set<BuyOrderItem> buyOrderItems;
-
+    @Column(name = "text_id")
+    private String textID = RandomIDGenerator.randomIDString();
     @Override
     public boolean equals(Object o) {
         if (o == this)
