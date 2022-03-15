@@ -132,6 +132,17 @@ public class JwtTokenUtil implements Serializable {
         return doGenerateToken(claims, userDetails.getUsername(), HourExpiredToken);
     }
 
+    public String generateAccessToken(UserDetails userDetails, Map<String, Object> claims, int HourExpiredToken){
+        claims.put("roles", userDetails.getAuthorities());
+        claims.put("tokenType", "Access");
+        return doGenerateToken(claims, userDetails.getUsername(), HourExpiredToken);
+    }
+    public String generateRefreshToken(UserDetails userDetails, Map<String, Object> claims, int HourExpiredToken){
+        claims.put("roles", userDetails.getAuthorities());
+        claims.put("tokenType", "Refresh");
+        return doGenerateToken(claims, userDetails.getUsername(), HourExpiredToken);
+    }
+
     // while creating the token
     // 1.Define claims of the token, like Issuer, Expiration, Subject, and the ID
     // 2. Sign the JWT úing the HS512 algorithm and secret key
