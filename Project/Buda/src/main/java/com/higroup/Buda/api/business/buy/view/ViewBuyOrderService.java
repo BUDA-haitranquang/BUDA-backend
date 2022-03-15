@@ -47,6 +47,10 @@ public class ViewBuyOrderService {
         return this.buyOrderRepository.findAllIncompletedBuyOrderByUser(userID);
     }
 
+    public List<BuyOrder> findBuyOrderByTextID(Long userID, String textID) {
+        return this.buyOrderRepository.findAllBuyOrderByUserIDAndTextID(userID, textID);
+    }
+
     public List<BuyOrder> findAllBuyOrderByStatus(Long userID, Status status)
     {
         return this.buyOrderRepository.findAllBuyOrderByUserIDAndStatus(userID, status);

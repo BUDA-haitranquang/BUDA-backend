@@ -29,6 +29,7 @@ public class UpdateCustomerService {
         {
             Customer oldCustomer = oldCustomerOptional.get();
             BeanUtilsBean bean = new NullAwareBeanUtilsBean();
+            customer.setUserID(userID);
             customer.setTotalSpend(oldCustomer.getTotalSpend());
             if (customer.getPhoneNumber()!=null){
                 Optional<Customer> phoneCustomerOptional = this.customerRepository.findCustomerByUserIDAndPhoneNumber(userID, customer.getPhoneNumber());

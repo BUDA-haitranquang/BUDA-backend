@@ -60,4 +60,9 @@ public class ViewBuyOrderController {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.viewBuyOrderService.findAllBuyOrderByStatus(userID, status));
     }
+    @GetMapping(path = "textID/{textID}")
+    public ResponseEntity<?> findAllBuyOrderByTextID(HttpServletRequest httpServletRequest, @PathVariable String textID) {
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
+        return ResponseEntity.ok().body(this.viewBuyOrderService.findBuyOrderByTextID(userID, textID));
+    }
 }

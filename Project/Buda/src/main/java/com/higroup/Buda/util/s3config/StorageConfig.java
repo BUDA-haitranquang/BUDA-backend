@@ -1,4 +1,4 @@
-package com.higroup.Buda.s3config;
+package com.higroup.Buda.util.s3config;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;

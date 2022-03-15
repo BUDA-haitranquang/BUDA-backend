@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
-public class ViewNewSellOrderService {
+public class ViewSellOrderService {
 
     private UserRepository userRepository;
     private SellOrderRepository sellOrderRepository;
@@ -30,7 +30,7 @@ public class ViewNewSellOrderService {
     private PresentChecker presentChecker;
 
     @Autowired
-    public ViewNewSellOrderService(UserRepository userRepository, SellOrderRepository sellOrderRepository, CustomerRepository customerRepository){
+    public ViewSellOrderService(UserRepository userRepository, SellOrderRepository sellOrderRepository, CustomerRepository customerRepository){
         this.userRepository = userRepository;
         this.customerRepository = customerRepository;
         this.sellOrderRepository = sellOrderRepository;
@@ -75,5 +75,9 @@ public class ViewNewSellOrderService {
     {
         // return this.sellOrderRepository.findAllSellOrderByStatusAndUserID(userID, status.toString());
         return this.sellOrderRepository.findAllSellOrderByUserIDAndStatus(userID, status);
+    }
+
+    public List<SellOrder> findSellOrderByTextID(Long userID, String textID) {
+        return this.sellOrderRepository.findAllSellOrderByUserIDAndTextID(userID, textID);
     }
 }

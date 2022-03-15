@@ -17,7 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest(classes = BudaApplication.class)
 public class ViewNewSellOrderServiceTest {
     @Autowired
-    private ViewNewSellOrderService viewNewSellOrderService;
+    private ViewSellOrderService viewNewSellOrderService;
     @Test
     void testFindAllIIncompletedSellOrderByUserID() {
 
