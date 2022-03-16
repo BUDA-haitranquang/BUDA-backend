@@ -45,7 +45,7 @@ public class ReturnOrderService {
                 ProductLeftLog productLeftLog = new ProductLeftLog();
                 productLeftLog.setAmountLeftChange(sellOrderItem.getQuantity());
                 productLeftLog.setProduct(sellOrderItem.getProduct());
-                productLeftLog.setMessage("Order returned");
+                productLeftLog.setMessage("Order returned: " + sellOrder.get().getTextID());
                 productLeftLog.setCreationTime(ZonedDateTime.now());
                 productLeftLog.setUserID(userID);
                 Product product = sellOrderItem.getProduct();
