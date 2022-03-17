@@ -13,10 +13,23 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface BuyOrderRepository extends JpaRepository<BuyOrder, Long> {
+    @Query(value = "select distinct b from BuyOrder b" + 
+    " LEFT JOIN FETCH b.supplier s" + 
+    " LEFT JOIN FETCH b.staff st" + 
+    " LEFT JOIN FETCH st.roles" +
+    " where b.buyOrderID = :buyOrderID")
     Optional<BuyOrder> findBuyOrderByBuyOrderID(Long buyOrderID);
-    @Query(value = "select distinct b from BuyOrder b LEFT JOIN FETCH b.supplier s where b.userID = :userID and b.textID = :textID")
+    @Query(value = "select distinct b from BuyOrder b" + 
+    " LEFT JOIN FETCH b.supplier s" +
+    " LEFT JOIN FETCH b.staff st" + 
+    " LEFT JOIN FETCH st.roles" + 
+    " where b.userID = :userID and b.textID = :textID")
     List<BuyOrder> findAllBuyOrderByUserIDAndTextID(Long userID, String textID);
-    @Query(value = "select distinct b from BuyOrder b LEFT JOIN FETCH b.supplier s where b.userID = :userID")
+    @Query(value = "select distinct b from BuyOrder b" + 
+    " LEFT JOIN FETCH b.supplier s" +
+    " LEFT JOIN FETCH b.staff st" + 
+    " LEFT JOIN FETCH st.roles" + 
+    " where b.userID = :userID")
     List<BuyOrder> findAllBuyOrderByUserID(Long userID);
     List<BuyOrder> findAllBuyOrderBySupplier(Supplier supplier);
     List<BuyOrder> findAllBuyOrderByUserIDAndStatus(Long userID, Status status);
