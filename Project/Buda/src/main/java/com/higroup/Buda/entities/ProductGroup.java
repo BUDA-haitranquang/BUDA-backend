@@ -39,7 +39,6 @@ public class ProductGroup {
     @Column(name = "user_id")
     private Long userID;
     @ManyToMany(mappedBy = "productGroups", fetch = FetchType.LAZY)
-    @JsonBackReference
     private Set<Product> products;
 
     @Override
