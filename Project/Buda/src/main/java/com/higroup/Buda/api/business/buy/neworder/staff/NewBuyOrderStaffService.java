@@ -13,6 +13,7 @@ import com.higroup.Buda.entities.BuyOrder;
 import com.higroup.Buda.entities.BuyOrderItem;
 import com.higroup.Buda.entities.Ingredient;
 import com.higroup.Buda.entities.IngredientLeftLog;
+import com.higroup.Buda.entities.Staff;
 import com.higroup.Buda.entities.Supplier;
 import com.higroup.Buda.entities.User;
 import com.higroup.Buda.entities.enumeration.Status;
@@ -20,6 +21,7 @@ import com.higroup.Buda.repositories.BuyOrderItemRepository;
 import com.higroup.Buda.repositories.BuyOrderRepository;
 import com.higroup.Buda.repositories.IngredientLeftLogRepository;
 import com.higroup.Buda.repositories.IngredientRepository;
+import com.higroup.Buda.repositories.StaffRepository;
 import com.higroup.Buda.repositories.SupplierRepository;
 import com.higroup.Buda.repositories.UserRepository;
 
@@ -40,11 +42,14 @@ public class NewBuyOrderStaffService {
     private IngredientLeftLogRepository ingredientLeftLogRepository;
     private IngredientCreateService ingredientCreateService;
     private IngredientViewService ingredientViewService;
+    private StaffRepository staffRepository;
 
     @Autowired
     public NewBuyOrderStaffService(UserRepository userRepository, SupplierRepository supplierRepository, BuyOrderRepository buyOrderRepository, BuyOrderItemRepository buyOrderItemRepository, IngredientRepository ingredientRepository, IngredientCreateService ingredientCreateService, 
-    IngredientViewService ingredientViewService, IngredientLeftLogRepository ingredientLeftLogRepository)
+    IngredientViewService ingredientViewService, IngredientLeftLogRepository ingredientLeftLogRepository,
+    StaffRepository staffRepository)
     {
+        this.staffRepository = staffRepository;
         this.userRepository = userRepository;
         this.supplierRepository = supplierRepository;
         this.buyOrderItemRepository = buyOrderItemRepository;
@@ -158,12 +163,17 @@ public class NewBuyOrderStaffService {
         if (user.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found");
         }
+        Optional<Staff> staffOptional = this.staffRepository.findStaffByStaffID(staffID);
+        if ((staffOptional.isEmpty()) || (!staffOptional.get().getUserID().equals(userID)))
+        {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid staff");
+        }
         buyOrder.setCreationTime(ZonedDateTime.now());
         if (buyOrderDTO.getStatus().equals(Status.FINISHED)){
             buyOrder.setFinishTime(buyOrder.getCreationTime());
         }
         buyOrder.setUserID(userID);
-        buyOrder.setStaffID(staffID);
+        buyOrder.setStaff(staffOptional.get());
         // get supplier info
         Supplier supplier = this.findSupplierInfo(userID, buyOrderDTO.getSupplier());
         buyOrder.setSupplier(supplier);

@@ -17,6 +17,7 @@ import com.higroup.Buda.entities.Product;
 import com.higroup.Buda.entities.ProductLeftLog;
 import com.higroup.Buda.entities.SellOrder;
 import com.higroup.Buda.entities.SellOrderItem;
+import com.higroup.Buda.entities.Staff;
 import com.higroup.Buda.entities.enumeration.DiscountType;
 import com.higroup.Buda.entities.enumeration.Status;
 import com.higroup.Buda.repositories.CustomerRepository;
@@ -25,6 +26,7 @@ import com.higroup.Buda.repositories.ProductLeftLogRepository;
 import com.higroup.Buda.repositories.ProductRepository;
 import com.higroup.Buda.repositories.SellOrderItemRepository;
 import com.higroup.Buda.repositories.SellOrderRepository;
+import com.higroup.Buda.repositories.StaffRepository;
 import com.higroup.Buda.util.Checker.PresentChecker;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,14 +46,17 @@ public class NewSellOrderStaffService {
     private ProductLeftLogRepository productLeftLogRepository;
     private SearchCustomerUtilService searchCustomerUtilService;
     private DefaultCustomerUtilService defaultCustomerUtilService;
+    private StaffRepository staffRepository;
 
     private DecimalFormat df = new DecimalFormat("###.##");
 
     @Autowired
     public NewSellOrderStaffService(CustomerRepository customerRepository, SellOrderRepository sellOrderRepository, SellOrderItemRepository sellOrderItemRepository, 
                                DiscountRepository discountRepository, ProductRepository productRepository, ProductLeftLogRepository productLeftLogRepository,
-                               DefaultCustomerUtilService defaultCustomerUtilService, SearchCustomerUtilService searchCustomerUtilService)
+                               DefaultCustomerUtilService defaultCustomerUtilService, SearchCustomerUtilService searchCustomerUtilService,
+                               StaffRepository staffRepository)
     {
+        this.staffRepository = staffRepository;
         this.searchCustomerUtilService = searchCustomerUtilService;
         this.defaultCustomerUtilService = defaultCustomerUtilService;
         this.customerRepository = customerRepository;
@@ -246,12 +251,16 @@ public class NewSellOrderStaffService {
 
     @Transactional
     public SellOrder registerSellOrder(Long userID, Long staffID, @Valid SellOrderDTO sellOrderDTO){
+        Optional<Staff> staffOptional = this.staffRepository.findStaffByStaffID(staffID);
+        if ((!staffOptional.isPresent()) || (!staffOptional.get().getUserID().equals(userID))) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid staff");
+        }
         if(sellOrderDTO.getStatus().equals(Status.RETURNED)){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "can not set status as returned");
         }
         SellOrder sellOrder = new SellOrder();
         sellOrder.setUserID(userID);
-        sellOrder.setStaffID(staffID);
+        sellOrder.setStaff(staffOptional.get());
         // customer 
         Customer customer = this.findCustomerInfo(userID, sellOrderDTO.getCustomer());
         
