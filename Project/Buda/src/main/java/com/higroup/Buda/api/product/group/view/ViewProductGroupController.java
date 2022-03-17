@@ -25,12 +25,17 @@ public class ViewProductGroupController {
         this.requestUtil = requestUtil;
     }
     @GetMapping(path = "/all")
-    public List<ProductGroup> findAllByUserID(HttpServletRequest httpServletRequest)
+    public ResponseEntity<?> findAllByUserID(HttpServletRequest httpServletRequest)
     {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
-        return this.viewProductGroupService.findAllByUserID(userID);
+        return ResponseEntity.ok().body(this.viewProductGroupService.findAllByUserID(userID));
     }
     
+    @GetMapping(path = "/productGroupID/{productGroupID}")
+    public ResponseEntity<?> findProductGroupByID(HttpServletRequest httpServletRequest, @PathVariable Long productGroupID) {
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
+        return ResponseEntity.ok().body(this.viewProductGroupService.findProductGroupByProductGroupID(userID, productGroupID));
+    }
    
     @GetMapping(path = "/{productGroupID}/products")
     public ResponseEntity<?> findAllProductByProductGroup(HttpServletRequest httpServletRequest, @PathVariable Long productGroupID)

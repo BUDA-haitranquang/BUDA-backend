@@ -1,6 +1,7 @@
 package com.higroup.Buda.api.product.group.view;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.higroup.Buda.entities.Product;
 import com.higroup.Buda.entities.ProductGroup;
@@ -9,7 +10,9 @@ import com.higroup.Buda.repositories.ProductRepository;
 import com.higroup.Buda.repositories.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class ViewProductGroupService {
@@ -28,7 +31,13 @@ public class ViewProductGroupService {
         return this.productGroupRepository.findAllByUserID(userID);
     }
     
-    
+    public ProductGroup findProductGroupByProductGroupID(Long userID, Long productGroupID) {
+        Optional<ProductGroup> productGroupOptional = this.productGroupRepository.findProductGroupByProductGroupID(productGroupID);
+        if ((productGroupOptional.isPresent()) && (productGroupOptional.get().getUserID().equals(userID))) {
+            return productGroupOptional.get();
+        }
+        else throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Product Group not found");
+    }
     public List<Product> findAllProductByProductGroup(Long userID, Long productGroupID)
     {
         return this.productRepository.findAllProductByProductGroup(productGroupID, userID);

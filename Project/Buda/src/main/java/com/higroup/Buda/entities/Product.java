@@ -118,16 +118,13 @@ public class Product {
                 && Objects.equals(alertAmount, product.alertAmount)
                 && Objects.equals(amountLeft, product.amountLeft)
                 && Objects.equals(costPerUnit, product.costPerUnit)
-                && Objects.equals(sellOrderItems, product.sellOrderItems)
-                && Objects.equals(productLeftLogs, product.productLeftLogs)
-                && Objects.equals(productGroups, product.productGroups)
                 && Objects.equals(warrantyPeriod, product.warrantyPeriod);
     }
     
     @Override
     public int hashCode() {
 //        return Objects.hash(productID, name, description, userID, pictureID, sellingPrice, alertAmount, amountLeft, costPerUnit, sellOrderItems, productLeftLogs, productGroup);
-        return Objects.hash(productID, name, description, userID, sellingPrice, alertAmount, amountLeft, costPerUnit, sellOrderItems, warrantyPeriod);
+        return Objects.hash(productID, name, description, userID, sellingPrice, alertAmount, amountLeft, costPerUnit, warrantyPeriod);
 
     }
 

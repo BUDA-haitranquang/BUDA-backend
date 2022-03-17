@@ -48,9 +48,10 @@ public class StaffLoginService implements UserDetailsService{
             // return token 
             Map<String, Object> claims = new HashMap<String, Object>();
             claims.put("userID", staff.get().getUserID());
+            claims.put("staffID", staff.get().getStaffID());
             claims.put("roles", userDetails.getAuthorities());
-            String jwtaccessToken = jwtTokenUtil.generateToken(userDetails, claims, Config.HoursAccessToken);
-            String jwtrefreshToken = jwtTokenUtil.generateToken(userDetails, claims, Config.HoursRefreshToken);
+            String jwtaccessToken = jwtTokenUtil.generateAccessToken(userDetails, claims, Config.HoursAccessToken);
+            String jwtrefreshToken = jwtTokenUtil.generateRefreshToken(userDetails, claims, Config.HoursRefreshToken);
         
             return new JwtResponse(jwtaccessToken, jwtrefreshToken);
         }
