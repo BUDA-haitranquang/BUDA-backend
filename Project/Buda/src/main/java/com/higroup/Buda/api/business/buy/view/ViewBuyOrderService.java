@@ -12,12 +12,17 @@ import com.higroup.Buda.repositories.BuyOrderRepository;
 import com.higroup.Buda.repositories.SupplierRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ViewBuyOrderService {
+
     private BuyOrderRepository buyOrderRepository;
     private SupplierRepository supplierRepository;
+
+    private Pageable maxNumberElements = PageRequest.of(0, 10);
 
     @Autowired
     public ViewBuyOrderService(BuyOrderRepository buyOrderRepository, SupplierRepository supplierRepository){
@@ -28,32 +33,32 @@ public class ViewBuyOrderService {
     public List<BuyOrder> findAllBuyOrderBySupplierID(Long userID, Long supplierID) {
         Optional<Supplier> supplier = this.supplierRepository.findSupplierBySupplierID(supplierID);
         if ((supplier.isPresent()) && (supplier.get().getUserID().equals(userID))) {
-            return this.buyOrderRepository.findAllBuyOrderBySupplier(supplier.get());
+            return this.buyOrderRepository.findAllBuyOrderBySupplier(supplier.get(), maxNumberElements);
         } else
             return Collections.emptyList();
     }
 
     public List<BuyOrder> findAllBuyOrderByUserID(Long userID) {
-        return this.buyOrderRepository.findAllBuyOrderByUserID(userID);
+        return this.buyOrderRepository.findAllBuyOrderByUserID(userID, maxNumberElements);
     }
 
     public List<BuyOrder> findAllBuyOrderByUserIDLastXDays(Long userID, Long X)
     {
-        return this.buyOrderRepository.findAllBuyOrderByUserIDLastXDays(userID, X);
+        return this.buyOrderRepository.findAllBuyOrderByUserIDLastXDays(userID, X, maxNumberElements);
     }
 
     public List<BuyOrder> findAllIncompletedBuyOrderByUser(Long userID)
     {
-        return this.buyOrderRepository.findAllIncompletedBuyOrderByUser(userID);
+        return this.buyOrderRepository.findAllIncompletedBuyOrderByUser(userID, maxNumberElements);
     }
 
     public List<BuyOrder> findBuyOrderByTextID(Long userID, String textID) {
-        return this.buyOrderRepository.findAllBuyOrderByUserIDAndTextID(userID, textID);
+        return this.buyOrderRepository.findAllBuyOrderByUserIDAndTextID(userID, textID, maxNumberElements);
     }
 
     public List<BuyOrder> findAllBuyOrderByStatus(Long userID, Status status)
     {
-        return this.buyOrderRepository.findAllBuyOrderByUserIDAndStatus(userID, status);
+        return this.buyOrderRepository.findAllBuyOrderByUserIDAndStatus(userID, status, maxNumberElements);
     }
 
     public List<ExpenseByTimeStatistics> findBuyOrderExpenseByWeek(Long userID)

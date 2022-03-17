@@ -12,30 +12,32 @@ import com.higroup.Buda.entities.Customer;
 import com.higroup.Buda.entities.SellOrder;
 import com.higroup.Buda.entities.enumeration.Status;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
-public interface SellOrderRepository extends JpaRepository<SellOrder, Long> {
+public interface SellOrderRepository extends PagingAndSortingRepository<SellOrder, Long> {
     Optional<SellOrder> findSellOrderBySellOrderID(Long sellOrderID);
     @Query(value = "select distinct s from SellOrder s LEFT JOIN FETCH s.sellOrderItems si LEFT JOIN FETCH s.customer c where s.userID = :userID")
-    List<SellOrder> findAllSellOrderByUserID(Long userID);
+    List<SellOrder> findAllSellOrderByUserID(Long userID, Pageable pageable);
     @Query(value = "select distinct s from SellOrder s LEFT JOIN FETCH s.sellOrderItems si LEFT JOIN FETCH s.customer c where s.userID = :userID and s.textID = :textID")
-    List<SellOrder> findAllSellOrderByUserIDAndTextID(Long userID, String textID);
-    List<SellOrder> findAllSellOrderByCustomer(Customer customer);
+    List<SellOrder> findAllSellOrderByUserIDAndTextID(Long userID, String textID, Pageable pageable);
+    List<SellOrder> findAllSellOrderByCustomer(Customer customer, Pageable pageable);
     @Query(value = "select * from sell_order s where s.discount_id = :discountID", nativeQuery = true)
-    List<SellOrder> findAllSellOrderByDiscountID(@Param("discountID") Long discountID);
+    List<SellOrder> findAllSellOrderByDiscountID(@Param("discountID") Long discountID, Pageable pageable);
     @Query(value = "select * from sell_order s where s.status LIKE :status and s.user_id = :userID", nativeQuery = true)
-    List<SellOrder> findAllSellOrderByStatusAndUserID(@Param("userID") Long userID, @Param("status") String status);
+    List<SellOrder> findAllSellOrderByStatusAndUserID(@Param("userID") Long userID, @Param("status") String status, Pageable pageable);
     //@Query(value = "select * from sell_order s where (s.creation_time BETWEEN NOW() - INTERVAL :X DAY and NOW()) and s.user_id = :userID", nativeQuery = true)
     @Query(value = "select s from SellOrder s where (s.creationTime > :X) and s.userID = :userID")
-    List<SellOrder> findAllSellOrderByUserIDLastXDays(@Param("userID") Long userID, @Param("X") ZonedDateTime X);
+    List<SellOrder> findAllSellOrderByUserIDLastXDays(@Param("userID") Long userID, @Param("X") ZonedDateTime X, Pageable pageable);
     //@Query(value = "select * from sell_order s where s.status NOT LIKE 'FINISHED' and s.status NOT LIKE 'CANCELLED' and s.user_id = :userID", nativeQuery = true)
     @Query(value = "select s from SellOrder s where s.status NOT LIKE 'FINISHED' and s.status NOT LIKE 'CANCELLED' and s.userID = :userID")
-    List<SellOrder> findAllIncompletedSellOrderByUser(@Param("userID") Long userID);
+    List<SellOrder> findAllIncompletedSellOrderByUser(@Param("userID") Long userID, Pageable pageable);
     @Query(value = "select * from sell_order s where s.status LIKE 'FINISHED' and s.user_id = :userID", nativeQuery = true)
-    List<SellOrder> findAllCompletedSellOrderByUser(@Param("userID") Long userID);
-    List<SellOrder> findAllSellOrderByUserIDAndStatus(Long userID, Status status);
+    List<SellOrder> findAllCompletedSellOrderByUser(@Param("userID") Long userID, Pageable pageable);
+    List<SellOrder> findAllSellOrderByUserIDAndStatus(Long userID, Status status, Pageable pageable);
     @Query(value = "select new com.higroup.Buda.customDTO.AgeGroupStatistics(s.ageGroup, SUM(s.realCost))"
     + " from SellOrder s WHERE s.userID = :userID"
     + " and s.status = 'FINISHED'"
