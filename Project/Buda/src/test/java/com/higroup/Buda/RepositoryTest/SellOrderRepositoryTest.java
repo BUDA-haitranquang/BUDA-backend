@@ -20,6 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.PageRequest;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.containers.MySQLContainer;
@@ -79,7 +80,7 @@ public class SellOrderRepositoryTest {
     @Test 
     public void canFindAllbyUserID(){
         Long userID = newUser.getUserID();
-        List<SellOrder> list = sellorderRepoTest.findAllSellOrderByUserID(userID);
+        List<SellOrder> list = sellorderRepoTest.findAllSellOrderByUserID(userID, PageRequest.of(0, 10));
 
         assertEquals(list, Arrays.asList(newSellOrder));
     }
