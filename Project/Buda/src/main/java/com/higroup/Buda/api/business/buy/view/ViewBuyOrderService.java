@@ -1,5 +1,6 @@
 package com.higroup.Buda.api.business.buy.view;
 
+import java.time.ZonedDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -39,7 +40,9 @@ public class ViewBuyOrderService {
 
     public List<BuyOrder> findAllBuyOrderByUserIDLastXDays(Long userID, Long X)
     {
-        return this.buyOrderRepository.findAllBuyOrderByUserIDLastXDays(userID, X);
+        ZonedDateTime zonedDateTime = ZonedDateTime.now().minusDays(X);
+        zonedDateTime.withHour(0).withMinute(0).withSecond(0);
+        return this.buyOrderRepository.findAllBuyOrderByUserIDLastXDays(userID, zonedDateTime);
     }
 
     public List<BuyOrder> findAllIncompletedBuyOrderByUser(Long userID)
