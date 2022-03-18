@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ViewBuyOrderController {
 
     private final ViewBuyOrderService viewBuyOrderService;
-    private final RequestUtil requestUtil;
+    private final RequestUtil requestUtil;  
 
     @Autowired
     public ViewBuyOrderController(ViewBuyOrderService viewNewBuyOrderService, RequestUtil requestUtil)
