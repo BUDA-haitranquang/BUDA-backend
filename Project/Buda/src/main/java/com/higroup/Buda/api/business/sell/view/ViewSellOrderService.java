@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -29,7 +30,10 @@ public class ViewSellOrderService {
     private SellOrderRepository sellOrderRepository;
     private CustomerRepository customerRepository;
 
-    private Pageable maxNumberElements = PageRequest.of(0, 10);
+    private Pageable getPage(int page, int size, Direction direction, String[] properties)
+    {
+        return PageRequest.of(page, size, direction, properties);
+    }
 
     @Autowired
     private PresentChecker presentChecker;
@@ -41,12 +45,13 @@ public class ViewSellOrderService {
         this.sellOrderRepository = sellOrderRepository;
     }
     
-    public List<SellOrder> findAllSellOrderByUserID(Long userID) {
+    public List<SellOrder> findAllSellOrderByUserID(Long userID, int page, int size, Direction direction, String[] properties) {
         Optional<User> user = this.userRepository.findUserByUserID(userID);
         if (user.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
         }
-        return this.sellOrderRepository.findAllSellOrderByUserID(userID, maxNumberElements);
+        Pageable pageable = getPage(page, size, direction, properties);
+        return this.sellOrderRepository.findAllSellOrderByUserID(userID, pageable);
     }
 
     public List<SellOrder> findAllSellOrderByCustomerID(Long userID, Long customerID) {
@@ -56,7 +61,7 @@ public class ViewSellOrderService {
         }
         Optional<Customer> customer = this.customerRepository.findCustomerByCustomerID(customerID);
         if ((customer.isPresent()) && (customer.get().getUserID().equals(userID))) {
-            return this.sellOrderRepository.findAllSellOrderByCustomer(customer.get(), maxNumberElements);
+            return this.sellOrderRepository.findAllSellOrderByCustomer(customer.get());
         } else {
             return Collections.emptyList();
         }
@@ -67,22 +72,22 @@ public class ViewSellOrderService {
         presentChecker.checkIdAndRepository(userID, this.userRepository);
         ZonedDateTime xDaysAgo = ZonedDateTime.now().minusDays(X);
         xDaysAgo.withSecond(0).withHour(0).withMinute(0);
-        return this.sellOrderRepository.findAllSellOrderByUserIDLastXDays(userID, xDaysAgo, maxNumberElements);
+        return this.sellOrderRepository.findAllSellOrderByUserIDLastXDays(userID, xDaysAgo);
     }
 
     public List<SellOrder> findAllIIncompletedSellOrderByUserID(Long userID)
     {
         presentChecker.checkIdAndRepository(userID, this.userRepository);
-        return this.sellOrderRepository.findAllIncompletedSellOrderByUser(userID, maxNumberElements);
+        return this.sellOrderRepository.findAllIncompletedSellOrderByUser(userID);
     }
 
     public List<SellOrder> findAllSellOrderByUserAndStatus(Long userID, Status status)
     {
         // return this.sellOrderRepository.findAllSellOrderByStatusAndUserID(userID, status.toString());
-        return this.sellOrderRepository.findAllSellOrderByUserIDAndStatus(userID, status, maxNumberElements);
+        return this.sellOrderRepository.findAllSellOrderByUserIDAndStatus(userID, status);
     }
 
     public List<SellOrder> findSellOrderByTextID(Long userID, String textID) {
-        return this.sellOrderRepository.findAllSellOrderByUserIDAndTextID(userID, textID, maxNumberElements);
+        return this.sellOrderRepository.findAllSellOrderByUserIDAndTextID(userID, textID);
     }
 }

@@ -33,13 +33,13 @@ public class ViewNewSellOrderServiceTest {
 
     }
 
-    @Test
-    void testFindAllSellOrderByUserID() {
-        List<SellOrder> sellOrders = this.viewNewSellOrderService.findAllSellOrderByUserID(2l);
-        for (SellOrder sellOrder: sellOrders){
-            assertEquals(sellOrder.getUserID(), 2l);
-        }
-    }
+    // @Test
+    // void testFindAllSellOrderByUserID() {
+    //     List<SellOrder> sellOrders = this.viewNewSellOrderService.findAllSellOrderByUserID(2l);
+    //     for (SellOrder sellOrder: sellOrders){
+    //         assertEquals(sellOrder.getUserID(), 2l);
+    //     }
+    // }
 
     @Test
     void testFindAllSellOrderByUserIDLastXDays() {
