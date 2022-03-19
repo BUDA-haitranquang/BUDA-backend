@@ -6,6 +6,7 @@ import com.higroup.Buda.entities.enumeration.Status;
 import com.higroup.Buda.util.Checker.RequestUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -28,11 +29,11 @@ public class ViewSellOrderController {
         this.requestUtil = requestUtil;
         this.viewSellOrderService = viewNewSellOrderService;
     }
-    @GetMapping(path = "/all", params = {"page", "size", "properties", "direction"})
-    public ResponseEntity<?> findAllSellOrderByCurrentUser(HttpServletRequest httpServletRequest, @RequestParam int page, @RequestParam int size, @RequestParam Direction direction, @RequestParam String[] properties)
+    @GetMapping(path = "/all")
+    public ResponseEntity<?> findAllSellOrderByCurrentUser(HttpServletRequest httpServletRequest, Pageable pageable)
     {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
-        return ResponseEntity.ok().body(this.viewSellOrderService.findAllSellOrderByUserID(userID, page, size, direction, properties));
+        return ResponseEntity.ok().body(this.viewSellOrderService.findAllSellOrderByUserID(userID, pageable));
     }
     @GetMapping(path = "customer/{customerID}/all")
     public ResponseEntity<?> findAllSellOrderByCustomerID(HttpServletRequest httpServletRequest, @PathVariable Long customerID)

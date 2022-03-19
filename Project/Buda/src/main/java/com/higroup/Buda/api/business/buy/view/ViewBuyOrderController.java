@@ -6,15 +6,12 @@ import com.higroup.Buda.entities.enumeration.Status;
 import com.higroup.Buda.util.Checker.RequestUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -32,11 +29,11 @@ public class ViewBuyOrderController {
         this.viewBuyOrderService = viewNewBuyOrderService;
     }
 
-    @GetMapping(path = "/all", params = {"page", "size", "properties", "direction"})
-    public ResponseEntity<?> findAllBuyOrderByUserID(HttpServletRequest httpServletRequest, @RequestParam int page, @RequestParam int size, @RequestParam String[] properties, @RequestParam Direction direction)
+    @GetMapping(path = "/all")
+    public ResponseEntity<?> findAllBuyOrderByUserID(HttpServletRequest httpServletRequest, Pageable pageable)
     {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
-        return ResponseEntity.ok().body(this.viewBuyOrderService.findAllBuyOrderByUserID(userID, page, size, direction, properties));
+        return ResponseEntity.ok().body(this.viewBuyOrderService.findAllBuyOrderByUserID(userID, pageable));
     }
 
     @GetMapping(path = "supplier/{supplierID}/all")

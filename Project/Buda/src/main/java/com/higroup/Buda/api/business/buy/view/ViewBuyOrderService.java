@@ -13,20 +13,13 @@ import com.higroup.Buda.repositories.BuyOrderRepository;
 import com.higroup.Buda.repositories.SupplierRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ViewBuyOrderService {
     private BuyOrderRepository buyOrderRepository;
     private SupplierRepository supplierRepository;
-
-    private Pageable getPage(int page, int size, Direction direction, String[] properties)
-    {
-        return PageRequest.of(page, size, direction, properties);
-    }
 
     @Autowired
     public ViewBuyOrderService(BuyOrderRepository buyOrderRepository, SupplierRepository supplierRepository){
@@ -42,9 +35,8 @@ public class ViewBuyOrderService {
             return Collections.emptyList();
     }
 
-    public List<BuyOrder> findAllBuyOrderByUserID(Long userID, int page, int size, Direction direction, String[] properties) {
+    public List<BuyOrder> findAllBuyOrderByUserID(Long userID, Pageable pageable) {
         
-        Pageable pageable = getPage(page, size, direction, properties);
         return this.buyOrderRepository.findAllBuyOrderByUserID(userID, pageable);
     }
 

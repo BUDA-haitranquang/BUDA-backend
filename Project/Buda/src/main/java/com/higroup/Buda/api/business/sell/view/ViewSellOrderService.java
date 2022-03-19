@@ -15,10 +15,7 @@ import com.higroup.Buda.repositories.UserRepository;
 import com.higroup.Buda.util.Checker.PresentChecker;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -30,10 +27,6 @@ public class ViewSellOrderService {
     private SellOrderRepository sellOrderRepository;
     private CustomerRepository customerRepository;
 
-    private Pageable getPage(int page, int size, Direction direction, String[] properties)
-    {
-        return PageRequest.of(page, size, direction, properties);
-    }
 
     @Autowired
     private PresentChecker presentChecker;
@@ -45,12 +38,11 @@ public class ViewSellOrderService {
         this.sellOrderRepository = sellOrderRepository;
     }
     
-    public List<SellOrder> findAllSellOrderByUserID(Long userID, int page, int size, Direction direction, String[] properties) {
+    public List<SellOrder> findAllSellOrderByUserID(Long userID, Pageable pageable) {
         Optional<User> user = this.userRepository.findUserByUserID(userID);
         if (user.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
         }
-        Pageable pageable = getPage(page, size, direction, properties);
         return this.sellOrderRepository.findAllSellOrderByUserID(userID, pageable);
     }
 
