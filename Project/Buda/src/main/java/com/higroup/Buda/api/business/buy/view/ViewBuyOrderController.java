@@ -6,6 +6,7 @@ import com.higroup.Buda.entities.enumeration.Status;
 import com.higroup.Buda.util.Checker.RequestUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,10 +30,10 @@ public class ViewBuyOrderController {
     }
 
     @GetMapping(path = "/all")
-    public ResponseEntity<?> findAllBuyOrderByUserID(HttpServletRequest httpServletRequest)
+    public ResponseEntity<?> findAllBuyOrderByUserID(HttpServletRequest httpServletRequest, Pageable pageable)
     {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
-        return ResponseEntity.ok().body(this.viewBuyOrderService.findAllBuyOrderByUserID(userID));
+        return ResponseEntity.ok().body(this.viewBuyOrderService.findAllBuyOrderByUserID(userID, pageable));
     }
 
     @GetMapping(path = "supplier/{supplierID}/all")

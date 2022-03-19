@@ -13,7 +13,6 @@ import com.higroup.Buda.repositories.BuyOrderRepository;
 import com.higroup.Buda.repositories.SupplierRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +20,6 @@ import org.springframework.stereotype.Service;
 public class ViewBuyOrderService {
     private BuyOrderRepository buyOrderRepository;
     private SupplierRepository supplierRepository;
-    private Pageable maxNumberElements = PageRequest.of(0, 10);
 
     @Autowired
     public ViewBuyOrderService(BuyOrderRepository buyOrderRepository, SupplierRepository supplierRepository){
@@ -32,34 +30,35 @@ public class ViewBuyOrderService {
     public List<BuyOrder> findAllBuyOrderBySupplierID(Long userID, Long supplierID) {
         Optional<Supplier> supplier = this.supplierRepository.findSupplierBySupplierID(supplierID);
         if ((supplier.isPresent()) && (supplier.get().getUserID().equals(userID))) {
-            return this.buyOrderRepository.findAllBuyOrderBySupplier(supplier.get(), maxNumberElements);
+            return this.buyOrderRepository.findAllBuyOrderBySupplier(supplier.get());
         } else
             return Collections.emptyList();
     }
 
-    public List<BuyOrder> findAllBuyOrderByUserID(Long userID) {
-        return this.buyOrderRepository.findAllBuyOrderByUserID(userID, maxNumberElements);
+    public List<BuyOrder> findAllBuyOrderByUserID(Long userID, Pageable pageable) {
+        
+        return this.buyOrderRepository.findAllBuyOrderByUserID(userID, pageable);
     }
 
     public List<BuyOrder> findAllBuyOrderByUserIDLastXDays(Long userID, Long X)
     {
         ZonedDateTime zonedDateTime = ZonedDateTime.now().minusDays(X);
         zonedDateTime.withHour(0).withMinute(0).withSecond(0);
-        return this.buyOrderRepository.findAllBuyOrderByUserIDLastXDays(userID, zonedDateTime, maxNumberElements);
+        return this.buyOrderRepository.findAllBuyOrderByUserIDLastXDays(userID, zonedDateTime);
     }
 
     public List<BuyOrder> findAllIncompletedBuyOrderByUser(Long userID)
     {
-        return this.buyOrderRepository.findAllIncompletedBuyOrderByUser(userID, maxNumberElements);
+        return this.buyOrderRepository.findAllIncompletedBuyOrderByUser(userID);
     }
 
     public List<BuyOrder> findBuyOrderByTextID(Long userID, String textID) {
-        return this.buyOrderRepository.findAllBuyOrderByUserIDAndTextID(userID, textID, maxNumberElements);
+        return this.buyOrderRepository.findAllBuyOrderByUserIDAndTextID(userID, textID);
     }
 
     public List<BuyOrder> findAllBuyOrderByStatus(Long userID, Status status)
     {
-        return this.buyOrderRepository.findAllBuyOrderByUserIDAndStatus(userID, status, maxNumberElements);
+        return this.buyOrderRepository.findAllBuyOrderByUserIDAndStatus(userID, status);
     }
 
     public List<ExpenseByTimeStatistics> findBuyOrderExpenseByWeek(Long userID)

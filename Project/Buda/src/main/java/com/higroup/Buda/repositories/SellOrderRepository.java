@@ -38,12 +38,12 @@ public interface SellOrderRepository extends PagingAndSortingRepository<SellOrde
                         + "LEFT JOIN FETCH s.sellOrderItems si "
                         + "LEFT JOIN FETCH s.customer c "
                         + "LEFT JOIN FETCH s.staff where s.userID = :userID and s.textID = :textID")
-        List<SellOrder> findAllSellOrderByUserIDAndTextID(Long userID, String textID, Pageable pageable);
+        List<SellOrder> findAllSellOrderByUserIDAndTextID(Long userID, String textID);
 
-        List<SellOrder> findAllSellOrderByCustomer(Customer customer, Pageable pageable);
+        List<SellOrder> findAllSellOrderByCustomer(Customer customer);
 
         @Query(value = "select * from sell_order s where s.discount_id = :discountID", nativeQuery = true)
-        List<SellOrder> findAllSellOrderByDiscountID(@Param("discountID") Long discountID, Pageable pageable);
+        List<SellOrder> findAllSellOrderByDiscountID(@Param("discountID") Long discountID);
 
         @Query(value = "select * from sell_order s "
                         + "LEFT JOIN FETCH s.sellOrderItems si "
@@ -51,7 +51,7 @@ public interface SellOrderRepository extends PagingAndSortingRepository<SellOrde
                         + "LEFT JOIN FETCH s.staff ss "
                         + "LEFT JOIN FETCH ss.roles "
                         + "where s.status LIKE :status and s.user_id = :userID", nativeQuery = true)
-        List<SellOrder> findAllSellOrderByStatusAndUserID(@Param("userID") Long userID, @Param("status") String status, Pageable pageable);
+        List<SellOrder> findAllSellOrderByStatusAndUserID(@Param("userID") Long userID, @Param("status") String status);
 
         // @Query(value = "select * from sell_order s where (s.creation_time BETWEEN
         // NOW() - INTERVAL :X DAY and NOW()) and s.user_id = :userID", nativeQuery =
@@ -62,7 +62,7 @@ public interface SellOrderRepository extends PagingAndSortingRepository<SellOrde
                         + "LEFT JOIN FETCH s.staff ss "
                         + "LEFT JOIN FETCH ss.roles "
                         + "where (s.creationTime > :X) and s.userID = :userID")
-        List<SellOrder> findAllSellOrderByUserIDLastXDays(@Param("userID") Long userID, @Param("X") ZonedDateTime X, Pageable pageable);
+        List<SellOrder> findAllSellOrderByUserIDLastXDays(@Param("userID") Long userID, @Param("X") ZonedDateTime X);
 
         // @Query(value = "select * from sell_order s where s.status NOT LIKE 'FINISHED'
         // and s.status NOT LIKE 'CANCELLED' and s.user_id = :userID", nativeQuery =
@@ -73,7 +73,7 @@ public interface SellOrderRepository extends PagingAndSortingRepository<SellOrde
                         + "LEFT JOIN FETCH s.staff ss "
                         + "LEFT JOIN FETCH ss.roles "
                         + "where s.status NOT LIKE 'FINISHED' and s.status NOT LIKE 'CANCELLED' and s.userID = :userID")
-        List<SellOrder> findAllIncompletedSellOrderByUser(@Param("userID") Long userID, Pageable pageable);
+        List<SellOrder> findAllIncompletedSellOrderByUser(@Param("userID") Long userID);
 
         @Query(value = "select s from SellOrder s "
                         + "LEFT JOIN FETCH s.sellOrderItems si "
@@ -81,7 +81,7 @@ public interface SellOrderRepository extends PagingAndSortingRepository<SellOrde
                         + "LEFT JOIN FETCH s.staff ss "
                         + "LEFT JOIN FETCH ss.roles "
                         + " where s.status LIKE 'FINISHED' and s.userID = :userID")
-        List<SellOrder> findAllCompletedSellOrderByUser(@Param("userID") Long userID, Pageable pageable);
+        List<SellOrder> findAllCompletedSellOrderByUser(@Param("userID") Long userID);
 
         @Query(value = "select s from SellOrder s "
                         + "LEFT JOIN FETCH s.sellOrderItems si "
@@ -89,7 +89,7 @@ public interface SellOrderRepository extends PagingAndSortingRepository<SellOrde
                         + "LEFT JOIN FETCH s.staff ss "
                         + "LEFT JOIN FETCH ss.roles "
                         + " where s.status = :status and s.userID = :userID")
-        List<SellOrder> findAllSellOrderByUserIDAndStatus(Long userID, Status status, Pageable pageable);
+        List<SellOrder> findAllSellOrderByUserIDAndStatus(Long userID, Status status);
 
         @Query(value = "select new com.higroup.Buda.customDTO.AgeGroupStatistics(s.ageGroup, SUM(s.realCost))"
                         + " from SellOrder s WHERE s.userID = :userID"
