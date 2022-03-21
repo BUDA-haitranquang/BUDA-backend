@@ -81,7 +81,7 @@ public interface SellOrderRepository extends PagingAndSortingRepository<SellOrde
                         + "LEFT JOIN FETCH s.staff ss "
                         + "LEFT JOIN FETCH ss.roles "
                         + " where s.status LIKE 'FINISHED' and s.userID = :userID")
-        List<SellOrder> findAllCompletedSellOrderByUser(@Param("userID") Long userID);
+        List<SellOrder> findAllCompletedSellOrderByUser(@Param("userID") Long userID, Pageable pageable);
 
         @Query(value = "select s from SellOrder s "
                         + "LEFT JOIN FETCH s.sellOrderItems si "

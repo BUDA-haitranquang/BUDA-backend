@@ -52,7 +52,13 @@ public class ViewSellOrderController {
     public ResponseEntity<?> findAllIncompletedSellOrderByCurrentUser(HttpServletRequest httpServletRequest)
     {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
-        return ResponseEntity.ok().body(this.viewSellOrderService.findAllIIncompletedSellOrderByUserID(userID));
+        return ResponseEntity.ok().body(this.viewSellOrderService.findAllIncompletedSellOrderByUserID(userID));
+    }
+    @GetMapping(path = "all/completed")
+    public ResponseEntity<?> findAllCompletedSellOrderByCurrentUser(HttpServletRequest httpServletRequest, Pageable pageable)
+    {
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
+        return ResponseEntity.ok().body(this.viewSellOrderService.findAllCompletedSellOrderByUserID(userID, pageable));
     }
     @GetMapping(path = "all/status/{status}")
     public ResponseEntity<?> findAllSellOrderByCurrentUserAndStatus(HttpServletRequest httpServletRequest, @PathVariable Status status)
