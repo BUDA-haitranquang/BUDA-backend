@@ -27,17 +27,17 @@ public class ViewSellOrderService {
     private SellOrderRepository sellOrderRepository;
     private CustomerRepository customerRepository;
 
-
     @Autowired
     private PresentChecker presentChecker;
 
     @Autowired
-    public ViewSellOrderService(UserRepository userRepository, SellOrderRepository sellOrderRepository, CustomerRepository customerRepository){
+    public ViewSellOrderService(UserRepository userRepository, SellOrderRepository sellOrderRepository,
+            CustomerRepository customerRepository) {
         this.userRepository = userRepository;
         this.customerRepository = customerRepository;
         this.sellOrderRepository = sellOrderRepository;
     }
-    
+
     public List<SellOrder> findAllSellOrderByUserID(Long userID, Pageable pageable) {
         Optional<User> user = this.userRepository.findUserByUserID(userID);
         if (user.isEmpty()) {
@@ -59,23 +59,26 @@ public class ViewSellOrderService {
         }
     }
 
-    public List<SellOrder> findAllSellOrderByUserIDLastXDays(Long userID, Long X)
-    {
+    public List<SellOrder> findAllSellOrderByUserIDLastXDays(Long userID, Long X) {
         presentChecker.checkIdAndRepository(userID, this.userRepository);
         ZonedDateTime xDaysAgo = ZonedDateTime.now().minusDays(X);
         xDaysAgo.withSecond(0).withHour(0).withMinute(0);
         return this.sellOrderRepository.findAllSellOrderByUserIDLastXDays(userID, xDaysAgo);
     }
 
-    public List<SellOrder> findAllIIncompletedSellOrderByUserID(Long userID)
-    {
+    public List<SellOrder> findAllIncompletedSellOrderByUserID(Long userID) {
         presentChecker.checkIdAndRepository(userID, this.userRepository);
         return this.sellOrderRepository.findAllIncompletedSellOrderByUser(userID);
     }
 
-    public List<SellOrder> findAllSellOrderByUserAndStatus(Long userID, Status status)
-    {
-        // return this.sellOrderRepository.findAllSellOrderByStatusAndUserID(userID, status.toString());
+    public List<SellOrder> findAllCompletedSellOrderByUserID(Long userID, Pageable pageable) {
+        presentChecker.checkIdAndRepository(userID, this.userRepository);
+        return this.sellOrderRepository.findAllCompletedSellOrderByUser(userID, pageable);
+    }
+
+    public List<SellOrder> findAllSellOrderByUserAndStatus(Long userID, Status status) {
+        // return this.sellOrderRepository.findAllSellOrderByStatusAndUserID(userID,
+        // status.toString());
         return this.sellOrderRepository.findAllSellOrderByUserIDAndStatus(userID, status);
     }
 

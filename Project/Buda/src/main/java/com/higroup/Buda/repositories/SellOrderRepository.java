@@ -61,7 +61,7 @@ public interface SellOrderRepository extends PagingAndSortingRepository<SellOrde
                         + "LEFT JOIN FETCH s.customer c "
                         + "LEFT JOIN FETCH s.staff ss "
                         + "LEFT JOIN FETCH ss.roles "
-                        + "where (s.creationTime > :X) and s.userID = :userID")
+                        + "where (s.creationTime >= :X) and s.userID = :userID")
         List<SellOrder> findAllSellOrderByUserIDLastXDays(@Param("userID") Long userID, @Param("X") ZonedDateTime X);
 
         // @Query(value = "select * from sell_order s where s.status NOT LIKE 'FINISHED'
@@ -81,7 +81,7 @@ public interface SellOrderRepository extends PagingAndSortingRepository<SellOrde
                         + "LEFT JOIN FETCH s.staff ss "
                         + "LEFT JOIN FETCH ss.roles "
                         + " where s.status LIKE 'FINISHED' and s.userID = :userID")
-        List<SellOrder> findAllCompletedSellOrderByUser(@Param("userID") Long userID);
+        List<SellOrder> findAllCompletedSellOrderByUser(@Param("userID") Long userID, Pageable pageable);
 
         @Query(value = "select s from SellOrder s "
                         + "LEFT JOIN FETCH s.sellOrderItems si "
@@ -91,71 +91,78 @@ public interface SellOrderRepository extends PagingAndSortingRepository<SellOrde
                         + " where s.status = :status and s.userID = :userID")
         List<SellOrder> findAllSellOrderByUserIDAndStatus(Long userID, Status status);
 
-        @Query(value = "select new com.higroup.Buda.customDTO.AgeGroupStatistics(s.ageGroup, SUM(s.realCost))"
+        @Query(value = "select new com.higroup.Buda.customDTO.AgeGroupStatistics(s.ageGroup, SUM(s.finalCost))"
                         + " from SellOrder s WHERE s.userID = :userID"
                         + " and s.status = 'FINISHED'"
                         + " GROUP BY s.ageGroup")
         List<AgeGroupStatistics> findTotalSpendOfAgeGroupByUserID(Long userID);
 
-        @Query(value = "select new com.higroup.Buda.customDTO.AgeGroupStatistics(s.ageGroup, SUM(s.realCost))"
+        @Query(value = "select new com.higroup.Buda.customDTO.AgeGroupStatistics(s.ageGroup, SUM(s.finalCost))"
                         + " from SellOrder s WHERE s.userID = :userID"
                         + " and s.status = 'FINISHED'"
                         + " and month(s.creationTime) >= (month(current_date) - 1) and year(s.creationTime) = year(current_date)"
                         + " GROUP BY s.ageGroup")
         List<AgeGroupStatistics> findCurrentMonthSpendOfAgeGroupByUserID(Long userID);
 
-        @Query(value = "select new com.higroup.Buda.customDTO.GenderStatistics(s.gender, SUM(s.realCost))"
+        @Query(value = "select new com.higroup.Buda.customDTO.GenderStatistics(s.gender, SUM(s.finalCost))"
                         + " from SellOrder s where s.userID = :userID"
                         + " and s.status = 'FINISHED'"
                         + " GROUP BY s.gender")
         List<GenderStatistics> findTotalSpendOfGenderByUserID(Long userID);
 
-        @Query(value = "select new com.higroup.Buda.customDTO.GenderStatistics(s.gender, SUM(s.realCost))"
+        @Query(value = "select new com.higroup.Buda.customDTO.GenderStatistics(s.gender, SUM(s.finalCost))"
                         + " from SellOrder s where s.userID = :userID"
                         + " and month(s.creationTime) >= (month(current_date) - 1) and year(s.creationTime) = year(current_date)"
                         + " and s.status = 'FINISHED'"
                         + " GROUP BY s.gender")
         List<GenderStatistics> findCurrentMonthSpendOfGenderByUserID(Long userID);
 
-        @Query(value = "select new com.higroup.Buda.customDTO.RevenueByTimeStatistics(DATE_FORMAT(s.creationTime, '%m-%Y'), SUM(s.realCost))"
+        @Query(value = "select new com.higroup.Buda.customDTO.RevenueByTimeStatistics(DATE_FORMAT(s.creationTime, '%m-%Y'), SUM(s.finalCost))"
                         + " from SellOrder s where s.userID = :userID and year(s.creationTime) >= (year(current_date) - 1)"
                         + " and s.status = 'FINISHED'"
                         + " GROUP BY DATE_FORMAT(s.creationTime, '%m-%Y')"
-                        + " ORDER BY DATE_FORMAT(s.creationTime, '%m-%Y')")
+                        + " ORDER BY s.creationTime")
         List<RevenueByTimeStatistics> findRevenueGroupByMonth(Long userID);
 
-        @Query(value = "select new com.higroup.Buda.customDTO.RevenueByTimeStatistics(DATE_FORMAT(s.creationTime, '%V-%Y'), SUM(s.realCost))"
+        @Query(value = "select new com.higroup.Buda.customDTO.RevenueByTimeStatistics(DATE_FORMAT(s.creationTime, '%V-%Y'), SUM(s.finalCost))"
                         + " from SellOrder s where s.userID = :userID"
                         + " and s.status = 'FINISHED'"
                         + " GROUP BY DATE_FORMAT(s.creationTime, '%V-%Y')"
-                        + " ORDER BY DATE_FORMAT(s.creationTime, '%V-%Y')")
+                        + " ORDER BY s.creationTime")
         List<RevenueByTimeStatistics> findRevenueGroupByWeek(Long userID);
 
-        @Query(value = "select new com.higroup.Buda.customDTO.RevenueByTimeStatistics(DATE_FORMAT(s.creationTime, '%W-%Y'), SUM(s.realCost))"
+        @Query(value = "select new com.higroup.Buda.customDTO.RevenueByTimeStatistics(DATE_FORMAT(s.creationTime, '%W-%Y'), SUM(s.finalCost))"
                         + " from SellOrder s where s.userID = :userID and year(s.creationTime) = year(current_date)"
                         + " and s.status = 'FINISHED'"
                         + " GROUP BY DATE_FORMAT(s.creationTime, '%W-%Y')"
-                        + " ORDER BY DATE_FORMAT(s.creationTime, '%W-%Y')")
+                        + " ORDER BY s.creationTime")
         List<RevenueByTimeStatistics> findRevenueGroupByWeekday(Long userID);
 
-        @Query(value = "select new com.higroup.Buda.customDTO.RevenueByTimeStatistics(DATE_FORMAT(s.creationTime, '%d-%m-%Y'), SUM(s.realCost))"
+        @Query(value = "select new com.higroup.Buda.customDTO.RevenueByTimeStatistics(DATE_FORMAT(s.creationTime, '%d-%m-%Y'), SUM(s.finalCost))"
                         + " from SellOrder s where s.userID = :userID and month(s.creationTime) = month(current_date) and year(s.creationTime) = year(current_date)"
                         + " and s.status = 'FINISHED'"
                         + " GROUP BY DATE_FORMAT(s.creationTime, '%d-%m-%Y')"
-                        + " ORDER BY DATE_FORMAT(s.creationTime, '%d-%m-%Y')")
+                        + " ORDER BY s.creationTime")
         List<RevenueByTimeStatistics> findRevenueAllDaysCurrentMonth(Long userID);
+
+        @Query(value = "select new com.higroup.Buda.customDTO.RevenueByTimeStatistics(DATE_FORMAT(s.creationTime, '%d-%m-%Y'), SUM(s.finalCost))"
+                        + " from SellOrder s where s.userID = :userID and s.creationTime >= :from and s.creationTime <= :to"
+                        + " and s.status = 'FINISHED'"
+                        + " GROUP BY DATE_FORMAT(s.creationTime, '%d-%m-%Y')"
+                        + " ORDER BY s.creationTime")
+        List<RevenueByTimeStatistics> findRevenueInPeriod(Long userID, ZonedDateTime from, ZonedDateTime to);
 
         @Query(value = "select new com.higroup.Buda.customDTO.ActiveHoursStatistics(DATE_FORMAT(s.creationTime, '%H'), COUNT(s.sellOrderID))"
                         + " from SellOrder s where s.userID = :userID and s.status = 'FINISHED'"
                         + " group by DATE_FORMAT(s.creationTime, '%H')"
-                        + " order by DATE_FORMAT(s.creationTime, '%H')")
+                        + " ORDER BY s.creationTime")
         List<ActiveHoursStatistics> findTotalCountGroupByHours(Long userID);
 
         @Query(value = "select new com.higroup.Buda.customDTO.ActiveHoursStatistics(DATE_FORMAT(s.creationTime, '%H'), COUNT(s.sellOrderID))"
                         + " from SellOrder s where s.userID = :userID and s.status = 'FINISHED'"
                         + " and month(s.creationTime) >= (month(current_date) - 1) and year(s.creationTime) = year(current_date)"
                         + " group by DATE_FORMAT(s.creationTime, '%H')"
-                        + " order by DATE_FORMAT(s.creationTime, '%H')")
+                        + " ORDER BY s.creationTime")
         List<ActiveHoursStatistics> findCurrentMonthCountGroupByHours(Long userID);
 
         @Query(value = "select COUNT(s.sellOrderID)"

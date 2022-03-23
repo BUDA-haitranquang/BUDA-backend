@@ -55,6 +55,12 @@ public class ViewBuyOrderController {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.viewBuyOrderService.findAllIncompletedBuyOrderByUser(userID));
     }
+    @GetMapping(path = "all/completed")
+    public ResponseEntity<?> findAllCompletedBuyOrderByCurrentUser(HttpServletRequest httpServletRequest, Pageable pageable)
+    {
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
+        return ResponseEntity.ok().body(this.viewBuyOrderService.findAllCompletedBuyOrderByUser(userID, pageable));
+    }
     @GetMapping(path = "all/status/{status}")
     public ResponseEntity<?> findAllBuyOrderByCurrentUserAndStatus(HttpServletRequest httpServletRequest, @PathVariable Status status)
     {
