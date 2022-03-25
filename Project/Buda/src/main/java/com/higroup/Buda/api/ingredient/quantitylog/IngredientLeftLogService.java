@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import com.higroup.Buda.entities.Ingredient;
 import com.higroup.Buda.entities.IngredientLeftLog;
 import com.higroup.Buda.entities.User;
 import com.higroup.Buda.repositories.IngredientLeftLogRepository;
@@ -48,7 +49,12 @@ public class IngredientLeftLogService {
     }
     public List<IngredientLeftLog> findAllIngredientLeftLogByIngredient(Long userID, Long ingredientID)
     {
-        return this.ingredientLeftLogRepository.findAllIngredientLeftLogByIngredient(userID, ingredientID);
+        Ingredient ingredient = this.ingredientRepository.findIngredientByIngredientID(ingredientID).get();
+        if ((ingredient!=null) && (ingredient.getUserID().equals(userID))){
+            return this.ingredientLeftLogRepository.findAllIngredientLeftLogByIngredient(userID, ingredient);
+        }
+        else throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Ingredient not found");
+        
     }
     public List<IngredientLeftLog> findAllIngredientLeftLogByStaffID(Long userID, Long staffID)
     {

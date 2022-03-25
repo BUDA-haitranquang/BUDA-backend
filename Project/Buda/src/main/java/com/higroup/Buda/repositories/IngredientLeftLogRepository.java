@@ -11,10 +11,21 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface IngredientLeftLogRepository extends JpaRepository<IngredientLeftLog, Long> {
+    @Query(value = "select i from IngredientLeftLog i " + " LEFT JOIN FETCH i.ingredient ii" + 
+    " LEFT JOIN FETCH ii.picture" + 
+    " where i.ingredientLeftLogID = :ingredientLeftLogID")
     Optional<IngredientLeftLog> findIngredientLeftLogByIngredientLeftLogID(Long ingredientLeftLogID);
-    @Query(value = "select * from ingredient_left_log where user_id = :userID and staff_id = :staffID", nativeQuery = true)
+    @Query(value = "select i from IngredientLeftLog i " + " LEFT JOIN FETCH i.ingredient ii" + 
+    " LEFT JOIN FETCH ii.picture" + 
+    " where i.userID = :userID and i.staffID = :staffID")
     List<IngredientLeftLog> findAllIngredientLeftLogByStaffID(@Param("userID") Long userID, @Param("staffID") Long staffID);
+    @Query(value = "select i from IngredientLeftLog i " + " LEFT JOIN FETCH i.ingredient ii" + 
+    " LEFT JOIN FETCH ii.picture" + 
+    " where i.userID = :userID")
     List<IngredientLeftLog> findAllIngredientLeftLogByUserID(Long userID);
-    @Query(value = "select * from ingredient_left_log where user_id = :userID and ingredient_id = :ingredientID", nativeQuery = true)
-    List<IngredientLeftLog> findAllIngredientLeftLogByIngredient(@Param("userID") Long userID, @Param("ingredientID") Long ingredientID);
+    @Query(value = "select i from IngredientLeftLog i " + " LEFT JOIN FETCH i.ingredient ii" + 
+    " LEFT JOIN FETCH ii.picture" + 
+    " where i.userID = :userID" +
+    " and i.ingredient = :ingredient")
+    List<IngredientLeftLog> findAllIngredientLeftLogByIngredient(@Param("userID") Long userID, Ingredient ingredient);
 }

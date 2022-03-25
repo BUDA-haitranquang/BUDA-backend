@@ -37,8 +37,7 @@ public class IngredientLeftLog {
     @Column(name = "ingredient_left_log_id")
     private Long ingredientLeftLogID;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonBackReference
-    @JoinColumn(name = "ingredient_ID", nullable = true)
+    @JoinColumn(name = "ingredient_id", nullable = true, referencedColumnName = "ingredient_id")
     private Ingredient ingredient;
     private Integer amountLeftChange;
     private ZonedDateTime creationTime;
@@ -58,7 +57,7 @@ public class IngredientLeftLog {
         }
         IngredientLeftLog ingredientLeftLog = (IngredientLeftLog) o;
         return Objects.equals(ingredientLeftLogID, ingredientLeftLog.ingredientLeftLogID)
-                && Objects.equals(ingredient, ingredientLeftLog.ingredient)
+                // && Objects.equals(ingredient, ingredientLeftLog.ingredient)
                 && amountLeftChange == ingredientLeftLog.amountLeftChange
                 && Objects.equals(creationTime, ingredientLeftLog.creationTime)
                 && Objects.equals(staffID, ingredientLeftLog.staffID)
@@ -68,14 +67,14 @@ public class IngredientLeftLog {
 
     @Override
     public int hashCode() {
-        return Objects.hash(ingredientLeftLogID, ingredient, amountLeftChange, creationTime, staffID, message, userID);
+        return Objects.hash(ingredientLeftLogID, amountLeftChange, creationTime, staffID, message, userID);
     }
 
     @Override
     public String toString() {
         return "{" +
             " ingredientLeftLogID='" + getIngredientLeftLogID() + "'" +
-            ", ingredient='" + getIngredient() + "'" +
+            // ", ingredient='" + getIngredient() + "'" +
             ", amountLeftChange='" + getAmountLeftChange() + "'" +
             ", creationTime='" + getCreationTime() + "'" +
             ", staffID='" + getStaffID() + "'" +

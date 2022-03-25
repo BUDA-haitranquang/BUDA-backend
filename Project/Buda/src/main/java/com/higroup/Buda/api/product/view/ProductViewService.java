@@ -62,11 +62,11 @@ public class ProductViewService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
         }
         Product product = opProduct.get();
-        if ((product!=null) && (Objects.equals(product.getUserID(), userID)))
+        if ((product!=null) && product.getUserID().equals(userID))
         {
             return product;
         }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found");
+        else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found");
     }
     public Set<Product> findAllProductByProductGroupID(Long userID, Long productGroupID)
     {
