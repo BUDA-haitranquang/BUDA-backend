@@ -43,4 +43,9 @@ public class ViewProductGroupController {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.viewProductGroupService.findAllProductByProductGroup(userID, productGroupID));
     }
+    @GetMapping(path = "/by-product/{productID}")
+    public ResponseEntity<?> findAllProductGroupByProductID(HttpServletRequest httpServletRequest, @PathVariable Long productID){
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
+        return ResponseEntity.ok().body(this.viewProductGroupService.findAllProductGroupByProductID(userID, productID));
+    }
 }

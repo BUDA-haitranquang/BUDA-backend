@@ -42,4 +42,7 @@ public class ViewProductGroupService {
     {
         return this.productRepository.findAllProductByProductGroup(productGroupID, userID);
     }
+    public List<ProductGroup> findAllProductGroupByProductID(Long userID, Long productID){
+        return this.productGroupRepository.findAllByProduct(userID, productID);
+    }
 }
