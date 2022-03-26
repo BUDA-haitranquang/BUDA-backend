@@ -36,7 +36,6 @@ public class ProductComboItem {
     private ProductCombo productCombo;
     @ManyToOne
     @JoinColumn(name = "product_id")
-    @JsonBackReference
     private Product product;
     private Integer quantity;
     private Double pricePerUnit;
