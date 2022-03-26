@@ -2,6 +2,9 @@ package com.higroup.Buda.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,7 +33,6 @@ public class BuyOrderItem {
     @JoinColumn(name = "buy_Order_ID", nullable = true)
     private BuyOrder buyOrder;
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
-    @JsonBackReference(value = "ingredient - buy_order_item")
     @JoinColumn(name = "ingredient_ID", nullable = true)
     private Ingredient ingredient;
     private Integer quantity;
