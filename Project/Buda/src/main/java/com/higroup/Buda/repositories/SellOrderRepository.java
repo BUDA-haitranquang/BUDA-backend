@@ -20,6 +20,7 @@ import org.springframework.data.repository.query.Param;
 public interface SellOrderRepository extends PagingAndSortingRepository<SellOrder, Long> {
         @Query(value = "select s from SellOrder s "
                         + "LEFT JOIN FETCH s.sellOrderItems si "
+                        + "LEFT JOIN FETCH si.product "
                         + "LEFT JOIN FETCH s.customer c "
                         + "LEFT JOIN FETCH s.staff ss "
                         + "LEFT JOIN FETCH ss.roles "
@@ -28,6 +29,7 @@ public interface SellOrderRepository extends PagingAndSortingRepository<SellOrde
 
         @Query(value = "select distinct s from SellOrder s "
                         + "LEFT JOIN FETCH s.sellOrderItems si "
+                        + "LEFT JOIN FETCH si.product "
                         + "LEFT JOIN FETCH s.customer c "
                         + "LEFT JOIN FETCH s.staff ss "
                         + "LEFT JOIN FETCH ss.roles "
@@ -36,8 +38,9 @@ public interface SellOrderRepository extends PagingAndSortingRepository<SellOrde
 
         @Query(value = "select distinct s from SellOrder s "
                         + "LEFT JOIN FETCH s.sellOrderItems si "
+                        + "LEFT JOIN FETCH si.product "
                         + "LEFT JOIN FETCH s.customer c "
-                        + "LEFT JOIN FETCH s.staff where s.userID = :userID and s.textID = :textID")
+                        + "LEFT JOIN FETCH s.staff ss LEFT JOIN FETCH ss.roles where s.userID = :userID and s.textID = :textID")
         List<SellOrder> findAllSellOrderByUserIDAndTextID(Long userID, String textID);
 
         List<SellOrder> findAllSellOrderByCustomer(Customer customer);
@@ -47,6 +50,7 @@ public interface SellOrderRepository extends PagingAndSortingRepository<SellOrde
 
         @Query(value = "select * from sell_order s "
                         + "LEFT JOIN FETCH s.sellOrderItems si "
+                        + "LEFT JOIN FETCH si.product "
                         + "LEFT JOIN FETCH s.customer c "
                         + "LEFT JOIN FETCH s.staff ss "
                         + "LEFT JOIN FETCH ss.roles "
@@ -58,6 +62,7 @@ public interface SellOrderRepository extends PagingAndSortingRepository<SellOrde
         // true)
         @Query(value = "select distinct s from SellOrder s "
                         + "LEFT JOIN FETCH s.sellOrderItems si "
+                        + "LEFT JOIN FETCH si.product "
                         + "LEFT JOIN FETCH s.customer c "
                         + "LEFT JOIN FETCH s.staff ss "
                         + "LEFT JOIN FETCH ss.roles "
@@ -69,6 +74,7 @@ public interface SellOrderRepository extends PagingAndSortingRepository<SellOrde
         // true)
         @Query(value = "select s from SellOrder s "
                         + "LEFT JOIN FETCH s.sellOrderItems si "
+                        + "LEFT JOIN FETCH si.product "
                         + "LEFT JOIN FETCH s.customer c "
                         + "LEFT JOIN FETCH s.staff ss "
                         + "LEFT JOIN FETCH ss.roles "
@@ -77,6 +83,7 @@ public interface SellOrderRepository extends PagingAndSortingRepository<SellOrde
 
         @Query(value = "select s from SellOrder s "
                         + "LEFT JOIN FETCH s.sellOrderItems si "
+                        + "LEFT JOIN FETCH si.product "
                         + "LEFT JOIN FETCH s.customer c "
                         + "LEFT JOIN FETCH s.staff ss "
                         + "LEFT JOIN FETCH ss.roles "
@@ -85,6 +92,7 @@ public interface SellOrderRepository extends PagingAndSortingRepository<SellOrde
 
         @Query(value = "select s from SellOrder s "
                         + "LEFT JOIN FETCH s.sellOrderItems si "
+                        + "LEFT JOIN FETCH si.product "
                         + "LEFT JOIN FETCH s.customer c "
                         + "LEFT JOIN FETCH s.staff ss "
                         + "LEFT JOIN FETCH ss.roles "

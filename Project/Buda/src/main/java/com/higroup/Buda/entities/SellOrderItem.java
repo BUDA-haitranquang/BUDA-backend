@@ -46,8 +46,8 @@ public class SellOrderItem {
     @JsonBackReference(value = "sell_order - sell_order_item")
     @JoinColumn(name = "sell_Order_ID", nullable = true)
     private SellOrder sellOrder;
-    @ManyToOne(fetch = FetchType.LAZY, optional = true)
-    @JsonBackReference(value = "product - sell_order_item")
+    @ManyToOne(fetch = FetchType.EAGER, optional = true)
+    //@JsonBackReference(value = "product - sell_order_item")
     @JoinColumn(name = "product_ID", nullable = true)
     private Product product;
     private Integer quantity;
