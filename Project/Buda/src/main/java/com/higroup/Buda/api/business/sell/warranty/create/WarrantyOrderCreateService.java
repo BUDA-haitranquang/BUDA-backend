@@ -2,6 +2,7 @@ package com.higroup.Buda.api.business.sell.warranty.create;
 
 import com.higroup.Buda.customDTO.RegisterWarrantyOrder;
 import com.higroup.Buda.entities.*;
+import com.higroup.Buda.entities.enumeration.Status;
 import com.higroup.Buda.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -81,6 +82,7 @@ public class WarrantyOrderCreateService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Over Warranty period");
         }
         WarrantyOrder warrantyOrder = new WarrantyOrder();
+        warrantyOrder.setStatus(Status.RECEIVING);
         warrantyOrder.setUserID(userID);
         warrantyOrder.setProduct(product);
         warrantyOrder.setSellOrder(sellOrder.get());

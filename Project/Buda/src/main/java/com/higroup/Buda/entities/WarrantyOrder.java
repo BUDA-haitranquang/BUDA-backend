@@ -4,6 +4,8 @@ import java.time.ZonedDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -13,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.higroup.Buda.entities.enumeration.Status;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -47,7 +50,9 @@ public class WarrantyOrder {
     private Customer customer;
     private String customerMessage;
     private ZonedDateTime creationTime;
-//    private Status status = Status.RECEIVING;
+    @Column(name = "status", columnDefinition = "varchar(255) default 'RECEIVING'")
+    @Enumerated(EnumType.STRING)
+    private Status status = Status.RECEIVING;
    
     @Override
     public int hashCode() {
