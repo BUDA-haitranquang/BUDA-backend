@@ -59,6 +59,12 @@ public class NewBuyOrderService {
         {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "request supplier is null");
         }
+        if (requestSupplier.getSupplierID() != null) {
+            Optional<Supplier> supplierOptional = this.supplierRepository.findSupplierBySupplierID(requestSupplier.getSupplierID());
+            if ((supplierOptional.isPresent()) && (supplierOptional.get().getUserID().equals(userID))) {
+                return supplierOptional.get();
+            }
+        }
         String phoneNumber = requestSupplier.getPhoneNumber();
         if (phoneNumber == null)
         {
