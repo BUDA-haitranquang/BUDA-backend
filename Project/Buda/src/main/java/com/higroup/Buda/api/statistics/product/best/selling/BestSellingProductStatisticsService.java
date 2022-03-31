@@ -3,11 +3,10 @@ package com.higroup.Buda.api.statistics.product.best.selling;
 import java.util.List;
 import java.util.Optional;
 
+import com.higroup.Buda.api.statistics.product.best.selling.BestSellingProductStatisticsRepository.ProductRanking;
 import com.higroup.Buda.entities.User;
 import com.higroup.Buda.entities.enumeration.PlanType;
-import com.higroup.Buda.repositories.SellOrderItemRepository;
 import com.higroup.Buda.repositories.UserRepository;
-import com.higroup.Buda.repositories.SellOrderItemRepository.ProductRanking;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,13 +16,13 @@ import org.springframework.web.server.ResponseStatusException;
 @Service
 public class BestSellingProductStatisticsService {
     private final UserRepository userRepository;
-    private final SellOrderItemRepository sellOrderItemRepository;
+    private final BestSellingProductStatisticsRepository bestSellingProductStatisticsRepository;
     private Integer basicNumber = 3, proNumber = 10;
 
     @Autowired
-    public BestSellingProductStatisticsService(UserRepository userRepository, SellOrderItemRepository sellOrderItemRepository){
+    public BestSellingProductStatisticsService(UserRepository userRepository, BestSellingProductStatisticsRepository bestSellingProductStatisticsRepository){
         this.userRepository = userRepository;
-        this.sellOrderItemRepository = sellOrderItemRepository;
+        this.bestSellingProductStatisticsRepository = bestSellingProductStatisticsRepository;
     }
 
     public List<ProductRanking> findNProductsTopProfit(Long userID){
@@ -36,8 +35,8 @@ public class BestSellingProductStatisticsService {
             number = basicNumber;
         }
         else number = proNumber;
-
-        return this.sellOrderItemRepository.findNProductsTopProfit(userID, number);
+        
+        return this.bestSellingProductStatisticsRepository.findNProductsTopProfit(userID, number);
     }
 
     public List<ProductRanking> findNProductsTopRevenue(Long userID){
@@ -51,7 +50,7 @@ public class BestSellingProductStatisticsService {
         }
         else number = proNumber;
 
-        return this.sellOrderItemRepository.findNProductsTopRevenue(userID, number);
+        return this.bestSellingProductStatisticsRepository.findNProductsTopRevenue(userID, number);
     }
 
     public List<ProductRanking> findNProductsTopSellNumber(Long userID){
@@ -65,7 +64,7 @@ public class BestSellingProductStatisticsService {
         }
         else number = proNumber;
 
-        return this.sellOrderItemRepository.findNProductsTopSellNumber(userID, number);
+        return this.bestSellingProductStatisticsRepository.findNProductsTopSellNumber(userID, number);
     }
 
 
