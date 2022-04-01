@@ -3,11 +3,10 @@ package com.higroup.Buda.api.statistics.product.worst.returning;
 import java.util.List;
 import java.util.Optional;
 
+import com.higroup.Buda.api.statistics.product.worst.returning.WorstReturnProductStatisticsRepository.ProductRanking;
 import com.higroup.Buda.entities.User;
 import com.higroup.Buda.entities.enumeration.PlanType;
-import com.higroup.Buda.repositories.SellOrderItemRepository;
 import com.higroup.Buda.repositories.UserRepository;
-import com.higroup.Buda.repositories.SellOrderItemRepository.ProductRanking;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,13 +16,14 @@ import org.springframework.web.server.ResponseStatusException;
 @Service
 public class WorstReturnProductStatisticsService {
     private final UserRepository userRepository;
-    private final SellOrderItemRepository sellOrderItemRepository;
+    private final WorstReturnProductStatisticsRepository worstReturnProductStatisticsRepository;
+    // private final SellOrderItemRepository sellOrderItemRepository;
     private Integer basicNumber = 3, proNumber = 10;
 
     @Autowired
-    public WorstReturnProductStatisticsService(UserRepository userRepository, SellOrderItemRepository sellOrderItemRepository){
+    public WorstReturnProductStatisticsService(UserRepository userRepository, WorstReturnProductStatisticsRepository worstReturnProductStatisticsRepository){
         this.userRepository = userRepository;
-        this.sellOrderItemRepository = sellOrderItemRepository;
+        this.worstReturnProductStatisticsRepository = worstReturnProductStatisticsRepository;
     }
 
     public List<ProductRanking> findNProductsMostReturnNumber(Long userID){
@@ -37,7 +37,7 @@ public class WorstReturnProductStatisticsService {
         }
         else number = proNumber;
 
-        return this.sellOrderItemRepository.findNProductsMostReturnNumber(userID, number);
+        return this.worstReturnProductStatisticsRepository.findNProductsMostReturnNumber(userID, number);
     }
 
     public List<ProductRanking> findNProductsMostReturnPrice(Long userID){
@@ -51,6 +51,6 @@ public class WorstReturnProductStatisticsService {
         }
         else number = proNumber;
 
-        return this.sellOrderItemRepository.findNProductsMostReturnPrice(userID, number);
+        return this.worstReturnProductStatisticsRepository.findNProductsMostReturnPrice(userID, number);
     }
 }
