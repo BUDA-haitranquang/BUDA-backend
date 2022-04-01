@@ -3,11 +3,10 @@ package com.higroup.Buda.api.statistics.product.worst.selling;
 import java.util.List;
 import java.util.Optional;
 
+import com.higroup.Buda.api.statistics.product.worst.selling.WorstSellingProductStatisticsRepository.ProductRanking;
 import com.higroup.Buda.entities.User;
 import com.higroup.Buda.entities.enumeration.PlanType;
-import com.higroup.Buda.repositories.SellOrderItemRepository;
 import com.higroup.Buda.repositories.UserRepository;
-import com.higroup.Buda.repositories.SellOrderItemRepository.ProductRanking;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,13 +16,14 @@ import org.springframework.web.server.ResponseStatusException;
 @Service
 public class WorstSellingProductStatisticsService {
     private final UserRepository userRepository;
-    private final SellOrderItemRepository sellOrderItemRepository;
+    private final WorstSellingProductStatisticsRepository worstSellingProductStatisticsRepository;
+    // private final SellOrderItemRepository sellOrderItemRepository;
     private Integer basicNumber = 3, proNumber = 10;
 
     @Autowired
-    public WorstSellingProductStatisticsService(UserRepository userRepository, SellOrderItemRepository sellOrderItemRepository){
+    public WorstSellingProductStatisticsService(UserRepository userRepository, WorstSellingProductStatisticsRepository worstSellingProductStatisticsRepository){
         this.userRepository = userRepository;
-        this.sellOrderItemRepository = sellOrderItemRepository;
+        this.worstSellingProductStatisticsRepository = worstSellingProductStatisticsRepository;
     }
 
     public List<ProductRanking> findNProductsLeastProfit(Long userID){
@@ -37,7 +37,7 @@ public class WorstSellingProductStatisticsService {
         }
         else number = proNumber;
 
-        return this.sellOrderItemRepository.findNProductsLeastProfit(userID, number);
+        return this.worstSellingProductStatisticsRepository.findNProductsLeastProfit(userID, number);
     }
 
     public List<ProductRanking> findNProductsLeastRevenue(Long userID){
@@ -51,7 +51,7 @@ public class WorstSellingProductStatisticsService {
         }
         else number = proNumber;
 
-        return this.sellOrderItemRepository.findNProductsLeastRevenue(userID, number);
+        return this.worstSellingProductStatisticsRepository.findNProductsLeastRevenue(userID, number);
     }
 
     public List<ProductRanking> findNProductsTopSellNumber(Long userID){
@@ -65,6 +65,6 @@ public class WorstSellingProductStatisticsService {
         }
         else number = proNumber;
 
-        return this.sellOrderItemRepository.findNProductsLeastSellNumber(userID, number);
+        return this.worstSellingProductStatisticsRepository.findNProductsLeastSellNumber(userID, number);
     }
 }
