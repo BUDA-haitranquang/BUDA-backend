@@ -1,0 +1,1712 @@
+{
+	"info": {
+		"_postman_id": "70f22a0d-8106-4df7-a3aa-9d139edcf8df",
+		"name": "Buda localhost",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Payment",
+			"item": [
+				{
+					"name": "ZaloPay",
+					"item": [
+						{
+							"name": "Create Order",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// pm.variables.set(\"apptime\", new Date().getTime());"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"appid\": \"554\",\r\n    \"apptransid\": \"220321_c834555c-a85c-405b-a28e-0e1516e99bab\",\r\n    \"apptime\": \"1647849521971\",\r\n    \"appuser\": \"demo\",\r\n    \"amount\": \"50000\",\r\n    \"description\": \"ZaloPay Intergration Demo\",\r\n    \"bankcode\": \"zalopayapp\",\r\n    \"item\": [\r\n        {\r\n            \"itemid\":\"knb\", \r\n            \"itemname\":\"kim nguyen bao\", \r\n            \"itemprice\":198400, \r\n            \"itemquantity\":1\r\n        }\r\n    ],\r\n    \"embeddata\": {\"merchantinfo\":\"embeddata123\"},\r\n    \"mac\": \"e44d15a64ca29957a69daeb52c683e4e1ddcf9215548516e56b2310927859b03\"\r\n    \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://sandbox.zalopay.com.vn/v001/tpe/createorder",
+									"protocol": "https",
+									"host": [
+										"sandbox",
+										"zalopay",
+										"com",
+										"vn"
+									],
+									"path": [
+										"v001",
+										"tpe",
+										"createorder"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "api local",
+			"item": [
+				{
+					"name": "business",
+					"item": [
+						{
+							"name": "buy",
+							"item": [
+								{
+									"name": "view",
+									"item": [
+										{
+											"name": "view all buyorder with userid",
+											"protocolProfileBehavior": {
+												"disableBodyPruning": true
+											},
+											"request": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Authorization",
+														"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJidWRhdGVzdGVyQGdtYWlsLmNvbSIsInJvbGVzIjpbeyJhdXRob3JpdHkiOiJVU0VSIn1dLCJ0b2tlblR5cGUiOiJBY2Nlc3MiLCJleHAiOjE2NDc2MjY5NzEsInVzZXJJRCI6MiwiaWF0IjoxNjQ3NjA4OTcxfQ.BavAgQBWd_FcMRdDEXoFnKzJl7gqOljB2Ac6c7UbqU_i0myCL4PSPcGD4eZbEEbinAg0XDipaHnWnecVO2fwAg",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"attributes\": [\"totalCost\"],\r\n    \"direction\": \"ASC\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "http://localhost:8080/api/business/buy/view/all?page=0&size=5&properties=totalCost&direction=ASC&properties=userID",
+													"protocol": "http",
+													"host": [
+														"localhost"
+													],
+													"port": "8080",
+													"path": [
+														"api",
+														"business",
+														"buy",
+														"view",
+														"all"
+													],
+													"query": [
+														{
+															"key": "page",
+															"value": "0"
+														},
+														{
+															"key": "size",
+															"value": "5"
+														},
+														{
+															"key": "properties",
+															"value": "totalCost"
+														},
+														{
+															"key": "direction",
+															"value": "ASC"
+														},
+														{
+															"key": "properties",
+															"value": "userID"
+														}
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "view all buyorder with supplierid",
+											"protocolProfileBehavior": {
+												"disableBodyPruning": true
+											},
+											"request": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Authorization",
+														"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJidWRhdGVzdGVyQGdtYWlsLmNvbSIsInJvbGVzIjpbeyJhdXRob3JpdHkiOiJVU0VSIn1dLCJ0b2tlblR5cGUiOiJBY2Nlc3MiLCJleHAiOjE2NDc1NTA2NjAsInVzZXJJRCI6MiwiaWF0IjoxNjQ3NTMyNjYwfQ.-J35y4yiT-4iEjcJrbTMx80PpSqP8HJiPVkE4i4SdFQL_Llr0ckNFuBZpQ33c5qtiHgOdk4n4Qsl9fuMiSHyfw",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "urlencoded",
+													"urlencoded": []
+												},
+												"url": {
+													"raw": "http://localhost:8080/api/business/buy/view/supplier/67/all",
+													"protocol": "http",
+													"host": [
+														"localhost"
+													],
+													"port": "8080",
+													"path": [
+														"api",
+														"business",
+														"buy",
+														"view",
+														"supplier",
+														"67",
+														"all"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "view buyorder last X day",
+											"protocolProfileBehavior": {
+												"disableBodyPruning": true
+											},
+											"request": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Authorization",
+														"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJidWRhdGVzdGVyQGdtYWlsLmNvbSIsInJvbGVzIjpbeyJhdXRob3JpdHkiOiJVU0VSIn1dLCJ0b2tlblR5cGUiOiJBY2Nlc3MiLCJleHAiOjE2NDc1NTA2NjAsInVzZXJJRCI6MiwiaWF0IjoxNjQ3NTMyNjYwfQ.-J35y4yiT-4iEjcJrbTMx80PpSqP8HJiPVkE4i4SdFQL_Llr0ckNFuBZpQ33c5qtiHgOdk4n4Qsl9fuMiSHyfw",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "urlencoded",
+													"urlencoded": []
+												},
+												"url": {
+													"raw": "http://localhost:8080/api/business/buy/view/all/last-x-days/150",
+													"protocol": "http",
+													"host": [
+														"localhost"
+													],
+													"port": "8080",
+													"path": [
+														"api",
+														"business",
+														"buy",
+														"view",
+														"all",
+														"last-x-days",
+														"150"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "find all incompleted buyorder by user",
+											"protocolProfileBehavior": {
+												"disableBodyPruning": true
+											},
+											"request": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Authorization",
+														"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJidWRhdGVzdGVyQGdtYWlsLmNvbSIsInJvbGVzIjpbeyJhdXRob3JpdHkiOiJVU0VSIn1dLCJ0b2tlblR5cGUiOiJBY2Nlc3MiLCJleHAiOjE2NDc1NTA2NjAsInVzZXJJRCI6MiwiaWF0IjoxNjQ3NTMyNjYwfQ.-J35y4yiT-4iEjcJrbTMx80PpSqP8HJiPVkE4i4SdFQL_Llr0ckNFuBZpQ33c5qtiHgOdk4n4Qsl9fuMiSHyfw",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "urlencoded",
+													"urlencoded": []
+												},
+												"url": {
+													"raw": "http://localhost:8080/api/business/buy/view/all/incompleted",
+													"protocol": "http",
+													"host": [
+														"localhost"
+													],
+													"port": "8080",
+													"path": [
+														"api",
+														"business",
+														"buy",
+														"view",
+														"all",
+														"incompleted"
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "sell",
+							"item": [
+								{
+									"name": "view",
+									"item": [
+										{
+											"name": "view all sellorder by userid",
+											"request": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Authorization",
+														"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJidWRhdGVzdGVyQGdtYWlsLmNvbSIsInJvbGVzIjpbeyJhdXRob3JpdHkiOiJVU0VSIn1dLCJ0b2tlblR5cGUiOiJBY2Nlc3MiLCJleHAiOjE2NDc2MjY5NzEsInVzZXJJRCI6MiwiaWF0IjoxNjQ3NjA4OTcxfQ.BavAgQBWd_FcMRdDEXoFnKzJl7gqOljB2Ac6c7UbqU_i0myCL4PSPcGD4eZbEEbinAg0XDipaHnWnecVO2fwAg",
+														"type": "text"
+													}
+												],
+												"url": {
+													"raw": "http://localhost:8080/api/business/sell/view/all?page=0&size=5&direction=DESC&properties=finalCost",
+													"protocol": "http",
+													"host": [
+														"localhost"
+													],
+													"port": "8080",
+													"path": [
+														"api",
+														"business",
+														"sell",
+														"view",
+														"all"
+													],
+													"query": [
+														{
+															"key": "page",
+															"value": "0"
+														},
+														{
+															"key": "size",
+															"value": "5"
+														},
+														{
+															"key": "direction",
+															"value": "DESC"
+														},
+														{
+															"key": "properties",
+															"value": "finalCost"
+														}
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "user",
+					"item": [
+						{
+							"name": "login",
+							"item": [
+								{
+									"name": "user login",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"email\": \"budatester@gmail.com\",\r\n    \"password\": \"budatester\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8080/api/user/login",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"api",
+												"user",
+												"login"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "statistics",
+					"item": [
+						{
+							"name": "product",
+							"item": [
+								{
+									"name": "best",
+									"item": [
+										{
+											"name": "selling",
+											"item": [
+												{
+													"name": "Top N product Profit",
+													"protocolProfileBehavior": {
+														"disableBodyPruning": true
+													},
+													"request": {
+														"method": "GET",
+														"header": [
+															{
+																"key": "Authorization",
+																"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJidWRhdGVzdGVyQGdtYWlsLmNvbSIsInJvbGVzIjpbeyJhdXRob3JpdHkiOiJVU0VSIn1dLCJ0b2tlblR5cGUiOiJBY2Nlc3MiLCJleHAiOjE2NDg3NjA1NDAsInVzZXJJRCI6MiwiaWF0IjoxNjQ4NzQyNTQwfQ.UG9MOQySlKFOa6oxjt3KWUSfY6kVjLf3qbmkXPhRBdJFsxaGFXMFAImbJQwAcLq1yDrbKCGhWuzByNcf3MnTMA",
+																"type": "text"
+															}
+														],
+														"body": {
+															"mode": "urlencoded",
+															"urlencoded": []
+														},
+														"url": {
+															"raw": "http://localhost:8080/api/statistics/product/best/selling/profit",
+															"protocol": "http",
+															"host": [
+																"localhost"
+															],
+															"port": "8080",
+															"path": [
+																"api",
+																"statistics",
+																"product",
+																"best",
+																"selling",
+																"profit"
+															]
+														}
+													},
+													"response": []
+												},
+												{
+													"name": "Top N product Revenue",
+													"request": {
+														"method": "GET",
+														"header": [
+															{
+																"key": "Authorization",
+																"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJidWRhdGVzdGVyQGdtYWlsLmNvbSIsInJvbGVzIjpbeyJhdXRob3JpdHkiOiJVU0VSIn1dLCJ0b2tlblR5cGUiOiJBY2Nlc3MiLCJleHAiOjE2NDg3NjA1NDAsInVzZXJJRCI6MiwiaWF0IjoxNjQ4NzQyNTQwfQ.UG9MOQySlKFOa6oxjt3KWUSfY6kVjLf3qbmkXPhRBdJFsxaGFXMFAImbJQwAcLq1yDrbKCGhWuzByNcf3MnTMA",
+																"type": "text"
+															}
+														],
+														"url": {
+															"raw": "http://localhost:8080/api/statistics/product/best/selling/revenue",
+															"protocol": "http",
+															"host": [
+																"localhost"
+															],
+															"port": "8080",
+															"path": [
+																"api",
+																"statistics",
+																"product",
+																"best",
+																"selling",
+																"revenue"
+															]
+														}
+													},
+													"response": []
+												}
+											]
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "New Request",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "Worst selling",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJidWRhdGVzdGVyQGdtYWlsLmNvbSIsInJvbGVzIjpbeyJhdXRob3JpdHkiOiJVU0VSIn1dLCJ0b2tlblR5cGUiOiJBY2Nlc3MiLCJleHAiOjE2NDg3OTIzNjcsInVzZXJJRCI6MiwiaWF0IjoxNjQ4Nzc0MzY3fQ.nx7Mh9zPXyTkr5FqMlrCnBjRjBAUlZaq71qk-hmArTq1FKSLa0ASN1NErQGyNwBOomFX8eX-8-I5Nzz8eTblLw",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/api/statistics/product/worst/selling/profit",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"statistics",
+										"product",
+										"worst",
+										"selling",
+										"profit"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "product",
+					"item": [
+						{
+							"name": "New Request",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Register Localhost",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"budatesterew\",\r\n    \"password\": \"budatester\",\r\n    \"phoneNumber\": \"12312322434\",\r\n    \"email\": \"a3k45pbc@gmail.com\",\r\n    \"firstName\":\"Buda\",\r\n    \"lastName\":\"Tester\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/user/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"user",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Customer Localhost",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJidWRhdGVzdGVyQGdtYWlsLmNvbSIsInJvbGVzIjpbeyJhdXRob3JpdHkiOiJVU0VSIn1dLCJleHAiOjE2MzUxMjgzNzcsInVzZXJJRCI6MjcsImlhdCI6MTYzNDk1NTU3N30.0VTddz_gYCk5-eFQAYHx1dYfMF4ITWlrskPYzgSgrhaFUKnrFu_JsqwiZMdYGqIpJrzAhRvcdBKyUVHZyTK79g",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Hai\",\r\n    \"phoneNumber\": \"123123432\",\r\n    \"ageGroup\": \"FROM_18_TO_24\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://143.198.194.24:8080/api/customer/new",
+					"protocol": "http",
+					"host": [
+						"143",
+						"198",
+						"194",
+						"24"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"customer",
+						"new"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login Localhost",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"budatester@gmail.com\",\r\n    \"password\": \"budatester\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/user/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"user",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Me",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"budatester@gmail.com\",\r\n    \"password\": \"budatester\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/user/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"user",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update User Localhost",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"budatester@gmail.com\",\r\n    \"password\": \"budatester\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/user/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"user",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List All Product Localhost",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJidWRhdGVzdGVyQGdtYWlsLmNvbSIsInJvbGVzIjpbeyJhdXRob3JpdHkiOiJVU0VSIn1dLCJ0b2tlblR5cGUiOiJBY2Nlc3MiLCJleHAiOjE2NDc0OTgxNTUsInVzZXJJRCI6MiwiaWF0IjoxNjQ3NDgwMTU1fQ.Y-Zbj8egAHepdN7ionwNXgV57dxEZsiObblNk2UAIKLcb8cvE2pt1ISHkQg0eJDxOIUTqwDYyYsJd8PgbUp1tA",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/product/view/all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"product",
+						"view",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New BuyOrder Localhost",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJidWRhdGVzdGVyQGdtYWlsLmNvbSIsInJvbGVzIjpbeyJhdXRob3JpdHkiOiJVU0VSIn1dLCJleHAiOjE2MzQ5NDY4NDYsInVzZXJJRCI6MjcsImlhdCI6MTYzNDc3NDA0Nn0.flM8bLduQa5TQ00rTT1zWMjSSozHlhsFJ_7TTVSW9nRiLhIEayA5gjERYzdoy0CqvDq8Mnn1QIQ7KLXJzofo4g",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userID\": 27,\r\n    \"status\": \"FINISHED\",\r\n    \"totalCost\": 5000230,\r\n    \"buyOrderItems\":[\r\n       { \"userID\": 27}\r\n    ],\r\n    \"supplier\":\r\n    {\r\n\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/buy-order/new/userID/27",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"buy-order",
+						"new",
+						"userID",
+						"27"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New SellOrder Localhost",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJidWRhdGVzdGVyQGdtYWlsLmNvbSIsInJvbGVzIjpbeyJhdXRob3JpdHkiOiJVU0VSIn1dLCJ0b2tlblR5cGUiOiJBY2Nlc3MiLCJleHAiOjE2NDI3NTA2MTcsInVzZXJJRCI6MiwiaWF0IjoxNjQyNzMyNjE3fQ.n_IYU9Ja8FpDR_IQjNDzCGDUuw6gdce_MH0Js5PJwSK5U2lidTzoZDHNsez9qADaIFmHyM0MqzEfKtLidA6wjA",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"customer\":{\r\n        \"customerID\": 2\r\n    },\r\n    \"customerMessage\": \"Cool\",\r\n    \"status\": \"FINISHED\",\r\n    \"sellOrderItemDTOs\":[\r\n        {\r\n            \"productID\":1,\r\n            \"quantity\":5,\r\n            \"pricePerUnit\":175000\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/business/sell/new-order/pos/new",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"business",
+						"sell",
+						"new-order",
+						"pos",
+						"new"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List All SellOrder Localhost Copy",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJidWRhdGVzdGVyQGdtYWlsLmNvbSIsInJvbGVzIjpbeyJhdXRob3JpdHkiOiJVU0VSIn1dLCJ0b2tlblR5cGUiOiJBY2Nlc3MiLCJleHAiOjE2NDI1Mjg1MjcsInVzZXJJRCI6MiwiaWF0IjoxNjQyNTEwNTI3fQ.J1Mm4tY-GGAs2KENnv7IqYsY_oXtWwJ1xohIxSRVib1vzw9dt54DIazVTgGk5vlprIY6xLRpqyEF8lGTwHuLVg",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userID\": 27,\r\n    \"customer\":{\r\n        \"phoneNumber\": \"2312313132\"\r\n    },\r\n    \"totalCost\": 213000,\r\n    \"sellOrderItems\":\r\n    [\r\n        {\r\n            \"quantity\": 5\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/business/sell/view/all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"business",
+						"sell",
+						"view",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List All SellOrder Localhost Copy 2",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJidWRhdGVzdGVyQGdtYWlsLmNvbSIsInJvbGVzIjpbeyJhdXRob3JpdHkiOiJVU0VSIn1dLCJ0b2tlblR5cGUiOiJBY2Nlc3MiLCJleHAiOjE2NDI1Mjg1MjcsInVzZXJJRCI6MiwiaWF0IjoxNjQyNTEwNTI3fQ.J1Mm4tY-GGAs2KENnv7IqYsY_oXtWwJ1xohIxSRVib1vzw9dt54DIazVTgGk5vlprIY6xLRpqyEF8lGTwHuLVg",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userID\": 27,\r\n    \"customer\":{\r\n        \"phoneNumber\": \"2312313132\"\r\n    },\r\n    \"totalCost\": 213000,\r\n    \"sellOrderItems\":\r\n    [\r\n        {\r\n            \"quantity\": 5\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/business/sell/view/all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"business",
+						"sell",
+						"view",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List All SellOrder recent days Localhost",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJidWRhdGVzdGVyQGdtYWlsLmNvbSIsInJvbGVzIjpbeyJhdXRob3JpdHkiOiJVU0VSIn1dLCJleHAiOjE2MzU0MjkwMDIsInVzZXJJRCI6MjcsImlhdCI6MTYzNTI1NjIwMn0.YUMPlahBiAJHIRuQK-UjXPxBfLfcCESdya0XF8MG0tBrz9Meu6Av5yqUz5rbh6oGNk6i3eVKcOF8YcGv6IlkkA",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userID\": 27,\r\n    \"customer\":{\r\n        \"phoneNumber\": \"2312313132\"\r\n    },\r\n    \"totalCost\": 213000,\r\n    \"sellOrderItems\":\r\n    [\r\n        {\r\n            \"quantity\": 5\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/sell-order/new",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"sell-order",
+						"new"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List All SellOrder recent days Localhost Copy",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJidWRhdGVzdGVyQGdtYWlsLmNvbSIsInJvbGVzIjpbeyJhdXRob3JpdHkiOiJVU0VSIn1dLCJleHAiOjE2MzU0MjkwMDIsInVzZXJJRCI6MjcsImlhdCI6MTYzNTI1NjIwMn0.YUMPlahBiAJHIRuQK-UjXPxBfLfcCESdya0XF8MG0tBrz9Meu6Av5yqUz5rbh6oGNk6i3eVKcOF8YcGv6IlkkA",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userID\": 27,\r\n    \"customer\":{\r\n        \"phoneNumber\": \"2312313132\"\r\n    },\r\n    \"totalCost\": 213000,\r\n    \"sellOrderItems\":\r\n    [\r\n        {\r\n            \"quantity\": 5\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/sell-order/new",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"sell-order",
+						"new"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Supplier",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJidWRhdGVzdGVyQGdtYWlsLmNvbSIsInJvbGVzIjpbeyJhdXRob3JpdHkiOiJVU0VSIn1dLCJ0b2tlblR5cGUiOiJBY2Nlc3MiLCJleHAiOjE2NDI3OTA5NjgsInVzZXJJRCI6MiwiaWF0IjoxNjQyNzcyOTY4fQ.ONQk_4CFNDVcev6MVmYeT7Lzi2Teu3OP8aEwmYlTpa37fj5xhY9OpjNUA9fjJ8YSg7kBnFQxCMNC593ArLThQg",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"supplierID\": 41,\r\n        \"email\": \"rphillps3@comsenaz.com\",\r\n        \"phoneNumber\": \"07448498333\",\r\n        \"userID\": 2,\r\n        \"visible\": true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/supplier/update",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"supplier",
+						"update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Supplier",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJidWRhdGVzdGVyQGdtYWlsLmNvbSIsInJvbGVzIjpbeyJhdXRob3JpdHkiOiJVU0VSIn1dLCJ0b2tlblR5cGUiOiJBY2Nlc3MiLCJleHAiOjE2NDI3OTA5NjgsInVzZXJJRCI6MiwiaWF0IjoxNjQyNzcyOTY4fQ.ONQk_4CFNDVcev6MVmYeT7Lzi2Teu3OP8aEwmYlTpa37fj5xhY9OpjNUA9fjJ8YSg7kBnFQxCMNC593ArLThQg",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/supplier/view/all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"supplier",
+						"view",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List All Hidden Product Localhost",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJidWRhdGVzdGVyQGdtYWlsLmNvbSIsInJvbGVzIjpbeyJhdXRob3JpdHkiOiJVU0VSIn1dLCJleHAiOjE2MzY2MzIzODcsInVzZXJJRCI6MjcsImlhdCI6MTYzNjQ1OTU4N30.mJOflQ38dTwhsyS8ISAv3fmYpWeHP8QnDHKye6OfWQtJpWjs4bYZO7owAiadjgsqtHBULsyqCOrB9Qey9x9GPQ",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/product/hidden/all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"product",
+						"hidden",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List All Ingredient Localhost",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJidWRhdGVzdGVyQGdtYWlsLmNvbSIsInJvbGVzIjpbeyJhdXRob3JpdHkiOiJVU0VSIn1dLCJleHAiOjE2Mzc5MjI1ODgsInVzZXJJRCI6MSwiaWF0IjoxNjM3NzQ5Nzg4fQ.H-vYORZQhaD70lhRp7nzdBRY1z_AmrF3ShOkxFq08L5Ef0wlAHGalqq9YvrFOJI8CcHIldFD2_7sBv5m07qW1g",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/ingredient/all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"ingredient",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List All Ingredient Localhost Copy",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJidWRhdGVzdGVyQGdtYWlsLmNvbSIsInJvbGVzIjpbeyJhdXRob3JpdHkiOiJVU0VSIn1dLCJleHAiOjE2MzY1Mjc3MDcsInVzZXJJRCI6MSwiaWF0IjoxNjM2NTA5NzA3fQ.YVT18lkXUGET9aHAArZIhlhg7ZTF8v3trTJXjG6rxycPlXhEa2-j7LIHiSC8QCxCyDJgY3dvGTqyWwXaQcc3lQ",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/ingredient/all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"ingredient",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List All Component By Product",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJidWRhdGVzdGVyQGdtYWlsLmNvbSIsInJvbGVzIjpbeyJhdXRob3JpdHkiOiJVU0VSIn1dLCJleHAiOjE2MzY3Mjk2NTgsInVzZXJJRCI6MSwiaWF0IjoxNjM2NTU2ODU4fQ.47vGSSfcZZHMas80zYNUgKQv0eRMW7UDmRuSuvTEzGH18TnraHP9vny_nR8FDfJ08q2dWJ1nXT0e9GSAplbJqQ",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/product-component/contains/ingredient/15",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"product-component",
+						"contains",
+						"ingredient",
+						"15"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ListAllFixedCost Localhost",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJidWRhdGVzdGVyQGdtYWlsLmNvbSIsInJvbGVzIjpbeyJhdXRob3JpdHkiOiJVU0VSIn1dLCJleHAiOjE2MzY4NjI1ODEsInVzZXJJRCI6MSwiaWF0IjoxNjM2Njg5NzgxfQ.4wDxpLWCv-jProUqLButIbkkB9C7NHxUWbpeGutTXxXS-9CZklZL1gU8yeFBDn8S4b6ajEJVPOjVNOzxi4K_Bw",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/fixed-cost/all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"fixed-cost",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "All Fixed Cost",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"uuid\": \"123131312312321312312312\",\r\n    \"password\": \"dcmsadasd\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/fixed-cost/all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"fixed-cost",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Hidden Ingredient",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJidWRhdGVzdGVyQGdtYWlsLmNvbSIsInJvbGVzIjpbeyJhdXRob3JpdHkiOiJVU0VSIn1dLCJleHAiOjE2MzY2MzIzODcsInVzZXJJRCI6MjcsImlhdCI6MTYzNjQ1OTU4N30.mJOflQ38dTwhsyS8ISAv3fmYpWeHP8QnDHKye6OfWQtJpWjs4bYZO7owAiadjgsqtHBULsyqCOrB9Qey9x9GPQ",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/ingredient/hidden/all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"ingredient",
+						"hidden",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Statistics",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJidWRhdGVzdGVyQGdtYWlsLmNvbSIsInJvbGVzIjpbeyJhdXRob3JpdHkiOiJVU0VSIn1dLCJ0b2tlblR5cGUiOiJBY2Nlc3MiLCJleHAiOjE2NDE4NDA5MjYsInVzZXJJRCI6MiwiaWF0IjoxNjQxODIyOTI2fQ.OQQPbCAnxt6jnDS6cXXS4EdE-WJhZXLQIGAA3P5J4P29gqHWiDM24-KWWiB-lRQW6DOFLeIHysETzYrKsGL4oQ",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/statistics/revenue/sell-order/monthly",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"statistics",
+						"revenue",
+						"sell-order",
+						"monthly"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "All OtherCost",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJidWRhdGVzdGVyQGdtYWlsLmNvbSIsInJvbGVzIjpbeyJhdXRob3JpdHkiOiJVU0VSIn1dLCJleHAiOjE2Mzc4OTU1ODcsInVzZXJJRCI6MSwiaWF0IjoxNjM3NzIyNzg3fQ.6yY_7h-ofe_gfFUGb9SVVfTJjnrv5yXkvQvzzUgpJAuGbiTWoMGRamWJRlH3D9QHpfIbNQFx8K7vNd3yrL25zw",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/other-cost/all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"other-cost",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Notification",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJdXRob3JpdHkiOiJVU0VSIn1dLCJleHAiOjE2MzkyMDQ1ODksInVzZXJJRCI6MiwiaWF0IjoxNjM5MDMxNzg5fQ.xgDywb2EmaN8YpMLTx7BVgXiFmNboiuuXndW2afigGTAR4A1b_fn0AFn7E6oUJC5Fu6W5JEPFJwgdg7RhsNvoQ",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/notification/all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"notification",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Plan localhost",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/plan/view/all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"plan",
+						"view",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Refresh Token",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJidWRhdGVzdGVyQGdtYWlsLmNvbSIsInJvbGVzIjpbeyJhdXRob3JpdHkiOiJVU0VSIn1dLCJ0b2tlblR5cGUiOiJBY2Nlc3MiLCJleHAiOjE2NDE1MzU4NjQsInVzZXJJRCI6MiwiaWF0IjoxNjQxNTE3ODY0fQ.PDo_ddk3wS-W9fPwMgMsl3u2eFOE4bNPxJwWD4UJRo_fTRvncEBQcHU6z7L5j05ZWW5Xg_FXA9PYy-_vdQ54Hw",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/user/refresh-token",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"user",
+						"refresh-token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cost",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/statistics/expense/fixed-cost/monthly",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"statistics",
+						"expense",
+						"fixed-cost",
+						"monthly"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Picture",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJidWRhdGVzdGVyQGdtYWlsLmNvbSIsInJvbGVzIjpbeyJhdXRob3JpdHkiOiJVU0VSIn1dLCJ0b2tlblR5cGUiOiJBY2Nlc3MiLCJleHAiOjE2NDcyNjM3MzMsInVzZXJJRCI6MiwiaWF0IjoxNjQ3MjQ1NzMzfQ.kJ_4Ke5orSTppIwLvWHOi9y_ZwKIOwthc3cNUv9jbqgqXM_ExJwg-hSfVNisbiofTcoMh9ENj7J3n3kTKW6_Vg",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/C:/Users/Admin/Pictures/Icon/480px-Microsoft_Office_logo_(2019–present).svg.png"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/picture/upload",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"picture",
+						"upload"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cancel Order",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJidWRhdGVzdGVyQGdtYWlsLmNvbSIsInJvbGVzIjpbeyJhdXRob3JpdHkiOiJVU0VSIn1dLCJ0b2tlblR5cGUiOiJBY2Nlc3MiLCJleHAiOjE2NDE4ODI0MjQsInVzZXJJRCI6MiwiaWF0IjoxNjQxODY0NDI0fQ.APBbbfYmc14XhGL72xGskzAvmkyAIP5KZOss8DU5JRJz_AfuaXBh0JKe_F6SIgVa_jiepYS_NPTiRz5vivhuhA",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/business/sell/cancel-order/id/502",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"business",
+						"sell",
+						"cancel-order",
+						"id",
+						"502"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PaySlip",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJidWRhdGVzdGVyQGdtYWlsLmNvbSIsInJvbGVzIjpbeyJhdXRob3JpdHkiOiJVU0VSIn1dLCJ0b2tlblR5cGUiOiJBY2Nlc3MiLCJleHAiOjE2NDE5OTkxNDksInVzZXJJRCI6MiwiaWF0IjoxNjQxOTgxMTQ5fQ.tL71WzsbsfqbTm2168hFeo1NKp716ApR_xvsHHydNWMlbx0bpQI-xCI_1uVrlWfuTtC3DwbaAi8FXBvXjkoBIw",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/business/receipt/view/all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"business",
+						"receipt",
+						"view",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Deactivate staff",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJidWRhdGVzdGVyQGdtYWlsLmNvbSIsInJvbGVzIjpbeyJhdXRob3JpdHkiOiJVU0VSIn1dLCJ0b2tlblR5cGUiOiJBY2Nlc3MiLCJleHAiOjE2NDI1MzMxMTQsInVzZXJJRCI6MiwiaWF0IjoxNjQyNTE1MTE0fQ.KaJQtbGHf-R4kd9T19tTtOQAL6lwq70JGg9OgLyJ_YQ-fWCHE6PfmIGIwmHMF6FMJ3jUAYGK0VX5lIq-OvYLow",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/staff/deactivate/id/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"staff",
+						"deactivate",
+						"id",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Discount Statistics",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJidWRhdGVzdGVyQGdtYWlsLmNvbSIsInJvbGVzIjpbeyJhdXRob3JpdHkiOiJVU0VSIn1dLCJ0b2tlblR5cGUiOiJBY2Nlc3MiLCJleHAiOjE2NDI1Mjg1MjcsInVzZXJJRCI6MiwiaWF0IjoxNjQyNTEwNTI3fQ.J1Mm4tY-GGAs2KENnv7IqYsY_oXtWwJ1xohIxSRVib1vzw9dt54DIazVTgGk5vlprIY6xLRpqyEF8lGTwHuLVg",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/statistics/discount/total-revenue/id/20",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"statistics",
+						"discount",
+						"total-revenue",
+						"id",
+						"20"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Discount Statistics Copy",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJidWRhdGVzdGVyQGdtYWlsLmNvbSIsInJvbGVzIjpbeyJhdXRob3JpdHkiOiJVU0VSIn1dLCJ0b2tlblR5cGUiOiJBY2Nlc3MiLCJleHAiOjE2NDI1Mjg1MjcsInVzZXJJRCI6MiwiaWF0IjoxNjQyNTEwNTI3fQ.J1Mm4tY-GGAs2KENnv7IqYsY_oXtWwJ1xohIxSRVib1vzw9dt54DIazVTgGk5vlprIY6xLRpqyEF8lGTwHuLVg",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/statistics/discount/total-revenue/id/20",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"statistics",
+						"discount",
+						"total-revenue",
+						"id",
+						"20"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Discount Statistics Copy 2",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJidWRhdGVzdGVyQGdtYWlsLmNvbSIsInJvbGVzIjpbeyJhdXRob3JpdHkiOiJVU0VSIn1dLCJ0b2tlblR5cGUiOiJBY2Nlc3MiLCJleHAiOjE2NDI1Mjg1MjcsInVzZXJJRCI6MiwiaWF0IjoxNjQyNTEwNTI3fQ.J1Mm4tY-GGAs2KENnv7IqYsY_oXtWwJ1xohIxSRVib1vzw9dt54DIazVTgGk5vlprIY6xLRpqyEF8lGTwHuLVg",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/statistics/discount/total-revenue/id/20",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"statistics",
+						"discount",
+						"total-revenue",
+						"id",
+						"20"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PaySlip statistics",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJidWRhdGVzdGVyQGdtYWlsLmNvbSIsInJvbGVzIjpbeyJhdXRob3JpdHkiOiJVU0VSIn1dLCJ0b2tlblR5cGUiOiJBY2Nlc3MiLCJleHAiOjE2NDI1NzUyMzcsInVzZXJJRCI6MiwiaWF0IjoxNjQyNTU3MjM3fQ.BFLgenOAkrlEM_9cQgD7CswEYtDS3KuRa0WmzeZQQnIc4qDTBU_jQmFBuu5faMr3cNQNYnuz-m7tjXQ-tsfuDw",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/statistics/expense/pay-slip/this-month",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"statistics",
+						"expense",
+						"pay-slip",
+						"this-month"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Receipt statistics",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJidWRhdGVzdGVyQGdtYWlsLmNvbSIsInJvbGVzIjpbeyJhdXRob3JpdHkiOiJVU0VSIn1dLCJ0b2tlblR5cGUiOiJBY2Nlc3MiLCJleHAiOjE2NDI1NzUyMzcsInVzZXJJRCI6MiwiaWF0IjoxNjQyNTU3MjM3fQ.BFLgenOAkrlEM_9cQgD7CswEYtDS3KuRa0WmzeZQQnIc4qDTBU_jQmFBuu5faMr3cNQNYnuz-m7tjXQ-tsfuDw",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/statistics/expense/pay-slip/this-month",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"statistics",
+						"expense",
+						"pay-slip",
+						"this-month"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create PaySlip",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJidWRhdGVzdGVyQGdtYWlsLmNvbSIsInJvbGVzIjpbeyJhdXRob3JpdHkiOiJVU0VSIn1dLCJ0b2tlblR5cGUiOiJBY2Nlc3MiLCJleHAiOjE2NDI1NzUyMzcsInVzZXJJRCI6MiwiaWF0IjoxNjQyNTU3MjM3fQ.BFLgenOAkrlEM_9cQgD7CswEYtDS3KuRa0WmzeZQQnIc4qDTBU_jQmFBuu5faMr3cNQNYnuz-m7tjXQ-tsfuDw",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"totalCost\": 500000,\r\n    \"receiverName\": \"Anh Hai\",\r\n    \"receiverContact\": \"0123321222\",\r\n    \"message\": \"Cam on bau Hai\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/business/pay-slip/create",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"business",
+						"pay-slip",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Receipt",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJidWRhdGVzdGVyQGdtYWlsLmNvbSIsInJvbGVzIjpbeyJhdXRob3JpdHkiOiJVU0VSIn1dLCJ0b2tlblR5cGUiOiJBY2Nlc3MiLCJleHAiOjE2NDI1NzUyMzcsInVzZXJJRCI6MiwiaWF0IjoxNjQyNTU3MjM3fQ.BFLgenOAkrlEM_9cQgD7CswEYtDS3KuRa0WmzeZQQnIc4qDTBU_jQmFBuu5faMr3cNQNYnuz-m7tjXQ-tsfuDw",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"totalCost\": 500000,\r\n    \"receiverName\": \"Anh Hai\",\r\n    \"receiverContact\": \"0123321222\",\r\n    \"message\": \"Cam on bau Hai\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/business/pay-slip/create",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"business",
+						"pay-slip",
+						"create"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
