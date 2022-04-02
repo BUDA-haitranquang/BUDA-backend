@@ -23,10 +23,25 @@ public class TotalRevenueController {
         this.requestUtil = requestUtil;
         this.totalRevenueService = totalRevenueService;
     }
-    @GetMapping("/all")
+    @GetMapping("/all/day")
     public ResponseEntity<?> findTotalRevenueEveryDay(HttpServletRequest httpServletRequest){
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.totalRevenueService.findTotalRevenueEveryDay(userID));
+    }
+    @GetMapping("/all/week")
+    public ResponseEntity<?> findTotalRevenueEveryWeek(HttpServletRequest httpServletRequest){
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
+        return ResponseEntity.ok().body(this.totalRevenueService.findTotalRevenueEveryWeek(userID));
+    }
+    @GetMapping("/all/month")
+    public ResponseEntity<?> findTotalRevenueEveryMonth(HttpServletRequest httpServletRequest){
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
+        return ResponseEntity.ok().body(this.totalRevenueService.findTotalRevenueEveryMonth(userID));
+    }
+    @GetMapping("/all/year")
+    public ResponseEntity<?> findTotalRevenueEveryYear(HttpServletRequest httpServletRequest){
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
+        return ResponseEntity.ok().body(this.totalRevenueService.findTotalRevenueEveryYear(userID));
     }
     @GetMapping("/last-x-days/{X}")
     public ResponseEntity<?> findTotalRevenueLastXDays(HttpServletRequest httpServletRequest, @PathVariable Long X){

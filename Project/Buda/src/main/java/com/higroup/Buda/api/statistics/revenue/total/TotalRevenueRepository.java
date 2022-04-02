@@ -35,6 +35,38 @@ public class TotalRevenueRepository {
         return genericConverter(query.getResultList());
     }
 
+    public List<?> findTotalRevenueEveryWeek(Long userID) {
+        Query query = entityManager.createNativeQuery("select DATE_FORMAT(creation_time, '%V-%X') as timePeriod, sum(revenue) as revenue "
+                + " from (select creation_time, final_cost as revenue from sell_order where user_id = :userID and status = 'FINISHED'"
+                + " union all"
+                + " select creation_time, total_cost as revenue from receipt where user_id = :userID"
+                + " ) as ctrctr"
+                + " GROUP BY DATE_FORMAT(creation_time, '%V-%X')"
+                + " order by creation_time").setParameter("userID", userID);
+        return genericConverter(query.getResultList());
+    }
+
+    public List<?> findTotalRevenueEveryMonth(Long userID) {
+        Query query = entityManager.createNativeQuery("select DATE_FORMAT(creation_time, '%m-%Y') as timePeriod, sum(revenue) as revenue "
+                + " from (select creation_time, final_cost as revenue from sell_order where user_id = :userID and status = 'FINISHED'"
+                + " union all"
+                + " select creation_time, total_cost as revenue from receipt where user_id = :userID"
+                + " ) as ctrctr"
+                + " GROUP BY DATE_FORMAT(creation_time, '%m-%Y')"
+                + " order by creation_time").setParameter("userID", userID);
+        return genericConverter(query.getResultList());
+    }
+    public List<?> findTotalRevenueEveryYear(Long userID) {
+        Query query = entityManager.createNativeQuery("select DATE_FORMAT(creation_time, '%Y') as timePeriod, sum(revenue) as revenue "
+                + " from (select creation_time, final_cost as revenue from sell_order where user_id = :userID and status = 'FINISHED'"
+                + " union all"
+                + " select creation_time, total_cost as revenue from receipt where user_id = :userID"
+                + " ) as ctrctr"
+                + " GROUP BY DATE_FORMAT(creation_time, '%Y')"
+                + " order by creation_time").setParameter("userID", userID);
+        return genericConverter(query.getResultList());
+    }
+
     public List<RevenueByTimeStatistics> findTotalRevenueLastXDays(Long userID, Long X){
         Query query = entityManager.createNativeQuery("select DATE_FORMAT(creation_time, '%d-%m-%Y') as timePeriod, sum(revenue) as revenue "
         + " from (select creation_time, final_cost as revenue from sell_order where user_id = :userID and status = 'FINISHED'"
