@@ -50,7 +50,7 @@ public class RetailCreateService {
         }
         Optional<Ingredient> ingredient = this.ingredientRepository
                 .findIngredientByIngredientID(retailCreateFromIngredientDTO.getIngredientID());
-        if (ingredient.isPresent() && Objects.equals(ingredient.get().getUserID(), userID)) {
+        if ((ingredient.isPresent()) && (ingredient.get().getUserID().equals(userID))) {
             Product productBySKU = this.productRepository.findProductByUserIDAndProductSKU(userID,
                     retailCreateFromIngredientDTO.getProductSKU());
             if (productBySKU != null) {
@@ -74,9 +74,9 @@ public class RetailCreateService {
             this.addProductComponentService.addProductComponent(userID, addProductComponentDTO);
             return product;
         }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Ingredient not found");
+        else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Ingredient not found");
     }
-
+    @Transactional
     public Ingredient createNewRetailFromProduct(Long userID, RetailCreateFromProductDTO retailCreateFromProductDTO) {
         Optional<User> user = this.userRepository.findUserByUserID(userID);
         if (user.isEmpty()) {
@@ -84,7 +84,7 @@ public class RetailCreateService {
         }
         Optional<Product> product = this.productRepository
                 .findProductByProductID(retailCreateFromProductDTO.getProductID());
-        if (product.isPresent() && Objects.equals(product.get().getUserID(), userID)) {
+        if ((product.isPresent()) && (product.get().getUserID().equals(userID))) {
             Ingredient ingredientBySKU = this.ingredientRepository.findIngredientByUserIDAndIngredientSKU(userID,
                     retailCreateFromProductDTO.getIngredientSKU());
             if (ingredientBySKU != null) {
@@ -108,9 +108,9 @@ public class RetailCreateService {
             this.addProductComponentService.addProductComponent(userID, addProductComponentDTO);
             return ingredient;
         }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
+        else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
     }
-
+    @Transactional
     public Product createNewRetail(Long userID, RetailCreateDTO retailCreateDTO) {
         Optional<User> user = this.userRepository.findUserByUserID(userID);
         if (user.isEmpty()) {

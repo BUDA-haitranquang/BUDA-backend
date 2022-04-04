@@ -3,6 +3,8 @@ package com.higroup.Buda.api.product.delete;
 import java.util.Objects;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import com.higroup.Buda.entities.Product;
 import com.higroup.Buda.entities.User;
 import com.higroup.Buda.repositories.ProductRepository;
@@ -24,7 +26,7 @@ public class ProductDeleteService {
         this.userRepository = userRepository;
         this.productRepository = productRepository;
     }
-
+    @Transactional
     public void deleteProductByProductID(Long userID, Long productID)
     {
         Optional<User> user = this.userRepository.findUserByUserID(userID);
