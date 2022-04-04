@@ -11,6 +11,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 import java.util.UUID;
+
+import javax.transaction.Transactional;
 @Service
 public class ProductCreateService {
     private final ProductRepository productRepository;
@@ -22,6 +24,7 @@ public class ProductCreateService {
         this.userRepository = userRepository;
         this.productRepository = productRepository;
     }
+    @Transactional
     public Product createNewProduct(Long userID, Product product)
     {
         Optional<User> user = this.userRepository.findUserByUserID(userID);
