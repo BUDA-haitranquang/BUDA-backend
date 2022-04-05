@@ -14,7 +14,9 @@ import com.higroup.Buda.repositories.SupplierRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class ViewBuyOrderService {
@@ -25,6 +27,14 @@ public class ViewBuyOrderService {
     public ViewBuyOrderService(BuyOrderRepository buyOrderRepository, SupplierRepository supplierRepository){
         this.buyOrderRepository = buyOrderRepository;
         this.supplierRepository = supplierRepository;
+    }
+
+    public BuyOrder findBuyOrderByBuyOrderID(Long userID, Long buyOrderID){
+        Optional<BuyOrder> buyOrderOptional = this.buyOrderRepository.findBuyOrderByBuyOrderID(buyOrderID);
+        if ((buyOrderOptional.isPresent()) && (buyOrderOptional.get().getUserID().equals(userID))){
+            return buyOrderOptional.get();
+        }
+        else throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Buy Order not found");
     }
 
     public List<BuyOrder> findAllBuyOrderBySupplierID(Long userID, Long supplierID) {

@@ -38,6 +38,13 @@ public class ViewSellOrderService {
         this.sellOrderRepository = sellOrderRepository;
     }
 
+    public SellOrder findSellOrderBySellOrderID(Long userID, Long sellOrderID){
+        Optional<SellOrder> sellOrderOptional = this.sellOrderRepository.findSellOrderBySellOrderID(sellOrderID);
+        if ((sellOrderOptional.isPresent()) && (sellOrderOptional.get().getUserID().equals(userID))){
+            return sellOrderOptional.get();
+        }
+        else throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Sell Order not found");
+    }
     public List<SellOrder> findAllSellOrderByUserID(Long userID, Pageable pageable) {
         Optional<User> user = this.userRepository.findUserByUserID(userID);
         if (user.isEmpty()) {
