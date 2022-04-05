@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.mail.MessagingException;
+import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 @Service
@@ -25,15 +26,14 @@ public class EmailService {
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, "utf-8");
-
-            helper.setText(content, true);
-            helper.setTo(to);
             helper.setSubject(subject);
-            helper.setFrom(sender);
-
+            helper.setFrom(new InternetAddress(sender));
+            helper.setTo(to);
+            helper.setText(content, true);
             mailSender.send(message);
         } catch (MessagingException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "Failed to send email");
+            e.printStackTrace();
+            // throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "Failed to send email");
         }
     }
 }
