@@ -2,6 +2,7 @@ package com.higroup.Buda.api.statistics.revenue.total;
 
 import java.util.List;
 
+import com.higroup.Buda.customDTO.PeriodDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,5 +30,8 @@ public class TotalRevenueService {
     }
     public List<?> findTotalRevenueLastXDays(Long userID, Long X){
         return this.totalRevenueRepository.findTotalRevenueLastXDays(userID, X);
+    }
+    public List<?> findTotalRevenuePeriod(Long userID, PeriodDTO periodDTO) {
+        return this.totalRevenueRepository.findTotalRevenuePeriod(userID, periodDTO.getFrom(), periodDTO.getTo());
     }
 }

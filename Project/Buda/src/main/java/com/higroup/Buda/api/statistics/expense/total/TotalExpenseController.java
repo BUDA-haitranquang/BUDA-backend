@@ -43,4 +43,5 @@ public class TotalExpenseController {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.totalExpenseService.findTotalExpenseLastXDays(userID, X));
     }
+
 }
