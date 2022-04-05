@@ -43,6 +43,7 @@ public class SendConfirmRegisterMailService {
         emailService.send(
             email,
             "Please activate your BUDA account",
+            // "hello"
             this.buildAccountActivationEmail(email, confirmUrl)
         );
         confirmationToken.setTargetEmail(email);

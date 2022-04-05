@@ -1,5 +1,6 @@
 package com.higroup.Buda.api.statistics.expense.total;
 
+import com.higroup.Buda.customDTO.PeriodDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,5 +30,8 @@ public class TotalExpenseService {
     }
     public List<?> findTotalExpenseLastXDays(Long userID, Long X){
         return this.totalExpenseRepository.findTotalExpenseLastXDays(userID, X);
+    }
+    public List<?> findTotalExpensePeriod(Long userID, PeriodDTO periodDTO) {
+        return this.totalExpenseRepository.findTotalExpensePeriod(userID, periodDTO.getFrom(), periodDTO.getTo());
     }
 }

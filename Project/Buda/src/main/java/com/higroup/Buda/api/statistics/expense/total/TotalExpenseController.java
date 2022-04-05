@@ -1,5 +1,6 @@
 package com.higroup.Buda.api.statistics.expense.total;
 
+import com.higroup.Buda.customDTO.PeriodDTO;
 import com.higroup.Buda.util.Checker.RequestUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -42,5 +43,10 @@ public class TotalExpenseController {
     public ResponseEntity<?> findTotalExpenseLastXDays(HttpServletRequest httpServletRequest, @PathVariable Long X){
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.totalExpenseService.findTotalExpenseLastXDays(userID, X));
+    }
+    @GetMapping("/all/period")
+    public ResponseEntity<?> findTotalExpensePeriod(HttpServletRequest httpServletRequest, @RequestBody PeriodDTO periodDTO) {
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
+        return ResponseEntity.ok().body(this.totalExpenseService.findTotalExpensePeriod(userID, periodDTO));
     }
 }

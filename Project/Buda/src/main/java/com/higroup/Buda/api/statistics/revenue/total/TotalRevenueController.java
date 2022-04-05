@@ -2,15 +2,12 @@ package com.higroup.Buda.api.statistics.revenue.total;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.higroup.Buda.customDTO.PeriodDTO;
 import com.higroup.Buda.util.Checker.RequestUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/statistics/revenue/total")
@@ -47,5 +44,11 @@ public class TotalRevenueController {
     public ResponseEntity<?> findTotalRevenueLastXDays(HttpServletRequest httpServletRequest, @PathVariable Long X){
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.totalRevenueService.findTotalRevenueLastXDays(userID, X));
+    }
+    @GetMapping("/all/period")
+    public ResponseEntity<?> findTotalRevenuePeriod(HttpServletRequest httpServletRequest, @RequestBody PeriodDTO periodDTO)
+    {
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
+        return ResponseEntity.ok().body(this.totalRevenueService.findTotalRevenuePeriod(userID, periodDTO));
     }
 }
