@@ -21,6 +21,7 @@ import javax.validation.constraints.PositiveOrZero;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.higroup.Buda.util.RandomID.RandomIDGenerator;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -44,7 +45,7 @@ public class Product {
     private Long productID;
 
     @Column(length = 150, name = "product_sku")
-    private String productSKU;
+    private String productSKU = RandomIDGenerator.randomIDString();
 
     @Column(length = 100)
     private String name;

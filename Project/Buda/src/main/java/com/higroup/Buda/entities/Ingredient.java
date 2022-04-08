@@ -2,6 +2,7 @@ package com.higroup.Buda.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.higroup.Buda.util.RandomID.RandomIDGenerator;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,7 +28,7 @@ public class Ingredient {
     @Column(name = "ingredient_id")
     private Long ingredientID;
     @Column(name = "ingredient_sku", length = 150)
-    private String ingredientSKU;
+    private String ingredientSKU = RandomIDGenerator.randomIDString();
     @Column(length = 100)
     private String name;
     @Column(length = 1000)

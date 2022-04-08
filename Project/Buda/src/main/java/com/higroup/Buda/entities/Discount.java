@@ -19,6 +19,7 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.higroup.Buda.entities.enumeration.DiscountType;
+import com.higroup.Buda.util.RandomID.RandomIDGenerator;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -40,7 +41,7 @@ public class Discount {
     @Column(name = "discount_id")
     private Long discountID;
     @Column(length = 150)
-    private String discountCode;
+    private String discountCode = RandomIDGenerator.randomIDString();
     @Column(length = 200)
     private String name;
     @Column(length = 1000)
