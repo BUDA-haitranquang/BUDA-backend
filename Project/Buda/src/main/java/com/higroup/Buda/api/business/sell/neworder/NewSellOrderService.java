@@ -250,7 +250,7 @@ public class NewSellOrderService {
         sellOrder.setUserID(userID);
         // customer 
         Customer customer = this.findCustomerInfo(userID, sellOrderDTO.getCustomer());
-        
+        sellOrder.setCustomer(customer);
         sellOrder.setGender(customer.getGender());
         sellOrder.setAgeGroup(customer.getAgeGroup());
         sellOrder.setCustomerMessage(sellOrderDTO.getCustomerMessage());
