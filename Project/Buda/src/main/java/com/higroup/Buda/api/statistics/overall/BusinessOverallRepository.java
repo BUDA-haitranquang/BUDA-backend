@@ -1,7 +1,5 @@
-package com.higroup.Buda.api.statistics.profit;
+package com.higroup.Buda.api.statistics.overall;
 
-import com.higroup.Buda.customDTO.ProfitByTimePeriodStatistics;
-import com.higroup.Buda.customDTO.ProfitByTimeStatistics;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -12,24 +10,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class TotalProfitRepository {
+public class BusinessOverallRepository {
     @PersistenceContext
     EntityManager entityManager;
 
-    private List<ProfitByTimeStatistics> genericConverter(List<Object[]> results){
-        List<ProfitByTimeStatistics> profitByTimeStatistics = new ArrayList<>();
+    private List<BusinessReportByTimeStatistics> genericConverter(List<Object[]> results){
+        List<BusinessReportByTimeStatistics> profitByTimeStatistics = new ArrayList<>();
         for (Object[] row: results) {
-            ProfitByTimeStatistics p = new ProfitByTimeStatistics((String)row[0], (Double) row[1], (Double) row[2], (Double) row[3]);
+            BusinessReportByTimeStatistics p = new BusinessReportByTimeStatistics((String)row[0], (Double) row[1], (Double) row[2], (Double) row[3]);
             profitByTimeStatistics.add(p);
         }
         return profitByTimeStatistics;
     }
-    private List<ProfitByTimePeriodStatistics> genericConverterPeriod(List<Object[]> results)
+    private List<BusinessByTimePeriodStatistics> genericConverterPeriod(List<Object[]> results)
     {
-        List<ProfitByTimePeriodStatistics> profitByTimePeriodStatistics = new ArrayList<>();
+        List<BusinessByTimePeriodStatistics> profitByTimePeriodStatistics = new ArrayList<>();
         for (Object[] row: results)
         {
-            ProfitByTimePeriodStatistics p = new ProfitByTimePeriodStatistics((String) row[0], (String) row[1], (Double) row[2], (Double) row[3], (Double) row[4]);
+            BusinessByTimePeriodStatistics p = new BusinessByTimePeriodStatistics((String) row[0], (String) row[1], (Double) row[2], (Double) row[3], (Double) row[4]);
             profitByTimePeriodStatistics.add(p);
         }
         return profitByTimePeriodStatistics;
@@ -109,7 +107,7 @@ public class TotalProfitRepository {
         return genericConverter(query.getResultList());
     }
 
-    public List<ProfitByTimeStatistics> findTotalProfitLastXDays(Long userID, Long X){
+    public List<BusinessReportByTimeStatistics> findTotalProfitLastXDays(Long userID, Long X){
         Query query = entityManager.createNativeQuery("select DATE_FORMAT(creation_time, '%d-%m-%Y') as timePeriod, sum(revenue) as revenue, sum(expense) as expense, sum(revenue) - sum(expense) as profit "
                 + " from (select creation_time, final_cost as revenue, 0 as expense from sell_order where user_id = :userID and status = 'FINISHED'"
                 + " and creation_time > date_sub(now(), interval :X DAY)"
@@ -134,7 +132,7 @@ public class TotalProfitRepository {
         return genericConverter(query.getResultList());
     }
 
-    public List<ProfitByTimeStatistics> findTotalProfitPeriod(Long userID, ZonedDateTime from, ZonedDateTime to) {
+    public List<BusinessReportByTimeStatistics> findTotalProfitPeriod(Long userID, ZonedDateTime from, ZonedDateTime to) {
         Query query = entityManager.createNativeQuery("select :from as timeFrom, :to as timeTo, sum(revenue) as revenue, sum(expense) as expense, sum(revenue) - sum(expense) as profit "
                 + " from (select creation_time, final_cost as revenue, 0 as expense from sell_order where user_id = :userID and status = 'FINISHED'"
                 + " and creation_time >= :from and creation_time <= :to"

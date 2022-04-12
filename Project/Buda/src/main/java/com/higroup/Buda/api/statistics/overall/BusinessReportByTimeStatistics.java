@@ -1,15 +1,15 @@
-package com.higroup.Buda.customDTO;
+package com.higroup.Buda.api.statistics.overall;
 
-public class ProfitByTimeStatistics {
+public class BusinessReportByTimeStatistics {
     private String timePeriod;
     private Double revenue;
     private Double expense;
     private Double profit;
 
-    public ProfitByTimeStatistics() {
+    public BusinessReportByTimeStatistics() {
     }
 
-    public ProfitByTimeStatistics(String timePeriod, Double revenue, Double expense, Double profit) {
+    public BusinessReportByTimeStatistics(String timePeriod, Double revenue, Double expense, Double profit) {
         this.timePeriod = timePeriod;
         this.revenue = revenue;
         this.expense = expense;

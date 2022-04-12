@@ -1,4 +1,4 @@
-package com.higroup.Buda.api.statistics.profit;
+package com.higroup.Buda.api.statistics.overall;
 
 import com.higroup.Buda.customDTO.PeriodDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,10 +7,10 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class TotalProfitService {
-    private final TotalProfitRepository totalProfitRepository;
+public class BusinessOverallService {
+    private final BusinessOverallRepository totalProfitRepository;
     @Autowired
-    public TotalProfitService(TotalProfitRepository totalProfitRepository){
+    public BusinessOverallService(BusinessOverallRepository totalProfitRepository){
         this.totalProfitRepository = totalProfitRepository;
     }
     public List<?> findTotalProfitEveryDay(Long userID){
