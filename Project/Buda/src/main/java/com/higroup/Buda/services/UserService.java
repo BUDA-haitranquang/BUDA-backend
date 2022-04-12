@@ -180,7 +180,7 @@ public class UserService implements UserDetailsService{
     }
 
     private void enableUser(String email) {
-        System.out.println(email);
+        //System.out.println(email);
         userRepository.enableUserByEmail(email);
     }
 

@@ -60,13 +60,13 @@ public class JwtRequestFilter extends OncePerRequestFilter{
                 jwtToken = requestTokenHeader.substring(7);
                 try {
                     username = jwtTokenUtil.getUsernameFromToken(jwtToken);
-                    System.out.println(username);
+                    //System.out.println(username);
                 } catch (IllegalArgumentException e) {
                     throw new IllegalArgumentException("Uanble to get Jwt Token");
                     // System.out.println("Unable to get JWT Token");
                 } catch (ExpiredJwtException e) {
                     // throw new ExpiredJwtException(jwtTokenUtil.ge, claims, message)
-                    System.out.println("JWT Token has expired");
+                    //System.out.println("JWT Token has expired");
                 }
             } else {
                 logger.warn("JWT Token does not begin with Bearer String");
@@ -83,7 +83,7 @@ public class JwtRequestFilter extends OncePerRequestFilter{
                 String role = (String)((LinkedHashMap<?, ?>)roles.get(0)).get("authority");
                 UserDetails userDetails;
                 
-                System.out.println("ROLE: " + role);
+                //System.out.println("ROLE: " + role);
                 
                 // if ROLE USER
                 if(role.equals("USER")){
@@ -95,7 +95,7 @@ public class JwtRequestFilter extends OncePerRequestFilter{
                 else return; // NOT YET
                 // if token is valid configure Spring Security to manually set
                 // authentication
-                System.out.println(userDetails.toString());
+                //System.out.println(userDetails.toString());
                 if (jwtTokenUtil.validateToken(jwtToken, userDetails)) {
 
                     UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(

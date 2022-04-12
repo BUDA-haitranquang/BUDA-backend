@@ -66,7 +66,7 @@ public class WarrantyOrderCreateService {
         boolean ok = false;
         for (SellOrderItem sellOrderItem : sellOrderItems)
         {
-            System.out.println(sellOrderItem.getProduct());
+            //System.out.println(sellOrderItem.getProduct());
             if (sellOrderItem.getProduct().equals(product))
             {
                 ok = true;
