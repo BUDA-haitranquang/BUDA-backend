@@ -203,7 +203,7 @@ public class NewSellOrderService {
                     {
                         if(discount.getDiscountType() == DiscountType.CASH_ONLY)
                         {
-                            actualDiscountCash = discount.getCash();
+                            actualDiscountCash = Math.max(discount.getCash(), sellOrder.getFinalCost());
                         }
                         else if(discount.getDiscountType() == DiscountType.PERCENTAGE_ONLY)
                         {
