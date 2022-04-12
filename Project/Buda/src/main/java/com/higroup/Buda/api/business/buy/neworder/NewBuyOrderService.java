@@ -164,8 +164,10 @@ public class NewBuyOrderService {
         }
         buyOrder.setCreationTime(ZonedDateTime.now());
         if (buyOrderDTO.getStatus().equals(Status.FINISHED)){
+
             buyOrder.setFinishTime(buyOrder.getCreationTime());
         }
+        buyOrder.setStatus(buyOrderDTO.getStatus());
         buyOrder.setUserID(userID);
         // get supplier info
         Supplier supplier = this.findSupplierInfo(userID, buyOrderDTO.getSupplier());
