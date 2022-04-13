@@ -4,6 +4,8 @@ import com.higroup.Buda.entities.Product;
 import com.higroup.Buda.entities.User;
 import com.higroup.Buda.repositories.ProductRepository;
 import com.higroup.Buda.repositories.UserRepository;
+import com.higroup.Buda.util.RandomID.RandomIDGenerator;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -33,7 +35,7 @@ public class ProductCreateService {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
         }
         if (product.getProductSKU()==null){
-            product.setProductSKU(UUID.randomUUID().toString());
+            product.setProductSKU(RandomIDGenerator.randomIDString());
         } 
 
         Product productBySKU = this.productRepository.findProductByUserIDAndProductSKU(userID, product.getProductSKU());

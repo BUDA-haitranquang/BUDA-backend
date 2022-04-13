@@ -184,7 +184,7 @@ public class NewSellOrderService {
 
     private Customer findCustomerInfo(Long userID, Customer requestCustomer) {
         Customer customer;
-        if (requestCustomer == null) {
+        if ((requestCustomer == null) || ((requestCustomer.getPhoneNumber() == null) && (requestCustomer.getCustomerID() == null))){
             customer = defaultCustomerUtilService.defaultCustomer(userID);
         } else {
             customer = searchCustomerUtilService.findCustomerByIncompletedInfo(userID, requestCustomer);

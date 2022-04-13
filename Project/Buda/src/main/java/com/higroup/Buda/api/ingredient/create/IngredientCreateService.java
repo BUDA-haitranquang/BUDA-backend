@@ -9,6 +9,7 @@ import com.higroup.Buda.entities.Ingredient;
 import com.higroup.Buda.entities.User;
 import com.higroup.Buda.repositories.IngredientRepository;
 import com.higroup.Buda.repositories.UserRepository;
+import com.higroup.Buda.util.RandomID.RandomIDGenerator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,7 +34,7 @@ public class IngredientCreateService {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
         }
         if (newIngredient.getIngredientSKU()==null){
-            newIngredient.setIngredientSKU(UUID.randomUUID().toString());
+            newIngredient.setIngredientSKU(RandomIDGenerator.randomIDString());
         }
         Ingredient ingredientBySKU = 
         this.ingredientRepository.findIngredientByUserIDAndIngredientSKU(userID, newIngredient.getIngredientSKU());
