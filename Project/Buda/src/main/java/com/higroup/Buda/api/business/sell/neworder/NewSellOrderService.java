@@ -138,7 +138,7 @@ public class NewSellOrderService {
                 Ingredient ingredient = productComponent.getIngredient();
                 ingredient.setAmountLeft(ingredient.getAmountLeft() - Math.min(ingredient.getAmountLeft(),
                         sellOrderItemDTO.getQuantity() * (Math.round(productComponent.getRequiredQuantity()))));
-                
+                this.ingredientRepository.save(ingredient);
             }
         }
         SellOrderItem sellOrderItem = new SellOrderItem();
