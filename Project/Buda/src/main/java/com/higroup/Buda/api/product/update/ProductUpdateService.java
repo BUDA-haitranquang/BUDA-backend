@@ -22,27 +22,32 @@ public class ProductUpdateService {
     private final UserRepository userRepository;
 
     @Autowired
-    public ProductUpdateService(ProductRepository productRepository, UserRepository userRepository)
-    {
+    public ProductUpdateService(ProductRepository productRepository, UserRepository userRepository) {
         this.userRepository = userRepository;
         this.productRepository = productRepository;
     }
 
     @Transactional
-    public Product editProduct(Long userID, Long productID, Product product) throws InvocationTargetException, IllegalAccessException {
+    public Product editProduct(Long userID, Long productID, Product product)
+            throws InvocationTargetException, IllegalAccessException {
 
         Optional<User> user = this.userRepository.findUserByUserID(userID);
-        if (user.isEmpty())
-        {
+        if (user.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
         }
         Optional<Product> opProduct = this.productRepository.findProductByProductID(productID);
-        if(!opProduct.isPresent()){
+        if (!opProduct.isPresent()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
         }
         Product dest_product = opProduct.get();
-        if (dest_product.getUserID().equals(userID))
-        {
+        if (product.getProductSKU() != null) {
+            Product oldSKUProduct = this.productRepository.findProductByUserIDAndProductSKU(userID,
+                    product.getProductSKU());
+            if ((oldSKUProduct != null) && (!oldSKUProduct.getProductID().equals(dest_product.getProductID()))) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "This SKU has been used for another product");
+            }
+        }
+        if (dest_product.getUserID().equals(userID)) {
             BeanUtilsBean notNull = new NullAwareBeanUtilsBean();
             product.setProductSKU(dest_product.getProductSKU());
             notNull.copyProperties(dest_product, product);
