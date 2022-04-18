@@ -73,6 +73,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		this.ProductConfig(http);
 		// plan config
 		this.PlanConfig(http);
+		// zalopay config 
+		this.ZaloPayConfig(http);
 		// all other requests need to be authenticated
 		http.authorizeRequests().anyRequest().authenticated();
 		// http.authorizeRequests().anyRequest().authen
@@ -124,5 +126,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 															 "/api/product//hidden/all", "/api/product//group/**").hasAnyAuthority("USER", "STAFF");
 		http.authorizeRequests().antMatchers(HttpMethod.PUT, "/api/product/productID/**").hasAnyAuthority("USER");
 		http.authorizeRequests().antMatchers(HttpMethod.DELETE, "/api/product/productID/**").hasAnyAuthority("USER");
+	}
+
+	private void ZaloPayConfig(HttpSecurity http) throws Exception{
+		http.authorizeRequests().antMatchers("/api/payment/zalopay/callback").permitAll();
 	}
 }

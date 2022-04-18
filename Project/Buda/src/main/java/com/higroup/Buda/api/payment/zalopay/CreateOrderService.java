@@ -32,20 +32,15 @@ import com.higroup.Buda.api.payment.zalopay.vn.zalopay.crypto.HMACUtil;
 
 
 @Service
-public class ZaloPaymentService {
+public class CreateOrderService {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
-    private Map<String, String> config = new HashMap<String, String>(){{
-        put("appid", "554");
-        put("key1", "8NdU5pG5R2spGHGhyO99HN1OhD8IQJBn");
-        put("key2", "uUfsWgfLkRLzq6W2uNXTCxrfxs51auny");
-        put("endpoint", "https://sandbox.zalopay.com.vn/v001/tpe/createorder");
-    }};
-    private Map<String, Object> embeddata = new HashMap<>(){{
+    private final Map<String, String> config = ZaloConfig.config;
+    private final Map<String, Object> embeddata = new HashMap<>(){{
         put("merchantinfo", "embeddata123");
     }};
 
-    public  String getCurrentTimeString(String format) {
+    public String getCurrentTimeString(String format) {
         Calendar cal = new GregorianCalendar(TimeZone.getTimeZone("GMT+7"));
         SimpleDateFormat fmt = new SimpleDateFormat(format);
         fmt.setCalendar(cal);
@@ -67,7 +62,15 @@ public class ZaloPaymentService {
 
     public String createOrder(Purchase purchase) throws IOException{
         // create item to purchase 
-        List<Map<String, Object>> items = this.createItems(purchase);
+        // List<Map<String, Object>> items = this.createItems(purchase);
+        final List<Map<String, Object>> items = new ArrayList<>(){{
+            add(new HashMap<>(){{
+                put("itemid", "knb");
+                put("itemname", "kim nguyen bao");
+                put("itemprice", 198400);
+                put("itemquantity", 1);
+            }});
+        }};
         // create order 
         Map<String, Object> order = new HashMap<String, Object>(){{
             put("appid", config.get("appid"));
@@ -88,7 +91,7 @@ public class ZaloPaymentService {
         order.put("mac", HMACUtil.HMacHexStringEncode(HMACUtil.HMACSHA256, config.get("key1"), data));
 
         CloseableHttpClient client = HttpClients.createDefault();
-        HttpPost post = new HttpPost(config.get("endpoint"));
+        HttpPost post = new HttpPost(config.get("create-order-endpoint"));
 
         List<NameValuePair> params = new ArrayList<>();
         for (Map.Entry<String, Object> e : order.entrySet()) {
