@@ -67,7 +67,7 @@ public class CreateOrderService {
             add(new HashMap<>(){{
                 put("itemid", "knb");
                 put("itemname", "kim nguyen bao");
-                put("itemprice", 198400);
+                put("itemprice", 198);
                 put("itemquantity", 1);
             }});
         }};
@@ -78,7 +78,7 @@ public class CreateOrderService {
             // put("apptime", System.currentTimeMillis()); // miliseconds
             put("apptime", System.currentTimeMillis()); 
             put("appuser", "demo");
-            put("amount", 50000);
+            put("amount", 50);
             put("description", "ZaloPay Intergration Demo");
             put("bankcode", "zalopayapp");
             put("item", items.toString());
