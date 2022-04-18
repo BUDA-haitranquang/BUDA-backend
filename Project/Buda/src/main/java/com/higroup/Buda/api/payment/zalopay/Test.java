@@ -7,6 +7,9 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.simple.JSONObject;// https://mvnrepository.com/artifact/org.json/json
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.higroup.Buda.api.payment.zalopay.vn.zalopay.crypto.HMACUtil; // tải về ở mục DOWNLOADS
 
 import java.io.BufferedReader;
@@ -16,6 +19,7 @@ import java.util.*;
 import java.util.logging.Logger;
 
 public class Test {
+    private static ObjectMapper objectMapper = new ObjectMapper();
     private static Map<String, String> config = new HashMap<String, String>(){{
         put("appid", "554");
         put("key1", "8NdU5pG5R2spGHGhyO99HN1OhD8IQJBn");
@@ -36,7 +40,7 @@ public class Test {
             put("merchantinfo", "embeddata123");
         }};
 
-        final List<Map<String, Object>> item = new ArrayList<>(){{
+        final List<Map<String, Object>> items = new ArrayList<>(){{
             add(new HashMap<>(){{
                 put("itemid", "knb");
                 put("itemname", "kim nguyen bao");
@@ -44,16 +48,17 @@ public class Test {
                 put("itemquantity", 1);
             }});
         }};
-
+        // create order 
         Map<String, Object> order = new HashMap<String, Object>(){{
             put("appid", config.get("appid"));
             put("apptransid", getCurrentTimeString("yyMMdd") +"_"+ UUID.randomUUID()); // mã giao dich có định dạng yyMMdd_xxxx
-            put("apptime", "1647849521971"); // miliseconds
+            // put("apptime", System.currentTimeMillis()); // miliseconds
+            put("apptime", System.currentTimeMillis()); 
             put("appuser", "demo");
             put("amount", 50000);
             put("description", "ZaloPay Intergration Demo");
             put("bankcode", "zalopayapp");
-            put("item", item.toString());
+            put("item", items.toString());
             put("embeddata", new JSONObject(embeddata).toString());
         }};
 
@@ -82,11 +87,8 @@ public class Test {
         while ((line = rd.readLine()) != null) {
             resultJsonStr.append(line);
         }
-
-        System.out.println(resultJsonStr.toString());
-        // JSONObject result = new JSONObject(resultJsonStr.toString());
-        // for (String key : result.keySet()) {
-        //     System.out.format("%s = %s\n", key, result.get(key));
-        // }
+        
+        JsonNode root = objectMapper.readTree(resultJsonStr.toString());
+        System.out.println(root.toString());
     }
 }

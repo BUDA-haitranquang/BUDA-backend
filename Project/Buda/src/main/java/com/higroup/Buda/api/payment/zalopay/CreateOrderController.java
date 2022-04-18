@@ -1,5 +1,7 @@
 package com.higroup.Buda.api.payment.zalopay;
 
+import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
 
 import com.higroup.Buda.entities.Purchase;
@@ -16,20 +18,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("")
-public class ZaloPaymentController {
+@RequestMapping(path = "/api/payment/zalopay")
+public class CreateOrderController {
     
     @Autowired 
-    private ZaloPaymentService zaloPaymentService;
+    private CreateOrderService createOrderService;
 
     @Autowired 
     private RequestUtil requestUtil;
 
-    // @PostMapping(path = "/api/payment/zalopay")
-    // public ResponseEntity<?> createNewBuyOrder(HttpServletRequest httpServletRequest)
-    // {
-    //     Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
-    //     return zaloPaymentService.createOrder(purchase);
-    // }
+    @GetMapping(path = "/create-order")
+    public ResponseEntity<?> createNewBuyOrder(HttpServletRequest httpServletRequest) throws IOException
+    {
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
+        return ResponseEntity.ok().body(createOrderService.createOrder(null));
+    }
     
 }
