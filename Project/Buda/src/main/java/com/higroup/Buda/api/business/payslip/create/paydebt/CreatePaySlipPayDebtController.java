@@ -21,8 +21,8 @@ public class CreatePaySlipPayDebtController {
     }
     @PostMapping
     public ResponseEntity<?> createNewPaySlipPayDebt(HttpServletRequest httpServletRequest,
-                                              @RequestBody List<Long> buyOrderIDs){
+                                              @RequestBody PaySlipDebtDTO paySlipDebtDTO){
         Long userID = this.requestUtil.getProUserIDFromUserToken(httpServletRequest);
-        return ResponseEntity.ok().body(this.createPaySlipPayDebtService.createPaySlipPayDebt(userID, buyOrderIDs));
+        return ResponseEntity.ok().body(this.createPaySlipPayDebtService.createPaySlipPayDebt(userID, paySlipDebtDTO.getBuyOrderIDs()));
     }
 }
