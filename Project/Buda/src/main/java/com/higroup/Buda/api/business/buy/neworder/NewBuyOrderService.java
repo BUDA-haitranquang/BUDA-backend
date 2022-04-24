@@ -1,6 +1,7 @@
 package com.higroup.Buda.api.business.buy.neworder;
 
 import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -169,6 +170,14 @@ public class NewBuyOrderService {
         }
         buyOrder.setStatus(buyOrderDTO.getStatus());
         buyOrder.setUserID(userID);
+        buyOrder.setDescription(buyOrderDTO.getDescription());
+        if ((buyOrderDTO.getTextID() != null) && (!buyOrderDTO.getTextID().equals(""))) {
+            List<BuyOrder> buyOrderTexts = this.buyOrderRepository.findAllBuyOrderByUserIDAndTextID(userID, buyOrderDTO.getTextID());
+            if (buyOrderTexts.size() > 0) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Another buy order with this textID already exist");
+            }
+            else buyOrder.setTextID(buyOrderDTO.getTextID());
+        }
         // get supplier info
         Supplier supplier = this.findSupplierInfo(userID, buyOrderDTO.getSupplier());
         buyOrder.setSupplier(supplier);

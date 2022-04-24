@@ -53,6 +53,7 @@ public class CallBackService {
         }
 
         // thông báo kết quả cho ZaloPay server
+        System.out.println(result.toString());
         return result.toString();
     }
 }

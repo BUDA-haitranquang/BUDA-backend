@@ -24,5 +24,6 @@ public class BuyOrderDTO {
     private Status status;
     @NotEmpty
     private List<BuyOrderItemDTO> buyOrderItemDTOs;
-    
+    private String textID;
+    private String description;
 }

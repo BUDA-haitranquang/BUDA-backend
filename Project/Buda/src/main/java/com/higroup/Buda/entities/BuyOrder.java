@@ -55,6 +55,7 @@ public class BuyOrder {
     private Set<BuyOrderItem> buyOrderItems;
     @Column(name = "text_id")
     private String textID = RandomIDGenerator.randomIDString();
+    private String description;
     @Override
     public boolean equals(Object o) {
         if (o == this)
