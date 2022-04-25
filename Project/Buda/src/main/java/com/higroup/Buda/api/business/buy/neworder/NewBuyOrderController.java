@@ -34,11 +34,11 @@ public class NewBuyOrderController {
         return ResponseEntity.ok().body(this.newBuyOrderService.createNewBuyOrder(userID, buyOrderDTO));
     }
 
-    @DeleteMapping(path = "{buyOrderID}")
-    public ResponseEntity<?> deleteBuyOrderByBuyOrderID(HttpServletRequest httpServletRequest, @PathVariable Long buyOrderID)
-    {
-        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
-        this.newBuyOrderService.deleteBuyOrderByBuyOrderID(userID, buyOrderID);
-        return ResponseEntity.ok().body("Delete successfully");
-    }
+    // @DeleteMapping(path = "{buyOrderID}")
+    // public ResponseEntity<?> deleteBuyOrderByBuyOrderID(HttpServletRequest httpServletRequest, @PathVariable Long buyOrderID)
+    // {
+    //     Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
+    //     this.newBuyOrderService.deleteBuyOrderByBuyOrderID(userID, buyOrderID);
+    //     return ResponseEntity.ok().body("Delete successfully");
+    // }
 }
