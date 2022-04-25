@@ -18,59 +18,68 @@ import org.springframework.data.repository.query.Param;
 public interface BuyOrderRepository extends PagingAndSortingRepository<BuyOrder, Long> {
         @Query(value = "select distinct b from BuyOrder b" +
                         " LEFT JOIN FETCH b.buyOrderItems bo" +
-                        " LEFT JOIN FETCH bo.ingredient" +
+                        " LEFT JOIN FETCH bo.ingredient ingr " +
+                        " LEFT JOIN FETCH ingr.picture " +
                         " LEFT JOIN FETCH b.supplier s" +
                         " LEFT JOIN FETCH b.staff st" +
-                        " LEFT JOIN FETCH st.roles" +
+                        // " LEFT JOIN FETCH st.roles" +
                         " where b.buyOrderID = :buyOrderID")
         Optional<BuyOrder> findBuyOrderByBuyOrderID(Long buyOrderID);
 
         @Query(value = "select distinct b from BuyOrder b" +
                         " LEFT JOIN FETCH b.buyOrderItems bo" +
-                        " LEFT JOIN FETCH bo.ingredient" +
+                        " LEFT JOIN FETCH bo.ingredient ingr " +
+                        " LEFT JOIN FETCH ingr.picture " +
                         " LEFT JOIN FETCH b.supplier s" +
                         " LEFT JOIN FETCH b.staff st" +
-                        " LEFT JOIN FETCH st.roles" +
+                        // " LEFT JOIN FETCH st.roles" +
                         " where b.userID = :userID and b.textID = :textID")
         List<BuyOrder> findAllBuyOrderByUserIDAndTextID(Long userID, String textID);
 
         @Query(value = "select distinct b from BuyOrder b" +
                         " LEFT JOIN FETCH b.buyOrderItems bo" +
-                        " LEFT JOIN FETCH bo.ingredient" +
+                        " LEFT JOIN FETCH bo.ingredient ingr " +
+                        " LEFT JOIN FETCH ingr.picture " +
                         " LEFT JOIN FETCH b.supplier s" +
                         " LEFT JOIN FETCH b.staff st" +
-                        " LEFT JOIN FETCH st.roles" +
+                        // " LEFT JOIN FETCH st.roles" +
                         " where b.userID = :userID")
         List<BuyOrder> findAllBuyOrderByUserID(Long userID, Pageable pageable);
 
         @Query(value = "select distinct b from BuyOrder b" +
                         " LEFT JOIN FETCH b.buyOrderItems bo" +
-                        " LEFT JOIN FETCH bo.ingredient" +
+                        " LEFT JOIN FETCH bo.ingredient ingr " +
+                        " LEFT JOIN FETCH ingr.picture " +
                         " LEFT JOIN FETCH b.supplier s" +
                         " LEFT JOIN FETCH b.staff st" +
-                        " LEFT JOIN FETCH st.roles" +
+                        // " LEFT JOIN FETCH st.roles" +
                         " where b.supplier = :supplier")
         List<BuyOrder> findAllBuyOrderBySupplier(Supplier supplier);
 
         @Query(value = "select distinct b from BuyOrder b " +
                         " LEFT JOIN FETCH b.buyOrderItems bo" +
-                        " LEFT JOIN FETCH bo.ingredient" +
+                        " LEFT JOIN FETCH bo.ingredient ingr " +
+                        " LEFT JOIN FETCH ingr.picture " +
                         " LEFT JOIN FETCH b.supplier s" +
                         " LEFT JOIN FETCH b.staff st" +
-                        " LEFT JOIN FETCH st.roles" + " where b.status LIKE :status and b.userID = :userID")
+                        // " LEFT JOIN FETCH st.roles" + 
+                        " where b.status LIKE :status and b.userID = :userID")
         List<BuyOrder> findAllBuyOrderByUserIDAndStatus(Long userID, Status status);
 
         @Query(value = "select distinct b from BuyOrder b " +
                         " LEFT JOIN FETCH b.buyOrderItems bo" +
-                        " LEFT JOIN FETCH bo.ingredient" +
+                        " LEFT JOIN FETCH bo.ingredient ingr " +
+                        " LEFT JOIN FETCH ingr.picture " +
                         " LEFT JOIN FETCH b.supplier s" +
                         " LEFT JOIN FETCH b.staff st" +
-                        " LEFT JOIN FETCH st.roles" + " where b.status LIKE :status and b.userID = :userID")
+                        // " LEFT JOIN FETCH st.roles" + 
+                        " where b.status LIKE :status and b.userID = :userID")
         List<BuyOrder> findAllBuyOrderByStatusAndUserID(@Param("userID") Long userID, @Param("status") String status);
 
         @Query(value = "select b from BuyOrder b " +
                         " LEFT JOIN FETCH b.buyOrderItems bo" +
-                        " LEFT JOIN FETCH bo.ingredient" +
+                        " LEFT JOIN FETCH bo.ingredient ingr " +
+                        " LEFT JOIN FETCH ingr.picture " +
                         " LEFT JOIN FETCH b.supplier s" +
                         " LEFT JOIN FETCH b.staff st" +
                         " LEFT JOIN FETCH st.roles"
@@ -81,7 +90,8 @@ public interface BuyOrderRepository extends PagingAndSortingRepository<BuyOrder,
 
         @Query(value = "select b from BuyOrder b" +
                         " LEFT JOIN FETCH b.buyOrderItems bo" +
-                        " LEFT JOIN FETCH bo.ingredient" +
+                        " LEFT JOIN FETCH bo.ingredient ingr " +
+                        " LEFT JOIN FETCH ingr.picture " +
                         " LEFT JOIN FETCH b.supplier s" +
                         " LEFT JOIN FETCH b.staff st" +
                         " LEFT JOIN FETCH st.roles"
@@ -90,10 +100,12 @@ public interface BuyOrderRepository extends PagingAndSortingRepository<BuyOrder,
 
         @Query(value = "select b from BuyOrder b" +
                         " LEFT JOIN FETCH b.buyOrderItems bo" +
-                        " LEFT JOIN FETCH bo.ingredient" +
+                        " LEFT JOIN FETCH bo.ingredient ingr " +
+                        " LEFT JOIN FETCH ingr.picture " +
                         " LEFT JOIN FETCH b.supplier s" +
                         " LEFT JOIN FETCH b.staff st" +
-                        " LEFT JOIN FETCH st.roles" + " where b.status LIKE 'FINISHED' and b.userID = :userID")
+                        // " LEFT JOIN FETCH st.roles" + 
+                        " where b.status LIKE 'FINISHED' and b.userID = :userID")
         List<BuyOrder> findAllCompletedBuyOrderByUser(@Param("userID") Long userID, Pageable pageable);
 
         @Query(value = "select new com.higroup.Buda.customDTO.ExpenseByTimeStatistics(DATE_FORMAT(f.creationTime, '%V-%Y'), SUM(f.totalCost)) "

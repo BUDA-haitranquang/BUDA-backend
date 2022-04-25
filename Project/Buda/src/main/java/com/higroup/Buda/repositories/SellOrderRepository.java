@@ -20,25 +20,28 @@ import org.springframework.data.repository.query.Param;
 public interface SellOrderRepository extends PagingAndSortingRepository<SellOrder, Long> {
         @Query(value = "select s from SellOrder s "
                         + "LEFT JOIN FETCH s.sellOrderItems si "
-                        + "LEFT JOIN FETCH si.product "
+                        + "LEFT JOIN FETCH si.product pr "
+                        + "LEFT JOIN FETCH pr.picture "
                         + "LEFT JOIN FETCH s.customer c "
                         + "LEFT JOIN FETCH s.staff ss "
-                        + "LEFT JOIN FETCH ss.roles "
+                        // + "LEFT JOIN FETCH ss.roles "
                         + "where s.sellOrderID = :sellOrderID ")
         Optional<SellOrder> findSellOrderBySellOrderID(Long sellOrderID);
 
         @Query(value = "select distinct s from SellOrder s "
                         + "LEFT JOIN FETCH s.sellOrderItems si "
-                        + "LEFT JOIN FETCH si.product "
+                        + "LEFT JOIN FETCH si.product pr "
+                        + "LEFT JOIN FETCH pr.picture "
                         + "LEFT JOIN FETCH s.customer c "
                         + "LEFT JOIN FETCH s.staff ss "
-                        + "LEFT JOIN FETCH ss.roles "
+                        // + "LEFT JOIN FETCH ss.roles "
                         + "where s.userID = :userID ")
         List<SellOrder> findAllSellOrderByUserID(Long userID, Pageable pageable);
 
         @Query(value = "select distinct s from SellOrder s "
                         + "LEFT JOIN FETCH s.sellOrderItems si "
-                        + "LEFT JOIN FETCH si.product "
+                        + "LEFT JOIN FETCH si.product pr "
+                        + "LEFT JOIN FETCH pr.picture "
                         + "LEFT JOIN FETCH s.customer c "
                         + "LEFT JOIN FETCH s.staff ss LEFT JOIN FETCH ss.roles where s.userID = :userID and s.textID = :textID")
         List<SellOrder> findAllSellOrderByUserIDAndTextID(Long userID, String textID);
@@ -50,10 +53,11 @@ public interface SellOrderRepository extends PagingAndSortingRepository<SellOrde
 
         @Query(value = "select * from sell_order s "
                         + "LEFT JOIN FETCH s.sellOrderItems si "
-                        + "LEFT JOIN FETCH si.product "
+                        + "LEFT JOIN FETCH si.product pr "
+                        + "LEFT JOIN FETCH pr.picture "
                         + "LEFT JOIN FETCH s.customer c "
                         + "LEFT JOIN FETCH s.staff ss "
-                        + "LEFT JOIN FETCH ss.roles "
+                        // + "LEFT JOIN FETCH ss.roles "
                         + "where s.status LIKE :status and s.user_id = :userID", nativeQuery = true)
         List<SellOrder> findAllSellOrderByStatusAndUserID(@Param("userID") Long userID, @Param("status") String status);
 
@@ -62,10 +66,11 @@ public interface SellOrderRepository extends PagingAndSortingRepository<SellOrde
         // true)
         @Query(value = "select distinct s from SellOrder s "
                         + "LEFT JOIN FETCH s.sellOrderItems si "
-                        + "LEFT JOIN FETCH si.product "
+                        + "LEFT JOIN FETCH si.product pr "
+                        + "LEFT JOIN FETCH pr.picture "
                         + "LEFT JOIN FETCH s.customer c "
                         + "LEFT JOIN FETCH s.staff ss "
-                        + "LEFT JOIN FETCH ss.roles "
+                        // + "LEFT JOIN FETCH ss.roles "
                         + "where (s.creationTime >= :X) and s.userID = :userID")
         List<SellOrder> findAllSellOrderByUserIDLastXDays(@Param("userID") Long userID, @Param("X") ZonedDateTime X);
 
@@ -74,28 +79,31 @@ public interface SellOrderRepository extends PagingAndSortingRepository<SellOrde
         // true)
         @Query(value = "select s from SellOrder s "
                         + "LEFT JOIN FETCH s.sellOrderItems si "
-                        + "LEFT JOIN FETCH si.product "
+                        + "LEFT JOIN FETCH si.product pr "
+                        + "LEFT JOIN FETCH pr.picture "
                         + "LEFT JOIN FETCH s.customer c "
                         + "LEFT JOIN FETCH s.staff ss "
-                        + "LEFT JOIN FETCH ss.roles "
+                        // + "LEFT JOIN FETCH ss.roles "
                         + "where s.status NOT LIKE 'FINISHED' and s.status NOT LIKE 'CANCELLED' and s.userID = :userID")
         List<SellOrder> findAllIncompletedSellOrderByUser(@Param("userID") Long userID);
 
         @Query(value = "select s from SellOrder s "
                         + "LEFT JOIN FETCH s.sellOrderItems si "
-                        + "LEFT JOIN FETCH si.product "
+                        + "LEFT JOIN FETCH si.product pr "
+                        + "LEFT JOIN FETCH pr.picture "
                         + "LEFT JOIN FETCH s.customer c "
                         + "LEFT JOIN FETCH s.staff ss "
-                        + "LEFT JOIN FETCH ss.roles "
+                        // + "LEFT JOIN FETCH ss.roles "
                         + " where s.status LIKE 'FINISHED' and s.userID = :userID")
         List<SellOrder> findAllCompletedSellOrderByUser(@Param("userID") Long userID, Pageable pageable);
 
         @Query(value = "select s from SellOrder s "
                         + "LEFT JOIN FETCH s.sellOrderItems si "
-                        + "LEFT JOIN FETCH si.product "
+                        + "LEFT JOIN FETCH si.product pr "
+                        + "LEFT JOIN FETCH pr.picture "
                         + "LEFT JOIN FETCH s.customer c "
                         + "LEFT JOIN FETCH s.staff ss "
-                        + "LEFT JOIN FETCH ss.roles "
+                        // + "LEFT JOIN FETCH ss.roles "
                         + " where s.status = :status and s.userID = :userID")
         List<SellOrder> findAllSellOrderByUserIDAndStatus(Long userID, Status status);
 

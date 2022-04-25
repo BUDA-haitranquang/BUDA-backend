@@ -19,6 +19,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.higroup.Buda.entities.enumeration.StaffPosition;
 
 import lombok.AllArgsConstructor;
@@ -59,7 +61,7 @@ public class Staff {
     @Column(columnDefinition = "Double default 0.0")
     private Double salary;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinTable(name = "staff_role",
                joinColumns = @JoinColumn(name = "staff_id"), 
                inverseJoinColumns = @JoinColumn(name = "role_id"),
@@ -67,6 +69,7 @@ public class Staff {
                    @Index(name = "staff_role_staff_id", columnList = "staff_id")
                }
     )
+    @JsonIgnore
     private Collection<Role> roles = new ArrayList<Role>();
 
     @Column(columnDefinition = "boolean default true")
