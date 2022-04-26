@@ -1,18 +1,26 @@
 package com.higroup.Buda.entities;
 
+import java.time.ZonedDateTime;
+import java.util.Objects;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Index;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.GenericGenerator;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import javax.persistence.*;
-import java.time.ZonedDateTime;
-import java.util.Objects;
 
 @Entity
 @Table(name = "Buy_order_item", indexes = {
@@ -25,7 +33,8 @@ import java.util.Objects;
 @NoArgsConstructor
 public class BuyOrderItem {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "generator")
+    @GenericGenerator(name = "generator", strategy = "increment")
     @Column(name = "buy_order_item_id")
     private Long buyOrderItemID;
     @ManyToOne(fetch = FetchType.LAZY, optional = true)

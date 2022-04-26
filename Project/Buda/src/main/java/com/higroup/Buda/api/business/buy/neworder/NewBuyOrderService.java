@@ -2,8 +2,10 @@ package com.higroup.Buda.api.business.buy.neworder;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -84,7 +86,7 @@ public class NewBuyOrderService {
             }
             buyOrderItem.setPricePerUnit(ingredient.getPrice());
         }
-        return this.buyOrderItemRepository.save(buyOrderItem);
+        return buyOrderItem;
     }
 
     private IngredientLeftLog editIngredientLeftAmount(Long userID, Long ingredientID, Integer amountLeftChange) {
@@ -141,6 +143,8 @@ public class NewBuyOrderService {
                     buyOrderItemDTO.getQuantity()));
         }
         this.buyOrderItemRepository.saveAll(buyOrderItems);
+        Set<BuyOrderItem> bItems = new HashSet<BuyOrderItem>(buyOrderItems);
+        buyOrder.setBuyOrderItems(bItems);
         this.ingredientLeftLogRepository.saveAll(ingredientLeftLogs);
         // calculate total cost
         buyOrder.setTotalCost(totalCost);
