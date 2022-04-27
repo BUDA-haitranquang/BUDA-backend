@@ -33,9 +33,9 @@ public class Ingredient {
     private String name;
     @Column(length = 1000)
     private String description;
-    @Column(columnDefinition = "int default 0", name = "amount_left")
+    @Column(columnDefinition = "int default 0", name = "amount_left", nullable = false)
     private Integer amountLeft;
-    @Column(columnDefinition = "double default 0.0", name = "price")
+    @Column(columnDefinition = "double default 0.0", name = "price", nullable = false)
     private Double price;
     @Column(columnDefinition = "boolean default true", name = "visible")
     private Boolean visible = Boolean.TRUE;
@@ -44,7 +44,7 @@ public class Ingredient {
     @OneToOne
     @JoinColumn(name = "picture_id", referencedColumnName = "picture_id")
     private Picture picture;
-    @Column(name = "alert_amount_left", columnDefinition = "int default 0")
+    @Column(name = "alert_amount_left", columnDefinition = "int default 0", nullable = false)
     private Integer alertAmountLeft;
     @OneToMany(mappedBy = "ingredient", fetch = FetchType.LAZY)
     @JsonManagedReference(value = "ingredient - buy_order_item")

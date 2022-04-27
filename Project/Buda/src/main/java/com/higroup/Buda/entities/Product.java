@@ -65,19 +65,19 @@ public class Product {
     @JoinColumn(name = "picture_id", referencedColumnName = "picture_id")
     private Picture picture;
 
-    @Column(name = "selling_price", columnDefinition = "double default 0.0")
+    @Column(name = "selling_price", columnDefinition = "double default 0.0", nullable = false)
     @PositiveOrZero(message = "Price must be at least 0")
     private Double sellingPrice;
 
-    @Column(name = "alert_amount", columnDefinition = "int default 0")
+    @Column(name = "alert_amount", columnDefinition = "int default 0", nullable = false)
     @PositiveOrZero(message = "Alert amount must be at least 0")
     private Integer alertAmount;
 
-    @Column(name = "amount_left", columnDefinition = "int default 0")
+    @Column(name = "amount_left", columnDefinition = "int default 0", nullable = false)
     @PositiveOrZero(message = "Amount left must be at least 0")
     private Integer amountLeft;
 
-    @Column(name = "cost_per_unit", columnDefinition = "double default 0.0")
+    @Column(name = "cost_per_unit", columnDefinition = "double default 0.0", nullable = false)
     @PositiveOrZero(message = "Cost must be at least 0")
     private Double costPerUnit;
 
