@@ -15,7 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("api/picture/upload")
-@CrossOrigin(origins = "http://localhost:3000, http://143.198.194.24:3000")
+@CrossOrigin(origins = {"http://localhost:3000", "http://34.124.169.2"})
 public class UploadPictureController {
     private final UploadPictureService uploadPictureService;
     private final RequestUtil requestUtil;
