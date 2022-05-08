@@ -24,8 +24,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity // enable Spring Security’s web security support and provide the Spring MVC integration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-	private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    // @Autowired
+	// private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
 	@Autowired
 	private JwtRequestFilter jwtRequestFilter;
@@ -57,29 +57,29 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable().cors();
 		// make sure we use stateless session; session won't be used to
 		// store user's state.
-		http.exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
-			.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+		// http.exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
+		// 	.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		
 		// user config
-		this.UserConfig(http);
-		// role config
-		this.StaffConfig(http);
-		// staff config
-		// staff note config
-		this.StaffNoteConfig(http);
-		// salary log
-		this.SalaryLogConfig(http);
-		// product config
-		this.ProductConfig(http);
-		// plan config
-		this.PlanConfig(http);
-		// zalopay config 
-		this.ZaloPayConfig(http);
+		// this.UserConfig(http);
+		// // role config
+		// this.StaffConfig(http);
+		// // staff config
+		// // staff note config
+		// this.StaffNoteConfig(http);
+		// // salary log
+		// this.SalaryLogConfig(http);
+		// // product config
+		// this.ProductConfig(http);
+		// // plan config
+		// this.PlanConfig(http);
+		// // zalopay config 
+		// this.ZaloPayConfig(http);
 		// all other requests need to be authenticated
-		http.authorizeRequests().anyRequest().authenticated();
+		http.authorizeRequests().anyRequest().permitAll();
 		// http.authorizeRequests().anyRequest().authen
 		// Add a filter to validate the tokens with every request
-		http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+		// http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
 	private void UserConfig(HttpSecurity http) throws Exception{
