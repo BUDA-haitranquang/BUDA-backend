@@ -39,6 +39,9 @@ public class IngredientCreateService {
         Ingredient ingredientBySKU = 
         this.ingredientRepository.findIngredientByUserIDAndIngredientSKU(userID, newIngredient.getIngredientSKU());
         // check if name of ingredient exist
+        if ((newIngredient.getPicture() == null) || (newIngredient.getPicture().getPictureID() == null)) {
+            newIngredient.setPicture(null);
+        }
         if(ingredientBySKU!=null){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
             "Another ingredient with SKU has already existed: " + ingredientBySKU.getName());

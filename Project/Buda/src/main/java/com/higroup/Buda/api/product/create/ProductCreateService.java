@@ -42,6 +42,10 @@ public class ProductCreateService {
         if (productBySKU!=null){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Another product with this SKU has already existed: " + productBySKU.getName());
         }
+        if ((product.getPicture() == null) || (product.getPicture().getPictureID() == null)) 
+        {
+            product.setPicture(null);
+        }
         product.setUserID(userID);
         this.productRepository.save(product);
         return product;
