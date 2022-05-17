@@ -1,6 +1,8 @@
 package com.higroup.Buda.api.business.sell.returnorder;
 
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -40,7 +42,8 @@ public class ReturnOrderService {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "This sell order has already been " + sellOrder.get().getStatus());
             }
             sellOrder.get().setStatus(Status.RETURNED);
-            this.sellOrderRepository.save(sellOrder.get());
+            List<Product> products = new ArrayList<>();
+            List<ProductLeftLog> productLeftLogs = new ArrayList<>();
             for (SellOrderItem sellOrderItem: sellOrder.get().getSellOrderItems()){
                 ProductLeftLog productLeftLog = new ProductLeftLog();
                 productLeftLog.setAmountLeftChange(sellOrderItem.getQuantity());
@@ -50,9 +53,14 @@ public class ReturnOrderService {
                 productLeftLog.setUserID(userID);
                 Product product = sellOrderItem.getProduct();
                 product.setAmountLeft(product.getAmountLeft() + sellOrderItem.getQuantity());
-                this.productRepository.save(product);
-                this.productLeftLogRepository.save(productLeftLog);
+                products.add(product);
+                productLeftLogs.add(productLeftLog);
+                // this.productRepository.save(product);
+                // this.productLeftLogRepository.save(productLeftLog);
             }
+            this.productRepository.saveAll(products);
+            this.productLeftLogRepository.saveAll(productLeftLogs);
+            this.sellOrderRepository.save(sellOrder.get());
             return sellOrder.get();
         }
         else throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Sell Order not found");

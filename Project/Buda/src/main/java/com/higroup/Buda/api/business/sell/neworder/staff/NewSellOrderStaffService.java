@@ -327,8 +327,9 @@ public class NewSellOrderStaffService {
             for (SellOrderItem sellOrderItem: sellOrder.getSellOrderItems())
             {
                 sellOrderItem.setUserID(userID);
-                this.sellOrderItemRepository.save(sellOrderItem);
+                // this.sellOrderItemRepository.save(sellOrderItem);
             }
+            this.sellOrderItemRepository.saveAll(sellOrder.getSellOrderItems());
             try
             {
                 Optional<Customer> customer = this.customerRepository.findCustomerByUserIDAndPhoneNumber(userID,

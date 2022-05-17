@@ -2,6 +2,8 @@ package com.higroup.Buda.api.business.sell.neworder.pos;
 
 import java.text.DecimalFormat;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -78,6 +80,7 @@ public class PosNewSellOrderService {
         sellOrder.setFinishTime(ZonedDateTime.now());
         Double realCost = 0.0;
         this.sellOrderRepository.save(sellOrder);
+        List<SellOrderItem> sellOrderItemList = new ArrayList<>();
         for (SellOrderItemDTO sellOrderItemDTO: sellOrderDTO.getSellOrderItemDTOs()){
             SellOrderItem sellOrderItem = newPosSellOrderItem(sellOrderItemDTO);
             sellOrderItem.setSellOrder(sellOrder);
@@ -86,8 +89,10 @@ public class PosNewSellOrderService {
             sellOrderItem.setUserID(userID);
             sellOrderItem.setCreationTime(sellOrder.getCreationTime());
             realCost = realCost + sellOrderItem.getActualTotalSale();
-            this.sellOrderItemRepository.save(sellOrderItem);
+            sellOrderItemList.add(sellOrderItem);
+            // this.sellOrderItemRepository.save(sellOrderItem);
         }
+        this.sellOrderItemRepository.saveAll(sellOrderItemList);
         sellOrder.setRealCost(realCost);
         //Discount
         Double actualDiscountCash = 0.0;
