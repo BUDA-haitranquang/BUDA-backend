@@ -41,7 +41,7 @@ public class RequestUtil {
 
     public Long getUserIDGeneral(HttpServletRequest httpServletRequest, String type) {
         final String token = httpServletRequest.getHeader("Authorization").substring(7);
-        HttpPost httpPost = new HttpPost(authenticationURL + "api/token/verify" + type);
+        HttpPost httpPost = new HttpPost(authenticationURL + "api/token/verify/" + type);
         HttpClient client = HttpClients.createDefault();
         String json = "{\"accessToken\":" + "\"" + token + "\"" + "}";
         StringEntity entity;
