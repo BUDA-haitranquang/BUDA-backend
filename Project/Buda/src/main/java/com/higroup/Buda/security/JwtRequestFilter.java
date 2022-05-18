@@ -46,30 +46,30 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             return;
         }
 
-        final String requestTokenHeader = request.getHeader("Authorization");
-        // System.out.println(requestTokenHeader);
-        String username = null;
-        String jwtToken = null;
+        // final String requestTokenHeader = request.getHeader("Authorization");
+        // // System.out.println(requestTokenHeader);
+        // String username = null;
+        // String jwtToken = null;
         // JWT Token is in the form "Bearer token". Remove Bearer word and get
         // only the Token
         // System.out.println(requestTokenHeader.toString());
         // get role
 
-        if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
-            jwtToken = requestTokenHeader.substring(7);
-            try {
-                username = jwtTokenUtil.getUsernameFromToken(jwtToken);
-                // System.out.println(username);
-            } catch (IllegalArgumentException e) {
-                throw new IllegalArgumentException("Uanble to get Jwt Token");
-                // System.out.println("Unable to get JWT Token");
-            } catch (ExpiredJwtException e) {
-                // throw new ExpiredJwtException(jwtTokenUtil.ge, claims, message)
-                // System.out.println("JWT Token has expired");
-            }
-        } else {
-            logger.warn("JWT Token does not begin with Bearer String");
-        }
+        // if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
+        //     jwtToken = requestTokenHeader.substring(7);
+        //     try {
+        //         // username = jwtTokenUtil.getUsernameFromToken(jwtToken);
+        //         // System.out.println(username);
+        //     } catch (IllegalArgumentException e) {
+        //         throw new IllegalArgumentException("Uanble to get Jwt Token");
+        //         // System.out.println("Unable to get JWT Token");
+        //     } catch (ExpiredJwtException e) {
+        //         // throw new ExpiredJwtException(jwtTokenUtil.ge, claims, message)
+        //         // System.out.println("JWT Token has expired");
+        //     }
+        // } else {
+        //     logger.warn("JWT Token does not begin with Bearer String");
+        // }
 
         // // Once we get the token validate it.
         // if (username != null &&
