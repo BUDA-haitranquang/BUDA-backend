@@ -2,6 +2,8 @@ package com.higroup.Buda.api.business.sell.neworder;
 
 import java.text.DecimalFormat;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -317,8 +319,9 @@ public class NewSellOrderService {
             sellOrder.setUserID(userID);
             for (SellOrderItem sellOrderItem : sellOrder.getSellOrderItems()) {
                 sellOrderItem.setUserID(userID);
-                this.sellOrderItemRepository.save(sellOrderItem);
+                // this.sellOrderItemRepository.save(sellOrderItem);
             }
+            sellOrderItemRepository.saveAll(sellOrder.getSellOrderItems());
             try {
                 Optional<Customer> customer = this.customerRepository.findCustomerByUserIDAndPhoneNumber(userID,
                         sellOrder.getCustomer().getPhoneNumber());

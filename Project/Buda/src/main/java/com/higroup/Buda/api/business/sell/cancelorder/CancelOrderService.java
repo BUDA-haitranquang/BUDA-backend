@@ -1,6 +1,8 @@
 package com.higroup.Buda.api.business.sell.cancelorder;
 
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -41,6 +43,7 @@ public class CancelOrderService {
             sellOrder.setStatus(Status.CANCELLED);
             this.sellOrderRepository.save(sellOrder);
             //Restore balance
+            List<ProductLeftLog> productLeftLogs = new ArrayList<>();
             for (SellOrderItem sellOrderItem: sellOrder.getSellOrderItems()){
                 ProductLeftLog productLeftLog = new ProductLeftLog();
                 productLeftLog.setAmountLeftChange(sellOrderItem.getQuantity());
@@ -50,8 +53,11 @@ public class CancelOrderService {
                 productLeftLog.setMessage("Cancelled order");
                 Product product = sellOrderItem.getProduct();
                 product.setAmountLeft(product.getAmountLeft() + sellOrderItem.getQuantity());
-                this.productLeftLogRepository.save(productLeftLog);
+                productLeftLogs.add(productLeftLog);
+                // this.productLeftLogRepository.save(productLeftLog);
             }
+            this.productLeftLogRepository.saveAll(productLeftLogs);
+            this.sellOrderRepository.save(sellOrder);
             return sellOrder;
         }
         else throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Sell Order not found");
