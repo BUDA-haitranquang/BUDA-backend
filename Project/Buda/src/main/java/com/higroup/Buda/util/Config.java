@@ -12,6 +12,6 @@ public class Config {
     //  DEV
     public final static String url = "http://localhost:8080";
     public final static String secretKey = "HelloWeAreBuda";
-    public static int HoursAccessToken = 5;
+    public static int HoursAccessToken = 1;
     public static int HoursRefreshToken = 48;
 }

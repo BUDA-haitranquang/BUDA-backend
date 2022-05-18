@@ -150,7 +150,7 @@ public class JwtTokenUtil implements Serializable {
     // compacton of the JWT to a URL-safe string 
     private String doGenerateToken(Map<String, Object> claims, String subject, int expiredTime){
         return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-        .setExpiration(new Date(System.currentTimeMillis() + expiredTime * 60 * 60 * 1000))
+        .setExpiration(new Date(System.currentTimeMillis() + expiredTime * 1 * 60 * 1000))
         .signWith(SignatureAlgorithm.HS512, secret).compact();
     }
 
