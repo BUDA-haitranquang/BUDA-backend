@@ -44,10 +44,6 @@ public class RetailCreateService {
     @Transactional
     public Product createNewRetailFromIngredient(Long userID,
             RetailCreateFromIngredientDTO retailCreateFromIngredientDTO) {
-        Optional<User> user = this.userRepository.findUserByUserID(userID);
-        if (user.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
-        }
         Optional<Ingredient> ingredient = this.ingredientRepository
                 .findIngredientByIngredientID(retailCreateFromIngredientDTO.getIngredientID());
         if ((ingredient.isPresent()) && (ingredient.get().getUserID().equals(userID))) {
@@ -78,10 +74,6 @@ public class RetailCreateService {
     }
     @Transactional
     public Ingredient createNewRetailFromProduct(Long userID, RetailCreateFromProductDTO retailCreateFromProductDTO) {
-        Optional<User> user = this.userRepository.findUserByUserID(userID);
-        if (user.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
-        }
         Optional<Product> product = this.productRepository
                 .findProductByProductID(retailCreateFromProductDTO.getProductID());
         if ((product.isPresent()) && (product.get().getUserID().equals(userID))) {
@@ -112,10 +104,6 @@ public class RetailCreateService {
     }
     @Transactional
     public Product createNewRetail(Long userID, RetailCreateDTO retailCreateDTO) {
-        Optional<User> user = this.userRepository.findUserByUserID(userID);
-        if (user.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
-        }
         Product productBySKU = this.productRepository.findProductByUserIDAndProductSKU(userID,
                 retailCreateDTO.getProductSKU());
         if (productBySKU != null) {

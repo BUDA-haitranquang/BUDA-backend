@@ -28,11 +28,6 @@ public class IngredientCreateService {
     }
     @Transactional
     public Ingredient createNewIngredient(Long userID, Ingredient newIngredient){
-        Optional<User> user = this.userRepository.findUserByUserID(userID);
-        if (user.isEmpty())
-        {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
-        }
         if (newIngredient.getIngredientSKU()==null){
             newIngredient.setIngredientSKU(RandomIDGenerator.randomIDString());
         }

@@ -159,10 +159,6 @@ public class NewBuyOrderStaffService {
     @Transactional
     public BuyOrder createNewBuyOrder(Long userID, Long staffID, @Valid BuyOrderDTO buyOrderDTO) {
         BuyOrder buyOrder = new BuyOrder();
-        Optional<User> user = this.userRepository.findUserByUserID(userID);
-        if (user.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found");
-        }
         Optional<Staff> staffOptional = this.staffRepository.findStaffByStaffID(staffID);
         if ((staffOptional.isEmpty()) || (!staffOptional.get().getUserID().equals(userID)))
         {
@@ -194,10 +190,7 @@ public class NewBuyOrderStaffService {
         
         if ((buyOrder.isPresent()) && (userID.equals(buyOrder.get().getUserID())))
         {
-            for (BuyOrderItem buyOrderItem: buyOrder.get().getBuyOrderItems())
-            {
-                this.buyOrderItemRepository.delete(buyOrderItem);
-            }
+            this.buyOrderItemRepository.deleteAll(buyOrder.get().getBuyOrderItems());
             this.buyOrderRepository.delete(buyOrder.get());
         }
         else{

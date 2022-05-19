@@ -107,10 +107,6 @@ public class NewBuyOrderService {
     @Transactional
     public BuyOrder createNewBuyOrder(Long userID, @Valid BuyOrderDTO buyOrderDTO) {
         BuyOrder buyOrder = new BuyOrder();
-        Optional<User> user = this.userRepository.findUserByUserID(userID);
-        if (user.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found");
-        }
         buyOrder.setCreationTime(ZonedDateTime.now());
         if (buyOrderDTO.getStatus().equals(Status.FINISHED)) {
 

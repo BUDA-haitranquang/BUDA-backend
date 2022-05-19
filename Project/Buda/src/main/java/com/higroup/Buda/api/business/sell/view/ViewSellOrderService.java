@@ -46,18 +46,10 @@ public class ViewSellOrderService {
         else throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Sell Order not found");
     }
     public List<SellOrder> findAllSellOrderByUserID(Long userID, Pageable pageable) {
-        Optional<User> user = this.userRepository.findUserByUserID(userID);
-        if (user.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
-        }
         return this.sellOrderRepository.findAllSellOrderByUserID(userID, pageable);
     }
 
     public List<SellOrder> findAllSellOrderByCustomerID(Long userID, Long customerID) {
-        Optional<User> user = this.userRepository.findUserByUserID(userID);
-        if (user.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
-        }
         Optional<Customer> customer = this.customerRepository.findCustomerByCustomerID(customerID);
         if ((customer.isPresent()) && (customer.get().getUserID().equals(userID))) {
             return this.sellOrderRepository.findAllSellOrderByCustomer(customer.get());

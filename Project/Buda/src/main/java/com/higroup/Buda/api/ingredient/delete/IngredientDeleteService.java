@@ -25,11 +25,6 @@ public class IngredientDeleteService {
     }
     public void deleteIngredientByIngredient(Long userID, Long ingredientID)
     {
-        Optional<User> user = this.userRepository.findUserByUserID(userID);
-        if (user.isEmpty())
-        {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
-        }
         Optional<Ingredient> ingredient = this.ingredientRepository.findIngredientByIngredientID(ingredientID);
         if (ingredient.isPresent() && (Objects.equals(ingredient.get().getUserID(), userID)))
         {
