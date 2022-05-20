@@ -33,11 +33,6 @@ public class SalaryLogService {
     @Transactional
     public SalaryLog registerNewSalaryLog(Long userID, SalaryLog salaryLog)
     {
-        Optional<User> user = userRepository.findUserByUserID(userID);
-        if (user.isEmpty())
-        {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found");
-        }
         Optional<Staff> staff = staffRepository.findStaffByStaffID(salaryLog.getStaffID());
         if (staff.isEmpty())
         {

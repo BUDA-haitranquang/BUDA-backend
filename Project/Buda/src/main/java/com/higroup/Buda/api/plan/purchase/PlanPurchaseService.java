@@ -1,5 +1,6 @@
 package com.higroup.Buda.api.plan.purchase;
 
+import java.time.OffsetTime;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -30,10 +31,6 @@ public class PlanPurchaseService {
     public Purchase createNewPurchase(Long userID, Purchase purchase)
     {
         Optional<User> user = this.userRepository.findUserByUserID(userID);
-        if (user.isEmpty())
-        {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found");
-        }
         purchase.setCreationTime(ZonedDateTime.now());
         purchase.setUser(userRepository.findUserByUserID(userID).get());
         // THANH TOAN XONG

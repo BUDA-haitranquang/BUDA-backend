@@ -29,11 +29,6 @@ public class ProductCreateService {
     @Transactional
     public Product createNewProduct(Long userID, Product product)
     {
-        Optional<User> user = this.userRepository.findUserByUserID(userID);
-        if (user.isEmpty())
-        {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
-        }
         if (product.getProductSKU()==null){
             product.setProductSKU(RandomIDGenerator.randomIDString());
         } 

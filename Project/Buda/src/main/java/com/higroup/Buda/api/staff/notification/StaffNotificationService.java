@@ -36,11 +36,6 @@ public class StaffNotificationService {
     @Transactional
     public StaffNote registerNewStaffNote(Long userID, StaffNote staffNote)
     {
-        Optional<User> user = this.userRepository.findUserByUserID(userID);
-        if (user.isEmpty())
-        {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User Not Found !!");
-        }
         Optional<Staff> staff = this.staffRepository.findStaffByStaffID(staffNote.getStaffID());
         if (staff.isEmpty())
         {

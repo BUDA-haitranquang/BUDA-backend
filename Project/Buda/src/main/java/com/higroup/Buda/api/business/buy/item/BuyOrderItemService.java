@@ -44,7 +44,7 @@ public class BuyOrderItemService {
     public BuyOrderItem updateBuyOrderItem(Long userID, BuyOrderItem buyOrderItem)
     {   
         Optional<BuyOrderItem> opBuyOrderItem = buyOrderItemRepository.findBuyOrderItemByBuyOrderItemID(buyOrderItem.getBuyOrderItemID());
-        if(!opBuyOrderItem.isPresent()){
+        if(opBuyOrderItem.isEmpty()){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Buy order item not found");
         }
         if (buyOrderItem.getUserID().equals(userID))

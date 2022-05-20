@@ -38,11 +38,7 @@ public class ProductGroupCreateService {
     @Transactional
     public ProductGroup createProductGroup(Long userID, ProductGroup productGroup)
     {
-        Optional<User> user = this.userRepository.findUserByUserID(userID);
-        if (user.isEmpty())
-        {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
-        }
+
         productGroup.setUserID(userID);
         this.productGroupRepository.save(productGroup);
         return productGroup;
@@ -50,11 +46,6 @@ public class ProductGroupCreateService {
     @Transactional
     public void deleteProductGroup(Long userID, Long productGroupID)
     {
-        Optional<User> user = this.userRepository.findUserByUserID(userID);
-        if (user.isEmpty())
-        {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
-        }
         Optional<ProductGroup> productGroup = this.productGroupRepository.findProductGroupByProductGroupID(productGroupID);
         if (productGroup.isEmpty())
         {
@@ -65,11 +56,6 @@ public class ProductGroupCreateService {
     @Transactional
     public ProductGroup addProductToProductGroup(Long userID, Long productGroupID, Long productID)
     {
-        Optional<User> user = this.userRepository.findUserByUserID(userID);
-        if (user.isEmpty())
-        {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
-        }
         Optional<ProductGroup> productGroup = this.productGroupRepository.findProductGroupByProductGroupID(productGroupID);
         if (productGroup.isPresent() && Objects.equals(productGroup.get().getUserID(), userID))
         {
@@ -102,11 +88,6 @@ public class ProductGroupCreateService {
     @Transactional
     public void removeProductFromProductGroup(Long userID, Long productGroupID, Long productID)
     {
-        Optional<User> user = this.userRepository.findUserByUserID(userID);
-        if (user.isEmpty())
-        {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
-        }
         Optional<Product> opProduct = this.productRepository.findProductByProductID(productID);
         if(!opProduct.isPresent()){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");

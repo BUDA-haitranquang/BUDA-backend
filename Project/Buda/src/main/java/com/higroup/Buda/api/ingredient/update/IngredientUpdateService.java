@@ -33,10 +33,6 @@ public class IngredientUpdateService {
     public Ingredient editIngredient(Long userID, Long ingredientID, Ingredient ingredient)
             throws InvocationTargetException, IllegalAccessException {
 
-        Optional<User> user = this.userRepository.findUserByUserID(userID);
-        if (user.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
-        }
         Optional<Ingredient> dest_ingredient = this.ingredientRepository.findIngredientByIngredientID(ingredientID);
 
         if (dest_ingredient.isEmpty())

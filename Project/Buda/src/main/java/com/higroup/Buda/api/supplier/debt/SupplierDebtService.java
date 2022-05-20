@@ -27,11 +27,6 @@ public class SupplierDebtService {
 
 
     public List<?> findDelayBuyOrderBySupplierID(Long userID, Long supplierID) {
-        Optional<User> user = this.userRepository.findUserByUserID(userID);
-        if (user.isEmpty())
-        {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
-        }
         Optional<Supplier> supplier = this.supplierRepository.findSupplierBySupplierID(supplierID);
         if (supplier.isEmpty())
         {
@@ -41,11 +36,6 @@ public class SupplierDebtService {
     }
 
     public Double findDebtBySupplierID(Long userID, Long supplierID) {
-        Optional<User> user = this.userRepository.findUserByUserID(userID);
-        if (user.isEmpty())
-        {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
-        }
         Optional<Supplier> supplier = this.supplierRepository.findSupplierBySupplierID(supplierID);
         if (supplier.isEmpty())
         {

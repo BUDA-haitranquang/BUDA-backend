@@ -79,11 +79,6 @@ public class ProductViewService {
     }
 
     public List<Product> findAlertAmountProduct(Long userID){
-        Optional<User> user = this.userRepository.findUserByUserID(userID);
-        if (user.isEmpty())
-        {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
-        }
         return this.productRepository.findAlertAmountProduct(userID);
     }
 

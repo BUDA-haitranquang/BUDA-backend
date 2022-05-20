@@ -38,11 +38,6 @@ public class IngredientLeftLogService {
     @Transactional
     public IngredientLeftLog registerNewIngredientLeftLog(Long userID, IngredientLeftLog ingredientLeftLog)
     {
-        Optional<User> user = this.userRepository.findUserByUserID(userID);
-        if (user.isEmpty())
-        {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
-        }
         ingredientLeftLog.setUserID(userID);
         this.ingredientLeftLogRepository.save(ingredientLeftLog);
         return ingredientLeftLog;

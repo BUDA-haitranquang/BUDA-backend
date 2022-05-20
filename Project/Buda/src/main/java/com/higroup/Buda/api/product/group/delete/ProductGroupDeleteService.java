@@ -28,11 +28,6 @@ public class ProductGroupDeleteService {
     @Transactional
     public void deleteProductGroup(Long userID, Long productGroupID)
     {
-        Optional<User> user = this.userRepository.findUserByUserID(userID);
-        if (user.isEmpty())
-        {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
-        }
         Optional<ProductGroup> productGroup = this.productGroupRepository.findProductGroupByProductGroupID(productGroupID);
         if (productGroup.isEmpty())
         {
