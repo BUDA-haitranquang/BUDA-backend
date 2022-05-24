@@ -3,7 +3,6 @@ package com.higroup.Buda.api.business.buy.neworder.staff;
 import javax.servlet.http.HttpServletRequest;
 
 import com.higroup.Buda.api.business.buy.neworder.BuyOrderDTO;
-import com.higroup.Buda.entities.BuyOrder;
 import com.higroup.Buda.util.Checker.RequestUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
