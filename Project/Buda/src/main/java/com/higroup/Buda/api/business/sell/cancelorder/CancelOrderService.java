@@ -13,7 +13,6 @@ import com.higroup.Buda.entities.SellOrder;
 import com.higroup.Buda.entities.SellOrderItem;
 import com.higroup.Buda.entities.enumeration.Status;
 import com.higroup.Buda.repositories.ProductLeftLogRepository;
-import com.higroup.Buda.repositories.ProductRepository;
 import com.higroup.Buda.repositories.SellOrderRepository;
 
 import org.springframework.http.HttpStatus;
@@ -24,11 +23,9 @@ import org.springframework.web.server.ResponseStatusException;
 public class CancelOrderService {
     private final SellOrderRepository sellOrderRepository;
     private final ProductLeftLogRepository productLeftLogRepository;
-    private final ProductRepository productRepository;
-    public CancelOrderService(SellOrderRepository sellOrderRepository, ProductLeftLogRepository productLeftLogRepository,
-    ProductRepository productRepository){
+
+    public CancelOrderService(SellOrderRepository sellOrderRepository, ProductLeftLogRepository productLeftLogRepository){
         this.productLeftLogRepository = productLeftLogRepository;
-        this.productRepository = productRepository;
         this.sellOrderRepository = sellOrderRepository;
     }
     @Transactional

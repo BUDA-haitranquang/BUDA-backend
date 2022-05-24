@@ -1,5 +1,7 @@
 package com.higroup.Buda.api.retail;
 
+import java.util.Optional;
+
 import com.higroup.Buda.api.product.packaging.component.add.AddProductComponentDTO;
 import com.higroup.Buda.api.product.packaging.component.add.AddProductComponentService;
 import com.higroup.Buda.api.retail.customDTO.RetailCreateDTO;
@@ -13,14 +15,12 @@ import com.higroup.Buda.repositories.IngredientRepository;
 import com.higroup.Buda.repositories.PictureRepository;
 import com.higroup.Buda.repositories.ProductRepository;
 import com.higroup.Buda.repositories.UserRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.Objects;
-import java.util.Optional;
 
 @Service
 public class RetailCreateService {
