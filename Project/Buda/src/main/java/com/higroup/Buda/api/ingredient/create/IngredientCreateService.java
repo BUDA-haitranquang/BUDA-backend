@@ -1,7 +1,6 @@
 package com.higroup.Buda.api.ingredient.create;
 
 import java.util.Optional;
-import java.util.UUID;
 
 import javax.transaction.Transactional;
 
@@ -28,11 +27,6 @@ public class IngredientCreateService {
     }
     @Transactional
     public Ingredient createNewIngredient(Long userID, Ingredient newIngredient){
-        Optional<User> user = this.userRepository.findUserByUserID(userID);
-        if (user.isEmpty())
-        {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
-        }
         if (newIngredient.getIngredientSKU()==null){
             newIngredient.setIngredientSKU(RandomIDGenerator.randomIDString());
         }

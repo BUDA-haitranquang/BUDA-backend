@@ -29,11 +29,6 @@ public class ProductDeleteService {
     @Transactional
     public void deleteProductByProductID(Long userID, Long productID)
     {
-        Optional<User> user = this.userRepository.findUserByUserID(userID);
-        if (user.isEmpty())
-        {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
-        }
         Optional<Product> opProduct = this.productRepository.findProductByProductID(productID);
         if(!opProduct.isPresent()){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");

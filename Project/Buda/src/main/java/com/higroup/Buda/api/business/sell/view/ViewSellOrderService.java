@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import com.higroup.Buda.customDTO.PeriodDTO;
 import com.higroup.Buda.entities.Customer;
 import com.higroup.Buda.entities.SellOrder;
 import com.higroup.Buda.entities.User;
@@ -26,16 +27,18 @@ public class ViewSellOrderService {
     private UserRepository userRepository;
     private SellOrderRepository sellOrderRepository;
     private CustomerRepository customerRepository;
+    private ViewSellOrderRepository viewSellOrderRepository;
 
     @Autowired
     private PresentChecker presentChecker;
 
     @Autowired
     public ViewSellOrderService(UserRepository userRepository, SellOrderRepository sellOrderRepository,
-            CustomerRepository customerRepository) {
+            CustomerRepository customerRepository, ViewSellOrderRepository viewSellOrderRepository) {
         this.userRepository = userRepository;
         this.customerRepository = customerRepository;
         this.sellOrderRepository = sellOrderRepository;
+        this.viewSellOrderRepository = viewSellOrderRepository;
     }
 
     public SellOrder findSellOrderBySellOrderID(Long userID, Long sellOrderID){
@@ -46,24 +49,27 @@ public class ViewSellOrderService {
         else throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Sell Order not found");
     }
     public List<SellOrder> findAllSellOrderByUserID(Long userID, Pageable pageable) {
-        Optional<User> user = this.userRepository.findUserByUserID(userID);
-        if (user.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
-        }
         return this.sellOrderRepository.findAllSellOrderByUserID(userID, pageable);
+    }
+    public Long countAllSellOrderByUserID(Long userID) {
+        return this.sellOrderRepository.countAllSellOrderByUserID(userID);
     }
 
     public List<SellOrder> findAllSellOrderByCustomerID(Long userID, Long customerID) {
-        Optional<User> user = this.userRepository.findUserByUserID(userID);
-        if (user.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
-        }
         Optional<Customer> customer = this.customerRepository.findCustomerByCustomerID(customerID);
         if ((customer.isPresent()) && (customer.get().getUserID().equals(userID))) {
             return this.sellOrderRepository.findAllSellOrderByCustomer(customer.get());
         } else {
             return Collections.emptyList();
         }
+    }
+
+    public List<SellOrder> findAllSellOrderByCustomerName(Long userID, String customerName){
+        return this.viewSellOrderRepository.findAllSellOrderByUserIDAndCustomerName(userID, customerName);
+    }
+
+    public Long countAllSellOrderByCustomerName(Long userID, String customerName){
+        return this.viewSellOrderRepository.countAllSellOrderByUserIDAndCustomerName(userID, customerName);
     }
 
     public List<SellOrder> findAllSellOrderByUserIDLastXDays(Long userID, Long X) {
@@ -84,12 +90,27 @@ public class ViewSellOrderService {
     }
 
     public List<SellOrder> findAllSellOrderByUserAndStatus(Long userID, Status status) {
-        // return this.sellOrderRepository.findAllSellOrderByStatusAndUserID(userID,
-        // status.toString());
         return this.sellOrderRepository.findAllSellOrderByUserIDAndStatus(userID, status);
+    }
+    public Long countAllSellOrderByUserIDAndStatus(Long userID, Status status) {
+        return this.viewSellOrderRepository.countAllSellOrderByUserIDAndStatus(userID, status);
     }
 
     public List<SellOrder> findSellOrderByTextID(Long userID, String textID) {
         return this.sellOrderRepository.findAllSellOrderByUserIDAndTextID(userID, textID);
+    }
+
+    public Long countSellOrderByUserIDAndTextID(Long userID, String textID) {
+        return this.viewSellOrderRepository.countAllSellOrderByUserIDAndTextID(userID, textID);
+    }
+
+    public List<SellOrder> findAllSellOrderInPeriod(Long userID, PeriodDTO periodDTO) {
+        ZonedDateTime from = periodDTO.getFrom().withHour(0).withMinute(0).withSecond(0);
+        ZonedDateTime to = periodDTO.getTo().withHour(0).withMinute(0).withSecond(0);
+        return this.viewSellOrderRepository.findAllSellOrderInPeriod(userID, from, to);
+    }
+
+    public Long countAllSellOrderInPeriod(Long userID, ZonedDateTime from, ZonedDateTime to) {
+        return this.viewSellOrderRepository.countAllSellOrderInPeriod(userID, from, to);
     }
 }

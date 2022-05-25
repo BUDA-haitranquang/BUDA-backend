@@ -35,11 +35,6 @@ public class WarrantyOrderCreateService {
     @Transactional
     public WarrantyOrder createNewWarrantyOrder(Long userID, RegisterWarrantyOrder registerWarrantyOrder)
     {
-        Optional<User> user = this.userRepository.findUserByUserID(userID);
-        if (user.isEmpty())
-        {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
-        }
         Long productID = registerWarrantyOrder.getProductID();
         Long sellOrderID = registerWarrantyOrder.getSellOrderID();
         Long customerID = registerWarrantyOrder.getCustomerID();

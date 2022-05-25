@@ -43,11 +43,6 @@ public class ProductLeftLogService {
     }
     public ResponseEntity<?> registerNewProductLeftLog(Long userID, ProductLeftLog productLeftLog)
     {
-        Optional<User> user = this.userRepository.findUserByUserID(userID);
-        if (user.isEmpty())
-        {
-            return ResponseEntity.badRequest().body("User not found");
-        }
         productLeftLog.setUserID(userID);
         this.productLeftLogRepository.save(productLeftLog);
         return ResponseEntity.ok().body(productLeftLog);

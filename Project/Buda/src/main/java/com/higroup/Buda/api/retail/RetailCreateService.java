@@ -1,5 +1,7 @@
 package com.higroup.Buda.api.retail;
 
+import java.util.Optional;
+
 import com.higroup.Buda.api.product.packaging.component.add.AddProductComponentDTO;
 import com.higroup.Buda.api.product.packaging.component.add.AddProductComponentService;
 import com.higroup.Buda.api.retail.customDTO.RetailCreateDTO;
@@ -13,14 +15,12 @@ import com.higroup.Buda.repositories.IngredientRepository;
 import com.higroup.Buda.repositories.PictureRepository;
 import com.higroup.Buda.repositories.ProductRepository;
 import com.higroup.Buda.repositories.UserRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.Objects;
-import java.util.Optional;
 
 @Service
 public class RetailCreateService {
@@ -44,10 +44,6 @@ public class RetailCreateService {
     @Transactional
     public Product createNewRetailFromIngredient(Long userID,
             RetailCreateFromIngredientDTO retailCreateFromIngredientDTO) {
-        Optional<User> user = this.userRepository.findUserByUserID(userID);
-        if (user.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
-        }
         Optional<Ingredient> ingredient = this.ingredientRepository
                 .findIngredientByIngredientID(retailCreateFromIngredientDTO.getIngredientID());
         if ((ingredient.isPresent()) && (ingredient.get().getUserID().equals(userID))) {
@@ -78,10 +74,6 @@ public class RetailCreateService {
     }
     @Transactional
     public Ingredient createNewRetailFromProduct(Long userID, RetailCreateFromProductDTO retailCreateFromProductDTO) {
-        Optional<User> user = this.userRepository.findUserByUserID(userID);
-        if (user.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
-        }
         Optional<Product> product = this.productRepository
                 .findProductByProductID(retailCreateFromProductDTO.getProductID());
         if ((product.isPresent()) && (product.get().getUserID().equals(userID))) {
@@ -112,10 +104,6 @@ public class RetailCreateService {
     }
     @Transactional
     public Product createNewRetail(Long userID, RetailCreateDTO retailCreateDTO) {
-        Optional<User> user = this.userRepository.findUserByUserID(userID);
-        if (user.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
-        }
         Product productBySKU = this.productRepository.findProductByUserIDAndProductSKU(userID,
                 retailCreateDTO.getProductSKU());
         if (productBySKU != null) {

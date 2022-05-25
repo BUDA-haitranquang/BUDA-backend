@@ -11,8 +11,8 @@ import com.higroup.Buda.customDTO.RevenueByTimeStatistics;
 import com.higroup.Buda.entities.Customer;
 import com.higroup.Buda.entities.SellOrder;
 import com.higroup.Buda.entities.enumeration.Status;
+
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
@@ -38,6 +38,10 @@ public interface SellOrderRepository extends PagingAndSortingRepository<SellOrde
                         + "where s.userID = :userID ")
         List<SellOrder> findAllSellOrderByUserID(Long userID, Pageable pageable);
 
+        @Query(value = "select count(*) from SellOrder s "
+                        + "where s.userID = :userID ")
+        Long countAllSellOrderByUserID(Long userID);
+        
         @Query(value = "select distinct s from SellOrder s "
                         + "LEFT JOIN FETCH s.sellOrderItems si "
                         + "LEFT JOIN FETCH si.product pr "

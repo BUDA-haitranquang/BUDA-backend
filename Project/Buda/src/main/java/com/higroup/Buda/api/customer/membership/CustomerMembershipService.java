@@ -8,7 +8,6 @@ import javax.transaction.Transactional;
 import com.higroup.Buda.entities.Discount;
 import com.higroup.Buda.entities.MembershipType;
 import com.higroup.Buda.entities.User;
-import com.higroup.Buda.entities.enumeration.DiscountType;
 import com.higroup.Buda.repositories.DiscountRepository;
 import com.higroup.Buda.repositories.MembershipTypeRepository;
 import com.higroup.Buda.repositories.UserRepository;
@@ -47,10 +46,6 @@ public class CustomerMembershipService {
     @Transactional
     public MembershipType createNewMembershipType(Long userID, MembershipType membershipType)
     {
-        Optional<User> user = this.userRepository.findUserByUserID(userID);
-        if (user.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found");
-        }
         Optional<Discount> discountOptional = this.discountRepository.findDiscountByDiscountID(membershipType.getDiscount().getDiscountID());
         if (discountOptional.isEmpty())
         {

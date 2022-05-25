@@ -25,9 +25,7 @@ public class UpdateUserPasswordService {
     }
     public void updateUserPassword(Long userID, UserUpdatePassword userUpdatePassword)
     {
-        Optional<User> user = userRepository.findUserByUserID(userID);
-        if (user.isEmpty())
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+        Optional<User> user = this.userRepository.findUserByUserID(userID);
         String rawPassword = userUpdatePassword.getCurrentPassword();
         if (bCryptPasswordEncoder.matches(rawPassword, user.get().getPassword()) && user.get().isEnabled())
         {
