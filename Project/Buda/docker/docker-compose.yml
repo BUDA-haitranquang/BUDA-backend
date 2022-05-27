@@ -22,5 +22,18 @@ services:
       - SPRING_DATASOURCE_PASSWORD=123456
     stdin_open: true
     tty: true
+  amazon:
+    depends_on:
+      - db-backend
+    image: haitranquangofficial/buda:amazon-s3
+    restart: always
+    ports:
+      - 8079:8079
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db-backend:3306/bdsm
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=123456
+    stdin_open: true
+    tty: true
 volumes:
   db:

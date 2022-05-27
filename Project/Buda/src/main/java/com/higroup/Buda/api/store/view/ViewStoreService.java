@@ -6,6 +6,7 @@ import com.higroup.Buda.entities.Store;
 import com.higroup.Buda.repositories.StoreRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -27,4 +28,5 @@ public class ViewStoreService {
         }
         else throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "This user has no stores");
     }
+
 }
