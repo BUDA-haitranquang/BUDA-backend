@@ -8,7 +8,6 @@ import java.util.Optional;
 import com.higroup.Buda.customDTO.PeriodDTO;
 import com.higroup.Buda.entities.Customer;
 import com.higroup.Buda.entities.SellOrder;
-import com.higroup.Buda.entities.User;
 import com.higroup.Buda.entities.enumeration.Status;
 import com.higroup.Buda.repositories.CustomerRepository;
 import com.higroup.Buda.repositories.SellOrderRepository;
@@ -48,11 +47,10 @@ public class ViewSellOrderService {
         }
         else throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Sell Order not found");
     }
-    public List<SellOrder> findAllSellOrderByUserID(Long userID, Pageable pageable) {
-        return this.sellOrderRepository.findAllSellOrderByUserID(userID, pageable);
-    }
-    public Long countAllSellOrderByUserID(Long userID) {
-        return this.sellOrderRepository.countAllSellOrderByUserID(userID);
+    public ViewSellOrderDTO findAllSellOrderByUserID(Long userID, Pageable pageable) {
+        Long count = this.sellOrderRepository.countAllSellOrderByUserID(userID);
+        List<SellOrder> sellOrders = this.sellOrderRepository.findAllSellOrderByUserID(userID, pageable);
+        return new ViewSellOrderDTO(count, sellOrders);
     }
 
     public List<SellOrder> findAllSellOrderByCustomerID(Long userID, Long customerID) {
@@ -64,12 +62,10 @@ public class ViewSellOrderService {
         }
     }
 
-    public List<SellOrder> findAllSellOrderByCustomerName(Long userID, String customerName){
-        return this.viewSellOrderRepository.findAllSellOrderByUserIDAndCustomerName(userID, customerName);
-    }
-
-    public Long countAllSellOrderByCustomerName(Long userID, String customerName){
-        return this.viewSellOrderRepository.countAllSellOrderByUserIDAndCustomerName(userID, customerName);
+    public ViewSellOrderDTO findAllSellOrderByCustomerName(Long userID, String customerName, Pageable pageable){
+        List<SellOrder> sellOrders = this.viewSellOrderRepository.findAllSellOrderByUserIDAndCustomerName(userID, customerName, pageable);
+        Long count=this.viewSellOrderRepository.countAllSellOrderByUserIDAndCustomerName(userID, customerName);
+        return new ViewSellOrderDTO(count, sellOrders);
     }
 
     public List<SellOrder> findAllSellOrderByUserIDLastXDays(Long userID, Long X) {
@@ -89,28 +85,23 @@ public class ViewSellOrderService {
         return this.sellOrderRepository.findAllCompletedSellOrderByUser(userID, pageable);
     }
 
-    public List<SellOrder> findAllSellOrderByUserAndStatus(Long userID, Status status) {
-        return this.sellOrderRepository.findAllSellOrderByUserIDAndStatus(userID, status);
-    }
-    public Long countAllSellOrderByUserIDAndStatus(Long userID, Status status) {
-        return this.viewSellOrderRepository.countAllSellOrderByUserIDAndStatus(userID, status);
-    }
-
-    public List<SellOrder> findSellOrderByTextID(Long userID, String textID) {
-        return this.sellOrderRepository.findAllSellOrderByUserIDAndTextID(userID, textID);
+    public ViewSellOrderDTO findAllSellOrderByUserAndStatus(Long userID, Status status, Pageable pageable) {
+        List<SellOrder> sellOrders = this.sellOrderRepository.findAllSellOrderByUserIDAndStatus(userID, status, pageable);
+        Long count = this.viewSellOrderRepository.countAllSellOrderByUserIDAndStatus(userID, status);
+        return new ViewSellOrderDTO(count, sellOrders);
     }
 
-    public Long countSellOrderByUserIDAndTextID(Long userID, String textID) {
-        return this.viewSellOrderRepository.countAllSellOrderByUserIDAndTextID(userID, textID);
+    public ViewSellOrderDTO findSellOrderByTextID(Long userID, String textID, Pageable pageable) {
+        List<SellOrder> sellOrders =this.sellOrderRepository.findAllSellOrderByUserIDAndTextID(userID, textID, pageable);
+        Long count =this.viewSellOrderRepository.countAllSellOrderByUserIDAndTextID(userID, textID);
+        return new ViewSellOrderDTO(count, sellOrders);
     }
 
-    public List<SellOrder> findAllSellOrderInPeriod(Long userID, PeriodDTO periodDTO) {
+    public ViewSellOrderDTO findAllSellOrderInPeriod(Long userID, PeriodDTO periodDTO, Pageable pageable) {
         ZonedDateTime from = periodDTO.getFrom().withHour(0).withMinute(0).withSecond(0);
         ZonedDateTime to = periodDTO.getTo().withHour(0).withMinute(0).withSecond(0);
-        return this.viewSellOrderRepository.findAllSellOrderInPeriod(userID, from, to);
-    }
-
-    public Long countAllSellOrderInPeriod(Long userID, ZonedDateTime from, ZonedDateTime to) {
-        return this.viewSellOrderRepository.countAllSellOrderInPeriod(userID, from, to);
+        List<SellOrder> sellOrders = this.viewSellOrderRepository.findAllSellOrderInPeriod(userID, from, to, pageable);
+        Long count = this.viewSellOrderRepository.countAllSellOrderInPeriod(userID, from, to);
+        return new ViewSellOrderDTO(count, sellOrders);
     }
 }

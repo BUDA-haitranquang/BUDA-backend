@@ -33,7 +33,17 @@ public interface BuyOrderRepository extends PagingAndSortingRepository<BuyOrder,
                         " LEFT JOIN FETCH b.staff st" +
                         // " LEFT JOIN FETCH st.roles" +
                         " where b.userID = :userID and b.textID = :textID")
-        List<BuyOrder> findAllBuyOrderByUserIDAndTextID(Long userID, String textID);
+        List<BuyOrder> findAllBuyOrderByUserIDAndTextID(Long userID, String textID, Pageable pageable);
+
+        @Query(value = "select distinct b from BuyOrder b" +
+                        " LEFT JOIN FETCH b.buyOrderItems bo" +
+                        " LEFT JOIN FETCH bo.ingredient ingr " +
+                        " LEFT JOIN FETCH ingr.picture " +
+                        " LEFT JOIN FETCH b.supplier s" +
+                        " LEFT JOIN FETCH b.staff st" +
+                        // " LEFT JOIN FETCH st.roles" +
+                        " where b.userID = :userID and b.textID = :textID")
+        List<BuyOrder> findBuyOrderByUserIDAndTextID(Long userID, String textID);
 
         @Query(value = "select count(*) from buy_order" +
                         // " LEFT JOIN FETCH st.roles" +
@@ -68,7 +78,7 @@ public interface BuyOrderRepository extends PagingAndSortingRepository<BuyOrder,
                         " LEFT JOIN FETCH b.staff st" +
                         // " LEFT JOIN FETCH st.roles" + 
                         " where b.status LIKE :status and b.userID = :userID")
-        List<BuyOrder> findAllBuyOrderByStatusAndUserID(@Param("userID") Long userID, @Param("status") Status status);
+        List<BuyOrder> findAllBuyOrderByStatusAndUserID(@Param("userID") Long userID, @Param("status") Status status, Pageable pageable);
 
         @Query(value = "select b from BuyOrder b " +
                         " LEFT JOIN FETCH b.buyOrderItems bo" +

@@ -48,7 +48,7 @@ public interface SellOrderRepository extends PagingAndSortingRepository<SellOrde
                         + "LEFT JOIN FETCH pr.picture "
                         + "LEFT JOIN FETCH s.customer c "
                         + "LEFT JOIN FETCH s.staff ss LEFT JOIN FETCH ss.roles where s.userID = :userID and s.textID = :textID")
-        List<SellOrder> findAllSellOrderByUserIDAndTextID(Long userID, String textID);
+        List<SellOrder> findAllSellOrderByUserIDAndTextID(Long userID, String textID, Pageable pageable);
 
         List<SellOrder> findAllSellOrderByCustomer(Customer customer);
 
@@ -63,7 +63,7 @@ public interface SellOrderRepository extends PagingAndSortingRepository<SellOrde
                         + "LEFT JOIN FETCH s.staff ss "
                         // + "LEFT JOIN FETCH ss.roles "
                         + "where s.status LIKE :status and s.user_id = :userID", nativeQuery = true)
-        List<SellOrder> findAllSellOrderByStatusAndUserID(@Param("userID") Long userID, @Param("status") String status);
+        List<SellOrder> findAllSellOrderByStatusAndUserID(@Param("userID") Long userID, @Param("status") String status, Pageable pageable);
 
         // @Query(value = "select * from sell_order s where (s.creation_time BETWEEN
         // NOW() - INTERVAL :X DAY and NOW()) and s.user_id = :userID", nativeQuery =
@@ -109,7 +109,7 @@ public interface SellOrderRepository extends PagingAndSortingRepository<SellOrde
                         + "LEFT JOIN FETCH s.staff ss "
                         // + "LEFT JOIN FETCH ss.roles "
                         + " where s.status = :status and s.userID = :userID")
-        List<SellOrder> findAllSellOrderByUserIDAndStatus(Long userID, Status status);
+        List<SellOrder> findAllSellOrderByUserIDAndStatus(Long userID, Status status, Pageable pageable);
 
         @Query(value = "select new com.higroup.Buda.customDTO.AgeGroupStatistics(s.ageGroup, SUM(s.finalCost))"
                         + " from SellOrder s WHERE s.userID = :userID"

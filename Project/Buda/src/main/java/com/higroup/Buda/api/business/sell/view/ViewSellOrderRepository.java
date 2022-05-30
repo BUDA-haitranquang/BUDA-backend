@@ -6,6 +6,7 @@ import java.util.List;
 import com.higroup.Buda.entities.SellOrder;
 import com.higroup.Buda.entities.enumeration.Status;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
@@ -22,7 +23,7 @@ public interface ViewSellOrderRepository extends PagingAndSortingRepository<Sell
             + "LEFT JOIN FETCH s.staff ss "
             + "where s.userID = :userID "
             + "and c.name LIKE %:customerName%")
-    List<SellOrder> findAllSellOrderByUserIDAndCustomerName(Long userID, String customerName);
+    List<SellOrder> findAllSellOrderByUserIDAndCustomerName(Long userID, String customerName, Pageable pageable);
 
     @Query(value = "select count (*) from SellOrder s "
             + "where s.userID = :userID and customer.name LIKE %:customerName%")
@@ -41,7 +42,7 @@ public interface ViewSellOrderRepository extends PagingAndSortingRepository<Sell
             + "where s.userID = :userID "
             + "and s.creationTime >= :from "
             + "and s.creationTime <= :to")
-    List<SellOrder> findAllSellOrderInPeriod(Long userID, ZonedDateTime from, ZonedDateTime to);
+    List<SellOrder> findAllSellOrderInPeriod(Long userID, ZonedDateTime from, ZonedDateTime to, Pageable pageable);
 
     @Query(value = "select count(*) from SellOrder s "
             + "where s.userID = :userID and s.creationTime >= :from and s.creationTime <= :to")

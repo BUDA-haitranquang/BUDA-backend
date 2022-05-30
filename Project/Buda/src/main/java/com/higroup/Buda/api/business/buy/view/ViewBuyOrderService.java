@@ -48,19 +48,15 @@ public class ViewBuyOrderService {
             return Collections.emptyList();
     }
 
-    public List<BuyOrder> findAllBuyOrderByUserID(Long userID, Pageable pageable) {
-        
-        return this.buyOrderRepository.findAllBuyOrderByUserID(userID, pageable);
+    public ViewBuyOrderDTO findAllBuyOrderByUserID(Long userID, Pageable pageable) {
+        List<BuyOrder> buyOrders = this.buyOrderRepository.findAllBuyOrderByUserID(userID, pageable);
+        Long count = this.buyOrderRepository.countAllBuyOrderByUserID(userID);
+        return new ViewBuyOrderDTO(count, buyOrders);
     }
-
-    public Long countAllBuyOrderByUserID(Long userID) {
-        return this.buyOrderRepository.countAllBuyOrderByUserID(userID);
-    }
-    public Long countBuyOrderBySupplierName(Long userID, String supplierName) {
-        return this.viewBuyOrderRepository.countBuyOrderBySupplierName(userID, supplierName);
-    }
-    public List<BuyOrder> findBuyOrderBySupplierName(Long userID, String supplierName) {
-        return this.viewBuyOrderRepository.findBuyOrderBySupplierName(userID, supplierName);
+    public ViewBuyOrderDTO findBuyOrderBySupplierName(Long userID, String supplierName, Pageable pageable) {
+        List<BuyOrder> buyOrders = this.viewBuyOrderRepository.findBuyOrderBySupplierName(userID, supplierName, pageable);
+        Long count = this.viewBuyOrderRepository.countBuyOrderBySupplierName(userID, supplierName);
+        return new ViewBuyOrderDTO(count, buyOrders);
     }
     public List<BuyOrder> findAllBuyOrderByUserIDLastXDays(Long userID, Long X)
     {
@@ -78,32 +74,24 @@ public class ViewBuyOrderService {
         return this.buyOrderRepository.findAllCompletedBuyOrderByUser(userID, pageable);
     }
 
-    public List<BuyOrder> findBuyOrderByTextID(Long userID, String textID) {
-        return this.buyOrderRepository.findAllBuyOrderByUserIDAndTextID(userID, textID);
+    public ViewBuyOrderDTO findBuyOrderByTextID(Long userID, String textID, Pageable pageable) {
+        List<BuyOrder> buyOrders = this.buyOrderRepository.findAllBuyOrderByUserIDAndTextID(userID, textID, pageable);
+        Long count = this.viewBuyOrderRepository.countBuyOrderByUserIDAndTextID(userID, textID);
+        return new ViewBuyOrderDTO(count, buyOrders);
     }
-
-    public Long countBuyOrderByUserIDAndTextID(Long userID, String textID){
-        return this.viewBuyOrderRepository.countBuyOrderByUserIDAndTextID(userID, textID);
-    }
-    public List<BuyOrder> findAllBuyOrderByStatus(Long userID, Status status)
+    public ViewBuyOrderDTO findAllBuyOrderByStatus(Long userID, Status status, Pageable pageable)
     {
-        return this.buyOrderRepository.findAllBuyOrderByStatusAndUserID(userID, status);
+        List<BuyOrder> buyOrders =this.buyOrderRepository.findAllBuyOrderByStatusAndUserID(userID, status, pageable);
+        Long count = this.viewBuyOrderRepository.countBuyOrderByStatusAndUserID(status, userID);
+        return new ViewBuyOrderDTO(count, buyOrders);
     }
-    public Long countBuyOrderByUserIDAndStatus(Status status, Long userID)
-    {
-        return this.viewBuyOrderRepository.countBuyOrderByStatusAndUserID(status, userID);
-    }
-    public List<BuyOrder> findBuyOrderInPeriod(Long userID, PeriodDTO periodDTO)
+    public ViewBuyOrderDTO findBuyOrderInPeriod(Long userID, PeriodDTO periodDTO, Pageable pageable)
     {
         ZonedDateTime from = periodDTO.getFrom().withHour(0).withMinute(0).withSecond(0);
         ZonedDateTime to = periodDTO.getTo().withHour(0).withMinute(0).withSecond(0);
-        return this.viewBuyOrderRepository.findBuyOrderInPeriod(userID, from, to);
-    }
-    public Long countBuyOrderInPeriod(Long userID, PeriodDTO periodDTO)
-    {
-        ZonedDateTime from = periodDTO.getFrom().withHour(0).withMinute(0).withSecond(0);
-        ZonedDateTime to = periodDTO.getTo().withHour(0).withMinute(0).withSecond(0);
-        return this.viewBuyOrderRepository.countBuyOrderInPeriod(userID, from, to);
+        List<BuyOrder> buyOrders = this.viewBuyOrderRepository.findBuyOrderInPeriod(userID, from, to, pageable);
+        Long count =this.viewBuyOrderRepository.countBuyOrderInPeriod(userID, from, to);
+        return new ViewBuyOrderDTO(count, buyOrders);
     }
     public List<ExpenseByTimeStatistics> findBuyOrderExpenseByWeek(Long userID)
     {

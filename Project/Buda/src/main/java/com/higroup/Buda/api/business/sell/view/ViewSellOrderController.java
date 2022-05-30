@@ -1,7 +1,5 @@
 package com.higroup.Buda.api.business.sell.view;
 
-import java.time.ZonedDateTime;
-
 import javax.servlet.http.HttpServletRequest;
 
 import com.higroup.Buda.customDTO.PeriodDTO;
@@ -14,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,12 +35,6 @@ public class ViewSellOrderController {
     {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.viewSellOrderService.findAllSellOrderByUserID(userID, pageable));
-    }
-    @GetMapping(path = "/all/count")
-    public ResponseEntity<?> countAllSellOrderByCurrentUser(HttpServletRequest httpServletRequest)
-    {
-        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
-        return ResponseEntity.ok().body(this.viewSellOrderService.countAllSellOrderByUserID(userID));
     }
     @GetMapping(path = "customer/{customerID}/all")
     public ResponseEntity<?> findAllSellOrderByCustomerID(HttpServletRequest httpServletRequest, @PathVariable Long customerID)
@@ -69,50 +62,29 @@ public class ViewSellOrderController {
         return ResponseEntity.ok().body(this.viewSellOrderService.findAllCompletedSellOrderByUserID(userID, pageable));
     }
     @GetMapping(path = "all/status/{status}")
-    public ResponseEntity<?> findAllSellOrderByCurrentUserAndStatus(HttpServletRequest httpServletRequest, @PathVariable Status status)
+    public ResponseEntity<?> findAllSellOrderByCurrentUserAndStatus(HttpServletRequest httpServletRequest, @PathVariable Status status, Pageable pageable)
     {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
-        return ResponseEntity.ok().body(this.viewSellOrderService.findAllSellOrderByUserAndStatus(userID, status));
-    }
-    @GetMapping(path = "all/status/{status}/count")
-    public ResponseEntity<?> countAllSellOrderByCurrentUserAndStatus(HttpServletRequest httpServletRequest, @PathVariable Status status)
-    {
-        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
-        return ResponseEntity.ok().body(this.viewSellOrderService.countAllSellOrderByUserIDAndStatus(userID, status));
+        return ResponseEntity.ok().body(this.viewSellOrderService.findAllSellOrderByUserAndStatus(userID, status, pageable));
     }
     @GetMapping(path = "textID/{textID}")
-    public ResponseEntity<?> findAllSellOrderByTextID(HttpServletRequest httpServletRequest, @PathVariable String textID){
+    public ResponseEntity<?> findAllSellOrderByTextID(HttpServletRequest httpServletRequest, @PathVariable String textID, Pageable pageable){
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
-        return ResponseEntity.ok().body(this.viewSellOrderService.findSellOrderByTextID(userID, textID));
-    }
-    @GetMapping(path = "textID/{textID}/count")
-    public ResponseEntity<?> countAllSellOrderByTextID(HttpServletRequest httpServletRequest, @PathVariable String textID){
-        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
-        return ResponseEntity.ok().body(this.viewSellOrderService.countSellOrderByUserIDAndTextID(userID, textID));
+        return ResponseEntity.ok().body(this.viewSellOrderService.findSellOrderByTextID(userID, textID, pageable));
     }
     @GetMapping(path = "id/{sellOrderID}")
     public ResponseEntity<?> findSellOrderBySellOrderID(HttpServletRequest httpServletRequest, @PathVariable Long sellOrderID) {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.viewSellOrderService.findSellOrderBySellOrderID(userID, sellOrderID));
     }
-    // @GetMapping(path="period")
-    // public ResponseEntity<?> findAllSellOrderByPeriod(HttpServletRequest httpServletRequest, ZonedDateTime from, ZonedDateTime to){
-    //     Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
-    //     return ResponseEntity.ok().body(this.viewSellOrderService.findAllSellOrderInPeriod(userID, from, to));
-    // }
-    @GetMapping(path="period/count")
-    public ResponseEntity<?> countAllSellOrderByPeriod(HttpServletRequest httpServletRequest, ZonedDateTime from, ZonedDateTime to){
+    @PostMapping(path="period")
+    public ResponseEntity<?> findAllSellOrderByPeriod(HttpServletRequest httpServletRequest, @RequestBody PeriodDTO period, Pageable pageable){
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
-        return ResponseEntity.ok().body(this.viewSellOrderService.countAllSellOrderInPeriod(userID, from, to));
+        return ResponseEntity.ok().body(this.viewSellOrderService.findAllSellOrderInPeriod(userID, period, pageable));
     }
     @GetMapping(path="customer/{customerName}")
-    public ResponseEntity<?> findAllSellOrderByCustomerName(HttpServletRequest httpServletRequest, @PathVariable String customerName){
+    public ResponseEntity<?> findAllSellOrderByCustomerName(HttpServletRequest httpServletRequest, @PathVariable String customerName, Pageable pageable){
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
-        return ResponseEntity.ok().body(this.viewSellOrderService.findAllSellOrderByCustomerName(userID, customerName));
-    }
-    @GetMapping(path="customer/{customerName}/count")
-    public ResponseEntity<?> countAllSellOrderByCustomerName(HttpServletRequest httpServletRequest, @PathVariable String customerName){
-        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
-        return ResponseEntity.ok().body(this.viewSellOrderService.countAllSellOrderByCustomerName(userID, customerName));
+        return ResponseEntity.ok().body(this.viewSellOrderService.findAllSellOrderByCustomerName(userID, customerName, pageable));
     }
 }
