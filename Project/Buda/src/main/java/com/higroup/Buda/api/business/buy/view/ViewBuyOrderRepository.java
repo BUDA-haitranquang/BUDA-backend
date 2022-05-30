@@ -6,6 +6,7 @@ import java.util.List;
 import com.higroup.Buda.entities.BuyOrder;
 import com.higroup.Buda.entities.enumeration.Status;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
@@ -24,7 +25,7 @@ public interface ViewBuyOrderRepository extends PagingAndSortingRepository<BuyOr
         // " LEFT JOIN FETCH st.roles" +
         " where b.userID= :userID"+
         " and s.name LIKE %:supplierName%")
-        List<BuyOrder> findBuyOrderBySupplierName(@Param("userID")Long userID, @Param("supplierName")String supplierName);
+        List<BuyOrder> findBuyOrderBySupplierName(@Param("userID")Long userID, @Param("supplierName")String supplierName, Pageable pageable);
 
         @Query(value = "select count (*) from BuyOrder b" +
                         " where b.userID = :userID and b.textID = :textID")
@@ -44,7 +45,7 @@ public interface ViewBuyOrderRepository extends PagingAndSortingRepository<BuyOr
         " where b.userID= :userID"+
         " and b.creationTime>= :from"+
         " and b.creationTime<= :to")
-        List<BuyOrder> findBuyOrderInPeriod(Long userID, ZonedDateTime from, ZonedDateTime to);
+        List<BuyOrder> findBuyOrderInPeriod(Long userID, ZonedDateTime from, ZonedDateTime to, Pageable pageable);
 
         @Query(value = "select count(*) from BuyOrder b" +
         " where b.userID= :userID"+
