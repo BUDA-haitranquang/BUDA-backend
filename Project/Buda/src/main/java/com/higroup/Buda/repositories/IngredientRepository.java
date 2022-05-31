@@ -21,5 +21,7 @@ public interface IngredientRepository extends JpaRepository<Ingredient, Long> {
     @Query(value = "select i from Ingredient i where i.userID = :userID and i.amountLeft <= i.alertAmountLeft")
     List<Ingredient> findAlertAmountIngredient(@Param("userID") Long userID);
     Ingredient findIngredientByUserIDAndIngredientSKU(Long userID, String ingredientSKU);
+    @Query(value = "select count(i.ingredientID) from Ingredient i where i.userID = :userID")
+    Long findNumberOfIngredientByUserID(@Param("userID") Long userID);
 }
 
