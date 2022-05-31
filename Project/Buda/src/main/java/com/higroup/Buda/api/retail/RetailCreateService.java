@@ -10,7 +10,6 @@ import com.higroup.Buda.api.retail.customDTO.RetailCreateFromProductDTO;
 import com.higroup.Buda.entities.Ingredient;
 import com.higroup.Buda.entities.Picture;
 import com.higroup.Buda.entities.Product;
-import com.higroup.Buda.entities.User;
 import com.higroup.Buda.repositories.IngredientRepository;
 import com.higroup.Buda.repositories.PictureRepository;
 import com.higroup.Buda.repositories.ProductRepository;
@@ -47,14 +46,9 @@ public class RetailCreateService {
         Optional<Ingredient> ingredient = this.ingredientRepository
                 .findIngredientByIngredientID(retailCreateFromIngredientDTO.getIngredientID());
         if ((ingredient.isPresent()) && (ingredient.get().getUserID().equals(userID))) {
-            Product productBySKU = this.productRepository.findProductByUserIDAndProductSKU(userID,
-                    retailCreateFromIngredientDTO.getProductSKU());
-            if (productBySKU != null) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                        "Another product with this SKU has already existed: " + productBySKU.getName());
-            }
+            Long count = this.productRepository.findNumberOfProductByUserID(userID);
             Product product = new Product();
-            product.setProductSKU(retailCreateFromIngredientDTO.getProductSKU());
+            product.setProductSKU("PRO-" + count);
             product.setUserID(userID);
             product.setName(ingredient.get().getName());
             product.setDescription(ingredient.get().getDescription());
@@ -77,14 +71,9 @@ public class RetailCreateService {
         Optional<Product> product = this.productRepository
                 .findProductByProductID(retailCreateFromProductDTO.getProductID());
         if ((product.isPresent()) && (product.get().getUserID().equals(userID))) {
-            Ingredient ingredientBySKU = this.ingredientRepository.findIngredientByUserIDAndIngredientSKU(userID,
-                    retailCreateFromProductDTO.getIngredientSKU());
-            if (ingredientBySKU != null) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                        "Another ingredient with this SKU has already existed: " + ingredientBySKU.getName());
-            }
+            Long count = this.ingredientRepository.findNumberOfIngredientByUserID(userID);
             Ingredient ingredient = new Ingredient();
-            ingredient.setIngredientSKU(retailCreateFromProductDTO.getIngredientSKU());
+            ingredient.setIngredientSKU("ING-" + count);
             ingredient.setUserID(userID);
             ingredient.setName(product.get().getName());
             ingredient.setDescription(product.get().getDescription());
@@ -104,20 +93,10 @@ public class RetailCreateService {
     }
     @Transactional
     public Product createNewRetail(Long userID, RetailCreateDTO retailCreateDTO) {
-        Product productBySKU = this.productRepository.findProductByUserIDAndProductSKU(userID,
-                retailCreateDTO.getProductSKU());
-        if (productBySKU != null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "Another product with this SKU has already existed: " + productBySKU.getName());
-        }
-        Ingredient ingredientBySKU = this.ingredientRepository.findIngredientByUserIDAndIngredientSKU(userID,
-                retailCreateDTO.getIngredientSKU());
-        if (ingredientBySKU != null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "Another ingredient with this SKU has already existed: " + ingredientBySKU.getName());
-        }
+
         Product product = new Product();
-        product.setProductSKU(retailCreateDTO.getProductSKU());
+        Long countProduct = this.productRepository.findNumberOfProductByUserID(userID);
+        product.setProductSKU("PRO-" + countProduct);
         product.setUserID(userID);
         product.setName(retailCreateDTO.getName());
         product.setDescription(retailCreateDTO.getDescription());
@@ -132,7 +111,8 @@ public class RetailCreateService {
         }
         this.productRepository.save(product);
         Ingredient ingredient = new Ingredient();
-        ingredient.setIngredientSKU(retailCreateDTO.getIngredientSKU());
+        Long countIngredient = this.ingredientRepository.findNumberOfIngredientByUserID(userID);
+        ingredient.setIngredientSKU("ING-" + countIngredient);
         ingredient.setUserID(userID);
         ingredient.setName(retailCreateDTO.getName());
         ingredient.setDescription(retailCreateDTO.getDescription());
