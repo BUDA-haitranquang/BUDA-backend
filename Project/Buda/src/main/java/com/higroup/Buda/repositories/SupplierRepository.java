@@ -8,7 +8,6 @@ import com.higroup.Buda.entities.Supplier;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.data.web.PageableDefault;
 
 public interface SupplierRepository extends JpaRepository<Supplier, Long>{
     Optional<Supplier> findSupplierBySupplierID(Long supplierID);

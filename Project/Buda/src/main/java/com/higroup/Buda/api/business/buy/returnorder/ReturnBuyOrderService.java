@@ -12,7 +12,6 @@ import com.higroup.Buda.entities.IngredientLeftLog;
 import com.higroup.Buda.entities.enumeration.Status;
 import com.higroup.Buda.repositories.BuyOrderRepository;
 import com.higroup.Buda.repositories.IngredientLeftLogRepository;
-import com.higroup.Buda.repositories.IngredientRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,15 +22,12 @@ import org.springframework.web.server.ResponseStatusException;
 public class ReturnBuyOrderService {
     private final BuyOrderRepository buyOrderRepository;
     private final IngredientLeftLogRepository ingredientLeftLogRepository;
-    private final IngredientRepository ingredientRepository;
 
     @Autowired
     public ReturnBuyOrderService(BuyOrderRepository buyOrderRepository,
-            IngredientLeftLogRepository ingredientLeftLogRepository,
-            IngredientRepository ingredientRepository) {
+            IngredientLeftLogRepository ingredientLeftLogRepository) {
         this.ingredientLeftLogRepository = ingredientLeftLogRepository;
         this.buyOrderRepository = buyOrderRepository;
-        this.ingredientRepository = ingredientRepository;
     }
 
     @Transactional
