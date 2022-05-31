@@ -6,6 +6,7 @@ import java.util.List;
 import com.higroup.Buda.entities.BuyOrder;
 import com.higroup.Buda.entities.enumeration.Status;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -52,5 +53,29 @@ public interface ViewBuyOrderRepository extends PagingAndSortingRepository<BuyOr
         " and b.creationTime>= :from"+
         " and b.creationTime<= :to")
         Long countBuyOrderInPeriod(Long userID, ZonedDateTime from, ZonedDateTime to);
+
+        @Query(value = "select distinct b from BuyOrder b" +
+        " LEFT JOIN FETCH b.buyOrderItems bo" +
+        " LEFT JOIN FETCH bo.ingredient ingr " +
+        " LEFT JOIN FETCH ingr.picture " +
+        " LEFT JOIN FETCH b.supplier s" +
+        " LEFT JOIN FETCH b.staff st" +
+        // " LEFT JOIN FETCH st.roles" +
+        " where b.userID= :userID"+
+        " and (:from IS NULL or b.creationTime>= :from)"+
+        " and (:to IS NULL or b.creationTime<= :to)"+
+        " and (:supplierName IS NULL or s.name LIKE %:supplierName%)"+
+        " and (:textID IS NULL or b.textID = :textID)", 
+        countQuery = "select count(distinct b) from BuyOrder b" +
+  
+        " LEFT JOIN  b.supplier s" +
+        // " LEFT JOIN FETCH st.roles" +
+        " where b.userID= :userID"+
+        " and (:from IS NULL or b.creationTime>= :from)"+
+        " and (:to IS NULL or b.creationTime<= :to)"+
+        " and (:supplierName IS NULL or s.name LIKE %:supplierName%)"+
+        " and (:textID IS NULL or b.textID = :textID)")
+        Page<BuyOrder> findBuyOrderByFilter(Long userID, ZonedDateTime from, ZonedDateTime to
+        , String supplierName, String textID, Pageable pageable);
 
 }

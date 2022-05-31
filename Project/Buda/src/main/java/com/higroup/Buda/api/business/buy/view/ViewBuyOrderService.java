@@ -14,6 +14,7 @@ import com.higroup.Buda.repositories.BuyOrderRepository;
 import com.higroup.Buda.repositories.SupplierRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -106,5 +107,13 @@ public class ViewBuyOrderService {
     public List<ExpenseByTimeStatistics> findBuyOrderExpenseGroupByMonth(Long userID)
     {
         return this.buyOrderRepository.findBuyOrderExpenseGroupByMonth(userID);
+    }
+    public ViewBuyOrderDTO findBuyOrderByFilter(Long userID, ViewBuyOrderFilter viewBuyOrderFilter, Pageable pageable) {
+        Page<BuyOrder> buyOrders = this.viewBuyOrderRepository.findBuyOrderByFilter(userID, 
+        viewBuyOrderFilter.getFrom(), 
+        viewBuyOrderFilter.getTo(), 
+        viewBuyOrderFilter.getSupplierName(),
+        viewBuyOrderFilter.getTextID(), pageable);
+        return new ViewBuyOrderDTO(buyOrders.getTotalElements(), buyOrders.toList());
     }
 }

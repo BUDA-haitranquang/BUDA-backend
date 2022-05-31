@@ -87,4 +87,10 @@ public class ViewSellOrderController {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.viewSellOrderService.findAllSellOrderByCustomerName(userID, customerName, pageable));
     }
+    @PostMapping(path="filter")
+    public ResponseEntity<?> findSellOrderByFilter(HttpServletRequest httpServletRequest, @RequestBody ViewSellOrderFilter viewSellOrderFilter,
+    Pageable pageable) {
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
+        return ResponseEntity.ok().body(this.viewSellOrderService.findAllSellOrderByFilter(userID, viewSellOrderFilter, pageable));
+    }
 }

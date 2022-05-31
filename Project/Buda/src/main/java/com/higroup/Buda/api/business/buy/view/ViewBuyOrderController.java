@@ -23,72 +23,87 @@ import org.springframework.web.bind.annotation.RestController;
 public class ViewBuyOrderController {
 
     private final ViewBuyOrderService viewBuyOrderService;
-    private final RequestUtil requestUtil;  
+    private final RequestUtil requestUtil;
 
     @Autowired
-    public ViewBuyOrderController(ViewBuyOrderService viewNewBuyOrderService, RequestUtil requestUtil)
-    {
+    public ViewBuyOrderController(ViewBuyOrderService viewNewBuyOrderService, RequestUtil requestUtil) {
         this.requestUtil = requestUtil;
         this.viewBuyOrderService = viewNewBuyOrderService;
     }
 
     @GetMapping(path = "/all")
-    public ResponseEntity<?> findAllBuyOrderByUserID(HttpServletRequest httpServletRequest, Pageable pageable)
-    {
+    public ResponseEntity<?> findAllBuyOrderByUserID(HttpServletRequest httpServletRequest, Pageable pageable) {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.viewBuyOrderService.findAllBuyOrderByUserID(userID, pageable));
     }
+
     @GetMapping(path = "supplier/{supplierName}")
-    public ResponseEntity<?> findAllBuyOrderByUserIDAndSupplierName(HttpServletRequest httpServletRequest, @PathVariable String supplierName, Pageable pageable)
-    {
+    public ResponseEntity<?> findAllBuyOrderByUserIDAndSupplierName(HttpServletRequest httpServletRequest,
+            @PathVariable String supplierName, Pageable pageable) {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
-        return ResponseEntity.ok().body(this.viewBuyOrderService.findBuyOrderBySupplierName(userID, supplierName, pageable));
+        return ResponseEntity.ok()
+                .body(this.viewBuyOrderService.findBuyOrderBySupplierName(userID, supplierName, pageable));
     }
+
     @GetMapping(path = "supplier/{supplierID}/all")
-    public ResponseEntity<?> findAllBuyOrderBySupplierID(HttpServletRequest httpServletRequest, @PathVariable Long supplierID)
-    {
+    public ResponseEntity<?> findAllBuyOrderBySupplierID(HttpServletRequest httpServletRequest,
+            @PathVariable Long supplierID) {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.viewBuyOrderService.findAllBuyOrderBySupplierID(userID, supplierID));
     }
 
     @GetMapping(path = "all/last-x-days/{X}")
-    public ResponseEntity<?> findAllLastXDaysBuyOrderByCurrentUser(HttpServletRequest httpServletRequest, @PathVariable Long X)
-    {
+    public ResponseEntity<?> findAllLastXDaysBuyOrderByCurrentUser(HttpServletRequest httpServletRequest,
+            @PathVariable Long X) {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.viewBuyOrderService.findAllBuyOrderByUserIDLastXDays(userID, X));
     }
+
     @GetMapping(path = "all/incompleted")
-    public ResponseEntity<?> findAllIncompletedBuyOrderByCurrentUser(HttpServletRequest httpServletRequest)
-    {
+    public ResponseEntity<?> findAllIncompletedBuyOrderByCurrentUser(HttpServletRequest httpServletRequest) {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.viewBuyOrderService.findAllIncompletedBuyOrderByUser(userID));
     }
+
     @GetMapping(path = "all/completed")
-    public ResponseEntity<?> findAllCompletedBuyOrderByCurrentUser(HttpServletRequest httpServletRequest, Pageable pageable)
-    {
+    public ResponseEntity<?> findAllCompletedBuyOrderByCurrentUser(HttpServletRequest httpServletRequest,
+            Pageable pageable) {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.viewBuyOrderService.findAllCompletedBuyOrderByUser(userID, pageable));
     }
+
     @GetMapping(path = "all/status/{status}")
-    public ResponseEntity<?> findAllBuyOrderByCurrentUserAndStatus(HttpServletRequest httpServletRequest, @PathVariable Status status, Pageable pageable)
-    {
+    public ResponseEntity<?> findAllBuyOrderByCurrentUserAndStatus(HttpServletRequest httpServletRequest,
+            @PathVariable Status status, Pageable pageable) {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.viewBuyOrderService.findAllBuyOrderByStatus(userID, status, pageable));
     }
+
     @GetMapping(path = "textID/{textID}")
-    public ResponseEntity<?> findAllBuyOrderByTextID(HttpServletRequest httpServletRequest, @PathVariable String textID, Pageable pageable) {
+    public ResponseEntity<?> findAllBuyOrderByTextID(HttpServletRequest httpServletRequest, @PathVariable String textID,
+            Pageable pageable) {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.viewBuyOrderService.findBuyOrderByTextID(userID, textID, pageable));
     }
-    @PostMapping(path="period")
-    public ResponseEntity<?> findAllBuyOrderByPeriod(HttpServletRequest httpServletRequest, @RequestBody PeriodDTO periodDTO, Pageable pageable)
-    {
+
+    @PostMapping(path = "period")
+    public ResponseEntity<?> findAllBuyOrderByPeriod(HttpServletRequest httpServletRequest,
+            @RequestBody PeriodDTO periodDTO, Pageable pageable) {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.viewBuyOrderService.findBuyOrderInPeriod(userID, periodDTO, pageable));
     }
+
     @GetMapping(path = "id/{buyOrderID}")
-    public ResponseEntity<?> findBuyOrderByBuyOrderID(HttpServletRequest httpServletRequest, @PathVariable Long buyOrderID) {
+    public ResponseEntity<?> findBuyOrderByBuyOrderID(HttpServletRequest httpServletRequest,
+            @PathVariable Long buyOrderID) {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.viewBuyOrderService.findBuyOrderByBuyOrderID(userID, buyOrderID));
+    }
+
+    @PostMapping(path = "filter") 
+    public ResponseEntity<?> findBuyOrderByFilter(HttpServletRequest httpServletRequest, @RequestBody ViewBuyOrderFilter viewBuyOrderFilter,
+    Pageable pageable) {
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
+        return ResponseEntity.ok().body(this.viewBuyOrderService.findBuyOrderByFilter(userID, viewBuyOrderFilter, pageable));
     }
 }
