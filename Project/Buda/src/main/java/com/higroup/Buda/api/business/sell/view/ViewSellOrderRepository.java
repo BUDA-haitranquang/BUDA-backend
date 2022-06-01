@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.higroup.Buda.entities.SellOrder;
 import com.higroup.Buda.entities.enumeration.Status;
+import com.higroup.Buda.repositories.fetchdefault.FetchDefault;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -49,12 +50,7 @@ public interface ViewSellOrderRepository extends PagingAndSortingRepository<Sell
             + "where s.userID = :userID and s.creationTime >= :from and s.creationTime <= :to")
     Long countAllSellOrderInPeriod(Long userID, ZonedDateTime from, ZonedDateTime to);
 
-    @Query(value = "select distinct s from SellOrder s "
-    + "LEFT JOIN FETCH s.sellOrderItems si "
-    + "LEFT JOIN FETCH si.product pr "
-    + "LEFT JOIN FETCH pr.picture "
-    + "LEFT JOIN FETCH s.customer c "
-    + "LEFT JOIN FETCH s.staff ss "
+    @Query(value = FetchDefault.sellOrder
     + "where s.userID = :userID "
     + "and (:from IS NULL or s.creationTime >= :from) "
     + "and (:to IS NULL or s.creationTime <= :to)"
