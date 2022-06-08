@@ -12,10 +12,6 @@ import javax.validation.constraints.PositiveOrZero;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RetailCreateDTO {
-    @NotNull(message = "SKU must not be null")
-    private String productSKU;
-    @NotNull(message = "SKU must not be null")
-    private String ingredientSKU;
     private String name;
     private String description;
     @PositiveOrZero(message = "Amount left must be at least 0")

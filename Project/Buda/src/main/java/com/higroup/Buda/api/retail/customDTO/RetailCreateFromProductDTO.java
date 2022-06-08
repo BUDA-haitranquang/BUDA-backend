@@ -14,6 +14,4 @@ import javax.validation.constraints.PositiveOrZero;
 public class RetailCreateFromProductDTO {
     @PositiveOrZero(message = "productID can not be null")
     private Long productID;
-    @NotNull(message = "SKU must not be null")
-    private String ingredientSKU;
 }

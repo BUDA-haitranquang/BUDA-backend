@@ -13,7 +13,6 @@ import javax.validation.constraints.PositiveOrZero;
 public class RetailCreateFromIngredientDTO {
     @PositiveOrZero(message = "ingredientID can not be null")
     private Long ingredientID;
-    private String productSKU;
     @PositiveOrZero(message = "price must be at least 0")
     private Double price;
 }
