@@ -1,7 +1,6 @@
 package com.higroup.Buda.api.ingredient.create;
 
 import java.util.Optional;
-import java.util.UUID;
 
 import javax.transaction.Transactional;
 
@@ -29,7 +28,8 @@ public class IngredientCreateService {
     @Transactional
     public Ingredient createNewIngredient(Long userID, Ingredient newIngredient){
         if (newIngredient.getIngredientSKU()==null){
-            newIngredient.setIngredientSKU(RandomIDGenerator.randomIDString());
+            Long count = this.ingredientRepository.findNumberOfIngredientByUserID(userID);
+            newIngredient.setIngredientSKU("ING-" + count);
         }
         Ingredient ingredientBySKU = 
         this.ingredientRepository.findIngredientByUserIDAndIngredientSKU(userID, newIngredient.getIngredientSKU());

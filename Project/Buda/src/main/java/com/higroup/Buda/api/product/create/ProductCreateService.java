@@ -30,7 +30,8 @@ public class ProductCreateService {
     public Product createNewProduct(Long userID, Product product)
     {
         if (product.getProductSKU()==null){
-            product.setProductSKU(RandomIDGenerator.randomIDString());
+            Long count = this.productRepository.findNumberOfProductByUserID(userID);
+            product.setProductSKU("PRO-" + count);
         } 
 
         Product productBySKU = this.productRepository.findProductByUserIDAndProductSKU(userID, product.getProductSKU());

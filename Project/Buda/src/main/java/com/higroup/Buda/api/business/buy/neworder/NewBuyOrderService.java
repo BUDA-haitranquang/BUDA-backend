@@ -116,7 +116,7 @@ public class NewBuyOrderService {
         buyOrder.setUserID(userID);
         buyOrder.setDescription(buyOrderDTO.getDescription());
         if ((buyOrderDTO.getTextID() != null) && (!buyOrderDTO.getTextID().equals(""))) {
-            List<BuyOrder> buyOrderTexts = this.buyOrderRepository.findAllBuyOrderByUserIDAndTextID(userID,
+            List<BuyOrder> buyOrderTexts = this.buyOrderRepository.findBuyOrderByUserIDAndTextID(userID,
                     buyOrderDTO.getTextID());
             if (buyOrderTexts.size() > 0) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST,

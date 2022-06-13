@@ -45,7 +45,7 @@ public class Product {
     private Long productID;
 
     @Column(length = 150, name = "product_sku")
-    private String productSKU = RandomIDGenerator.randomIDString();
+    private String productSKU;
 
     @Column(length = 100)
     private String name;

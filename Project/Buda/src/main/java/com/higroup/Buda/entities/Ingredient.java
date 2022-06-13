@@ -28,7 +28,7 @@ public class Ingredient {
     @Column(name = "ingredient_id")
     private Long ingredientID;
     @Column(name = "ingredient_sku", length = 150)
-    private String ingredientSKU = RandomIDGenerator.randomIDString();
+    private String ingredientSKU;
     @Column(length = 100)
     private String name;
     @Column(length = 1000)
