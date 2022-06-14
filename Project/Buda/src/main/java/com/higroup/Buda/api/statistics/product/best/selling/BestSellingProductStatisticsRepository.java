@@ -27,7 +27,7 @@ public interface BestSellingProductStatisticsRepository extends JpaRepository<Se
     + "sum(if(s.status = 'RETURNED', i.price_per_unit * i.quantity, 0)) as returnPrice "
     + "from sell_order_item i " + "inner join product p on i.product_id = p.product_id " + "inner join sell_order s on s.sell_order_id = i.sell_order_id "
     + "where profit != null and i.user_id = :userID and s.finish_time BETWEEN DATE_SUB(NOW(), INTERVAL 30 DAY) and now() "
-    + "group by i.product_id"
+    + "group by i.product_id "
     + "order by sellNumber desc, p.name asc "
     + "limit :number", nativeQuery = true)
     List<ProductRanking> findNProductsTopSellNumber(@Param("userID") Long userID, @Param("number") Integer number);
