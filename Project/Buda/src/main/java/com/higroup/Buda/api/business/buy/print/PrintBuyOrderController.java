@@ -20,7 +20,7 @@ public class PrintBuyOrderController {
         this.printBuyOrderService = printBuyOrderService;
         this.requestUtil = requestUtil;
     }
-    @GetMapping
+    @PostMapping
     public ResponseEntity<?> printBuyOrder(HttpServletRequest httpServletRequest, @RequestBody InputPrintBuyOrderDTO inputPrintBuyOrderDTO) {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.printBuyOrderService.printBuyOrder(userID, inputPrintBuyOrderDTO));
