@@ -56,7 +56,7 @@ public interface BuyOrderRepository extends PagingAndSortingRepository<BuyOrder,
                         " where b.status LIKE :status and b.userID = :userID")
         List<BuyOrder> findAllBuyOrderByStatusAndUserID(@Param("userID") Long userID, @Param("status") Status status, Pageable pageable);
 
-        @Query(value = "select b from BuyOrder b " +
+        @Query(value = "select distinct b from BuyOrder b " +
                         " LEFT JOIN FETCH b.buyOrderItems bo" +
                         " LEFT JOIN FETCH bo.ingredient ingr " +
                         " LEFT JOIN FETCH ingr.picture " +
@@ -68,7 +68,7 @@ public interface BuyOrderRepository extends PagingAndSortingRepository<BuyOrder,
                         + "b.userID = :userID")
         List<BuyOrder> findAllBuyOrderByUserIDLastXDays(@Param("userID") Long userID, @Param("X") ZonedDateTime X);
 
-        @Query(value = "select b from BuyOrder b" +
+        @Query(value = "select distinct b from BuyOrder b" +
                         " LEFT JOIN FETCH b.buyOrderItems bo" +
                         " LEFT JOIN FETCH bo.ingredient ingr " +
                         " LEFT JOIN FETCH ingr.picture " +
@@ -78,7 +78,7 @@ public interface BuyOrderRepository extends PagingAndSortingRepository<BuyOrder,
                         + " where b.status NOT LIKE 'FINISHED' and b.status NOT LIKE 'CANCELLED' and b.userID = :userID")
         List<BuyOrder> findAllIncompletedBuyOrderByUser(@Param("userID") Long userID);
 
-        @Query(value = "select b from BuyOrder b" +
+        @Query(value = "select distinct b from BuyOrder b" +
                         " LEFT JOIN FETCH b.buyOrderItems bo" +
                         " LEFT JOIN FETCH bo.ingredient ingr " +
                         " LEFT JOIN FETCH ingr.picture " +
