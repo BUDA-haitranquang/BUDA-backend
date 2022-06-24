@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,7 +25,7 @@ public class CreateStoreController {
         this.requestUtil = requestUtil;
     }
     @PostMapping
-    public ResponseEntity<?> createStore(HttpServletRequest httpServletRequest, Store store) {
+    public ResponseEntity<?> createStore(HttpServletRequest httpServletRequest, @RequestBody Store store) {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.createStoreService.createStore(userID, store));
     }
