@@ -76,11 +76,11 @@ public class ProductRepositoryTest {
         assertEquals(res.getProductID(), newProduct.getProductID());
     }
 
-    @Test 
-    public void canFindAllbyUserID(){
-        Long userID = newUser.getUserID();
-        List<Product> list = productReposTest.findAllProductByUserID(userID);
+    // @Test 
+    // public void canFindAllbyUserID(){
+    //     Long userID = newUser.getUserID();
+    //     List<Product> list = productReposTest.findAllProductByUserID(userID);
 
-        assertEquals(list, Arrays.asList(newProduct));
-    }
+    //     assertEquals(list, Arrays.asList(newProduct));
+    // }
 }

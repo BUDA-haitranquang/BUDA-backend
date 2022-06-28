@@ -11,6 +11,7 @@ import com.higroup.Buda.entities.User;
 import com.higroup.Buda.repositories.IngredientLeftLogRepository;
 import com.higroup.Buda.repositories.IngredientRepository;
 import com.higroup.Buda.repositories.UserRepository;
+import com.higroup.Buda.repositories.IngredientLeftLogRepository.ViewIngredientLeftLogInfo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -55,7 +56,7 @@ public class IngredientLeftLogService {
     {
         return this.ingredientLeftLogRepository.findAllIngredientLeftLogByStaffID(userID, staffID);
     }
-    public List<IngredientLeftLog> findAllIngredientLeftLogByUserID(Long userID)
+    public List<ViewIngredientLeftLogInfo> findAllIngredientLeftLogByUserID(Long userID)
     {
         return this.ingredientLeftLogRepository.findAllIngredientLeftLogByUserID(userID);
     }

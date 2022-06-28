@@ -7,6 +7,7 @@ import com.higroup.Buda.entities.User;
 import com.higroup.Buda.repositories.ProductGroupRepository;
 import com.higroup.Buda.repositories.ProductRepository;
 import com.higroup.Buda.repositories.UserRepository;
+import com.higroup.Buda.repositories.ProductRepository.ViewProductInfo;
 import com.higroup.Buda.util.Checker.PresentChecker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,7 +32,7 @@ public class ProductViewService {
     @Autowired
     private PresentChecker presentChecker;
 
-    public List<Product> findAllProductByUserID(Long userID)
+    public List<ViewProductInfo> findAllProductByUserID(Long userID)
     {
         return this.productRepository.findAllProductByUserID(userID);
     }

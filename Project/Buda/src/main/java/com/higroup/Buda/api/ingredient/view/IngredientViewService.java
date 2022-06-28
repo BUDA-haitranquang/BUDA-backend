@@ -10,6 +10,7 @@ import com.higroup.Buda.entities.User;
 import com.higroup.Buda.repositories.IngredientLeftLogRepository;
 import com.higroup.Buda.repositories.IngredientRepository;
 import com.higroup.Buda.repositories.UserRepository;
+import com.higroup.Buda.repositories.IngredientRepository.ViewIngredientInfo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -47,7 +48,7 @@ public class IngredientViewService {
         return this.ingredientRepository.findAllHiddenIngredientByUserID(userID);
     }
 
-    public List<Ingredient> findAllIngredientByUserID(Long userID)
+    public List<ViewIngredientInfo> findAllIngredientByUserID(Long userID)
     {
         return this.ingredientRepository.findAllIngredientByUserID(userID);
     }
