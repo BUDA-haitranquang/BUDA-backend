@@ -33,7 +33,11 @@ public interface IngredientLeftLogRepository extends JpaRepository<IngredientLef
     @Query(value = "select i from IngredientLeftLog i " + " LEFT JOIN FETCH i.ingredient ii" + 
     " LEFT JOIN FETCH ii.picture" + 
     " where i.userID = :userID")
-    List<ViewIngredientLeftLogInfo> findAllIngredientLeftLogByUserID(Long userID);
+    List<ViewIngredientLeftLogInfo> findAllFilterIngredientLeftLogByUserID(Long userID);
+    @Query(value = "select i from IngredientLeftLog i " + " LEFT JOIN FETCH i.ingredient ii" + 
+    " LEFT JOIN FETCH ii.picture" + 
+    " where i.userID = :userID")
+    List<IngredientLeftLog> findAllIngredientLeftLogByUserID(Long userID);
     @Query(value = "select i from IngredientLeftLog i " + " LEFT JOIN FETCH i.ingredient ii" + 
     " LEFT JOIN FETCH ii.picture" + 
     " where i.userID = :userID" +

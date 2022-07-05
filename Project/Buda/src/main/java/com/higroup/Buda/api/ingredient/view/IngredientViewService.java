@@ -48,7 +48,11 @@ public class IngredientViewService {
         return this.ingredientRepository.findAllHiddenIngredientByUserID(userID);
     }
 
-    public List<ViewIngredientInfo> findAllIngredientByUserID(Long userID)
+    public List<ViewIngredientInfo> findAllFilterIngredientByUserID(Long userID)
+    {
+        return this.ingredientRepository.findAllFilterIngredientByUserID(userID);
+    }
+    public List<Ingredient> findAllIngredientByUserID(Long userID)
     {
         return this.ingredientRepository.findAllIngredientByUserID(userID);
     }

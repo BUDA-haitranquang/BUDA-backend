@@ -36,6 +36,13 @@ public class ProductViewController {
         return ResponseEntity.ok().body(this.productService.findAllProductByUserID(userID));
     }
 
+    @GetMapping(path = "/filter-all")
+    public ResponseEntity<?> findAllFilterProductByCurrentUser(HttpServletRequest httpServletRequest)
+    {
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
+        return ResponseEntity.ok().body(this.productService.findAllFilterProductByUserID(userID));
+    }
+
     @GetMapping(path = "/hidden/all")
     public ResponseEntity<?> findAllHiddenProduct(HttpServletRequest httpServletRequest)
     {

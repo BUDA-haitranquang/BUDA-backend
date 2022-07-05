@@ -56,8 +56,12 @@ public class ProductLeftLogService {
     {
         return this.productLeftLogRepository.findAllProductLeftLogByStaffID(userID, staffID);
     }
-    public List<ViewProductLeftLogInfo> findAllProductLeftLogByUserID(Long userID)
+    public List<ProductLeftLog> findAllProductLeftLogByUserID(Long userID)
     {
         return this.productLeftLogRepository.findAllProductLeftLogByUserID(userID);
+    }
+    public List<ViewProductLeftLogInfo> findAllFilterProductLeftLogByUserID(Long userID)
+    {
+        return this.productLeftLogRepository.findAllFilterProductLeftLogByUserID(userID);
     }
 }

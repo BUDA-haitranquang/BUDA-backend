@@ -56,8 +56,11 @@ public class IngredientLeftLogService {
     {
         return this.ingredientLeftLogRepository.findAllIngredientLeftLogByStaffID(userID, staffID);
     }
-    public List<ViewIngredientLeftLogInfo> findAllIngredientLeftLogByUserID(Long userID)
-    {
+    public List<IngredientLeftLog> findAllIngredientLeftLogByUserID(Long userID){
         return this.ingredientLeftLogRepository.findAllIngredientLeftLogByUserID(userID);
+    }
+    public List<ViewIngredientLeftLogInfo> findAllFilterIngredientLeftLogByUserID(Long userID)
+    {
+        return this.ingredientLeftLogRepository.findAllFilterIngredientLeftLogByUserID(userID);
     }
 }

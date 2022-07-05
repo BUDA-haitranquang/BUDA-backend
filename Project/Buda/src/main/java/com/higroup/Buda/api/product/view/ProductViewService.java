@@ -32,9 +32,13 @@ public class ProductViewService {
     @Autowired
     private PresentChecker presentChecker;
 
-    public List<ViewProductInfo> findAllProductByUserID(Long userID)
+    public List<Product> findAllProductByUserID(Long userID)
     {
         return this.productRepository.findAllProductByUserID(userID);
+    }
+    public List<ViewProductInfo> findAllFilterProductByUserID(Long userID)
+    {
+        return this.productRepository.findAllFilterProductByUserID(userID);
     }
     public List<Product> findAllHiddenProductByUserID(Long userID)
     {
