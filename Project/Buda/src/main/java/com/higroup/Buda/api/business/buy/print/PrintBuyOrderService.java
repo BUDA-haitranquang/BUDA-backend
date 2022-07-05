@@ -28,7 +28,13 @@ public class PrintBuyOrderService {
         {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Buy order not found");
         }
-        Store store = this.storeRepository.findStoreByStoreID(inputPrintBuyOrderDTO.getStoreID());
+        Store store;
+        if (inputPrintBuyOrderDTO.getStoreID() == null) {
+            store = this.storeRepository.findFirstByUserID(userID);
+        }
+        else {
+            store = this.storeRepository.findStoreByStoreID(inputPrintBuyOrderDTO.getStoreID());
+        }
         if (!store.getUserID().equals(userID))
         {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Store not found");
