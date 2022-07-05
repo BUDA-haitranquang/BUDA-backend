@@ -16,6 +16,7 @@ public interface ProductLeftLogRepository extends JpaRepository<ProductLeftLog, 
         Product getProduct();
         interface Product{
             Long getUserID();
+            Long getProductID();
             String getProductSKU();
             String getName();
             Integer getAmountLeft();

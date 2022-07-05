@@ -13,6 +13,7 @@ public interface ProductRepository extends JpaRepository<Product, Long>{
 
     public interface ViewProductInfo{
         Long getUserID();
+        Long getProductID();
         String getProductSKU();
         String getName();
         Double getSellingPrice();

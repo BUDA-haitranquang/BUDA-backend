@@ -12,6 +12,7 @@ import org.springframework.data.repository.query.Param;
 public interface IngredientRepository extends JpaRepository<Ingredient, Long> {
     public interface ViewIngredientInfo{
         Long getUserID();
+        Long getIngredientID();
         String getIngredientSKU();
         String getName();
         Double getPrice();

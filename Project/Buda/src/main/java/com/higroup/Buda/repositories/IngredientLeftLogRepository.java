@@ -15,6 +15,7 @@ public interface IngredientLeftLogRepository extends JpaRepository<IngredientLef
         Ingredient getIngredient();
         interface Ingredient{
             Long getUserID();
+            Long getIngredientID();
             String getIngredientSKU();
             String getName();
             String getAmountLeft();
