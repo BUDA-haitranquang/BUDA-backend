@@ -1,4 +1,4 @@
-package com.higroup.Buda.api.business.buy.print;
+package com.higroup.Buda.api.business.sell.print;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,8 +10,8 @@ import org.springframework.lang.Nullable;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class InputPrintBuyOrderDTO {
-    private Long buyOrderID;
+public class InputPrintSellOrderDTO {
+    private Long sellOrderID;
     @Nullable
     private Long storeID;
 }
