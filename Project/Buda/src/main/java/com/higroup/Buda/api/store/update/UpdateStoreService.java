@@ -28,6 +28,7 @@ public class UpdateStoreService {
                 bean.copyProperties(oldStore, store);
                 oldStore.setUserID(userID);
                 this.storeRepository.save(oldStore);
+                return oldStore;
             }
         }
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Store not found");
