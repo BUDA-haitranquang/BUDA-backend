@@ -65,12 +65,12 @@ public class StaffNotificationService {
         if(staffID == null){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "staff id invalid");
         }
-        Staff staff = this.staffRepository.findById(staffID).get();
-        if(staff == null){
+        Optional<Staff> staff = this.staffRepository.findById(staffID);
+        if(staff.isEmpty()){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "staff not exists");
         }
         else{
-            if(!staff.getUserID().equals(userID)){
+            if(!staff.get().getUserID().equals(userID)){
                 throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "staff not belong user");
             }
         }
