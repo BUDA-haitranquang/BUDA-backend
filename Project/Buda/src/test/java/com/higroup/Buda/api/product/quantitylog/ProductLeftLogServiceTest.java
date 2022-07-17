@@ -63,16 +63,16 @@ public class ProductLeftLogServiceTest {
         }
     }
 
-    @Test
-    void testFindAllProductLeftLogByUserID() {
-        for (long userID = 0; userID < 3; userID++)
-        {
-            List<ProductLeftLog> productLeftLogs = this.productLeftLogService.findAllProductLeftLogByUserID(Long.valueOf(userID)); 
-            for (ProductLeftLog productLeftLog : productLeftLogs){
-                assertEquals(productLeftLog.getUserID(), Long.valueOf(userID));
-            }
-        }
-    }
+    // @Test
+    // void testFindAllProductLeftLogByUserID() {
+    //     for (long userID = 0; userID < 3; userID++)
+    //     {
+    //         List<ProductLeftLog> productLeftLogs = this.productLeftLogService.findAllProductLeftLogByUserID(Long.valueOf(userID)); 
+    //         for (ProductLeftLog productLeftLog : productLeftLogs){
+    //             assertEquals(productLeftLog.getUserID(), Long.valueOf(userID));
+    //         }
+    //     }
+    // }
 
     @Test
     void testFindProductLeftLogByProductLeftLogID() {

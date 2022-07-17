@@ -47,6 +47,12 @@ public class ProductLeftLogController {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.productLeftLogService.findAllProductLeftLogByUserID(userID));
     }
+    @GetMapping(path = "/filter-all")
+    public ResponseEntity<?> findAllFilterProductLeftLogByUserID(HttpServletRequest httpServletRequest)
+    {
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
+        return ResponseEntity.ok().body(this.productLeftLogService.findAllFilterProductLeftLogByUserID(userID));
+    }
     @GetMapping(path = "staff/{staffID}/all")
     public ResponseEntity<?> findAllProductLeftLogByStaffID(HttpServletRequest httpServletRequest, @PathVariable Long staffID)
     {

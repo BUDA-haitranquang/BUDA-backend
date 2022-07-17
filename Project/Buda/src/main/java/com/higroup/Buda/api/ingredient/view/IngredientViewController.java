@@ -39,6 +39,12 @@ public class IngredientViewController {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.ingredientViewService.findAllIngredientByUserID(userID));
     }
+    @GetMapping(path = "/filter-all")
+    public ResponseEntity<?> findAllFilterIngredientByCurrentUser(HttpServletRequest httpServletRequest)
+    {
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
+        return ResponseEntity.ok().body(this.ingredientViewService.findAllFilterIngredientByUserID(userID));
+    }
     @GetMapping(path = "/hidden/all")
     public ResponseEntity<?> findAllHiddenIngredientByCurrentUser(HttpServletRequest httpServletRequest)
     {

@@ -45,15 +45,15 @@ public class CRUDProductServiceTest {
     void testFindAllProductByProductGroupID() {
         
     }
-    @Test
-    void testFindAllProductByUserID() {
-        List<Product> products = productService.findAllProductByUserID(2l);
-        for (Product product: products)
-        {
-            assertEquals(product.getUserID(), 2l);
-            assertEquals(product.getVisible(), Boolean.TRUE);
-        }
-    }
+    // @Test
+    // void testFindAllProductByUserID() {
+    //     List<Product> products = productService.findAllProductByUserID(2l);
+    //     for (Product product: products)
+    //     {
+    //         assertEquals(product.getUserID(), 2l);
+    //         assertEquals(product.getVisible(), Boolean.TRUE);
+    //     }
+    // }
     @Test
     void testFindProductByProductID() {
         

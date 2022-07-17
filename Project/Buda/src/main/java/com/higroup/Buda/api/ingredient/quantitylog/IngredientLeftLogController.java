@@ -47,6 +47,12 @@ public class IngredientLeftLogController {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.ingredientLeftLogService.findAllIngredientLeftLogByUserID(userID));
     }
+    @GetMapping(path = "/filter-all")
+    public ResponseEntity<?> findAllFilterIngredientLeftLogByUserID(HttpServletRequest httpServletRequest)
+    {
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
+        return ResponseEntity.ok().body(this.ingredientLeftLogService.findAllFilterIngredientLeftLogByUserID(userID));
+    }
     @GetMapping(path = "staff/{staffID}/all")
     public ResponseEntity<?> findAllIngredientLeftLogByStaffID(HttpServletRequest httpServletRequest, @PathVariable Long staffID)
     {
