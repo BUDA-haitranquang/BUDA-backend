@@ -5,6 +5,8 @@ import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,6 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.higroup.Buda.entities.enumeration.LeftLogType;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -48,6 +51,10 @@ public class ProductLeftLog {
     private String message;
     @Column(name = "user_id")
     private Long userID;
+
+    @Column(name = "leftlog_type")
+    @Enumerated(EnumType.STRING)
+    private LeftLogType leftLogType;
 
     @Override
     public boolean equals(Object o) {
