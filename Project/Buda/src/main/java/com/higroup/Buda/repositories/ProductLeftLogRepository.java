@@ -21,8 +21,6 @@ public interface ProductLeftLogRepository extends JpaRepository<ProductLeftLog, 
 
     }
 
-public interface ProductLeftLogRepository extends JpaRepository<ProductLeftLog, Long> {
-
     public interface ViewProductLeftLogInfo{
         Product getProduct();
         interface Product{

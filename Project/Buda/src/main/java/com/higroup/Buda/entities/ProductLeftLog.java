@@ -52,7 +52,7 @@ public class ProductLeftLog {
     @Column(name = "user_id")
     private Long userID;
 
-    @Column(name = "leftlog_type")
+    @Column(name = "left_log_type")
     @Enumerated(EnumType.STRING)
     private LeftLogType leftLogType;
 
