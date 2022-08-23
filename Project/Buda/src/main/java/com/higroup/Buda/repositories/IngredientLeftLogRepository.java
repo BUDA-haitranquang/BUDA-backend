@@ -12,6 +12,7 @@ import org.springframework.data.repository.query.Param;
 
 public interface IngredientLeftLogRepository extends JpaRepository<IngredientLeftLog, Long> {
 
+
     public interface IngredientLeftLogRemoveAmount{
         Ingredient getIngredient();
         interface Ingredient{
@@ -21,6 +22,18 @@ public interface IngredientLeftLogRepository extends JpaRepository<IngredientLef
 
     }
 
+    public interface ViewIngredientLeftLogInfo{
+        Ingredient getIngredient();
+        interface Ingredient{
+            Long getUserID();
+            Long getIngredientID();
+            String getIngredientSKU();
+            String getName();
+            String getAmountLeft();
+        }
+        
+    }
+    
     @Query(value = "select i from IngredientLeftLog i " + " LEFT JOIN FETCH i.ingredient ii" + 
     " LEFT JOIN FETCH ii.picture" + 
     " where i.ingredientLeftLogID = :ingredientLeftLogID")
@@ -29,6 +42,10 @@ public interface IngredientLeftLogRepository extends JpaRepository<IngredientLef
     " LEFT JOIN FETCH ii.picture" + 
     " where i.userID = :userID and i.staffID = :staffID")
     List<IngredientLeftLog> findAllIngredientLeftLogByStaffID(@Param("userID") Long userID, @Param("staffID") Long staffID);
+    @Query(value = "select i from IngredientLeftLog i " + " LEFT JOIN FETCH i.ingredient ii" + 
+    " LEFT JOIN FETCH ii.picture" + 
+    " where i.userID = :userID")
+    List<ViewIngredientLeftLogInfo> findAllFilterIngredientLeftLogByUserID(Long userID);
     @Query(value = "select i from IngredientLeftLog i " + " LEFT JOIN FETCH i.ingredient ii" + 
     " LEFT JOIN FETCH ii.picture" + 
     " where i.userID = :userID")

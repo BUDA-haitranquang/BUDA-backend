@@ -8,6 +8,7 @@ import com.higroup.Buda.entities.User;
 import com.higroup.Buda.repositories.ProductLeftLogRepository;
 import com.higroup.Buda.repositories.ProductRepository;
 import com.higroup.Buda.repositories.UserRepository;
+import com.higroup.Buda.repositories.ProductLeftLogRepository.ViewProductLeftLogInfo;
 import com.higroup.Buda.util.Checker.PresentChecker;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,5 +59,9 @@ public class ProductLeftLogService {
     public List<ProductLeftLog> findAllProductLeftLogByUserID(Long userID)
     {
         return this.productLeftLogRepository.findAllProductLeftLogByUserID(userID);
+    }
+    public List<ViewProductLeftLogInfo> findAllFilterProductLeftLogByUserID(Long userID)
+    {
+        return this.productLeftLogRepository.findAllFilterProductLeftLogByUserID(userID);
     }
 }

@@ -66,16 +66,16 @@ public class IngredientLeftLogServiceTest {
             }
     }
 
-    @Test
-    void testFindAllIngredientLeftLogByUserID() {
-        for (long userID = 0; userID < 3; userID++)
-        {
-            List<IngredientLeftLog> ingredientLeftLogs = this.ingredientLeftLogService.findAllIngredientLeftLogByUserID(Long.valueOf(userID)); 
-            for (IngredientLeftLog ingredientLeftLog : ingredientLeftLogs){
-                assertEquals(ingredientLeftLog.getUserID(), Long.valueOf(userID));
-            }
-        }
-    }
+    // @Test
+    // void testFindAllIngredientLeftLogByUserID() {
+    //     for (long userID = 0; userID < 3; userID++)
+    //     {
+    //         List<IngredientLeftLog> ingredientLeftLogs = this.ingredientLeftLogService.findAllIngredientLeftLogByUserID(Long.valueOf(userID)); 
+    //         for (IngredientLeftLog ingredientLeftLog : ingredientLeftLogs){
+    //             assertEquals(ingredientLeftLog.getUserID(), Long.valueOf(userID));
+    //         }
+    //     }
+    // }
 
     @Test
     void testFindIngredientLeftLogByIngredientLeftLogID() {
