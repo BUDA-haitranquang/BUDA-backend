@@ -10,6 +10,17 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+public interface ProductLeftLogRepository extends JpaRepository<ProductLeftLog, Long> { 
+
+    public interface ProductLeftLogRemoveAmount{
+        Product getProduct();
+        interface Product{
+            Long getProductID();
+        }
+        Integer getAmount();
+
+    }
+
 public interface ProductLeftLogRepository extends JpaRepository<ProductLeftLog, Long> {
 
     public interface ViewProductLeftLogInfo{
@@ -31,4 +42,12 @@ public interface ProductLeftLogRepository extends JpaRepository<ProductLeftLog, 
     List<ProductLeftLog> findAllProductLeftLogByUserID(Long userID);
     @Query(value = "select * from product_left_log where user_id = :userID and product_id = :productID", nativeQuery = true)
     List<ProductLeftLog> findAllProductLeftLogByProduct(@Param("userID") Long userID, @Param("productID") Long productID);
+
+
+    @Query(value = "select p.product_id, -sum(p.amount_left_change) as amount from product_left_log p "
+        + "where p.leftlog_type = 'REMOVE' and p.user_id = :userID "
+        + "group by p.product_id "
+        + "order by amount desc;"
+    , nativeQuery = true)
+    List<ProductLeftLogRemoveAmount> getMostRemovedProduct(@Param("userID") Long userID);
 }

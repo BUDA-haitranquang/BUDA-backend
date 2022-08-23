@@ -11,6 +11,17 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface IngredientLeftLogRepository extends JpaRepository<IngredientLeftLog, Long> {
+
+
+    public interface IngredientLeftLogRemoveAmount{
+        Ingredient getIngredient();
+        interface Ingredient{
+            Long getIngredient();
+        }
+        Integer getAmount();
+
+    }
+
     public interface ViewIngredientLeftLogInfo{
         Ingredient getIngredient();
         interface Ingredient{
@@ -44,4 +55,12 @@ public interface IngredientLeftLogRepository extends JpaRepository<IngredientLef
     " where i.userID = :userID" +
     " and i.ingredient = :ingredient")
     List<IngredientLeftLog> findAllIngredientLeftLogByIngredient(@Param("userID") Long userID, Ingredient ingredient);
+
+
+    @Query(value = "select i.ingredient_id, -sum(i.amount_left_change) as amount from ingredient_left_log i "
+        + "where i.leftlog_type = 'REMOVE' and i.user_id = :userID "
+        + "group by i.ingredient_id "
+        + "order by amount desc;"
+    , nativeQuery = true)
+    List<IngredientLeftLogRemoveAmount> getMostRemovedIngredient(@Param("userID") Long userID);
 }
