@@ -55,6 +55,9 @@ public class IngredientLeftLog {
     @Enumerated(EnumType.STRING)
     private LeftLogType leftLogType;
 
+    @Column(name = "other_cost", columnDefinition = "double default 0.0")
+    private Double otherCost=0.0;
+
     @Override
     public boolean equals(Object o) {
         if (o == this)

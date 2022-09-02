@@ -51,6 +51,8 @@ public class ProductLeftLog {
     private String message;
     @Column(name = "user_id")
     private Long userID;
+    @Column(name = "other_cost", columnDefinition = "double default 0.0")
+    private Double otherCost=0.0;
 
     @Column(name = "left_log_type")
     @Enumerated(EnumType.STRING)

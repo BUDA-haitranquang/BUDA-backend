@@ -1,8 +1,10 @@
 package com.higroup.Buda.api.ingredient.update.quantity;
 
+import com.higroup.Buda.customDTO.QuantityLog;
 import com.higroup.Buda.entities.Ingredient;
 import com.higroup.Buda.entities.IngredientLeftLog;
 import com.higroup.Buda.entities.User;
+import com.higroup.Buda.entities.enumeration.LeftLogType;
 import com.higroup.Buda.repositories.IngredientLeftLogRepository;
 import com.higroup.Buda.repositories.IngredientRepository;
 import com.higroup.Buda.repositories.UserRepository;
@@ -29,8 +31,11 @@ public class IngredientUpdateQuantityService {
         this.ingredientLeftLogRepository = ingredientLeftLogRepository;
     }
     @Transactional
-    public Ingredient editIngredientQuantity(Long userID, Long ingredientID, Integer amountLeftChange, String message)
+    public Ingredient editIngredientQuantity(Long userID, Long ingredientID, QuantityLog quantityLog)
     {
+        Integer amountLeftChange = quantityLog.getAmountLeftChange();
+        String message = quantityLog.getMessage();
+        LeftLogType leftLogType = quantityLog.getLeftLogType();
         Optional<Ingredient> ingredient = this.ingredientRepository.findIngredientByIngredientID(ingredientID);
         if (ingredient.isPresent() && Objects.equals(ingredient.get().getUserID(), userID))
         {
@@ -47,6 +52,9 @@ public class IngredientUpdateQuantityService {
             ingredientLeftLog.setUserID(userID);
             ingredientLeftLog.setMessage(message);
             ingredientLeftLog.setCreationTime(ZonedDateTime.now());
+            if (leftLogType.equals(LeftLogType.REMOVE)){
+                ingredientLeftLog.setOtherCost(ingredient.get().getPrice() * (- amountLeftChange));
+            }
             this.ingredientLeftLogRepository.save(ingredientLeftLog);
             return ingredient.get();
         }

@@ -22,9 +22,7 @@ public class IngredientUpdateQuantityController {
     @PutMapping(path = "/{ingredientID}")
     public ResponseEntity<?> editIngredientQuantity(HttpServletRequest httpServletRequest, @PathVariable Long ingredientID, @RequestBody QuantityLog quantityLog)
     {
-        Integer amountLeftChange = quantityLog.getAmountLeftChange();
-        String message = quantityLog.getMessage();
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
-        return ResponseEntity.ok().body(this.ingredientUpdateQuantityService.editIngredientQuantity(userID, ingredientID, amountLeftChange, message));
+        return ResponseEntity.ok().body(this.ingredientUpdateQuantityService.editIngredientQuantity(userID, ingredientID, quantityLog));
     }
 }

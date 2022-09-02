@@ -6,9 +6,11 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import com.higroup.Buda.customDTO.QuantityLog;
 import com.higroup.Buda.entities.Product;
 import com.higroup.Buda.entities.ProductLeftLog;
 import com.higroup.Buda.entities.User;
+import com.higroup.Buda.entities.enumeration.LeftLogType;
 import com.higroup.Buda.repositories.ProductLeftLogRepository;
 import com.higroup.Buda.repositories.ProductRepository;
 import com.higroup.Buda.repositories.UserRepository;
@@ -31,8 +33,12 @@ public class ProductUpdateQuantityService {
         this.productLeftLogRepository = productLeftLogRepository;
     }
     @Transactional
-    public Product editProductQuantity(Long userID, Long productID, Integer amountLeftChange, String message)
+    public Product editProductQuantity(Long userID, Long productID, QuantityLog quantityLog)
     {
+        Integer amountLeftChange = quantityLog.getAmountLeftChange();
+        String message = quantityLog.getMessage();
+        LeftLogType leftLogType = quantityLog.getLeftLogType();
+
         Optional<Product> opProduct = this.productRepository.findProductByProductID(productID);
         if(!opProduct.isPresent()){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
@@ -53,6 +59,9 @@ public class ProductUpdateQuantityService {
             productLeftLog.setUserID(userID);
             productLeftLog.setMessage(message);
             productLeftLog.setCreationTime(ZonedDateTime.now());
+            if (leftLogType.equals(LeftLogType.REMOVE)){
+                productLeftLog.setOtherCost(product.getCostPerUnit() * (- amountLeftChange));
+            }
             this.productLeftLogRepository.save(productLeftLog);
             return product;
         }
