@@ -3,6 +3,7 @@ package com.higroup.Buda.api.product.view;
 
 import com.higroup.Buda.util.Checker.RequestUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,10 +38,10 @@ public class ProductViewController {
     }
 
     @GetMapping(path = "/filter-all")
-    public ResponseEntity<?> findAllFilterProductByCurrentUser(HttpServletRequest httpServletRequest)
+    public ResponseEntity<?> findAllFilterProductByCurrentUser(HttpServletRequest httpServletRequest, Pageable pageable)
     {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
-        return ResponseEntity.ok().body(this.productService.findAllFilterProductByUserID(userID));
+        return ResponseEntity.ok().body(this.productService.findAllFilterProductByUserID(userID, pageable));
     }
 
     @GetMapping(path = "/hidden/all")

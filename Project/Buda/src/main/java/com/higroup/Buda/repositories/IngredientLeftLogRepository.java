@@ -6,6 +6,7 @@ import java.util.Optional;
 import com.higroup.Buda.entities.IngredientLeftLog;
 import com.higroup.Buda.entities.Ingredient;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -45,7 +46,7 @@ public interface IngredientLeftLogRepository extends JpaRepository<IngredientLef
     @Query(value = "select i from IngredientLeftLog i " + " LEFT JOIN FETCH i.ingredient ii" + 
     " LEFT JOIN FETCH ii.picture" + 
     " where i.userID = :userID")
-    List<ViewIngredientLeftLogInfo> findAllFilterIngredientLeftLogByUserID(Long userID);
+    List<ViewIngredientLeftLogInfo> findAllFilterIngredientLeftLogByUserID(Long userID, Pageable pageable);
     @Query(value = "select i from IngredientLeftLog i " + " LEFT JOIN FETCH i.ingredient ii" + 
     " LEFT JOIN FETCH ii.picture" + 
     " where i.userID = :userID")

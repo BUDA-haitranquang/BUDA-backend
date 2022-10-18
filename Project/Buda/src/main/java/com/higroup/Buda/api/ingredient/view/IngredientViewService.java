@@ -13,6 +13,7 @@ import com.higroup.Buda.repositories.UserRepository;
 import com.higroup.Buda.repositories.IngredientRepository.ViewIngredientInfo;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -48,9 +49,9 @@ public class IngredientViewService {
         return this.ingredientRepository.findAllHiddenIngredientByUserID(userID);
     }
 
-    public List<ViewIngredientInfo> findAllFilterIngredientByUserID(Long userID)
+    public List<ViewIngredientInfo> findAllFilterIngredientByUserID(Long userID, Pageable pageable)
     {
-        return this.ingredientRepository.findAllFilterIngredientByUserID(userID);
+        return this.ingredientRepository.findAllFilterIngredientByUserID(userID, pageable);
     }
     public List<Ingredient> findAllIngredientByUserID(Long userID)
     {

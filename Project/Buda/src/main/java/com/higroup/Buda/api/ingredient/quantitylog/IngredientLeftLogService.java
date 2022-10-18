@@ -7,13 +7,13 @@ import javax.transaction.Transactional;
 
 import com.higroup.Buda.entities.Ingredient;
 import com.higroup.Buda.entities.IngredientLeftLog;
-import com.higroup.Buda.entities.User;
 import com.higroup.Buda.repositories.IngredientLeftLogRepository;
 import com.higroup.Buda.repositories.IngredientRepository;
 import com.higroup.Buda.repositories.UserRepository;
 import com.higroup.Buda.repositories.IngredientLeftLogRepository.ViewIngredientLeftLogInfo;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -59,8 +59,8 @@ public class IngredientLeftLogService {
     public List<IngredientLeftLog> findAllIngredientLeftLogByUserID(Long userID){
         return this.ingredientLeftLogRepository.findAllIngredientLeftLogByUserID(userID);
     }
-    public List<ViewIngredientLeftLogInfo> findAllFilterIngredientLeftLogByUserID(Long userID)
+    public List<ViewIngredientLeftLogInfo> findAllFilterIngredientLeftLogByUserID(Long userID, Pageable pageable)
     {
-        return this.ingredientLeftLogRepository.findAllFilterIngredientLeftLogByUserID(userID);
+        return this.ingredientLeftLogRepository.findAllFilterIngredientLeftLogByUserID(userID, pageable);
     }
 }
