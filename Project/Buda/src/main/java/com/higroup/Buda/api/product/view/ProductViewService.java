@@ -3,13 +3,12 @@ package com.higroup.Buda.api.product.view;
 
 import com.higroup.Buda.entities.Product;
 import com.higroup.Buda.entities.ProductGroup;
-import com.higroup.Buda.entities.User;
 import com.higroup.Buda.repositories.ProductGroupRepository;
 import com.higroup.Buda.repositories.ProductRepository;
 import com.higroup.Buda.repositories.UserRepository;
 import com.higroup.Buda.repositories.ProductRepository.ViewProductInfo;
-import com.higroup.Buda.util.Checker.PresentChecker;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -29,16 +28,14 @@ public class ProductViewService {
         this.userRepository = userRepository;
         this.productRepository = productRepository;
     }
-    @Autowired
-    private PresentChecker presentChecker;
 
     public List<Product> findAllProductByUserID(Long userID)
     {
         return this.productRepository.findAllProductByUserID(userID);
     }
-    public List<ViewProductInfo> findAllFilterProductByUserID(Long userID)
+    public List<ViewProductInfo> findAllFilterProductByUserID(Long userID, Pageable pageable)
     {
-        return this.productRepository.findAllFilterProductByUserID(userID);
+        return this.productRepository.findAllFilterProductByUserID(userID, pageable);
     }
     public List<Product> findAllHiddenProductByUserID(Long userID)
     {

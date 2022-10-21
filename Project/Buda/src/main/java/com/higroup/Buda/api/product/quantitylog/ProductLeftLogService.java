@@ -4,14 +4,13 @@ import java.util.List;
 import java.util.Optional;
 
 import com.higroup.Buda.entities.ProductLeftLog;
-import com.higroup.Buda.entities.User;
 import com.higroup.Buda.repositories.ProductLeftLogRepository;
 import com.higroup.Buda.repositories.ProductRepository;
 import com.higroup.Buda.repositories.UserRepository;
 import com.higroup.Buda.repositories.ProductLeftLogRepository.ViewProductLeftLogInfo;
-import com.higroup.Buda.util.Checker.PresentChecker;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -29,9 +28,6 @@ public class ProductLeftLogService {
         this.productLeftLogRepository = productLeftLogRepository;
         this.productRepository = productRepository;
     }
-
-    @Autowired
-    private PresentChecker presentChecker;
 
     public ProductLeftLog findProductLeftLogByProductLeftLogID(Long userID, Long productLeftLogID)
     {
@@ -60,8 +56,8 @@ public class ProductLeftLogService {
     {
         return this.productLeftLogRepository.findAllProductLeftLogByUserID(userID);
     }
-    public List<ViewProductLeftLogInfo> findAllFilterProductLeftLogByUserID(Long userID)
+    public List<ViewProductLeftLogInfo> findAllFilterProductLeftLogByUserID(Long userID, Pageable pageable)
     {
-        return this.productLeftLogRepository.findAllFilterProductLeftLogByUserID(userID);
+        return this.productLeftLogRepository.findAllFilterProductLeftLogByUserID(userID, pageable);
     }
 }

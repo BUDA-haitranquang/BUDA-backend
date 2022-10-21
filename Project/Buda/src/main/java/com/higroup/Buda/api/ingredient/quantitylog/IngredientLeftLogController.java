@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import com.higroup.Buda.util.Checker.RequestUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,10 +49,10 @@ public class IngredientLeftLogController {
         return ResponseEntity.ok().body(this.ingredientLeftLogService.findAllIngredientLeftLogByUserID(userID));
     }
     @GetMapping(path = "/filter-all")
-    public ResponseEntity<?> findAllFilterIngredientLeftLogByUserID(HttpServletRequest httpServletRequest)
+    public ResponseEntity<?> findAllFilterIngredientLeftLogByUserID(HttpServletRequest httpServletRequest, Pageable pageable)
     {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
-        return ResponseEntity.ok().body(this.ingredientLeftLogService.findAllFilterIngredientLeftLogByUserID(userID));
+        return ResponseEntity.ok().body(this.ingredientLeftLogService.findAllFilterIngredientLeftLogByUserID(userID, pageable));
     }
     @GetMapping(path = "staff/{staffID}/all")
     public ResponseEntity<?> findAllIngredientLeftLogByStaffID(HttpServletRequest httpServletRequest, @PathVariable Long staffID)
