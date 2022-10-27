@@ -1,6 +1,8 @@
 package com.higroup.Buda.api.ingredient.view;
 
 
+import com.higroup.Buda.entities.Ingredient;
+import com.higroup.Buda.repositories.IngredientRepository.ViewIngredientInfo;
 import com.higroup.Buda.util.Checker.RequestUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -41,10 +43,10 @@ public class IngredientViewController {
         return ResponseEntity.ok().body(this.ingredientViewService.findAllIngredientByUserID(userID));
     }
     @GetMapping(path = "/filter-all")
-    public ResponseEntity<?> findAllFilterIngredientByCurrentUser(HttpServletRequest httpServletRequest, Pageable pageable)
+    public ResponseEntity<?> findAllFilterIngredientByCurrentUser(HttpServletRequest httpServletRequest, ViewIngredientInfo viewIngredientInfo, Pageable pageable)
     {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
-        return ResponseEntity.ok().body(this.ingredientViewService.findAllFilterIngredientByUserID(userID, pageable));
+        return ResponseEntity.ok().body(this.ingredientViewService.findAllFilterIngredient(userID, viewIngredientInfo, pageable));
     }
     @GetMapping(path = "/hidden/all")
     public ResponseEntity<?> findAllHiddenIngredientByCurrentUser(HttpServletRequest httpServletRequest)
