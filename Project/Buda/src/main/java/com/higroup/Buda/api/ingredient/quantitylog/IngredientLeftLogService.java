@@ -13,6 +13,7 @@ import com.higroup.Buda.repositories.UserRepository;
 import com.higroup.Buda.repositories.IngredientLeftLogRepository.ViewIngredientLeftLogInfo;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -59,8 +60,14 @@ public class IngredientLeftLogService {
     public List<IngredientLeftLog> findAllIngredientLeftLogByUserID(Long userID){
         return this.ingredientLeftLogRepository.findAllIngredientLeftLogByUserID(userID);
     }
-    public List<ViewIngredientLeftLogInfo> findAllFilterIngredientLeftLogByUserID(Long userID, Pageable pageable)
+    public IngredientLeftLogViewDTO findAllFilterIngredientLeftLogByUserID(Long userID, ViewIngredientLeftLogInfo viewIngredientLeftLogInfo, Pageable pageable)
     {
-        return this.ingredientLeftLogRepository.findAllFilterIngredientLeftLogByUserID(userID, pageable);
+        Page<ViewIngredientLeftLogInfo> ingredientLeftLogs = this.ingredientLeftLogRepository.findAllFilterIngredientLeftLogByUserID(
+            userID,
+            viewIngredientLeftLogInfo.getIngredient().getIngredientSKU(), 
+            viewIngredientLeftLogInfo.getIngredient().getName(),
+            viewIngredientLeftLogInfo.getIngredient().getAmountLeft(),
+            pageable);
+        return new IngredientLeftLogViewDTO(ingredientLeftLogs.getTotalElements(), ingredientLeftLogs.toList());
     }
 }

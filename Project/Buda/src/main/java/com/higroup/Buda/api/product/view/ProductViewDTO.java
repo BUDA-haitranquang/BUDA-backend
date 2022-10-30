@@ -1,8 +1,8 @@
-package com.higroup.Buda.api.ingredient.view;
+package com.higroup.Buda.api.product.view;
 
 import java.util.List;
 
-import com.higroup.Buda.repositories.IngredientRepository.ViewIngredientInfo;
+import com.higroup.Buda.repositories.ProductRepository.ViewProductInfo;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,7 +14,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class IngredientViewDTO {
+public class ProductViewDTO {
     private Long count;
-    private List<ViewIngredientInfo> ingredients;
+    private List<ViewProductInfo> products;
 }

@@ -3,8 +3,10 @@ package com.higroup.Buda.repositories;
 import java.util.List;
 import java.util.Optional;
 
+import com.higroup.Buda.entities.Picture;
 import com.higroup.Buda.entities.Product;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -18,16 +20,40 @@ public interface ProductRepository extends JpaRepository<Product, Long>{
         String getProductSKU();
         String getName();
         Double getSellingPrice();
+        Picture getPicture();
         Integer getAmountLeft();
-        Integer AlertAmount();
+        Integer getAlertAmount();
         Double getCostPerUnit();
         String getDescription();
     }
 
     @Query("select p from Product p LEFT JOIN FETCH p.picture pi where p.productID = :productID and p.visible = true")
     Optional<Product> findProductByProductID(Long productID);
-    @Query("select p from Product p LEFT JOIN FETCH p.picture pi where p.userID = :userID and p.visible = true")
-    List<ViewProductInfo> findAllFilterProductByUserID(@Param("userID") Long userID, Pageable pageable);
+
+    @Query(value="select distinct p from Product p "+
+    "left join fetch p.picture pi "+
+    "where p.userID = :userID and p.visible = true "+
+    "and (:productSKU IS NULL or p.productSKU LIKE %:productSKU% )"+
+    "and (:name IS NULL or p.name LIKE %:name% )"+
+    "and (:sellingPrice IS NULL or p.sellingPrice =:sellingPrice )"+
+    "and (:amountLeft IS NULL or p.amountLeft =:amountLeft )"+
+    "and (:alertAmount IS NULL or p.alertAmount =:alertAmount )"+
+    "and (:costPerUnit IS NULL or p.costPerUnit =:costPerUnit )"+
+    "and (:description IS NULL or p.description LIKE %:description% )",
+    countQuery = "select count (distinct p) from Product p "+
+    "left join p.picture pi "+
+    "where p.userID = :userID and p.visible = true "+
+    "and (:productSKU IS NULL or p.productSKU LIKE %:productSKU% )"+
+    "and (:name IS NULL or p.name LIKE %:name% )"+
+    "and (:sellingPrice IS NULL or p.sellingPrice =:sellingPrice )"+
+    "and (:amountLeft IS NULL or p.amountLeft =:amountLeft )"+
+    "and (:alertAmount IS NULL or p.alertAmount =:alertAmount )"+
+    "and (:costPerUnit IS NULL or p.costPerUnit =:costPerUnit )"+
+    "and (:description IS NULL or p.description LIKE %:description% )")
+    Page<ViewProductInfo> findAllFilterProductByUserID(@Param("userID") Long userID, 
+    String productSKU, String name, Double sellingPrice, Integer amountLeft, 
+    Integer alertAmount, Double costPerUnit, String description, Pageable pageable);
+
     @Query("select p from Product p LEFT JOIN FETCH p.picture pi where p.userID = :userID and p.visible = true")
     List<Product> findAllProductByUserID(@Param("userID") Long userID);
     @Query("select p from Product p where p.userID = :userID and p.visible = false")

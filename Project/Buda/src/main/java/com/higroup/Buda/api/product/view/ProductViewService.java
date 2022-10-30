@@ -8,6 +8,7 @@ import com.higroup.Buda.repositories.ProductRepository;
 import com.higroup.Buda.repositories.UserRepository;
 import com.higroup.Buda.repositories.ProductRepository.ViewProductInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -33,9 +34,19 @@ public class ProductViewService {
     {
         return this.productRepository.findAllProductByUserID(userID);
     }
-    public List<ViewProductInfo> findAllFilterProductByUserID(Long userID, Pageable pageable)
+    public ProductViewDTO findAllFilterProductByUserID(Long userID, ViewProductInfo viewProductInfo, Pageable pageable)
     {
-        return this.productRepository.findAllFilterProductByUserID(userID, pageable);
+        Page<ViewProductInfo> products = this.productRepository.findAllFilterProductByUserID(
+        userID,
+        viewProductInfo.getProductSKU(), 
+        viewProductInfo.getName(),
+        viewProductInfo.getSellingPrice(),
+        viewProductInfo.getAmountLeft(),
+        viewProductInfo.getAlertAmount(),
+        viewProductInfo.getCostPerUnit(),
+        viewProductInfo.getDescription(), 
+        pageable);
+        return new ProductViewDTO(products.getTotalElements(), products.toList());
     }
     public List<Product> findAllHiddenProductByUserID(Long userID)
     {
