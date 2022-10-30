@@ -10,6 +10,7 @@ import com.higroup.Buda.repositories.UserRepository;
 import com.higroup.Buda.repositories.ProductLeftLogRepository.ViewProductLeftLogInfo;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -56,8 +57,14 @@ public class ProductLeftLogService {
     {
         return this.productLeftLogRepository.findAllProductLeftLogByUserID(userID);
     }
-    public List<ViewProductLeftLogInfo> findAllFilterProductLeftLogByUserID(Long userID, Pageable pageable)
+    public ProductLeftLogViewDTO findAllFilterProductLeftLogByUserID(Long userID, ViewProductLeftLogInfo viewProductLeftLogInfo, Pageable pageable)
     {
-        return this.productLeftLogRepository.findAllFilterProductLeftLogByUserID(userID, pageable);
+        Page<ViewProductLeftLogInfo> productLeftLogs = this.productLeftLogRepository.findAllFilterproductLeftLogByUserID(
+            userID,
+            viewProductLeftLogInfo.getProduct().getProductSKU(), 
+            viewProductLeftLogInfo.getProduct().getName(),
+            viewProductLeftLogInfo.getProduct().getAmountLeft(),
+            pageable);
+        return new ProductLeftLogViewDTO(productLeftLogs.getTotalElements(), productLeftLogs.toList());
     }
 }

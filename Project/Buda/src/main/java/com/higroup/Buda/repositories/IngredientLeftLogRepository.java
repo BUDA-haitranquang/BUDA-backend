@@ -4,8 +4,10 @@ import java.util.List;
 import java.util.Optional;
 
 import com.higroup.Buda.entities.IngredientLeftLog;
+import com.higroup.Buda.entities.Picture;
 import com.higroup.Buda.entities.Ingredient;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -28,9 +30,10 @@ public interface IngredientLeftLogRepository extends JpaRepository<IngredientLef
         interface Ingredient{
             Long getUserID();
             Long getIngredientID();
+            Picture getPicture();
             String getIngredientSKU();
             String getName();
-            String getAmountLeft();
+            Integer getAmountLeft();
         }
         
     }
@@ -43,13 +46,25 @@ public interface IngredientLeftLogRepository extends JpaRepository<IngredientLef
     " LEFT JOIN FETCH ii.picture" + 
     " where i.userID = :userID and i.staffID = :staffID")
     List<IngredientLeftLog> findAllIngredientLeftLogByStaffID(@Param("userID") Long userID, @Param("staffID") Long staffID);
+
+    @Query(value = "select i from IngredientLeftLog i "+ " LEFT JOIN FETCH i.ingredient ii " + 
+    " LEFT JOIN FETCH ii.picture " + 
+    " where i.userID = :userID " +
+    " and (:ingredientSKU IS NULL or ii.ingredientSKU LIKE %:ingredientSKU% )" +
+    " and (:name IS NULL or ii.name LIKE %:name% )" +
+    " and (:amountLeft IS NULL or ii.amountLeft LIKE %:amountLeft% )", 
+    countQuery = "select count (distinct i) from IngredientLeftLog i "  + " LEFT JOIN i.ingredient ii " + 
+    " LEFT JOIN ii.picture " + 
+    " where i.userID = :userID " +
+    " and (:ingredientSKU IS NULL or ii.ingredientSKU LIKE %:ingredientSKU% )" +
+    " and (:name IS NULL or ii.name LIKE %:name% )" +
+    " and (:amountLeft IS NULL or ii.amountLeft LIKE %:amountLeft% )")
+    Page<ViewIngredientLeftLogInfo> findAllFilterIngredientLeftLogByUserID(Long userID, 
+    String ingredientSKU, String name, Integer amountLeft, Pageable pageable);
+
     @Query(value = "select i from IngredientLeftLog i " + " LEFT JOIN FETCH i.ingredient ii" + 
     " LEFT JOIN FETCH ii.picture" + 
-    " where i.userID = :userID")
-    List<ViewIngredientLeftLogInfo> findAllFilterIngredientLeftLogByUserID(Long userID, Pageable pageable);
-    @Query(value = "select i from IngredientLeftLog i " + " LEFT JOIN FETCH i.ingredient ii" + 
-    " LEFT JOIN FETCH ii.picture" + 
-    " where i.userID = :userID")
+    " where i.userID = :userID") 
     List<IngredientLeftLog> findAllIngredientLeftLogByUserID(Long userID);
     @Query(value = "select i from IngredientLeftLog i " + " LEFT JOIN FETCH i.ingredient ii" + 
     " LEFT JOIN FETCH ii.picture" + 

@@ -53,7 +53,6 @@ public interface ViewBuyOrderRepository extends PagingAndSortingRepository<BuyOr
         " and b.creationTime>= :from"+
         " and b.creationTime<= :to")
         Long countBuyOrderInPeriod(Long userID, ZonedDateTime from, ZonedDateTime to);
-
         @Query(value = "select distinct b from BuyOrder b" +
         " LEFT JOIN FETCH b.buyOrderItems bo" +
         " LEFT JOIN FETCH bo.ingredient ingr " +

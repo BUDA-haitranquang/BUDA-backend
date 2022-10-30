@@ -2,6 +2,7 @@ package com.higroup.Buda.api.product.quantitylog;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.higroup.Buda.repositories.ProductLeftLogRepository.ViewProductLeftLogInfo;
 import com.higroup.Buda.util.Checker.RequestUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,10 +50,10 @@ public class ProductLeftLogController {
         return ResponseEntity.ok().body(this.productLeftLogService.findAllProductLeftLogByUserID(userID));
     }
     @GetMapping(path = "/filter-all")
-    public ResponseEntity<?> findAllFilterProductLeftLogByUserID(HttpServletRequest httpServletRequest, Pageable pageable)
+    public ResponseEntity<?> findAllFilterProductLeftLogByUserID(HttpServletRequest httpServletRequest, ViewProductLeftLogInfo viewProductLeftLogInfo, Pageable pageable)
     {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
-        return ResponseEntity.ok().body(this.productLeftLogService.findAllFilterProductLeftLogByUserID(userID, pageable));
+        return ResponseEntity.ok().body(this.productLeftLogService.findAllFilterProductLeftLogByUserID(userID, viewProductLeftLogInfo, pageable));
     }
     @GetMapping(path = "staff/{staffID}/all")
     public ResponseEntity<?> findAllProductLeftLogByStaffID(HttpServletRequest httpServletRequest, @PathVariable Long staffID)

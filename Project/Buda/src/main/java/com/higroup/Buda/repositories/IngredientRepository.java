@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Optional;
 
 import com.higroup.Buda.entities.Ingredient;
+import com.higroup.Buda.entities.Picture;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -19,13 +21,36 @@ public interface IngredientRepository extends JpaRepository<Ingredient, Long> {
         Double getPrice();
         Integer getAmountLeft();
         Integer getAlertAmountLeft();
+        Picture getPicture();
         String getDescription();
     }
 
     @Query("select i from Ingredient i left join fetch i.picture p where i.visible = true and i.ingredientID = :ingredientID")
     Optional<Ingredient> findIngredientByIngredientID(Long ingredientID);
-    @Query(value="select i from Ingredient i left join fetch i.picture p where i.userID = :userID and i.visible = true")  
-    List<ViewIngredientInfo> findAllFilterIngredientByUserID(@Param("userID") Long userID, Pageable pageable);
+
+    @Query(value="select distinct i from Ingredient i "+
+    "left join fetch i.picture p "+
+    "where i.userID = :userID and i.visible = true "+
+    "and (:ingredientSKU IS NULL or i.ingredientSKU LIKE %:ingredientSKU% )"+
+    "and (:name IS NULL or i.name LIKE %:name% )"+
+    "and (:price IS NULL or i.price =:price )"+
+    "and (:amountLeft IS NULL or i.amountLeft =:amountLeft )"+
+    "and (:alertAmountLeft IS NULL or i.alertAmountLeft =:alertAmountLeft )"+
+    "and (:description IS NULL or i.description LIKE %:description% )",
+    countQuery = "select count (distinct i) from Ingredient i " + 
+    "left join i.picture p " + 
+    "where i.userID = :userID " +
+    "and (i.visible = true ) "+
+    "and (:ingredientSKU IS NULL or i.ingredientSKU LIKE %:ingredientSKU% )"+
+    "and (:name IS NULL or i.name LIKE %:name% )"+
+    "and (:price IS NULL or i.price =:price )"+
+    "and (:amountLeft IS NULL or i.amountLeft = :amountLeft )"+
+    "and (:alertAmountLeft IS NULL or i.alertAmountLeft = :alertAmountLeft )"+
+    "and (:description IS NULL or i.description LIKE %:description% )")
+    Page<ViewIngredientInfo> findAllFilterIngredient(Long userID, 
+    String ingredientSKU, String name, Double price, Integer amountLeft,
+    Integer alertAmountLeft, String description, Pageable pageable);
+
     @Query("select i from Ingredient i left join fetch i.picture p where i.userID = :userID and i.visible = true")  
     List<Ingredient> findAllIngredientByUserID(@Param("userID") Long userID);
     @Query("select i from Ingredient i where i.userID = :userID and i.visible = false")
