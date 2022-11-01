@@ -57,13 +57,13 @@ public class ProductLeftLogService {
     {
         return this.productLeftLogRepository.findAllProductLeftLogByUserID(userID);
     }
-    public ProductLeftLogViewDTO findAllFilterProductLeftLogByUserID(Long userID, ViewProductLeftLogInfo viewProductLeftLogInfo, Pageable pageable)
+    public ProductLeftLogViewDTO findAllFilterProductLeftLogByUserID(Long userID, ViewProductLeftLogFilter viewProductLeftLogFilter, Pageable pageable)
     {
         Page<ViewProductLeftLogInfo> productLeftLogs = this.productLeftLogRepository.findAllFilterproductLeftLogByUserID(
             userID,
-            viewProductLeftLogInfo.getProduct().getProductSKU(), 
-            viewProductLeftLogInfo.getProduct().getName(),
-            viewProductLeftLogInfo.getProduct().getAmountLeft(),
+            viewProductLeftLogFilter.getProductSKU(), 
+            viewProductLeftLogFilter.getName(),
+            viewProductLeftLogFilter.getAmountLeft(),
             pageable);
         return new ProductLeftLogViewDTO(productLeftLogs.getTotalElements(), productLeftLogs.toList());
     }

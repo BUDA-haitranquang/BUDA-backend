@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -50,10 +51,10 @@ public class IngredientLeftLogController {
         return ResponseEntity.ok().body(this.ingredientLeftLogService.findAllIngredientLeftLogByUserID(userID));
     }
     @GetMapping(path = "/filter-all")
-    public ResponseEntity<?> findAllFilterIngredientLeftLogByUserID(HttpServletRequest httpServletRequest, ViewIngredientLeftLogInfo viewIngredientLeftLogInfo, Pageable pageable)
+    public ResponseEntity<?> findAllFilterIngredientLeftLogByUserID(HttpServletRequest httpServletRequest, @RequestBody ViewIngredientLeftLogFilter viewIngredientLeftLogFilter, Pageable pageable)
     {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
-        return ResponseEntity.ok().body(this.ingredientLeftLogService.findAllFilterIngredientLeftLogByUserID(userID, viewIngredientLeftLogInfo, pageable));
+        return ResponseEntity.ok().body(this.ingredientLeftLogService.findAllFilterIngredientLeftLogByUserID(userID, viewIngredientLeftLogFilter, pageable));
     }
     @GetMapping(path = "staff/{staffID}/all")
     public ResponseEntity<?> findAllIngredientLeftLogByStaffID(HttpServletRequest httpServletRequest, @PathVariable Long staffID)
