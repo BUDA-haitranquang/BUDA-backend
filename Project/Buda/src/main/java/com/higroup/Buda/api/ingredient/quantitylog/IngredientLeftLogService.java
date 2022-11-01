@@ -67,7 +67,5 @@ public class IngredientLeftLogService {
             viewIngredientLeftLogFilter.getIngredientSKU(), 
             viewIngredientLeftLogFilter.getName(),
             viewIngredientLeftLogFilter.getAmountLeft(),
-            pageable);
-        return new IngredientLeftLogViewDTO(ingredientLeftLogs.getTotalElements(), ingredientLeftLogs.toList());
+        return new IngredientLeftLogViewDTO(ingredientLeftLogs.getTotalElements(), ingredientLeftLogs.toList());    
     }
-}
