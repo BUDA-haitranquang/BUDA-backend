@@ -50,7 +50,7 @@ public interface ProductRepository extends JpaRepository<Product, Long>{
     "and (:alertAmount IS NULL or p.alertAmount =:alertAmount )"+
     "and (:costPerUnit IS NULL or p.costPerUnit =:costPerUnit )"+
     "and (:description IS NULL or p.description LIKE %:description% )")
-    Page<ViewProductInfo> findAllFilterProductByUserID(@Param("userID") Long userID, 
+    Page<ViewProductInfo> findAllFilterProductByUserID(Long userID, 
     String productSKU, String name, Double sellingPrice, Integer amountLeft, 
     Integer alertAmount, Double costPerUnit, String description, Pageable pageable);
 

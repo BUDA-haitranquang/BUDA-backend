@@ -70,7 +70,7 @@ public interface IngredientLeftLogRepository extends JpaRepository<IngredientLef
     " LEFT JOIN FETCH ii.picture" + 
     " where i.userID = :userID" +
     " and i.ingredient = :ingredient")
-    List<IngredientLeftLog> findAllIngredientLeftLogByIngredient(@Param("userID") Long userID, Ingredient ingredient);
+    List<IngredientLeftLog> findAllIngredientLeftLogByIngredient(Long userID, Ingredient ingredient);
 
 
     @Query(value = "select i.ingredient_id, -sum(i.amount_left_change) as amount from ingredient_left_log i "
