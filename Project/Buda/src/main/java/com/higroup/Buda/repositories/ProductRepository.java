@@ -28,7 +28,7 @@ public interface ProductRepository extends JpaRepository<Product, Long>{
     }
 
     @Query("select p from Product p LEFT JOIN FETCH p.picture pi where p.productID = :productID and p.visible = true")
-    Optional<Product> findProductByProductID(Long productID);
+    Optional<Product> findProductByProductID(@Param("productID") Long productID);
 
     @Query(value="select distinct p from Product p "+
     "left join fetch p.picture pi "+
@@ -50,9 +50,11 @@ public interface ProductRepository extends JpaRepository<Product, Long>{
     "and (:alertAmount IS NULL or p.alertAmount =:alertAmount )"+
     "and (:costPerUnit IS NULL or p.costPerUnit =:costPerUnit )"+
     "and (:description IS NULL or p.description LIKE %:description% )")
-    Page<ViewProductInfo> findAllFilterProductByUserID(Long userID, 
-    String productSKU, String name, Double sellingPrice, Integer amountLeft, 
-    Integer alertAmount, Double costPerUnit, String description, Pageable pageable);
+    Page<ViewProductInfo> findAllFilterProductByUserID(@Param("userID") Long userID, 
+    @Param("productSKU") String productSKU, @Param("name") String name, 
+    @Param("sellingPrice") Double sellingPrice, @Param("amountLeft") Integer amountLeft, 
+    @Param("alertAmount") Integer alertAmount, @Param("costPerUnit") Double costPerUnit,
+    @Param("description") String description, Pageable pageable);
 
     @Query("select p from Product p LEFT JOIN FETCH p.picture pi where p.userID = :userID and p.visible = true")
     List<Product> findAllProductByUserID(@Param("userID") Long userID);

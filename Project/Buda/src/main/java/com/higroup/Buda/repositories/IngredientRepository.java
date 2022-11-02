@@ -26,7 +26,7 @@ public interface IngredientRepository extends JpaRepository<Ingredient, Long> {
     }
 
     @Query("select i from Ingredient i left join fetch i.picture p where i.visible = true and i.ingredientID = :ingredientID")
-    Optional<Ingredient> findIngredientByIngredientID(Long ingredientID);
+    Optional<Ingredient> findIngredientByIngredientID(@Param("ingredientID") Long ingredientID);
 
     @Query(value="select distinct i from Ingredient i "+
     "left join fetch i.picture p "+
@@ -47,9 +47,11 @@ public interface IngredientRepository extends JpaRepository<Ingredient, Long> {
     "and (:amountLeft IS NULL or i.amountLeft = :amountLeft )"+
     "and (:alertAmountLeft IS NULL or i.alertAmountLeft = :alertAmountLeft )"+
     "and (:description IS NULL or i.description LIKE %:description% )")
-    Page<ViewIngredientInfo> findAllFilterIngredient(Long userID, 
-    String ingredientSKU, String name, Double price, Integer amountLeft,
-    Integer alertAmountLeft, String description, Pageable pageable);
+    Page<ViewIngredientInfo> findAllFilterIngredient(@Param("userID") Long userID, 
+    @Param("ingredientSKU") String ingredientSKU, @Param("name") String name, 
+    @Param("price") Double price, @Param("amountLeft") Integer amountLeft,
+    @Param("alertAmountLeft") Integer alertAmountLeft, 
+    @Param("description") String description, Pageable pageable);
 
     @Query("select i from Ingredient i left join fetch i.picture p where i.userID = :userID and i.visible = true")  
     List<Ingredient> findAllIngredientByUserID(@Param("userID") Long userID);
