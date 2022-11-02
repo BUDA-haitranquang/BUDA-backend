@@ -60,14 +60,12 @@ public class IngredientLeftLogService {
     public List<IngredientLeftLog> findAllIngredientLeftLogByUserID(Long userID){
         return this.ingredientLeftLogRepository.findAllIngredientLeftLogByUserID(userID);
     }
-    public IngredientLeftLogViewDTO findAllFilterIngredientLeftLogByUserID(Long userID, ViewIngredientLeftLogInfo viewIngredientLeftLogInfo, Pageable pageable)
+    public IngredientLeftLogViewDTO findAllFilterIngredientLeftLogByUserID(Long userID, ViewIngredientLeftLogFilter viewIngredientLeftLogFilter, Pageable pageable)
     {
         Page<ViewIngredientLeftLogInfo> ingredientLeftLogs = this.ingredientLeftLogRepository.findAllFilterIngredientLeftLogByUserID(
             userID,
-            viewIngredientLeftLogInfo.getIngredient().getIngredientSKU(), 
-            viewIngredientLeftLogInfo.getIngredient().getName(),
-            viewIngredientLeftLogInfo.getIngredient().getAmountLeft(),
-            pageable);
-        return new IngredientLeftLogViewDTO(ingredientLeftLogs.getTotalElements(), ingredientLeftLogs.toList());
+            viewIngredientLeftLogFilter.getIngredientSKU(), 
+            viewIngredientLeftLogFilter.getName(),
+            viewIngredientLeftLogFilter.getAmountLeft(),
+        return new IngredientLeftLogViewDTO(ingredientLeftLogs.getTotalElements(), ingredientLeftLogs.toList());    
     }
-}
