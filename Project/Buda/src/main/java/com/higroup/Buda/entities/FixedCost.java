@@ -53,22 +53,6 @@ public class FixedCost {
     private Set<FixedCostBill> fixedCostBills;
 
     @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof FixedCost)) {
-            return false;
-        }
-        FixedCost fixedCost = (FixedCost) o;
-        return Objects.equals(fixedCostID, fixedCost.fixedCostID)
-                && Objects.equals(name, fixedCost.name)
-                && Objects.equals(description, fixedCost.description)
-                && moneyAmount == fixedCost.moneyAmount
-                && period == fixedCost.period
-                && Objects.equals(userID, fixedCost.userID);
-    }
-
-    @Override
     public int hashCode() {
         return Objects.hash(fixedCostID);
     }

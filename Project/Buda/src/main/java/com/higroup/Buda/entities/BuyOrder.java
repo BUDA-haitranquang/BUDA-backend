@@ -56,22 +56,6 @@ public class BuyOrder {
     @Column(name = "text_id")
     private String textID = RandomIDGenerator.randomIDString();
     private String description;
-    @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof BuyOrder)) {
-            return false;
-        }
-        BuyOrder buyOrder = (BuyOrder) o;
-        return Objects.equals(buyOrderID, buyOrder.buyOrderID)
-                && Objects.equals(supplier, buyOrder.supplier)
-                && Objects.equals(creationTime, buyOrder.creationTime)
-                && Objects.equals(status, buyOrder.status)
-                && totalCost == buyOrder.totalCost
-                && Objects.equals(userID, buyOrder.userID)
-                && Objects.equals(buyOrderItems, buyOrder.buyOrderItems);
-    }
 
     @Override
     public int hashCode() {

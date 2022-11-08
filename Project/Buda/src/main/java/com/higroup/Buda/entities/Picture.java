@@ -68,17 +68,6 @@ public class Picture {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof Picture)) {
-            return false;
-        }
-        Picture picture = (Picture) o;
-        return Objects.equals(pictureID, picture.pictureID) && Objects.equals(pictureLink, picture.pictureLink);
-    }
-
-    @Override
     public int hashCode() {
         return Objects.hash(pictureID, pictureLink);
     }

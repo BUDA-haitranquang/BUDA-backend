@@ -57,40 +57,6 @@ public class ProductCombo {
         return result;
     }
 
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        ProductCombo other = (ProductCombo) obj;
-        if (description == null) {
-            if (other.description != null)
-                return false;
-        } else if (!description.equals(other.description))
-            return false;
-        if (name == null) {
-            if (other.name != null)
-                return false;
-        } else if (!name.equals(other.name))
-            return false;
-        if (productComboID == null) {
-            if (other.productComboID != null)
-                return false;
-        } else if (!productComboID.equals(other.productComboID))
-            return false;
-        if (userID == null) {
-            if (other.userID != null)
-                return false;
-        } else if (!userID.equals(other.userID))
-            return false;
-        return true;
-    }
-
-
     @Override
     public String toString() {
         return "ProductCombo [description=" + description + ", name=" + name + ", productComboID=" + productComboID

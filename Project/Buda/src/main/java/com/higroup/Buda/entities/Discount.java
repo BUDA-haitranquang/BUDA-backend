@@ -70,17 +70,6 @@ public class Discount {
     private DiscountType discountType;
 
     @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof Discount)) {
-            return false;
-        }
-        Discount discount = (Discount) o;
-        return Objects.equals(discountID, discount.discountID) && Objects.equals(name, discount.name) && Objects.equals(description, discount.description) && cash == discount.cash && percentage == discount.percentage && cashLimit == discount.cashLimit && orderCount == discount.orderCount && Objects.equals(expiryTime, discount.expiryTime) && Objects.equals(createdTime, discount.createdTime) && Objects.equals(userID, discount.userID);
-    }
-
-    @Override
     public int hashCode() {
         return Objects.hash(discountID);
     }

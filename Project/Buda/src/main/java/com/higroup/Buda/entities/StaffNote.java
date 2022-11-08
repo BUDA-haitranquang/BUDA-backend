@@ -43,17 +43,6 @@ public class StaffNote {
     private Boolean seen = Boolean.FALSE;
 
     @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof StaffNote)) {
-            return false;
-        }
-        StaffNote staffNote = (StaffNote) o;
-        return Objects.equals(staffNoteID, staffNote.staffNoteID) && Objects.equals(userID, staffNote.userID) && Objects.equals(staffID, staffNote.staffID) && Objects.equals(noteDate, staffNote.noteDate) && Objects.equals(message, staffNote.message) && Objects.equals(seen, staffNote.seen);
-    }
-
-    @Override
     public int hashCode() {
         return Objects.hash(staffNoteID, userID, staffID, noteDate, message, seen);
     }

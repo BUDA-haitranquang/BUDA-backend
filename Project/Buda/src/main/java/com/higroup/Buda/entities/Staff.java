@@ -76,17 +76,6 @@ public class Staff {
     private Boolean enabled = Boolean.TRUE;
 
     @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof Staff)) {
-            return false;
-        }
-        Staff staff = (Staff) o;
-        return Objects.equals(staffID, staff.staffID) && Objects.equals(name, staff.name) && Objects.equals(phoneNumber, staff.phoneNumber) && Objects.equals(password, staff.password) && Objects.equals(address, staff.address) && Objects.equals(userID, staff.userID) && Objects.equals(staffPosition, staff.staffPosition) && Objects.equals(staffUUID, staff.staffUUID) && salary == staff.salary;
-    }
-
-    @Override
     public int hashCode() {
         return Objects.hash(staffID, name, phoneNumber, password, address, userID, staffPosition, staffUUID, salary);
     }

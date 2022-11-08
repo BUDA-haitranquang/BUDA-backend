@@ -64,17 +64,6 @@ public class SellOrderItem {
 
 
     @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof SellOrderItem)) {
-            return false;
-        }
-        SellOrderItem sellOrderItem = (SellOrderItem) o;
-        return quantity == sellOrderItem.quantity && pricePerUnit == sellOrderItem.pricePerUnit && Objects.equals(userID, sellOrderItem.userID) && Objects.equals(creationTime, sellOrderItem.creationTime) && Objects.equals(gender, sellOrderItem.gender) && Objects.equals(ageGroup, sellOrderItem.ageGroup) && actualTotalSale == sellOrderItem.actualTotalSale && costPerUnit == sellOrderItem.costPerUnit;
-    }
-
-    @Override
     public int hashCode() {
         return 5;
     }

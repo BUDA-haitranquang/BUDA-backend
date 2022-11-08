@@ -66,25 +66,6 @@ public class Customer{
     private Set<SellOrder> sellOrders;
 
     @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof Customer)) {
-            return false;
-        }
-        Customer customer = (Customer) o;
-        return Objects.equals(customerID, customer.customerID)
-                && Objects.equals(ageGroup, customer.ageGroup)
-                && Objects.equals(gender, customer.gender)
-                && Objects.equals(totalSpend, customer.totalSpend)
-                && Objects.equals(membershipID, customer.membershipID)
-                && Objects.equals(name, customer.name)
-//                && Objects.equals(address, customer.address)
-                && Objects.equals(phoneNumber, customer.phoneNumber)
-                && Objects.equals(userID, customer.userID);
-    }
-
-    @Override
     public int hashCode() {
         return Objects.hash(customerID);
     }

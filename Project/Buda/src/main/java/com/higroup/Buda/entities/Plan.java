@@ -53,23 +53,10 @@ public class Plan {
     @Enumerated(EnumType.STRING)
     private PlanType planType;
 
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof Plan)) {
-            return false;
-        }
-        Plan plan = (Plan) o;
-        return Objects.equals(planID, plan.planID) && Objects.equals(purchases, plan.purchases) && Objects.equals(name, plan.name) && price == plan.price && duration == plan.duration && Objects.equals(pictureID, plan.pictureID);
-    }
-
     @Override
     public int hashCode() {
         return Objects.hash(planID, purchases, name, price, duration, pictureID);
     }
-    
 
     @Override
     public String toString() {

@@ -103,24 +103,6 @@ public class Product {
     @JsonManagedReference
     private Set<ProductComboItem> productComboItems;
     private Long warrantyPeriod;
-    @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof Product)) {
-            return false;
-        }
-        Product product = (Product) o;
-        return Objects.equals(productID, product.productID)
-                && Objects.equals(name, product.name)
-                && Objects.equals(description, product.description)
-                && Objects.equals(userID, product.userID)
-                && Objects.equals(sellingPrice, product.sellingPrice)
-                && Objects.equals(alertAmount, product.alertAmount)
-                && Objects.equals(amountLeft, product.amountLeft)
-                && Objects.equals(costPerUnit, product.costPerUnit)
-                && Objects.equals(warrantyPeriod, product.warrantyPeriod);
-    }
     
     @Override
     public int hashCode() {

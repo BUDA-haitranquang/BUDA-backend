@@ -55,18 +55,6 @@ public class Purchase {
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private Status status = Status.PREPARING;
-    
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof Purchase)) {
-            return false;
-        }
-        Purchase purchase = (Purchase) o;
-        return Objects.equals(purchaseID, purchase.purchaseID) && Objects.equals(user, purchase.user) && Objects.equals(plan, purchase.plan) && Objects.equals(creationTime, purchase.creationTime) && Objects.equals(expiryDate, purchase.expiryDate) && Objects.equals(message, purchase.message) && totalCost == purchase.totalCost;
-    }
 
     @Override
     public int hashCode() {

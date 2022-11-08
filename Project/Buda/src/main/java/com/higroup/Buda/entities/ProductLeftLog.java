@@ -57,17 +57,6 @@ public class ProductLeftLog {
     private LeftLogType leftLogType;
 
     @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof ProductLeftLog)) {
-            return false;
-        }
-        ProductLeftLog productLeftLog = (ProductLeftLog) o;
-        return Objects.equals(productLeftLogID, productLeftLog.productLeftLogID) && Objects.equals(product, productLeftLog.product) && amountLeftChange == productLeftLog.amountLeftChange && Objects.equals(creationTime, productLeftLog.creationTime) && Objects.equals(staffID, productLeftLog.staffID) && Objects.equals(message, productLeftLog.message) && Objects.equals(userID, productLeftLog.userID);
-    }
-
-    @Override
     public int hashCode() {
         return Objects.hash(productLeftLogID, product, amountLeftChange, creationTime, staffID, message, userID);
     }

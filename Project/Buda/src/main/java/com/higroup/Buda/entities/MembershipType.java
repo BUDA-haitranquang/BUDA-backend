@@ -45,17 +45,6 @@ public class MembershipType {
     private Double minimumSpend;
 
     @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof MembershipType)) {
-            return false;
-        }
-        MembershipType membershipType = (MembershipType) o;
-        return Objects.equals(membershipTypeID, membershipType.membershipTypeID) && Objects.equals(membershipName, membershipType.membershipName) && Objects.equals(description, membershipType.description) && Objects.equals(userID, membershipType.userID) && Objects.equals(discount, membershipType.discount) && minimumSpend == membershipType.minimumSpend;
-    }
-
-    @Override
     public int hashCode() {
         return Objects.hash(membershipTypeID, membershipName, description, userID, discount, minimumSpend);
     }

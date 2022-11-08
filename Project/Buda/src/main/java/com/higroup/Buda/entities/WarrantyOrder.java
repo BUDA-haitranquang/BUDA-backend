@@ -65,36 +65,7 @@ public class WarrantyOrder {
         result = prime * result + ((warrantyOrderID == null) ? 0 : warrantyOrderID.hashCode());
         return result;
     }
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        WarrantyOrder other = (WarrantyOrder) obj;
-        if (creationTime == null) {
-            if (other.creationTime != null)
-                return false;
-        } else if (!creationTime.equals(other.creationTime))
-            return false;
-        if (customerMessage == null) {
-            if (other.customerMessage != null)
-                return false;
-        } else if (!customerMessage.equals(other.customerMessage))
-            return false;
-//        if (status != other.status)
-//            return false;
-        if (userID == null) {
-            if (other.userID != null)
-                return false;
-        } else if (!userID.equals(other.userID))
-            return false;
-        if (warrantyOrderID == null) {
-            return other.warrantyOrderID == null;
-        } else return warrantyOrderID.equals(other.warrantyOrderID);
-    }
+
     @Override
     public String toString() {
         return "WarrantyOrder [creationTime=" + creationTime + ", customerMessage=" + customerMessage + ", status="

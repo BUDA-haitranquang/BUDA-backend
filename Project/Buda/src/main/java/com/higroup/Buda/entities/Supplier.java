@@ -44,18 +44,6 @@ public class Supplier {
     @Column(name = "visible", columnDefinition = "boolean default true", nullable = false)
     private Boolean visible = Boolean.TRUE;
 
-   
-    @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof Supplier)) {
-            return false;
-        }
-        Supplier supplier = (Supplier) o;
-        return Objects.equals(supplierID, supplier.supplierID) && Objects.equals(email, supplier.email) && Objects.equals(pictureID, supplier.pictureID) && Objects.equals(name, supplier.name) && Objects.equals(address, supplier.address) && Objects.equals(phoneNumber, supplier.phoneNumber) && Objects.equals(userID, supplier.userID);
-    }
-
     @Override
     public int hashCode() {
         return Objects.hash(supplierID);

@@ -38,17 +38,6 @@ public class SalaryLog {
     private Long userID;
 
     @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof SalaryLog)) {
-            return false;
-        }
-        SalaryLog salaryLog = (SalaryLog) o;
-        return Objects.equals(salaryLogID, salaryLog.salaryLogID) && Objects.equals(staffID, salaryLog.staffID) && salary == salaryLog.salary && Objects.equals(creationTime, salaryLog.creationTime) && Objects.equals(userID, salaryLog.userID);
-    }
-
-    @Override
     public int hashCode() {
         return Objects.hash(salaryLogID, staffID, salary, creationTime, userID);
     }

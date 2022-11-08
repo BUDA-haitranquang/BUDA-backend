@@ -54,25 +54,6 @@ public class FixedCostBill {
     @Enumerated(EnumType.STRING)
     private Status status = Status.PREPARING;
 
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof FixedCostBill)) {
-            return false;
-        }
-        FixedCostBill fixedCostBill = (FixedCostBill) o;
-        return Objects.equals(fixedCostBillID, fixedCostBill.fixedCostBillID)
-//                && Objects.equals(fixedCost, fixedCostBill.fixedCost)
-                && Objects.equals(userID, fixedCostBill.userID)
-                && totalSpend == fixedCostBill.totalSpend
-                && Objects.equals(message, fixedCostBill.message)
-                && Objects.equals(creationTime, fixedCostBill.creationTime)
-                && Objects.equals(dueTime, fixedCostBill.dueTime)
-                && Objects.equals(status, fixedCostBill.status);
-    }
-
     @Override
     public int hashCode() {
 //        return Objects.hash(fixedCostBillID, fixedCost, userID, totalSpend, message, creationTime, dueTime, status);

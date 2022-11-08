@@ -42,17 +42,6 @@ public class ProductGroup {
     private Set<Product> products;
 
     @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof ProductGroup)) {
-            return false;
-        }
-        ProductGroup productGroup = (ProductGroup) o;
-        return Objects.equals(productGroupID, productGroup.productGroupID) && Objects.equals(name, productGroup.name) && Objects.equals(userID, productGroup.userID) && Objects.equals(products, productGroup.products);
-    }
-
-    @Override
     public int hashCode() {
         return Objects.hash(productGroupID, name, userID, products);
     }

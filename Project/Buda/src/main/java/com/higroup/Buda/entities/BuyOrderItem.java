@@ -53,24 +53,6 @@ public class BuyOrderItem {
     private Long supplierID;
 
     @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof BuyOrderItem)) {
-            return false;
-        }
-        BuyOrderItem buyOrderItem = (BuyOrderItem) o;
-        return Objects.equals(buyOrderItemID, buyOrderItem.buyOrderItemID) 
-        // && Objects.equals(buyOrder, buyOrderItem.buyOrder) 
-        // && Objects.equals(ingredient, buyOrderItem.ingredient) 
-        && quantity == buyOrderItem.quantity 
-        && pricePerUnit == buyOrderItem.pricePerUnit 
-        && Objects.equals(creationTime, buyOrderItem.creationTime) 
-        && Objects.equals(userID, buyOrderItem.userID) 
-        && Objects.equals(supplierID, buyOrderItem.supplierID);
-    }
-
-    @Override
     public int hashCode() {
         //remove from hashCode: buyOrder, ingredient
         return Objects.hash(buyOrderItemID, quantity, pricePerUnit, creationTime, userID, supplierID);

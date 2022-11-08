@@ -56,23 +56,6 @@ public class IngredientLeftLog {
     private LeftLogType leftLogType;
 
     @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof IngredientLeftLog)) {
-            return false;
-        }
-        IngredientLeftLog ingredientLeftLog = (IngredientLeftLog) o;
-        return Objects.equals(ingredientLeftLogID, ingredientLeftLog.ingredientLeftLogID)
-                // && Objects.equals(ingredient, ingredientLeftLog.ingredient)
-                && amountLeftChange == ingredientLeftLog.amountLeftChange
-                && Objects.equals(creationTime, ingredientLeftLog.creationTime)
-                && Objects.equals(staffID, ingredientLeftLog.staffID)
-                && Objects.equals(message, ingredientLeftLog.message)
-                && Objects.equals(userID, ingredientLeftLog.userID);
-    }
-
-    @Override
     public int hashCode() {
         return Objects.hash(ingredientLeftLogID, amountLeftChange, creationTime, staffID, message, userID);
     }
