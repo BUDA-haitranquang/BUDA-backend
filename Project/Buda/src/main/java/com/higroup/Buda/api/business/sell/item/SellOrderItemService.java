@@ -26,6 +26,7 @@ public class SellOrderItemService {
     private final SellOrderItemRepository sellOrderItemRepository;
     private final SellOrderRepository sellOrderRepository;
     private final ProductRepository productRepository;
+    
     @Autowired
     public SellOrderItemService(SellOrderItemRepository sellOrderItemRepository, SellOrderRepository sellOrderRepository, ProductRepository productRepository)
     {
@@ -46,23 +47,9 @@ public class SellOrderItemService {
         }
         throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized");
     }
-    // @Transactional
-    // public SellOrderItem updateSellOrderItem(Long userID, SellOrderItem sellOrderItem)
-    // {
-    //     presentChecker.checkIdAndRepository(sellOrderItem.getSellOrderItemID(), this.sellOrderItemRepository);
-    //     if (sellOrderItem.getUserID().equals(userID))
-    //     {
-    //         this.sellOrderItemRepository.save(sellOrderItem);
-    //     }
-    //     else{
-    //         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "UserID does not match");
-    //     }
-    //     return sellOrderItem;
-    // }
 
     @Transactional
     public SellOrderItem updateSellOrderItem(Long userID, Long sellOrderItemID,  SellOrderItem sellOrderItem) throws IllegalAccessException, InvocationTargetException{
-//        presentChecker.checkIdAndRepository(sellOrderItem.getSellOrderItemID(), this.sellOrderItemRepository);
         
         SellOrderItem exist_sellOrderItem = this.sellOrderItemRepository.findById(sellOrderItemID).get();
         if(exist_sellOrderItem == null)

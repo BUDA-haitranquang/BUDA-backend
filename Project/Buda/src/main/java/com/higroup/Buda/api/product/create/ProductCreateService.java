@@ -1,31 +1,24 @@
 package com.higroup.Buda.api.product.create;
 
-import com.higroup.Buda.entities.Product;
-import com.higroup.Buda.entities.User;
-import com.higroup.Buda.repositories.ProductRepository;
-import com.higroup.Buda.repositories.UserRepository;
-import com.higroup.Buda.util.RandomID.RandomIDGenerator;
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Optional;
-import java.util.UUID;
-
-import javax.transaction.Transactional;
+import com.higroup.Buda.entities.Product;
+import com.higroup.Buda.repositories.ProductRepository;
 @Service
 public class ProductCreateService {
     private final ProductRepository productRepository;
-    private final UserRepository userRepository;
 
     @Autowired
-    public ProductCreateService(ProductRepository productRepository, UserRepository userRepository)
+    public ProductCreateService(ProductRepository productRepository)
     {
-        this.userRepository = userRepository;
         this.productRepository = productRepository;
     }
+
     @Transactional
     public Product createNewProduct(Long userID, Product product)
     {
@@ -36,13 +29,14 @@ public class ProductCreateService {
 
         Product productBySKU = this.productRepository.findProductByUserIDAndProductSKU(userID, product.getProductSKU());
         if (productBySKU!=null){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Another product with this SKU has already existed: " + productBySKU.getName());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "SKU already existed: " + productBySKU.getName());
         }
         if ((product.getPicture() == null) || (product.getPicture().getPictureID() == null)) 
         {
             product.setPicture(null);
         }
         product.setUserID(userID);
+        
         this.productRepository.save(product);
         return product;
     }
