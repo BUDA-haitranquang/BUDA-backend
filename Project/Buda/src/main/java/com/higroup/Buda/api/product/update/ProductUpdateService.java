@@ -1,11 +1,8 @@
 package com.higroup.Buda.api.product.update;
 
 import com.higroup.Buda.entities.Product;
-import com.higroup.Buda.entities.User;
 import com.higroup.Buda.repositories.ProductRepository;
-import com.higroup.Buda.repositories.UserRepository;
 import com.higroup.Buda.util.BeanUtils.NullAwareBeanUtilsBean;
-
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,11 +16,9 @@ import java.util.Optional;
 @Service
 public class ProductUpdateService {
     private final ProductRepository productRepository;
-    private final UserRepository userRepository;
 
     @Autowired
-    public ProductUpdateService(ProductRepository productRepository, UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public ProductUpdateService(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
 
@@ -31,7 +26,7 @@ public class ProductUpdateService {
     public Product editProduct(Long userID, Long productID, Product product)
             throws InvocationTargetException, IllegalAccessException {
         Optional<Product> opProduct = this.productRepository.findProductByProductID(productID);
-        if (!opProduct.isPresent()) {
+        if (opProduct.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
         }
         Product dest_product = opProduct.get();

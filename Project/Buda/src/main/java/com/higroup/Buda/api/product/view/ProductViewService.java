@@ -56,12 +56,11 @@ public class ProductViewService {
     public Product hideProductByProductID(Long userID, Long productID)
     {
         Optional<Product> opProduct = this.productRepository.findProductByProductID(productID);
-        if(!opProduct.isPresent()){
+        if(opProduct.isEmpty()){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
         }
         Product product = opProduct.get();
-        if ((product!=null) && (Objects.equals(product.getUserID(), userID)))
-        {
+        if (Objects.equals(product.getUserID(), userID)) {
             product.setVisible(false);
             this.productRepository.save(product);
             return product;
@@ -71,12 +70,11 @@ public class ProductViewService {
     public Product findProductByProductID(Long userID, Long productID)
     {
         Optional<Product> opProduct = this.productRepository.findProductByProductID(productID);
-        if(!opProduct.isPresent()){
+        if(opProduct.isEmpty()){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
         }
         Product product = opProduct.get();
-        if ((product!=null) && product.getUserID().equals(userID))
-        {
+        if (product.getUserID().equals(userID)) {
             return product;
         }
         else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found");

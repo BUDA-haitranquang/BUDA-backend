@@ -40,17 +40,18 @@ import org.springframework.web.server.ResponseStatusException;
 @Service
 public class NewSellOrderService {
 
-    private CustomerRepository customerRepository;
-    private SellOrderRepository sellOrderRepository;
-    private SellOrderItemRepository sellOrderItemRepository;
-    private DiscountRepository discountRepository;
-    private ProductRepository productRepository;
-    private ProductLeftLogRepository productLeftLogRepository;
-    private SearchCustomerUtilService searchCustomerUtilService;
-    private DefaultCustomerUtilService defaultCustomerUtilService;
-    private ProductComponentRepository productComponentRepository;
-    private DecimalFormat df = new DecimalFormat("###.##");
-    private IngredientRepository ingredientRepository;
+    private final CustomerRepository customerRepository;
+    private final SellOrderRepository sellOrderRepository;
+    private final SellOrderItemRepository sellOrderItemRepository;
+    private final DiscountRepository discountRepository;
+    private final ProductRepository productRepository;
+    private final ProductLeftLogRepository productLeftLogRepository;
+    private final SearchCustomerUtilService searchCustomerUtilService;
+    private final DefaultCustomerUtilService defaultCustomerUtilService;
+    private final ProductComponentRepository productComponentRepository;
+    private final IngredientRepository ingredientRepository;
+
+    private final DecimalFormat df = new DecimalFormat("###.##");
 
     @Autowired
     public NewSellOrderService(CustomerRepository customerRepository, SellOrderRepository sellOrderRepository,
@@ -71,9 +72,6 @@ public class NewSellOrderService {
         this.productRepository = productRepository;
         this.productLeftLogRepository = productLeftLogRepository;
     }
-
-    @Autowired
-    private PresentChecker presentChecker;
 
     // product edit quantity function
     @Transactional
@@ -174,7 +172,7 @@ public class NewSellOrderService {
     }
 
     @Transactional
-    private void updateDiscount(Long userID, Long discountID, Double discountCash) {
+    void updateDiscount(Long userID, Long discountID, Double discountCash) {
         Optional<Discount> discountOptional = this.discountRepository.findDiscountByDiscountID(discountID);
         if (discountOptional.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Discount not found");

@@ -21,7 +21,7 @@ public class DiscountStatisticsService {
         Optional<Discount> discountOptional = this.discountRepository.findDiscountByDiscountID(discountID);
         if (discountOptional.isPresent() && (discountOptional.get().getUserID().equals(userID))){
             Discount discount = discountOptional.get();
-            Double ans = 0.0;
+            double ans = 0.0;
             for (SellOrder sellOrder: discount.getSellOrders())
             {
                 ans = ans + sellOrder.getFinalCost();

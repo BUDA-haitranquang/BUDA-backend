@@ -28,6 +28,7 @@ public class CRUDCustomerService {
     {
         return this.customerRepository.findAllByUserID(userID);
     }
+
     @Transactional
     public Customer registerNewCustomer(Long userID, Customer customer)
     {
@@ -40,6 +41,7 @@ public class CRUDCustomerService {
         this.customerRepository.save(customer);
         return customer;
     }
+
     @Transactional
     public Customer updateCustomer(Long userID, Customer customer)
     {
@@ -52,15 +54,7 @@ public class CRUDCustomerService {
         }
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Customer not found");
     }
-    public Customer findCustomerByUserIDAndPhoneNumber(Long userID, String phoneNumber)
-    {
-        Optional<Customer> phoneCustomer = this.customerRepository.findCustomerByUserIDAndPhoneNumber(userID, phoneNumber);
-        if (phoneCustomer.isPresent())
-        {
-            return phoneCustomer.get();
-        }
-        return null;
-    }
+
     @Transactional
     public Customer hideCustomer(Long userID, Long customerID)
     {

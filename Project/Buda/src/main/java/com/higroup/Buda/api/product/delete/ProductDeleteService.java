@@ -26,7 +26,7 @@ public class ProductDeleteService {
     public void deleteProductByProductID(Long userID, Long productID)
     {
         Optional<Product> opProduct = this.productRepository.findProductByProductID(productID);
-        if(!opProduct.isPresent()){
+        if(opProduct.isEmpty()){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
         }
         Product product = opProduct.get();
