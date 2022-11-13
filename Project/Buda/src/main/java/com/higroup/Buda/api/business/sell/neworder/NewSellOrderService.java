@@ -1,41 +1,24 @@
 package com.higroup.Buda.api.business.sell.neworder;
 
+import com.higroup.Buda.api.business.sell.neworder.util.DefaultCustomerUtilService;
+import com.higroup.Buda.api.business.sell.neworder.util.SearchCustomerUtilService;
+import com.higroup.Buda.entities.*;
+import com.higroup.Buda.entities.enumeration.DiscountType;
+import com.higroup.Buda.entities.enumeration.Status;
+import com.higroup.Buda.repositories.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
+
+import javax.validation.Valid;
 import java.text.DecimalFormat;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-
-import javax.validation.Valid;
-
-import com.higroup.Buda.api.business.sell.neworder.util.DefaultCustomerUtilService;
-import com.higroup.Buda.api.business.sell.neworder.util.SearchCustomerUtilService;
-import com.higroup.Buda.entities.Customer;
-import com.higroup.Buda.entities.Discount;
-import com.higroup.Buda.entities.Ingredient;
-import com.higroup.Buda.entities.Product;
-import com.higroup.Buda.entities.ProductComponent;
-import com.higroup.Buda.entities.ProductLeftLog;
-import com.higroup.Buda.entities.SellOrder;
-import com.higroup.Buda.entities.SellOrderItem;
-import com.higroup.Buda.entities.enumeration.DiscountType;
-import com.higroup.Buda.entities.enumeration.Status;
-import com.higroup.Buda.repositories.CustomerRepository;
-import com.higroup.Buda.repositories.DiscountRepository;
-import com.higroup.Buda.repositories.IngredientRepository;
-import com.higroup.Buda.repositories.ProductComponentRepository;
-import com.higroup.Buda.repositories.ProductLeftLogRepository;
-import com.higroup.Buda.repositories.ProductRepository;
-import com.higroup.Buda.repositories.SellOrderItemRepository;
-import com.higroup.Buda.repositories.SellOrderRepository;
-import com.higroup.Buda.util.Checker.PresentChecker;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class NewSellOrderService {
@@ -111,7 +94,7 @@ public class NewSellOrderService {
     private SellOrderItem registerNewSellOrderItem(Long userID, Long sellOrderID,
             @Valid SellOrderItemDTO sellOrderItemDTO) {
         Optional<Product> opProduct = this.productRepository.findProductByProductID(sellOrderItemDTO.getProductID());
-        if (!opProduct.isPresent()) {
+        if (opProduct.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
         }
         Product product = opProduct.get();
@@ -124,7 +107,7 @@ public class NewSellOrderService {
         // check product belong to user
         if (!product.getUserID().equals(userID)) {
             throw new ResponseStatusException(HttpStatus.BAD_GATEWAY,
-                    String.format("product %s not belong to user", product.getName()));
+                    String.format("product %s is not belong to user", product.getName()));
         }
         // check enough quantity
         if (product.getAmountLeft() < sellOrderItemDTO.getQuantity()) {
@@ -156,8 +139,8 @@ public class NewSellOrderService {
         sellOrderItem.setActualTotalSale(actualTotalSale);
         sellOrderItem.setGender(sellOrder.getGender());
         sellOrderItem.setAgeGroup(sellOrder.getAgeGroup());
-        this.sellOrderItemRepository.save(sellOrderItem);
-        return sellOrderItem;
+
+        return sellOrderItemRepository.save(sellOrderItem);
     }
 
     // sell order item delete
@@ -232,15 +215,10 @@ public class NewSellOrderService {
         return actualDiscountCash;
     }
 
-    private Double getRealCost(Long userID, Long sellOrderID, SellOrderDTO sellOrderDTO) {
+    private Double getRealCost(List<SellOrderItem> sellOrderItems) {
         Double realCost = 0.0;
-        for (SellOrderItemDTO sellOrderItemDTO : sellOrderDTO.getSellOrderItemDTOs()) {
-            Long productID = sellOrderItemDTO.getProductID();
-            Integer quantity = sellOrderItemDTO.getQuantity();
-            SellOrderItem sellOrderItem = this.registerNewSellOrderItem(userID, sellOrderID, sellOrderItemDTO);
+        for (SellOrderItem sellOrderItem : sellOrderItems) {
             realCost += sellOrderItem.getActualTotalSale();
-            // decrease number of product in database
-            this.editProductQuantity(userID, productID, -quantity);
         }
         return realCost;
     }
@@ -272,8 +250,17 @@ public class NewSellOrderService {
         sellOrder.setAddress(sellOrderDTO.getAddress());
         this.sellOrderRepository.save(sellOrder);
 
+        List<SellOrderItem> listSellOrderItemRegistered = new ArrayList<>();
+        for (SellOrderItemDTO sellOrderItemDTO : sellOrderDTO.getSellOrderItemDTOs()) {
+            Long productID = sellOrderItemDTO.getProductID();
+            Integer quantity = sellOrderItemDTO.getQuantity();
+            SellOrderItem sellOrderItem = this.registerNewSellOrderItem(userID, sellOrder.getSellOrderID(), sellOrderItemDTO);
+            listSellOrderItemRegistered.add(sellOrderItem);
+            // decrease number of product in database
+            this.editProductQuantity(userID, productID, -quantity);
+        }
         // real cost
-        Double realCost = this.getRealCost(userID, sellOrder.getSellOrderID(), sellOrderDTO);
+        Double realCost = this.getRealCost(listSellOrderItemRegistered);
 
         Double actualDiscountCash = this.getActualDiscountCash(userID, sellOrderDTO.getDiscountID(), realCost,
                 sellOrder);
