@@ -110,7 +110,7 @@ public class NewSellOrderService {
             newSellOrderItemService.saveAll(sellOrder.getSellOrderItems());
 
             try {
-                Optional<Customer> customer = this.customerRepository.findCustomerByUserIDAndPhoneNumber(userID,
+                Optional<Customer> customer = customerRepository.findCustomerByUserIDAndPhoneNumber(userID,
                         sellOrder.getCustomer().getPhoneNumber());
                 if (customer.isPresent()) {
                     sellOrder.setCustomer(customer.get());

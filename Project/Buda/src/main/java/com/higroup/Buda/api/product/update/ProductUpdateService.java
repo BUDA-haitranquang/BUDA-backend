@@ -25,13 +25,13 @@ public class ProductUpdateService {
     @Transactional
     public Product editProduct(Long userID, Long productID, Product product)
             throws InvocationTargetException, IllegalAccessException {
-        Optional<Product> opProduct = this.productRepository.findProductByProductID(productID);
+        Optional<Product> opProduct = productRepository.findProductByProductID(productID);
         if (opProduct.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
         }
         Product dest_product = opProduct.get();
         if (product.getProductSKU() != null) {
-            Product oldSKUProduct = this.productRepository.findProductByUserIDAndProductSKU(userID,
+            Product oldSKUProduct = productRepository.findProductByUserIDAndProductSKU(userID,
                     product.getProductSKU());
             if ((oldSKUProduct != null) && (!oldSKUProduct.getProductID().equals(dest_product.getProductID()))) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "This SKU has been used for another product");
@@ -41,7 +41,7 @@ public class ProductUpdateService {
             BeanUtilsBean notNull = new NullAwareBeanUtilsBean();
             product.setProductSKU(dest_product.getProductSKU());
             notNull.copyProperties(dest_product, product);
-            this.productRepository.save(dest_product);
+            productRepository.save(dest_product);
             return dest_product;
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not belong to user");
