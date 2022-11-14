@@ -1,6 +1,7 @@
 package com.higroup.Buda.api.business.sell.neworder.util;
 
 import com.higroup.Buda.api.business.sell.neworder.SellOrderDTO;
+import com.higroup.Buda.api.product.update.quantity.ProductUpdateQuantityService;
 import com.higroup.Buda.entities.*;
 import com.higroup.Buda.entities.enumeration.DiscountType;
 import com.higroup.Buda.entities.enumeration.Status;
@@ -27,19 +28,21 @@ public class NewSellOrderServiceHelper {
     private final DiscountRepository discountRepository;
     private final SearchCustomerUtilService searchCustomerUtilService;
     private final DefaultCustomerUtilService defaultCustomerUtilService;
+    private final ProductUpdateQuantityService productUpdateQuantityService;
 
     @Autowired
     public NewSellOrderServiceHelper(CustomerRepository customerRepository, ProductRepository productRepository,
                                      ProductLeftLogRepository productLeftLogRepository,
                                      DiscountRepository discountRepository,
                                      SearchCustomerUtilService searchCustomerUtilService,
-                                     DefaultCustomerUtilService defaultCustomerUtilService) {
+                                     DefaultCustomerUtilService defaultCustomerUtilService, ProductUpdateQuantityService productUpdateQuantityService) {
         this.customerRepository = customerRepository;
         this.productRepository = productRepository;
         this.productLeftLogRepository = productLeftLogRepository;
         this.discountRepository = discountRepository;
         this.searchCustomerUtilService = searchCustomerUtilService;
         this.defaultCustomerUtilService = defaultCustomerUtilService;
+        this.productUpdateQuantityService = productUpdateQuantityService;
     }
 
     // product edit quantity function
@@ -54,12 +57,7 @@ public class NewSellOrderServiceHelper {
         }
         Product product = opProduct.get();
         if (Objects.equals(product.getUserID(), userID)) {
-            Integer amountLeft = product.getAmountLeft();
-            if (amountLeft + amountLeftChange < 0) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not enough amount for the request");
-            }
-            product.setAmountLeft(amountLeft + amountLeftChange);
-            this.productRepository.save(product);
+            productUpdateQuantityService.updateProductAmountLeft(product, amountLeftChange);
 
             ProductLeftLog productLeftLog = new ProductLeftLog();
             productLeftLog.setProduct(product);

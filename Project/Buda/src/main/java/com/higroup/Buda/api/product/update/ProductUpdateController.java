@@ -15,15 +15,17 @@ import java.lang.reflect.InvocationTargetException;
 public class ProductUpdateController {
     private final RequestUtil requestUtil;
     private final ProductUpdateService productUpdateService;
+
     @Autowired
     public ProductUpdateController(ProductUpdateService productUpdateService, RequestUtil requestUtil)
     {
         this.requestUtil = requestUtil;
         this.productUpdateService = productUpdateService;
     }
+
     @PutMapping(path = "/{productID}")
     public ResponseEntity<?> editProduct(HttpServletRequest httpServletRequest, @PathVariable Long productID, @RequestBody Product product) throws InvocationTargetException, IllegalAccessException {
-        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
-        return ResponseEntity.ok().body(this.productUpdateService.editProduct(userID, productID, product));
+        Long userID = requestUtil.getUserIDFromUserToken(httpServletRequest);
+        return ResponseEntity.ok().body(productUpdateService.editProduct(userID, productID, product));
     }
 }
