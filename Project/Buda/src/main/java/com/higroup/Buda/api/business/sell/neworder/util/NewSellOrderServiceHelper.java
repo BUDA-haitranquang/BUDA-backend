@@ -140,7 +140,7 @@ public class NewSellOrderServiceHelper {
     public void updateDiscount(Long discountID) {
         Optional<Discount> discountOptional = discountRepository.findDiscountByDiscountID(discountID);
         if (discountOptional.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Discount not found");
+            return;
         }
         Discount discount = discountOptional.get();
         discount.setOrderCount(discount.getOrderCount() + 1);

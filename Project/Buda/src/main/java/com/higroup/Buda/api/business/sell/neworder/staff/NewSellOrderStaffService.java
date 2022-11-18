@@ -168,7 +168,7 @@ public class NewSellOrderStaffService {
     private void updateDiscount(Long userID, Long discountID, Double discountCash){
         Optional<Discount> discountOptional = this.discountRepository.findDiscountByDiscountID(discountID);
         if (discountOptional.isEmpty()){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Discount not found");
+            return;
         }
         Discount discount = discountOptional.get();
         discount.setOrderCount(discount.getOrderCount() + 1);
