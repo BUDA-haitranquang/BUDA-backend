@@ -12,6 +12,6 @@ import org.springframework.data.repository.query.Param;
 public interface CustomerRepository extends JpaRepository<Customer, Long>{
     @Query(value = "select c from Customer c where c.userID = :userID and c.visible = true")
     List<Customer> findAllByUserID(@Param("userID") Long userID);
-    Optional<Customer> findCustomerByCustomerID(Long customerID);
-    Optional<Customer> findCustomerByUserIDAndPhoneNumber(Long userID, String phoneNumber);
+    Optional<Customer> findCustomerByCustomerID(@Param("customerID") Long customerID);
+    Optional<Customer> findCustomerByUserIDAndPhoneNumber(@Param("userID") Long userID, @Param("phoneNumber") String phoneNumber);
 }

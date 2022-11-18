@@ -19,32 +19,32 @@ public interface BuyOrderRepository extends PagingAndSortingRepository<BuyOrder,
         @Query(value = FetchDefault.buyOrder +
                         // " LEFT JOIN FETCH st.roles" +
                         " where b.buyOrderID = :buyOrderID")
-        Optional<BuyOrder> findBuyOrderByBuyOrderID(Long buyOrderID);
+        Optional<BuyOrder> findBuyOrderByBuyOrderID(@Param("buyOrderID") Long buyOrderID);
 
         @Query(value = FetchDefault.buyOrder +
                         // " LEFT JOIN FETCH st.roles" +
                         " where b.userID = :userID and b.textID = :textID")
-        List<BuyOrder> findAllBuyOrderByUserIDAndTextID(Long userID, String textID, Pageable pageable);
+        List<BuyOrder> findBuyOrderByUserIDAndTextID(@Param("userID") Long userID, @Param("textID") String textID);
 
         @Query(value = FetchDefault.buyOrder +
                         // " LEFT JOIN FETCH st.roles" +
                         " where b.userID = :userID and b.textID = :textID")
-        List<BuyOrder> findBuyOrderByUserIDAndTextID(Long userID, String textID);
+        List<BuyOrder> findAllBuyOrderByUserIDAndTextID(@Param("userID") Long userID, @Param("textID") String textID, Pageable pageable);
 
         @Query(value = "select count(*) from buy_order" +
                         // " LEFT JOIN FETCH st.roles" +
                         " where user_id = :userID", nativeQuery = true)
-        Long countAllBuyOrderByUserID(Long userID);
+        Long countAllBuyOrderByUserID(@Param("userID") Long userID);
         
         @Query(value = FetchDefault.buyOrder +
                         // " LEFT JOIN FETCH st.roles" +
                         " where b.userID = :userID")
-        List<BuyOrder> findAllBuyOrderByUserID(Long userID, Pageable pageable);
+        List<BuyOrder> findAllBuyOrderByUserID(@Param("userID") Long userID, Pageable pageable);
 
         @Query(value = FetchDefault.buyOrder +
                         // " LEFT JOIN FETCH st.roles" +
                         " where b.supplier = :supplier")
-        List<BuyOrder> findAllBuyOrderBySupplier(Supplier supplier);
+        List<BuyOrder> findAllBuyOrderBySupplier(@Param("supplier") Supplier supplier);
 
         @Query(value = "select distinct b from BuyOrder b " +
                         " LEFT JOIN FETCH b.buyOrderItems bo" +

@@ -12,12 +12,12 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long>{
-    Optional<User> findUserByUserID(Long userID);
+    Optional<User> findUserByUserID(@Param("userID") Long userID);
     @Query("select u from User u left join fetch u.roles where u.email = :email")
-    Optional<User> findUserByEmail(String email);
-    Optional<User> findUserByUserUUID(String userUUID);
-    Optional<User> findUserByPhoneNumber(String phoneNumber);
-    Optional<User> findUserByUserName(String userName);
+    Optional<User> findUserByEmail(@Param("email") String email);
+    Optional<User> findUserByUserUUID(@Param("userUUID") String userUUID);
+    Optional<User> findUserByPhoneNumber(@Param("phoneNumber") String phoneNumber);
+    Optional<User> findUserByUserName(@Param("userName") String userName);
 
     @Modifying
     @Query(

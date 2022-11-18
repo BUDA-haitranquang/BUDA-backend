@@ -13,6 +13,6 @@ import org.springframework.stereotype.Repository;
 public interface StoreRepository extends JpaRepository<Store, Long>{
     @Query(value = "select s from Store s where s.userID = :userID")
     List<Store> findAllByUserID(@Param("userID") Long userID);
-    Store findStoreByStoreID(Long storeID);
-    Store findFirstByUserID(Long userID);
+    Store findStoreByStoreID(@Param("storeID") Long storeID);
+    Store findFirstByUserID(@Param("userID") Long userID);
 }

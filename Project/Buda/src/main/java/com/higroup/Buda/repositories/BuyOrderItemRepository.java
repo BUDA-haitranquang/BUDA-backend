@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface BuyOrderItemRepository extends JpaRepository<BuyOrderItem, Long> {
-    List<BuyOrderItem> findAllBuyOrderItemByBuyOrder(BuyOrder BuyOrder);
-    Optional<BuyOrderItem> findBuyOrderItemByBuyOrderItemID(Long buyOrderItemID);
+    List<BuyOrderItem> findAllBuyOrderItemByBuyOrder(@Param("buyOrder") BuyOrder BuyOrder);
+    Optional<BuyOrderItem> findBuyOrderItemByBuyOrderItemID(@Param("buyOrderItemID") Long buyOrderItemID);
     @Query(value = "select * from buy_order_item i where i.ingredient_id = :ingredientID", nativeQuery = true)
     List<BuyOrderItem> findAllBuyOrderItemByIngredientID(@Param("ingredientID") Long ingredientID);
 }

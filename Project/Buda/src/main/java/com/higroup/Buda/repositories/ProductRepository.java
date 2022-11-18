@@ -69,7 +69,7 @@ public interface ProductRepository extends JpaRepository<Product, Long>{
     @Query(value = "select * from product p where p.product_id in "
     + "(select pci.product_id from product_combo_item pci where pci.product_combo_id = :productComboID) and p.user_id = :userID", nativeQuery = true)
     List<Product> findAllProductByProductCombo(@Param("userID") Long userID, @Param("productComboID") Long productComboID);
-    Product findProductByUserIDAndProductSKU(Long userID, String productSKU);
+    Product findProductByUserIDAndProductSKU(@Param("userID") Long userID, @Param("productSKU") String productSKU);
     @Query(value = "select count(p.productID) from Product p where p.userID = :userID")
     Long findNumberOfProductByUserID(@Param("userID") Long userID);
 }

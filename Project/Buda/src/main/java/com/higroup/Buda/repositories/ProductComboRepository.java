@@ -14,5 +14,5 @@ public interface ProductComboRepository extends JpaRepository<ProductCombo, Long
     List<ProductCombo> findAllByUserID(@Param("userID") Long userID);
     @Query(value = "select * from product_combo p where p.product_combo_id in "
     + "(select ppc.product_combo_id from product_combo_item ppc where ppc.product_id = :productID) and p.user_id = :userID", nativeQuery = true)
-    List<ProductCombo> findAllProductComboIncludeProduct(Long userID, Long productID);
+    List<ProductCombo> findAllProductComboIncludeProduct(@Param("userID") Long userID, @Param("productID") Long productID);
 }

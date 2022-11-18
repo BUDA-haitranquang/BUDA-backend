@@ -19,7 +19,7 @@ public interface SellOrderItemRepository extends JpaRepository<SellOrderItem, Lo
     + " ON p.productID = s.product.productID"
     + " WHERE p.userID = :userID"
     + " GROUP BY p.productID")
-    List<ProductStatistics> findTotalRevenueOfAllProductByUserID(Long userID);
+    List<ProductStatistics> findTotalRevenueOfAllProductByUserID(@Param("userID") Long userID);
 
     public interface ProductRanking{
         Long getProductID();

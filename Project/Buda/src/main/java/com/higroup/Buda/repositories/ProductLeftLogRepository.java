@@ -55,7 +55,7 @@ public interface ProductLeftLogRepository extends JpaRepository<ProductLeftLog, 
     @Param("productSKU") String productSKU, @Param("name") String name, 
     @Param("amountLeft") Integer amountLeft, Pageable pageable);
 
-    List<ProductLeftLog> findAllProductLeftLogByUserID(Long userID);
+    List<ProductLeftLog> findAllProductLeftLogByUserID(@Param("userID") Long userID);
     @Query(value = "select * from product_left_log where user_id = :userID and product_id = :productID", nativeQuery = true)
     List<ProductLeftLog> findAllProductLeftLogByProduct(@Param("userID") Long userID, @Param("productID") Long productID);
 

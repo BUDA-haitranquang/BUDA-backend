@@ -10,11 +10,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface OtherCostRepository extends JpaRepository<OtherCost, Long>{
-    OtherCost findOtherCostByOtherCostID(Long otherCostID);
+    OtherCost findOtherCostByOtherCostID(@Param("otherCostID") Long otherCostID);
     @Query(value = "select o from OtherCost o where o.userID = :userID and o.visible = true")
     List<OtherCost> findAllByUserID(@Param("userID") Long userID);
     @Query(value = "select * from other_cost o where o.user_id = :userID and o.status != 'FINISHED' and o.status != 'CANCELLED'", nativeQuery = true)
-    List<OtherCost> findAllIncompletedOtherCostByUserID(Long userID);
+    List<OtherCost> findAllIncompletedOtherCostByUserID(@Param("userID") Long userID);
     @Query(value = "select * from other_cost o where o.user_id = :userID and (o.creation_time BETWEEN CAST((NOW() - INTERVAL :X DAY) as DATE) and NOW())", nativeQuery = true)
     List<OtherCost> findAllOtherCostByUserIDLastXDays(@Param("userID") Long userID, @Param("X") Long X);
     @Query(value = "select o from OtherCost o where o.userID = :userID and o.visible = false")

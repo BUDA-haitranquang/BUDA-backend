@@ -59,13 +59,13 @@ public interface IngredientLeftLogRepository extends JpaRepository<IngredientLef
     " and (:ingredientSKU IS NULL or ii.ingredientSKU LIKE %:ingredientSKU% )" +
     " and (:name IS NULL or ii.name LIKE %:name% )" +
     " and (:amountLeft IS NULL or ii.amountLeft LIKE %:amountLeft% )")
-    Page<ViewIngredientLeftLogInfo> findAllFilterIngredientLeftLogByUserID(Long userID, 
-    String ingredientSKU, String name, Integer amountLeft, Pageable pageable);
+    Page<ViewIngredientLeftLogInfo> findAllFilterIngredientLeftLogByUserID(@Param("userID") Long userID, 
+    @Param("ingredientSKU") String ingredientSKU, @Param("name") String name, @Param("amountLeft") Integer amountLeft, Pageable pageable);
 
     @Query(value = "select i from IngredientLeftLog i " + " LEFT JOIN FETCH i.ingredient ii" + 
     " LEFT JOIN FETCH ii.picture" + 
     " where i.userID = :userID") 
-    List<IngredientLeftLog> findAllIngredientLeftLogByUserID(Long userID);
+    List<IngredientLeftLog> findAllIngredientLeftLogByUserID(@Param("userID") Long userID);
     @Query(value = "select i from IngredientLeftLog i " + " LEFT JOIN FETCH i.ingredient ii" + 
     " LEFT JOIN FETCH ii.picture" + 
     " where i.userID = :userID" +

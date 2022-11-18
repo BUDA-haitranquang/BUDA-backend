@@ -46,13 +46,13 @@ public interface ViewBuyOrderRepository extends PagingAndSortingRepository<BuyOr
         " where b.userID= :userID"+
         " and b.creationTime>= :from"+
         " and b.creationTime<= :to")
-        List<BuyOrder> findBuyOrderInPeriod(Long userID, ZonedDateTime from, ZonedDateTime to, Pageable pageable);
+        List<BuyOrder> findBuyOrderInPeriod(@Param("userID") Long userID, ZonedDateTime from, ZonedDateTime to, Pageable pageable);
 
         @Query(value = "select count(*) from BuyOrder b" +
         " where b.userID= :userID"+
         " and b.creationTime>= :from"+
         " and b.creationTime<= :to")
-        Long countBuyOrderInPeriod(Long userID, ZonedDateTime from, ZonedDateTime to);
+        Long countBuyOrderInPeriod(@Param("userID") Long userID, ZonedDateTime from, ZonedDateTime to);
         @Query(value = "select distinct b from BuyOrder b" +
         " LEFT JOIN FETCH b.buyOrderItems bo" +
         " LEFT JOIN FETCH bo.ingredient ingr " +
@@ -74,7 +74,7 @@ public interface ViewBuyOrderRepository extends PagingAndSortingRepository<BuyOr
         " and (:to IS NULL or b.creationTime<= :to)"+
         " and (:supplierName IS NULL or s.name LIKE %:supplierName%)"+
         " and (:textID IS NULL or b.textID = :textID)")
-        Page<BuyOrder> findBuyOrderByFilter(Long userID, ZonedDateTime from, ZonedDateTime to
-        , String supplierName, String textID, Pageable pageable);
+        Page<BuyOrder> findBuyOrderByFilter(@Param("userID")Long userID, ZonedDateTime from, ZonedDateTime to
+        , @Param("supplierName") String supplierName, @Param("textID") String textID, Pageable pageable);
 
 }
