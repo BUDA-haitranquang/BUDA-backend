@@ -80,6 +80,7 @@ public class NewSellOrderServiceHelper {
         sellOrder.setCustomerMessage(sellOrderDTO.getCustomerMessage());
         sellOrder.setStatus(sellOrderDTO.getStatus());
         sellOrder.setCreationTime(ZonedDateTime.now());
+        sellOrder.setUserID(userID);
         if (sellOrderDTO.getStatus().equals(Status.FINISHED)) {
             sellOrder.setFinishTime(ZonedDateTime.now());
         }
