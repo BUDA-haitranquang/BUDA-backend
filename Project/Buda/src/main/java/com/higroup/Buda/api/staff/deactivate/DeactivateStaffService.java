@@ -22,12 +22,14 @@ public class DeactivateStaffService {
     @Transactional
     public Staff deactivateStaffByStaffID(Long userID, Long staffID){
         Optional<Staff> staffOptional = this.staffRepository.findStaffByStaffID(staffID);
-        if ((staffOptional.isPresent()) && (staffOptional.get().getUserID().equals(userID))){
+        if ((staffOptional.get().getUserID().equals(userID))){
             Staff staff = staffOptional.get();
             staff.setEnabled(Boolean.FALSE);
+            staff.setPassword("undefined");
             this.staffRepository.save(staff);
             return staff;
         }
         else throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Staff not found");
     }
 }
+

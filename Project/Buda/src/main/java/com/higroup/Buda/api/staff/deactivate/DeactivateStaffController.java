@@ -25,7 +25,7 @@ public class DeactivateStaffController {
     }
     @PutMapping(path = "id/{staffID}")
     public ResponseEntity<?> deactivateStaffByStaffID(HttpServletRequest httpServletRequest, @PathVariable Long staffID){
-        Long userID = this.requestUtil.getProUserIDFromUserToken(httpServletRequest);
+        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.deactivateStaffService.deactivateStaffByStaffID(userID, staffID));
     }
 }
