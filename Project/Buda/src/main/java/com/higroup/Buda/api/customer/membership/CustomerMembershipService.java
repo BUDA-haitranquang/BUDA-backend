@@ -1,13 +1,16 @@
 package com.higroup.Buda.api.customer.membership;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import com.higroup.Buda.entities.Customer;
 import com.higroup.Buda.entities.Discount;
 import com.higroup.Buda.entities.MembershipType;
 import com.higroup.Buda.entities.User;
+import com.higroup.Buda.repositories.CustomerRepository;
 import com.higroup.Buda.repositories.DiscountRepository;
 import com.higroup.Buda.repositories.MembershipTypeRepository;
 import com.higroup.Buda.repositories.UserRepository;
@@ -23,13 +26,15 @@ public class CustomerMembershipService {
     private final MembershipTypeRepository membershipTypeRepository;
     private final UserRepository userRepository;
     private final DiscountRepository discountRepository;
+    private final CustomerRepository customerRepository;
 
     @Autowired
-    public CustomerMembershipService(MembershipTypeRepository membershipTypeRepository, UserRepository userRepository, DiscountRepository discountRepository) 
+    public CustomerMembershipService(MembershipTypeRepository membershipTypeRepository, UserRepository userRepository, DiscountRepository discountRepository, CustomerRepository customerRepository)
     {
         this.membershipTypeRepository = membershipTypeRepository;
         this.userRepository = userRepository;
         this.discountRepository = discountRepository;
+        this.customerRepository = customerRepository;
     }
     @Autowired
     public PresentChecker presentChecker;
@@ -61,5 +66,29 @@ public class CustomerMembershipService {
         }
         this.membershipTypeRepository.save(membershipType);
         return membershipType;
+    }
+    @Transactional
+    public List<Customer> updateMembershipType(Long userID, Long membershipTypeID)
+    {
+        Optional<MembershipType> membershipType = this.membershipTypeRepository.findMembershipTypeByMembershipTypeID(membershipTypeID);
+        if (membershipType.isEmpty())
+        {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Membership Type not found");
+        }
+        List<Customer> customers = this.customerRepository.findAllByUserID(userID);
+        List<Customer> changedCustomers = new ArrayList<>();
+        for (Customer customer : customers)
+        {
+            Optional<MembershipType> membershipType1 = this.membershipTypeRepository.findMembershipTypeByMembershipTypeID(customer.getMembershipID());
+            if (membershipType1.isPresent())
+            {
+                if (membershipType1.get().getMinimumSpend() > membershipType.get().getMinimumSpend()) continue;
+                if (membershipType.get().getMinimumSpend() > customer.getTotalSpend()) continue;
+                customer.setMembershipID(membershipTypeID);
+                changedCustomers.add(customer);
+            }
+        }
+        this.customerRepository.saveAll(changedCustomers);
+        return changedCustomers;
     }
 }
