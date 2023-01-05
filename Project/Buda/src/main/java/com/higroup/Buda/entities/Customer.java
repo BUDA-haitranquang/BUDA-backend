@@ -77,7 +77,7 @@ public class Customer{
             ", ageGroup='" + getAgeGroup() + "'" +
             ", gender='" + getGender() + "'" +
             ", totalSpend='" + getTotalSpend() + "'" +
-            ", membershipID='" + getMembershipID() + "'" +
+//            ", membershipID='" + getMembershipID() + "'" +
             ", name='" + getName() + "'" +
             // ", address='" + getAddress() + "'" +
             ", phoneNumber='" + getPhoneNumber() + "'" +
