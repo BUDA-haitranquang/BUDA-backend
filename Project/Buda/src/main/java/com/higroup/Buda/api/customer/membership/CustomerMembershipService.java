@@ -67,24 +67,56 @@ public class CustomerMembershipService {
         this.membershipTypeRepository.save(membershipType);
         return membershipType;
     }
+//    @Transactional
+//    public List<Customer> updateMembershipType(Long userID, Long membershipTypeID)
+//    {
+//        Optional<MembershipType> membershipType = this.membershipTypeRepository.findMembershipTypeByMembershipTypeID(membershipTypeID);
+//        if (membershipType.isEmpty())
+//        {
+//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Membership Type not found");
+//        }
+//        List<Customer> customers = this.customerRepository.findAllByUserID(userID);
+//        List<Customer> changedCustomers = new ArrayList<>();
+//        for (Customer customer : customers)
+//        {
+//            Optional<MembershipType> membershipType1 = this.membershipTypeRepository.findMembershipTypeByMembershipTypeID(customer.getMembershipID());
+//            if (membershipType1.isPresent())
+//            {
+//                if (membershipType1.get().getMinimumSpend() > membershipType.get().getMinimumSpend()) continue;
+//                if (membershipType.get().getMinimumSpend() > customer.getTotalSpend()) continue;
+//                customer.setMembershipID(membershipTypeID);
+//                changedCustomers.add(customer);
+//            }
+//        }
+//        this.customerRepository.saveAll(changedCustomers);
+//        return changedCustomers;
+//    }
     @Transactional
-    public List<Customer> updateMembershipType(Long userID, Long membershipTypeID)
+    public List<Customer> updateMembershipType(Long userID)
     {
-        Optional<MembershipType> membershipType = this.membershipTypeRepository.findMembershipTypeByMembershipTypeID(membershipTypeID);
-        if (membershipType.isEmpty())
-        {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Membership Type not found");
-        }
         List<Customer> customers = this.customerRepository.findAllByUserID(userID);
         List<Customer> changedCustomers = new ArrayList<>();
+        /*
+        Hard code membership type for all user
+        Silver: >= 100000
+        Gold: >= 1000000
+        Platinum: >= 10000000
+         */
         for (Customer customer : customers)
         {
-            Optional<MembershipType> membershipType1 = this.membershipTypeRepository.findMembershipTypeByMembershipTypeID(customer.getMembershipID());
-            if (membershipType1.isPresent())
+            if (customer.getTotalSpend() >= 10000000)
             {
-                if (membershipType1.get().getMinimumSpend() > membershipType.get().getMinimumSpend()) continue;
-                if (membershipType.get().getMinimumSpend() > customer.getTotalSpend()) continue;
-                customer.setMembershipID(membershipTypeID);
+                customer.setMembershipID(3L);
+                changedCustomers.add(customer);
+            }
+            else if (customer.getTotalSpend() >= 1000000)
+            {
+                customer.setMembershipID(2L);
+                changedCustomers.add(customer);
+            }
+            else if (customer.getTotalSpend() >= 100000)
+            {
+                customer.setMembershipID(1L);
                 changedCustomers.add(customer);
             }
         }
