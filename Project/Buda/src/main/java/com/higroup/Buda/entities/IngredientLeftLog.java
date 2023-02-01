@@ -72,6 +72,10 @@ public class IngredientLeftLog {
             ", userID='" + getUserID() + "'" +
             "}";
     }
+
+    public IngredientLeftLog(Ingredient ingredient2, ZonedDateTime now, Integer amountLeftChange2, String message2,
+            Long userID2) {
+    }
     
 
 }

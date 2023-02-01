@@ -58,18 +58,24 @@ public class NewBuyOrderService {
     }
 
     private BuyOrderItem registerBuyOrderItem(Long userID, BuyOrder buyOrder, @Valid BuyOrderItemDTO buyOrderItemDTO) {
+        Ingredient ingredient = retrieveIngredient(userID, buyOrderItemDTO);
+        BuyOrderItem buyOrderItem = mapToBuyOrderItem(buyOrder, userID, ingredient, buyOrderItemDTO);
+        return buyOrderItem;
+    }
+    
+    private Ingredient retrieveIngredient(Long userID, BuyOrderItemDTO buyOrderItemDTO) {
         Long ingredientID = buyOrderItemDTO.getIngredient().getIngredientID();
-        Ingredient ingredient;
-        // if ingredient not exists then create
         if (ingredientID == null) {
-            ingredient = this.ingredientCreateService.createNewIngredient(userID, buyOrderItemDTO.getIngredient());
-        } else {
-            ingredient = this.ingredientViewService.findIngredientByIngredientID(userID, ingredientID);
-            // check ingredient visible
-            if (ingredient.getVisible().equals(false)) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Ingredient is not visible");
-            }
+            return ingredientCreateService.createNewIngredient(userID, buyOrderItemDTO.getIngredient());
         }
+        Ingredient ingredient = ingredientViewService.findIngredientByIngredientID(userID, ingredientID);
+        if (!ingredient.getVisible()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Ingredient is not visible");
+        }
+        return ingredient;
+    }
+    
+    private BuyOrderItem mapToBuyOrderItem(BuyOrder buyOrder, Long userID, Ingredient ingredient, BuyOrderItemDTO buyOrderItemDTO) {
         BuyOrderItem buyOrderItem = new BuyOrderItem();
         buyOrderItem.setBuyOrder(buyOrder);
         buyOrderItem.setCreationTime(ZonedDateTime.now());
@@ -77,7 +83,6 @@ public class NewBuyOrderService {
         buyOrderItem.setIngredient(ingredient);
         buyOrderItem.setUserID(userID);
         buyOrderItem.setQuantity(buyOrderItemDTO.getQuantity());
-        // use request pricePerunit if exists
         if (buyOrderItemDTO.getPricePerUnit() != null) {
             buyOrderItem.setPricePerUnit(buyOrderItemDTO.getPricePerUnit());
         } else {
@@ -88,18 +93,14 @@ public class NewBuyOrderService {
         }
         return buyOrderItem;
     }
+    
 
     private IngredientLeftLog editIngredientLeftAmount(Long userID, Long ingredientID, Integer amountLeftChange) {
         Ingredient ingredient = this.ingredientRepository.findIngredientByIngredientID(ingredientID).get();
         ingredient.setAmountLeft(ingredient.getAmountLeft() + amountLeftChange);
         this.ingredientRepository.save(ingredient);
         String message = String.format("buy %d %s ingredient", amountLeftChange, ingredient.getName());
-        IngredientLeftLog ingredientLeftLog = new IngredientLeftLog();
-        ingredientLeftLog.setIngredient(ingredient);
-        ingredientLeftLog.setCreationTime(ZonedDateTime.now());
-        ingredientLeftLog.setAmountLeftChange(amountLeftChange);
-        ingredientLeftLog.setMessage(message);
-        ingredientLeftLog.setUserID(userID);
+        IngredientLeftLog ingredientLeftLog = new IngredientLeftLog(ingredient, ZonedDateTime.now(), amountLeftChange, message, userID);
         return ingredientLeftLog;
         // this.ingredientLeftLogRepository.save(ingredientLeftLog);
     }
