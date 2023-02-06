@@ -57,26 +57,20 @@ public class CustomerMembershipController {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
         return ResponseEntity.ok().body(this.customerMembershipService.createNewMembershipType(userID, membershipType));
     }
-//    @PostMapping("/update/{membershipTypeID}")
-//    public ResponseEntity<?> updateMembershipType(HttpServletRequest httpServletRequest, @PathVariable Long membershipTypeID)
-//    {
-//        Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
-//        Optional<MembershipType> membershipType = this.customerMembershipService.findMembershipTypeByMembershipTypeID(membershipTypeID);
-//        if (membershipType.isEmpty())
-//        {
-//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Bad Request");
-//        }
-//        if (!membershipType.get().getUserID().equals(userID))
-//        {
-//            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized");
-//        }
-//        return ResponseEntity.ok().body(this.customerMembershipService.updateMembershipType(userID, membershipTypeID));
-//    }
-    @PostMapping("/update")
-    public ResponseEntity<?> updateMembershipType(HttpServletRequest httpServletRequest)
+    @PostMapping("/update/{membershipTypeID}")
+    public ResponseEntity<?> updateMembershipType(HttpServletRequest httpServletRequest, @PathVariable Long membershipTypeID)
     {
         Long userID = this.requestUtil.getUserIDFromUserToken(httpServletRequest);
-        return ResponseEntity.ok().body(this.customerMembershipService.updateMembershipType(userID));
+        Optional<MembershipType> membershipType = this.customerMembershipService.findMembershipTypeByMembershipTypeID(membershipTypeID);
+        if (membershipType.isEmpty())
+        {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Bad Request");
+        }
+        if (!membershipType.get().getUserID().equals(userID))
+        {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized");
+        }
+        return ResponseEntity.ok().body(this.customerMembershipService.updateMembershipType(userID, membershipTypeID));
     }
 
 }
