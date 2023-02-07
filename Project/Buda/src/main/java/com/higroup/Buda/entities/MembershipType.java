@@ -52,10 +52,10 @@ public class MembershipType {
     @Override
     public String toString() {
         return "{" +
-            " membershipTypeID='" + getMembershipTypeID() + "'" +
+//            " membershipTypeID='" + getMembershipTypeID() + "'" +
             ", membershipName='" + getMembershipName() + "'" +
             ", description='" + getDescription() + "'" +
-            ", userID='" + getUserID() + "'" +
+//            ", userID='" + getUserID() + "'" +
             ", discount='" + getDiscount() + "'" +
             ", minimumSpend='" + getMinimumSpend() + "'" +
             "}";
