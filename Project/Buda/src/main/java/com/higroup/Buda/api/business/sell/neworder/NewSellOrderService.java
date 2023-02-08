@@ -41,45 +41,89 @@ public class NewSellOrderService {
         this.newSellOrderItemService = newSellOrderItemService;
     }
 
-    @Transactional
-    public SellOrder registerSellOrder(Long userID, @Valid SellOrderDTO sellOrderDTO) {
-        if (sellOrderDTO.getStatus().equals(Status.RETURNED)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "can not set status as returned");
-        }
+    private SellOrder createSellOrder(Long userID, SellOrderDTO sellOrderDTO) {
         SellOrder sellOrder = new SellOrder();
         helper.setDataForSellOrder(userID, sellOrder, sellOrderDTO);
-        sellOrderRepository.save(sellOrder);
+        return sellOrder;
+    }
 
-        List<SellOrderItem> listSellOrderItemRegistered = new ArrayList<>();
-        for (SellOrderItemDTO sellOrderItemDTO : sellOrderDTO.getSellOrderItemDTOs()) {
-            Long productID = sellOrderItemDTO.getProductID();
-            Integer quantity = sellOrderItemDTO.getQuantity();
-            SellOrderItem sellOrderItem = newSellOrderItemService.registerNewSellOrderItem(userID, sellOrder.getSellOrderID(), sellOrderItemDTO);
-            listSellOrderItemRegistered.add(sellOrderItem);
-            // decrease number of product in database
-            helper.editProductQuantity(userID, productID, -quantity);
-        }
-        // real cost
+    private void decreaseProductQuantity(Long userID, Long productID, Integer quantity) {
+        helper.editProductQuantity(userID, productID, -quantity);
+    }
+
+    private void calculateOrderCost(SellOrder sellOrder, List<SellOrderItem> listSellOrderItemRegistered, Long discountID) {
         Double realCost = helper.getRealCost(listSellOrderItemRegistered);
-
-        Double actualDiscountCash = helper.getActualDiscountCash(sellOrderDTO.getDiscountID(), realCost, sellOrder);
-
-        helper.updateDiscount(sellOrderDTO.getDiscountID());
-
+        Double actualDiscountCash = helper.getActualDiscountCash(discountID, realCost, sellOrder);
+        helper.updateDiscount(discountID);
         double actualDiscountPercentage = Double.parseDouble(df.format(actualDiscountCash / realCost));
         double finalCost = Double.parseDouble(df.format(realCost - actualDiscountCash));
         sellOrder.setActualDiscountCash(Double.valueOf(df.format(actualDiscountCash)));
         sellOrder.setActualDiscountPercentage(actualDiscountPercentage);
         sellOrder.setFinalCost(finalCost);
         sellOrder.setRealCost(Double.valueOf(df.format(realCost)));
-        this.sellOrderRepository.save(sellOrder);
+    }
 
+    @Transactional
+    public SellOrder registerSellOrder(Long userID, @Valid SellOrderDTO sellOrderDTO) {
+        if (sellOrderDTO.getStatus().equals(Status.RETURNED)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "can not set status as returned");
+        }
+        SellOrder sellOrder = createSellOrder(userID, sellOrderDTO);
+
+        List<SellOrderItem> listSellOrderItemRegistered = new ArrayList<>();
+        for (SellOrderItemDTO sellOrderItemDTO : sellOrderDTO.getSellOrderItemDTOs()) {
+            SellOrderItem sellOrderItem = newSellOrderItemService.registerNewSellOrderItem(userID, sellOrder.getSellOrderID(), sellOrderItemDTO);
+            listSellOrderItemRegistered.add(sellOrderItem);
+            decreaseProductQuantity(userID, sellOrderItemDTO.getProductID(), sellOrderItemDTO.getQuantity());
+        }
+
+        calculateOrderCost(sellOrder, listSellOrderItemRegistered, sellOrderDTO.getDiscountID());
+        sellOrderRepository.save(sellOrder);
         if (sellOrder.getStatus().equals(Status.FINISHED)) {
             Customer customer = helper.findCustomerInfo(userID, sellOrderDTO.getCustomer());
-            helper.updateCustomerTotalSpend(customer.getTotalSpend() + finalCost, customer);
+            helper.updateCustomerTotalSpend(customer.getTotalSpend() + sellOrder.getFinalCost(), customer);
         }
         return sellOrder;
     }
+
+    // public SellOrder registerSellOrder1(Long userID, @Valid SellOrderDTO sellOrderDTO) {
+    //     if (sellOrderDTO.getStatus().equals(Status.RETURNED)) {
+    //         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "can not set status as returned");
+    //     }
+    //     SellOrder sellOrder = new SellOrder();
+    //     helper.setDataForSellOrder(userID, sellOrder, sellOrderDTO);
+    //     sellOrderRepository.save(sellOrder);
+
+    //     List<SellOrderItem> listSellOrderItemRegistered = new ArrayList<>();
+    //     for (SellOrderItemDTO sellOrderItemDTO : sellOrderDTO.getSellOrderItemDTOs()) {
+    //         Long productID = sellOrderItemDTO.getProductID();
+    //         Integer quantity = sellOrderItemDTO.getQuantity();
+    //         SellOrderItem sellOrderItem = newSellOrderItemService.registerNewSellOrderItem(userID, sellOrder.getSellOrderID(), sellOrderItemDTO);
+    //         listSellOrderItemRegistered.add(sellOrderItem);
+    //         // decrease number of product in database
+    //         helper.editProductQuantity(userID, productID, -quantity);
+    //     }
+    //     // real cost
+    //     Double realCost = helper.getRealCost(listSellOrderItemRegistered);
+
+    //     Double actualDiscountCash = helper.getActualDiscountCash(sellOrderDTO.getDiscountID(), realCost, sellOrder);
+
+    //     helper.updateDiscount(sellOrderDTO.getDiscountID());
+
+    //     double actualDiscountPercentage = Double.parseDouble(df.format(actualDiscountCash / realCost));
+    //     double finalCost = Double.parseDouble(df.format(realCost - actualDiscountCash));
+    //     sellOrder.setActualDiscountCash(Double.valueOf(df.format(actualDiscountCash)));
+    //     sellOrder.setActualDiscountPercentage(actualDiscountPercentage);
+    //     sellOrder.setFinalCost(finalCost);
+    //     sellOrder.setRealCost(Double.valueOf(df.format(realCost)));
+    //     this.sellOrderRepository.save(sellOrder);
+
+    //     if (sellOrder.getStatus().equals(Status.FINISHED)) {
+    //         Customer customer = helper.findCustomerInfo(userID, sellOrderDTO.getCustomer());
+    //         helper.updateCustomerTotalSpend(customer.getTotalSpend() + finalCost, customer);
+    //     }
+    //     return sellOrder;
+    // }
 
     @Transactional
     public void deleteSellOrderBySellOrderID(Long userID, Long sellOrderID) {
