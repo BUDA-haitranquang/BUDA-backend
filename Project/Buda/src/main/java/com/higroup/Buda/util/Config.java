@@ -1,7 +1,5 @@
 package com.higroup.Buda.util;
 
-import java.util.UUID;
-
 public class Config {
     //  PROD
     //  public final static String url = "http://143.198.194.24:8080/";

@@ -5,26 +5,23 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
-import com.higroup.Buda.entities.OtherCost;
-import com.higroup.Buda.repositories.OtherCostRepository;
-import com.higroup.Buda.repositories.UserRepository;
-import com.higroup.Buda.util.Checker.PresentChecker;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.higroup.Buda.entities.OtherCost;
+import com.higroup.Buda.repositories.OtherCostRepository;
+import com.higroup.Buda.util.Checker.PresentChecker;
+
 @Service
 public class CRUDOtherCostService {
     private final OtherCostRepository otherCostRepository;
-    private final UserRepository userRepository;
     
     @Autowired
-    public CRUDOtherCostService(OtherCostRepository otherCostRepository, UserRepository userRepository)
+    public CRUDOtherCostService(OtherCostRepository otherCostRepository)
     {
         this.otherCostRepository = otherCostRepository;
-        this.userRepository = userRepository;
     }
     @Autowired
     private PresentChecker presentChecker;

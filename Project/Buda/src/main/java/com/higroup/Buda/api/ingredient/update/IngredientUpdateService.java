@@ -6,27 +6,23 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
-import com.higroup.Buda.entities.Ingredient;
-import com.higroup.Buda.entities.User;
-import com.higroup.Buda.repositories.IngredientRepository;
-import com.higroup.Buda.repositories.UserRepository;
-import com.higroup.Buda.util.BeanUtils.NullAwareBeanUtilsBean;
-
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.higroup.Buda.entities.Ingredient;
+import com.higroup.Buda.repositories.IngredientRepository;
+import com.higroup.Buda.util.BeanUtils.NullAwareBeanUtilsBean;
+
 @Service
 public class IngredientUpdateService {
     private final IngredientRepository ingredientRepository;
-    private final UserRepository userRepository;
 
     @Autowired
-    public IngredientUpdateService(IngredientRepository ingredientRepository, UserRepository userRepository) {
+    public IngredientUpdateService(IngredientRepository ingredientRepository) {
         this.ingredientRepository = ingredientRepository;
-        this.userRepository = userRepository;
     }
 
     @Transactional

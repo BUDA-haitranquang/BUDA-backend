@@ -1,20 +1,17 @@
 package com.higroup.Buda.security;
 
-import com.higroup.Buda.services.UserService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import com.higroup.Buda.services.UserService;
 
 
 /*
@@ -26,9 +23,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     // @Autowired
 	// private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-
-	@Autowired
-	private JwtRequestFilter jwtRequestFilter;
 
 	@Autowired
 	private UserService jwtUserDetailsService;
@@ -82,53 +76,53 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		// http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
-	private void UserConfig(HttpSecurity http) throws Exception{
-		// dont authenticate this particular request
-		http.authorizeRequests().antMatchers("/api/user/login", "/api/user/register/**").permitAll();
-		http.authorizeRequests().antMatchers("/api/user/login/google").permitAll();
-		http.authorizeRequests().antMatchers("/api/user/refresh-token").permitAll();
-		http.authorizeRequests().antMatchers("/api/user/password/forgot/**").permitAll();
-		// require ROLE USER to make get request for user 
-		http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/user/**").hasAnyAuthority("USER");
-		// Admin can do something
-		http.authorizeRequests().antMatchers(HttpMethod.DELETE, "/api/user/id/**").hasAnyAuthority("ADMIN");
+	// private void UserConfig(HttpSecurity http) throws Exception{
+	// 	// dont authenticate this particular request
+	// 	http.authorizeRequests().antMatchers("/api/user/login", "/api/user/register/**").permitAll();
+	// 	http.authorizeRequests().antMatchers("/api/user/login/google").permitAll();
+	// 	http.authorizeRequests().antMatchers("/api/user/refresh-token").permitAll();
+	// 	http.authorizeRequests().antMatchers("/api/user/password/forgot/**").permitAll();
+	// 	// require ROLE USER to make get request for user 
+	// 	http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/user/**").hasAnyAuthority("USER");
+	// 	// Admin can do something
+	// 	http.authorizeRequests().antMatchers(HttpMethod.DELETE, "/api/user/id/**").hasAnyAuthority("ADMIN");
 		
-	}
+	// }
     
-	private void PlanConfig(HttpSecurity http) throws Exception{
-		http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/plan/**").permitAll();
-	}
+	// private void PlanConfig(HttpSecurity http) throws Exception{
+	// 	http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/plan/**").permitAll();
+	// }
 
-	private void StaffConfig(HttpSecurity http) throws Exception{
-		// dont authenticate this particular request
-		http.authorizeRequests().antMatchers("/api/staff/login").permitAll();
-		http.authorizeRequests().antMatchers(HttpMethod.DELETE, "/api/staff/id/**").hasAnyAuthority("ADMIN", "USER");
-		http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/staff/userID/all").hasAnyAuthority("USER");
-		http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/staff/register").hasAnyAuthority("USER");
-		http.authorizeRequests().antMatchers(HttpMethod.PUT, "/api/staff/id/**").hasAnyAuthority("USER");
+	// private void StaffConfig(HttpSecurity http) throws Exception{
+	// 	// dont authenticate this particular request
+	// 	http.authorizeRequests().antMatchers("/api/staff/login").permitAll();
+	// 	http.authorizeRequests().antMatchers(HttpMethod.DELETE, "/api/staff/id/**").hasAnyAuthority("ADMIN", "USER");
+	// 	http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/staff/userID/all").hasAnyAuthority("USER");
+	// 	http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/staff/register").hasAnyAuthority("USER");
+	// 	http.authorizeRequests().antMatchers(HttpMethod.PUT, "/api/staff/id/**").hasAnyAuthority("USER");
 		
-	}
+	// }
 
-	private void StaffNoteConfig(HttpSecurity http) throws Exception{
-		http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/staff-note/register").hasAnyAuthority("USER", "STAFF");
-		http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/staff-note/userID/{userID}/all", 
-															 "/api/staff-note/staffID/{staffID}/all").hasAnyAuthority("USER", "STAFF");
-		http.authorizeRequests().antMatchers(HttpMethod.PUT, "/api/staff-note/noteID/**").hasAnyAuthority("USER", "STAFF");
-		http.authorizeRequests().antMatchers(HttpMethod.DELETE, "/api/staff-note/noteID/**").hasAnyAuthority("USER", "STAFF");
-	}
+	// private void StaffNoteConfig(HttpSecurity http) throws Exception{
+	// 	http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/staff-note/register").hasAnyAuthority("USER", "STAFF");
+	// 	http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/staff-note/userID/{userID}/all", 
+	// 														 "/api/staff-note/staffID/{staffID}/all").hasAnyAuthority("USER", "STAFF");
+	// 	http.authorizeRequests().antMatchers(HttpMethod.PUT, "/api/staff-note/noteID/**").hasAnyAuthority("USER", "STAFF");
+	// 	http.authorizeRequests().antMatchers(HttpMethod.DELETE, "/api/staff-note/noteID/**").hasAnyAuthority("USER", "STAFF");
+	// }
 
-	private void SalaryLogConfig(HttpSecurity http) throws Exception{
-		http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/salary-log/userID/**", "/api/salary-log/staffID/**").hasAnyAuthority("USER");
-	}
+	// private void SalaryLogConfig(HttpSecurity http) throws Exception{
+	// 	http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/salary-log/userID/**", "/api/salary-log/staffID/**").hasAnyAuthority("USER");
+	// }
 
-	private void ProductConfig(HttpSecurity http) throws Exception{
-		http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/product/productID/**", "/api/product/all", "/hidden/all", 
-															 "/api/product//hidden/all", "/api/product//group/**").hasAnyAuthority("USER", "STAFF");
-		http.authorizeRequests().antMatchers(HttpMethod.PUT, "/api/product/productID/**").hasAnyAuthority("USER");
-		http.authorizeRequests().antMatchers(HttpMethod.DELETE, "/api/product/productID/**").hasAnyAuthority("USER");
-	}
+	// private void ProductConfig(HttpSecurity http) throws Exception{
+	// 	http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/product/productID/**", "/api/product/all", "/hidden/all", 
+	// 														 "/api/product//hidden/all", "/api/product//group/**").hasAnyAuthority("USER", "STAFF");
+	// 	http.authorizeRequests().antMatchers(HttpMethod.PUT, "/api/product/productID/**").hasAnyAuthority("USER");
+	// 	http.authorizeRequests().antMatchers(HttpMethod.DELETE, "/api/product/productID/**").hasAnyAuthority("USER");
+	// }
 
-	private void ZaloPayConfig(HttpSecurity http) throws Exception{
-		http.authorizeRequests().antMatchers("/api/payment/zalopay/callback").permitAll();
-	}
+	// private void ZaloPayConfig(HttpSecurity http) throws Exception{
+	// 	http.authorizeRequests().antMatchers("/api/payment/zalopay/callback").permitAll();
+	// }
 }

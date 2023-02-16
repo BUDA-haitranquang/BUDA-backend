@@ -18,18 +18,16 @@ import java.util.Set;
 @Service
 public class WarrantyOrderCreateService {
     private final WarrantyOrderRepository warrantyOrderRepository;
-    private final UserRepository userRepository;
     private final SellOrderRepository sellOrderRepository;
     private final ProductRepository productRepository;
     private final CustomerRepository customerRepository;
     @Autowired
-    public WarrantyOrderCreateService(WarrantyOrderRepository warrantyOrderRepository, UserRepository userRepository, SellOrderRepository sellOrderRepository,
+    public WarrantyOrderCreateService(WarrantyOrderRepository warrantyOrderRepository, SellOrderRepository sellOrderRepository,
                                       ProductRepository productRepository, CustomerRepository customerRepository)
     {
         this.customerRepository = customerRepository;
         this.productRepository = productRepository;
         this.sellOrderRepository = sellOrderRepository;
-        this.userRepository = userRepository;
         this.warrantyOrderRepository = warrantyOrderRepository;
     }
     @Transactional

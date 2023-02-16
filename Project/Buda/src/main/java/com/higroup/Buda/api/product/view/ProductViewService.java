@@ -1,12 +1,14 @@
 package com.higroup.Buda.api.product.view;
 
 
-import com.higroup.Buda.entities.Product;
-import com.higroup.Buda.entities.ProductGroup;
-import com.higroup.Buda.repositories.ProductGroupRepository;
-import com.higroup.Buda.repositories.ProductRepository;
-import com.higroup.Buda.repositories.UserRepository;
-import com.higroup.Buda.repositories.ProductRepository.ViewProductInfo;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,19 +16,20 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.transaction.Transactional;
-import java.util.*;
+import com.higroup.Buda.entities.Product;
+import com.higroup.Buda.entities.ProductGroup;
+import com.higroup.Buda.repositories.ProductGroupRepository;
+import com.higroup.Buda.repositories.ProductRepository;
+import com.higroup.Buda.repositories.ProductRepository.ViewProductInfo;
 
 @Service
 public class ProductViewService {
     private final ProductRepository productRepository;
-    private final UserRepository userRepository;
     private final ProductGroupRepository productGroupRepository;
     @Autowired
-    public ProductViewService(ProductRepository productRepository, ProductGroupRepository productGroupRepository, UserRepository userRepository)
+    public ProductViewService(ProductRepository productRepository, ProductGroupRepository productGroupRepository)
     {
         this.productGroupRepository = productGroupRepository;
-        this.userRepository = userRepository;
         this.productRepository = productRepository;
     }
 

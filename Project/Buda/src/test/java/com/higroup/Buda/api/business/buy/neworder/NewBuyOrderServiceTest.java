@@ -1,17 +1,15 @@
 package com.higroup.Buda.api.business.buy.neworder;
 
-import com.higroup.Buda.BudaApplication;
-import com.higroup.Buda.entities.BuyOrder;
-import com.higroup.Buda.entities.Supplier;
-import com.higroup.Buda.entities.enumeration.Status;
-import com.higroup.Buda.repositories.SupplierRepository;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import com.higroup.Buda.BudaApplication;
+import com.higroup.Buda.entities.Supplier;
+import com.higroup.Buda.repositories.SupplierRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = BudaApplication.class)

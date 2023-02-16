@@ -5,6 +5,12 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
+
 import com.higroup.Buda.api.business.buy.neworder.BuyOrderDTO;
 import com.higroup.Buda.api.business.buy.neworder.BuyOrderItemDTO;
 import com.higroup.Buda.api.ingredient.create.IngredientCreateService;
@@ -15,7 +21,6 @@ import com.higroup.Buda.entities.Ingredient;
 import com.higroup.Buda.entities.IngredientLeftLog;
 import com.higroup.Buda.entities.Staff;
 import com.higroup.Buda.entities.Supplier;
-import com.higroup.Buda.entities.User;
 import com.higroup.Buda.entities.enumeration.Status;
 import com.higroup.Buda.repositories.BuyOrderItemRepository;
 import com.higroup.Buda.repositories.BuyOrderRepository;
@@ -23,18 +28,10 @@ import com.higroup.Buda.repositories.IngredientLeftLogRepository;
 import com.higroup.Buda.repositories.IngredientRepository;
 import com.higroup.Buda.repositories.StaffRepository;
 import com.higroup.Buda.repositories.SupplierRepository;
-import com.higroup.Buda.repositories.UserRepository;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
 
 @Service
 public class NewBuyOrderStaffService {
-    private UserRepository userRepository;
     private SupplierRepository supplierRepository;
     private BuyOrderRepository buyOrderRepository;
     private BuyOrderItemRepository buyOrderItemRepository;
@@ -45,12 +42,11 @@ public class NewBuyOrderStaffService {
     private StaffRepository staffRepository;
 
     @Autowired
-    public NewBuyOrderStaffService(UserRepository userRepository, SupplierRepository supplierRepository, BuyOrderRepository buyOrderRepository, BuyOrderItemRepository buyOrderItemRepository, IngredientRepository ingredientRepository, IngredientCreateService ingredientCreateService, 
+    public NewBuyOrderStaffService(SupplierRepository supplierRepository, BuyOrderRepository buyOrderRepository, BuyOrderItemRepository buyOrderItemRepository, IngredientRepository ingredientRepository, IngredientCreateService ingredientCreateService, 
     IngredientViewService ingredientViewService, IngredientLeftLogRepository ingredientLeftLogRepository,
     StaffRepository staffRepository)
     {
         this.staffRepository = staffRepository;
-        this.userRepository = userRepository;
         this.supplierRepository = supplierRepository;
         this.buyOrderItemRepository = buyOrderItemRepository;
         this.buyOrderRepository = buyOrderRepository;

@@ -1,7 +1,6 @@
 package com.higroup.Buda.entities;
 
 import java.time.ZonedDateTime;
-import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

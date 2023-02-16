@@ -2,6 +2,12 @@ package com.higroup.Buda.api.retail;
 
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
+
 import com.higroup.Buda.api.product.packaging.component.add.AddProductComponentDTO;
 import com.higroup.Buda.api.product.packaging.component.add.AddProductComponentService;
 import com.higroup.Buda.api.retail.customDTO.RetailCreateDTO;
@@ -13,29 +19,19 @@ import com.higroup.Buda.entities.Product;
 import com.higroup.Buda.repositories.IngredientRepository;
 import com.higroup.Buda.repositories.PictureRepository;
 import com.higroup.Buda.repositories.ProductRepository;
-import com.higroup.Buda.repositories.UserRepository;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class RetailCreateService {
     private final IngredientRepository ingredientRepository;
     private final ProductRepository productRepository;
-    private final UserRepository userRepository;
     private final AddProductComponentService addProductComponentService;
     private final PictureRepository pictureRepository;
 
     @Autowired
     public RetailCreateService(IngredientRepository ingredientRepository, ProductRepository productRepository,
-            UserRepository userRepository, AddProductComponentService addProductComponentService,
-            PictureRepository pictureRepository) {
+            AddProductComponentService addProductComponentService, PictureRepository pictureRepository) {
         this.ingredientRepository = ingredientRepository;
         this.productRepository = productRepository;
-        this.userRepository = userRepository;
         this.addProductComponentService = addProductComponentService;
         this.pictureRepository = pictureRepository;
     }

@@ -5,13 +5,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 
-import com.higroup.Buda.api.user.register.SendConfirmRegisterMailService;
-import com.higroup.Buda.entities.MailConfirmationToken;
-import com.higroup.Buda.entities.User;
-import com.higroup.Buda.entities.enumeration.MailTokenType;
-import com.higroup.Buda.repositories.UserRepository;
-import com.higroup.Buda.security.jwt.JwtTokenUtil;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -22,17 +15,21 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.higroup.Buda.api.user.register.SendConfirmRegisterMailService;
+import com.higroup.Buda.entities.MailConfirmationToken;
+import com.higroup.Buda.entities.User;
+import com.higroup.Buda.entities.enumeration.MailTokenType;
+import com.higroup.Buda.repositories.UserRepository;
+
 @Service
 public class ConfirmAccountActivationService implements UserDetailsService{
     private final UserRepository userRepository;
-    private final JwtTokenUtil jwtTokenUtil;
     @Autowired
     private SendConfirmRegisterMailService confirmRegisterMailService;
 
     @Autowired
-    public ConfirmAccountActivationService(UserRepository userRepository, JwtTokenUtil jwtTokenUtil) {
+    public ConfirmAccountActivationService(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.jwtTokenUtil = jwtTokenUtil;
     }
     @Transactional
     public User confirmAccountActivation(String token) {

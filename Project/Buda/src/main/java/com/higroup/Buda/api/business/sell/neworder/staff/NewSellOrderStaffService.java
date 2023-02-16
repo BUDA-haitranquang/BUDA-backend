@@ -7,6 +7,12 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
+
 import com.higroup.Buda.api.business.sell.neworder.SellOrderDTO;
 import com.higroup.Buda.api.business.sell.neworder.SellOrderItemDTO;
 import com.higroup.Buda.api.business.sell.neworder.util.DefaultCustomerUtilService;
@@ -27,13 +33,6 @@ import com.higroup.Buda.repositories.ProductRepository;
 import com.higroup.Buda.repositories.SellOrderItemRepository;
 import com.higroup.Buda.repositories.SellOrderRepository;
 import com.higroup.Buda.repositories.StaffRepository;
-import com.higroup.Buda.util.Checker.PresentChecker;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class NewSellOrderStaffService {
@@ -66,9 +65,6 @@ public class NewSellOrderStaffService {
         this.productRepository = productRepository;
         this.productLeftLogRepository = productLeftLogRepository;
     }
-
-    @Autowired
-    private PresentChecker presentChecker;
 
     // product edit quantity function
     @Transactional

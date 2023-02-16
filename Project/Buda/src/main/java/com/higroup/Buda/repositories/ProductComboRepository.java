@@ -2,12 +2,11 @@ package com.higroup.Buda.repositories;
 
 import java.util.List;
 
-import com.higroup.Buda.entities.Product;
-import com.higroup.Buda.entities.ProductCombo;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
+import com.higroup.Buda.entities.ProductCombo;
 
 public interface ProductComboRepository extends JpaRepository<ProductCombo, Long>{
     @Query(value = "select * from product_combo p where p.user_id = :userID", nativeQuery = true)

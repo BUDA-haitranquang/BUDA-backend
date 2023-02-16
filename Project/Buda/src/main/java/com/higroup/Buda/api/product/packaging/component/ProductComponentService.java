@@ -7,18 +7,17 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
 import com.higroup.Buda.entities.Ingredient;
 import com.higroup.Buda.entities.Product;
 import com.higroup.Buda.entities.ProductComponent;
 import com.higroup.Buda.repositories.IngredientRepository;
 import com.higroup.Buda.repositories.ProductComponentRepository;
 import com.higroup.Buda.repositories.ProductRepository;
-import com.higroup.Buda.util.Checker.PresentChecker;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class ProductComponentService {
@@ -33,16 +32,12 @@ public class ProductComponentService {
         this.ingredientRepository = ingredientRepository;
     }
 
-    @Autowired
-    private PresentChecker presentChecker;
-
     public ProductComponent findByProductAndIngredient(Long productID, Long ingredientID)
     {
         Optional<Product> opProduct = this.productRepository.findProductByProductID(productID);
         if(!opProduct.isPresent()){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
         }
-        Product product = opProduct.get();
         
         Optional<Ingredient> ingredient = this.ingredientRepository.findIngredientByIngredientID(ingredientID);
         if (ingredient.isEmpty())

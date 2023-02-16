@@ -1,28 +1,25 @@
 package com.higroup.Buda.api.statistics.product.productgroup;
 
-import com.higroup.Buda.entities.ProductGroup;
-import com.higroup.Buda.entities.User;
-import com.higroup.Buda.repositories.ProductGroupRepository;
-import com.higroup.Buda.repositories.UserRepository;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Optional;
+import com.higroup.Buda.entities.ProductGroup;
+import com.higroup.Buda.repositories.ProductGroupRepository;
 
 @Service
 public class ProductGroupStatisticsService {
     private final ProductGroupStatisticsRepository productGroupStatisticsRepository;
     private final ProductGroupRepository productGroupRepository;
-    private final UserRepository userRepository;
 
     @Autowired
 
-    public ProductGroupStatisticsService(ProductGroupStatisticsRepository productGroupStatisticsRepository, ProductGroupRepository productGroupRepository, UserRepository userRepository) {
+    public ProductGroupStatisticsService(ProductGroupStatisticsRepository productGroupStatisticsRepository, ProductGroupRepository productGroupRepository) {
         this.productGroupStatisticsRepository = productGroupStatisticsRepository;
         this.productGroupRepository = productGroupRepository;
-        this.userRepository = userRepository;
     }
 
 

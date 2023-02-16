@@ -6,20 +6,18 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
-import com.higroup.Buda.entities.Customer;
-import com.higroup.Buda.entities.Discount;
-import com.higroup.Buda.entities.MembershipType;
-import com.higroup.Buda.entities.User;
-import com.higroup.Buda.repositories.CustomerRepository;
-import com.higroup.Buda.repositories.DiscountRepository;
-import com.higroup.Buda.repositories.MembershipTypeRepository;
-import com.higroup.Buda.repositories.UserRepository;
-import com.higroup.Buda.util.Checker.PresentChecker;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
+import com.higroup.Buda.entities.Customer;
+import com.higroup.Buda.entities.Discount;
+import com.higroup.Buda.entities.MembershipType;
+import com.higroup.Buda.repositories.CustomerRepository;
+import com.higroup.Buda.repositories.DiscountRepository;
+import com.higroup.Buda.repositories.MembershipTypeRepository;
+import com.higroup.Buda.util.Checker.PresentChecker;
 
 @Service
 public class CustomerMembershipService {

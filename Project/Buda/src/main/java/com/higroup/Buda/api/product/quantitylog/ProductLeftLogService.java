@@ -3,12 +3,6 @@ package com.higroup.Buda.api.product.quantitylog;
 import java.util.List;
 import java.util.Optional;
 
-import com.higroup.Buda.entities.ProductLeftLog;
-import com.higroup.Buda.repositories.ProductLeftLogRepository;
-import com.higroup.Buda.repositories.ProductRepository;
-import com.higroup.Buda.repositories.UserRepository;
-import com.higroup.Buda.repositories.ProductLeftLogRepository.ViewProductLeftLogInfo;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,17 +11,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.higroup.Buda.entities.ProductLeftLog;
+import com.higroup.Buda.repositories.ProductLeftLogRepository;
+import com.higroup.Buda.repositories.ProductLeftLogRepository.ViewProductLeftLogInfo;
+
 @Service
 public class ProductLeftLogService {
     private final ProductLeftLogRepository productLeftLogRepository;
-    private final UserRepository userRepository;
-    private final ProductRepository productRepository;
     @Autowired
-    public ProductLeftLogService(ProductLeftLogRepository productLeftLogRepository, UserRepository userRepository, ProductRepository productRepository)
+    public ProductLeftLogService(ProductLeftLogRepository productLeftLogRepository)
     {
-        this.userRepository = userRepository;
         this.productLeftLogRepository = productLeftLogRepository;
-        this.productRepository = productRepository;
     }
 
     public ProductLeftLog findProductLeftLogByProductLeftLogID(Long userID, Long productLeftLogID)

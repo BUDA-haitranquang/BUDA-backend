@@ -3,22 +3,9 @@ package com.higroup.Buda.api.business.sell.neworder;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Optional;
 
-import com.higroup.Buda.BudaApplication;
-import com.higroup.Buda.entities.Customer;
-import com.higroup.Buda.entities.Product;
-import com.higroup.Buda.entities.SellOrder;
-import com.higroup.Buda.entities.enumeration.AgeGroup;
-import com.higroup.Buda.entities.enumeration.Gender;
-import com.higroup.Buda.entities.enumeration.Status;
-import com.higroup.Buda.repositories.CustomerRepository;
-import com.higroup.Buda.repositories.ProductRepository;
-import com.higroup.Buda.repositories.UserRepository;
-
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -26,6 +13,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.higroup.Buda.BudaApplication;
+import com.higroup.Buda.entities.Customer;
+import com.higroup.Buda.entities.SellOrder;
+import com.higroup.Buda.entities.enumeration.AgeGroup;
+import com.higroup.Buda.entities.enumeration.Gender;
+import com.higroup.Buda.entities.enumeration.Status;
+import com.higroup.Buda.repositories.CustomerRepository;
+import com.higroup.Buda.repositories.ProductRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = BudaApplication.class)

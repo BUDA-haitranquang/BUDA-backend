@@ -4,11 +4,6 @@ import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.higroup.Buda.entities.User;
-import com.higroup.Buda.repositories.StaffRepository;
-import com.higroup.Buda.repositories.UserRepository;
-import com.higroup.Buda.security.jwt.JwtTokenUtil;
-
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -24,19 +19,21 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.higroup.Buda.entities.User;
+import com.higroup.Buda.repositories.UserRepository;
+import com.higroup.Buda.security.jwt.JwtTokenUtil;
+
 @Component
 public class RequestUtil {
     private final JwtTokenUtil jwtTokenUtil;
     private final UserRepository userRepository;
-    private final StaffRepository staffRepository;
     @Value("${authentication.url}")
     private String authenticationURL;
 
     @Autowired
-    public RequestUtil(JwtTokenUtil jwtTokenUtil, UserRepository userRepository, StaffRepository staffRepository) {
+    public RequestUtil(JwtTokenUtil jwtTokenUtil, UserRepository userRepository) {
         this.userRepository = userRepository;
         this.jwtTokenUtil = jwtTokenUtil;
-        this.staffRepository = staffRepository;
     }
 
     public Long getUserIDGeneral(HttpServletRequest httpServletRequest, String type) {

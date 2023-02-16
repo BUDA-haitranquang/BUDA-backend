@@ -9,6 +9,11 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
 import com.higroup.Buda.api.business.sell.neworder.SellOrderDTO;
 import com.higroup.Buda.api.business.sell.neworder.SellOrderItemDTO;
 import com.higroup.Buda.api.business.sell.neworder.util.DefaultCustomerUtilService;
@@ -20,23 +25,16 @@ import com.higroup.Buda.entities.SellOrder;
 import com.higroup.Buda.entities.SellOrderItem;
 import com.higroup.Buda.entities.enumeration.DiscountType;
 import com.higroup.Buda.entities.enumeration.Status;
-import com.higroup.Buda.repositories.CustomerRepository;
 import com.higroup.Buda.repositories.DiscountRepository;
 import com.higroup.Buda.repositories.ProductRepository;
 import com.higroup.Buda.repositories.SellOrderItemRepository;
 import com.higroup.Buda.repositories.SellOrderRepository;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class PosNewSellOrderService {
     private final SellOrderRepository sellOrderRepository;
     private final SellOrderItemRepository sellOrderItemRepository;
     private final ProductRepository productRepository;
-    private final CustomerRepository customerRepository;
     private final DefaultCustomerUtilService defaultCustomerUtilService;
     private final DiscountRepository discountRepository;
     private final SearchCustomerUtilService searchCustomerUtilService;
@@ -44,7 +42,7 @@ public class PosNewSellOrderService {
     @Autowired
     public PosNewSellOrderService(SellOrderRepository sellOrderRepository,
             SellOrderItemRepository sellOrderItemRepository,
-            ProductRepository productRepository, CustomerRepository customerRepository,
+            ProductRepository productRepository, 
             DefaultCustomerUtilService defaultCustomerService,
             DiscountRepository discountRepository,
             SearchCustomerUtilService customerUtilService) {
@@ -53,7 +51,6 @@ public class PosNewSellOrderService {
         this.defaultCustomerUtilService = defaultCustomerService;
         this.sellOrderItemRepository = sellOrderItemRepository;
         this.sellOrderRepository = sellOrderRepository;
-        this.customerRepository = customerRepository;
         this.productRepository = productRepository;
     }
 

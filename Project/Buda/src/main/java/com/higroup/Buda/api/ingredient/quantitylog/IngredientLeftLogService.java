@@ -5,13 +5,6 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
-import com.higroup.Buda.entities.Ingredient;
-import com.higroup.Buda.entities.IngredientLeftLog;
-import com.higroup.Buda.repositories.IngredientLeftLogRepository;
-import com.higroup.Buda.repositories.IngredientRepository;
-import com.higroup.Buda.repositories.UserRepository;
-import com.higroup.Buda.repositories.IngredientLeftLogRepository.ViewIngredientLeftLogInfo;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,15 +12,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.higroup.Buda.entities.Ingredient;
+import com.higroup.Buda.entities.IngredientLeftLog;
+import com.higroup.Buda.repositories.IngredientLeftLogRepository;
+import com.higroup.Buda.repositories.IngredientLeftLogRepository.ViewIngredientLeftLogInfo;
+import com.higroup.Buda.repositories.IngredientRepository;
+
 @Service
 public class IngredientLeftLogService {
     private final IngredientLeftLogRepository ingredientLeftLogRepository;
-    private final UserRepository userRepository;
     private final IngredientRepository ingredientRepository;
     @Autowired
-    public IngredientLeftLogService(IngredientLeftLogRepository ingredientLeftLogRepository, UserRepository userRepository, IngredientRepository ingredientRepository)
+    public IngredientLeftLogService(IngredientLeftLogRepository ingredientLeftLogRepository, IngredientRepository ingredientRepository)
     {
-        this.userRepository = userRepository;
         this.ingredientLeftLogRepository = ingredientLeftLogRepository;
         this.ingredientRepository = ingredientRepository;
     }

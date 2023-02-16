@@ -1,23 +1,16 @@
 package com.higroup.Buda.api.product.view;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import java.util.List;
-
-import com.higroup.Buda.BudaApplication;
-import com.higroup.Buda.entities.Product;
-
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.higroup.Buda.BudaApplication;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = BudaApplication.class)
 public class CRUDProductServiceTest {
-    @Autowired
-    private ProductViewService productService;
     @Autowired 
     private 
     

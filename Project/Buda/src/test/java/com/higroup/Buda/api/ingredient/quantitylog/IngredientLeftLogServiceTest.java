@@ -5,18 +5,16 @@ import static org.junit.Assert.assertEquals;
 import java.util.List;
 import java.util.Optional;
 
-import com.higroup.Buda.BudaApplication;
-import com.higroup.Buda.entities.IngredientLeftLog;
-import com.higroup.Buda.repositories.IngredientLeftLogRepository;
-import com.higroup.Buda.repositories.IngredientRepository;
-import com.higroup.Buda.repositories.StaffRepository;
-import com.higroup.Buda.repositories.UserRepository;
-
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import com.higroup.Buda.BudaApplication;
+import com.higroup.Buda.entities.IngredientLeftLog;
+import com.higroup.Buda.repositories.IngredientLeftLogRepository;
+import com.higroup.Buda.repositories.IngredientRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = BudaApplication.class)
@@ -26,13 +24,7 @@ public class IngredientLeftLogServiceTest {
     private IngredientRepository ingredientRepository;
 
     @Autowired
-    private StaffRepository staffRepository;
-
-    @Autowired
     private IngredientLeftLogRepository ingredientLeftLogRepository;
-
-    @Autowired
-    private UserRepository userRepository;
 
     @Autowired
     private IngredientLeftLogService ingredientLeftLogService;

@@ -3,11 +3,6 @@ package com.higroup.Buda.api.discount.view;
 import static org.junit.Assert.assertEquals;
 
 import java.util.List;
-import java.util.Optional;
-
-import com.higroup.Buda.BudaApplication;
-import com.higroup.Buda.entities.Discount;
-import com.higroup.Buda.repositories.DiscountRepository;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,14 +10,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.higroup.Buda.BudaApplication;
+import com.higroup.Buda.entities.Discount;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = BudaApplication.class)
 public class ViewDiscountServiceTest {
     @Autowired
     private ViewDiscountService viewDiscountService;
     
-    @Autowired
-    private DiscountRepository discountRepository;
     @Test
     public void testFindAllDiscountByUserID() {
         for(long userID = 0; userID < 3; userID++) {

@@ -3,33 +3,29 @@ package com.higroup.Buda.api.business.sell.warranty.view;
 import java.util.List;
 import java.util.Optional;
 
-import com.higroup.Buda.entities.*;
-import com.higroup.Buda.repositories.CustomerRepository;
-import com.higroup.Buda.repositories.ProductRepository;
-import com.higroup.Buda.repositories.SellOrderRepository;
-import com.higroup.Buda.repositories.UserRepository;
-import com.higroup.Buda.repositories.WarrantyOrderRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.higroup.Buda.entities.Customer;
+import com.higroup.Buda.entities.Product;
+import com.higroup.Buda.entities.WarrantyOrder;
+import com.higroup.Buda.repositories.CustomerRepository;
+import com.higroup.Buda.repositories.ProductRepository;
+import com.higroup.Buda.repositories.WarrantyOrderRepository;
+
 @Service
 public class WarrantyOrderViewService {
     private final WarrantyOrderRepository warrantyOrderRepository;
-    private final UserRepository userRepository;
-    private final SellOrderRepository sellOrderRepository;
     private final ProductRepository productRepository;
     private final CustomerRepository customerRepository;
     @Autowired
-    public WarrantyOrderViewService(WarrantyOrderRepository warrantyOrderRepository, UserRepository userRepository, SellOrderRepository sellOrderRepository,
+    public WarrantyOrderViewService(WarrantyOrderRepository warrantyOrderRepository,
                                     ProductRepository productRepository, CustomerRepository customerRepository)
     {
         this.customerRepository = customerRepository;
         this.productRepository = productRepository;
-        this.sellOrderRepository = sellOrderRepository;
-        this.userRepository = userRepository;
         this.warrantyOrderRepository = warrantyOrderRepository;
     }
     public List<WarrantyOrder> findAllWarrantyOrderByUserID(Long userID)

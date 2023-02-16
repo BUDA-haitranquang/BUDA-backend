@@ -7,29 +7,25 @@ import java.util.Set;
 
 import javax.transaction.Transactional;
 
-import com.higroup.Buda.entities.Product;
-import com.higroup.Buda.entities.ProductGroup;
-import com.higroup.Buda.entities.User;
-import com.higroup.Buda.repositories.ProductGroupRepository;
-import com.higroup.Buda.repositories.ProductRepository;
-import com.higroup.Buda.repositories.UserRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.higroup.Buda.entities.Product;
+import com.higroup.Buda.entities.ProductGroup;
+import com.higroup.Buda.repositories.ProductGroupRepository;
+import com.higroup.Buda.repositories.ProductRepository;
+
 @Service
 public class ProductGroupCreateService {
     private final ProductGroupRepository productGroupRepository;
     private final ProductRepository productRepository;
-    private final UserRepository userRepository;
 
     @Autowired
-    public ProductGroupCreateService(ProductGroupRepository productGroupRepository, ProductRepository productRepository, UserRepository userRepository) {
+    public ProductGroupCreateService(ProductGroupRepository productGroupRepository, ProductRepository productRepository) {
         this.productGroupRepository = productGroupRepository;
         this.productRepository = productRepository;
-        this.userRepository = userRepository;
     }
     public List<ProductGroup> findAllByUserID(Long userID)
     {

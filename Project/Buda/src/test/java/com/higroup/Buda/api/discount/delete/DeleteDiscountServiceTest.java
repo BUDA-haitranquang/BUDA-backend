@@ -2,17 +2,16 @@ package com.higroup.Buda.api.discount.delete;
 
 import static org.junit.Assert.assertEquals;
 
-import com.higroup.Buda.BudaApplication;
-import com.higroup.Buda.entities.Discount;
-import com.higroup.Buda.entities.enumeration.DiscountType;
-import com.higroup.Buda.repositories.DiscountRepository;
-
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import com.higroup.Buda.BudaApplication;
+import com.higroup.Buda.entities.Discount;
+import com.higroup.Buda.entities.enumeration.DiscountType;
+import com.higroup.Buda.repositories.DiscountRepository;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = BudaApplication.class)
 

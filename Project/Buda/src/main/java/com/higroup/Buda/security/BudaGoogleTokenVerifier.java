@@ -47,7 +47,7 @@ public class BudaGoogleTokenVerifier {
             boolean emailVerified = Boolean.valueOf(payload.getEmailVerified());
             String name = (String) payload.get("name");
             String pictureUrl = (String) payload.get("picture");
-            String locale = (String) payload.get("locale");
+            // String locale = (String) payload.get("locale");
             String familyName = (String) payload.get("family_name");
             String givenName = (String) payload.get("given_name");
             if (!emailVerified)

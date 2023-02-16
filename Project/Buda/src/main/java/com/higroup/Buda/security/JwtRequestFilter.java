@@ -1,40 +1,19 @@
 package com.higroup.Buda.security;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.higroup.Buda.api.staff.crud.StaffService;
-import com.higroup.Buda.security.jwt.JwtTokenUtil;
-import com.higroup.Buda.services.UserService;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import io.jsonwebtoken.ExpiredJwtException;
-
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
-
-    @Autowired
-    private UserService jwtUserDetailsService;
-    @Autowired
-    private StaffService jwtStaffDetailService;
-
-    @Autowired
-    private JwtTokenUtil jwtTokenUtil;
 
     private final RequestMatcher ignoredPaths = new AntPathRequestMatcher("/api/user/login/**");
 

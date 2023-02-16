@@ -8,11 +8,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import com.higroup.Buda.customDTO.PeriodDTO;
+import org.springframework.stereotype.Repository;
+
 import com.higroup.Buda.customDTO.RevenueByTimePeriodStatistics;
 import com.higroup.Buda.customDTO.RevenueByTimeStatistics;
-
-import org.springframework.stereotype.Repository;
 
 @Repository
 public class TotalRevenueRepository {

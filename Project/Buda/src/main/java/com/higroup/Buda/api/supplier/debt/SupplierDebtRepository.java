@@ -1,14 +1,14 @@
 package com.higroup.Buda.api.supplier.debt;
 
-import com.higroup.Buda.entities.BuyOrder;
-import javax.persistence.Query;
-import org.springframework.data.repository.PagingAndSortingRepository;
-import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.List;
+import javax.persistence.Query;
+
+import org.springframework.stereotype.Repository;
+
+import com.higroup.Buda.entities.BuyOrder;
 
 @Repository
 public class SupplierDebtRepository  {

@@ -4,10 +4,15 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.higroup.Buda.api.business.buy.neworder.util.SupplierInfo;
 import com.higroup.Buda.api.ingredient.create.IngredientCreateService;
@@ -17,23 +22,14 @@ import com.higroup.Buda.entities.BuyOrderItem;
 import com.higroup.Buda.entities.Ingredient;
 import com.higroup.Buda.entities.IngredientLeftLog;
 import com.higroup.Buda.entities.Supplier;
-import com.higroup.Buda.entities.User;
 import com.higroup.Buda.entities.enumeration.Status;
 import com.higroup.Buda.repositories.BuyOrderItemRepository;
 import com.higroup.Buda.repositories.BuyOrderRepository;
 import com.higroup.Buda.repositories.IngredientLeftLogRepository;
 import com.higroup.Buda.repositories.IngredientRepository;
-import com.higroup.Buda.repositories.UserRepository;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class NewBuyOrderService {
-    private UserRepository userRepository;
     private SupplierInfo supplierInfo;
     private BuyOrderRepository buyOrderRepository;
     private BuyOrderItemRepository buyOrderItemRepository;
@@ -43,11 +39,10 @@ public class NewBuyOrderService {
     private IngredientViewService ingredientViewService;
 
     @Autowired
-    public NewBuyOrderService(UserRepository userRepository, SupplierInfo findSupplierInfo,
+    public NewBuyOrderService(SupplierInfo findSupplierInfo,
             BuyOrderRepository buyOrderRepository, BuyOrderItemRepository buyOrderItemRepository,
             IngredientRepository ingredientRepository, IngredientCreateService ingredientCreateService,
             IngredientViewService ingredientViewService, IngredientLeftLogRepository ingredientLeftLogRepository) {
-        this.userRepository = userRepository;
         this.supplierInfo = findSupplierInfo;
         this.buyOrderItemRepository = buyOrderItemRepository;
         this.buyOrderRepository = buyOrderRepository;
